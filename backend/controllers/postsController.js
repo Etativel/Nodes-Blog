@@ -8,7 +8,7 @@ async function getAllPosts(req, res) {
     const posts = await prisma.post.findMany();
     res.json({ posts });
   } catch (error) {
-    console.error("Erroc fetching posts", error);
+    console.error("Error fetching posts", error);
     res.status(500).json({ error: "Internal server error" });
   }
 }
@@ -31,7 +31,56 @@ async function getPost(req, res) {
 }
 
 async function getFilteredPost(req, res) {
-  const { content, title, published, author, createdAt } = req.body;
+  const { content, title, published, author, createdAt, mode } = req.query;
+
+  try {
+    let filterConditions = {};
+
+    if (mode === "exact") {
+      if (title) {
+        filterConditions.title = { equals: title, mode: "insensitive" };
+      }
+      if (content) {
+        filterConditions.content = { equals: content, mode: "insensitive" };
+      }
+      if (author) {
+        filterConditions.author = { equals: author, mode: "insensitive" };
+      }
+      if (published) {
+        filterConditions.published = published === "true"; // boolean check
+      }
+      if (createdAt) {
+        filterConditions.createdAt = new Date(createdAt);
+      }
+    } else {
+      // Contains match: Return all posts that contain specific words
+      if (title) {
+        filterConditions.title = { contains: title, mode: "insensitive" };
+      }
+      if (content) {
+        filterConditions.content = { contains: content, mode: "insensitive" };
+      }
+      if (author) {
+        filterConditions.author = { contains: author, mode: "insensitive" };
+      }
+      if (published) {
+        filterConditions.published = published === "true";
+      }
+      if (createdAt) {
+        filterConditions.createdAt = { gte: new Date(createdAt) };
+      }
+    }
+
+    const posts = await prisma.post.findMany({
+      where: filterConditions,
+    });
+    console.log(filterConditions);
+    res.json({ posts });
+    // res.end();
+  } catch (error) {
+    console.error("Error fetching filtered posts:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 }
 
 // ADD POST
@@ -73,7 +122,7 @@ async function updatePost(req, res) {
         authorId,
       },
     });
-    res.status(201).json({ post: updatedPost });
+    res.status(200).json({ post: updatedPost });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "internal server error" });
