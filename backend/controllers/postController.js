@@ -3,9 +3,13 @@ const prisma = new PrismaClient();
 const { v4: uuidv4 } = require("uuid");
 
 // GET POST
-async function getAllPosts(req, res) {
+async function getAllPost(req, res) {
   try {
-    const posts = await prisma.post.findMany();
+    const posts = await prisma.post.findMany({
+      include: {
+        comments: true,
+      },
+    });
     res.json({ posts });
   } catch (error) {
     console.error("Error fetching posts", error);
@@ -147,7 +151,7 @@ async function deletePost(req, res) {
 }
 
 module.exports = {
-  getAllPosts,
+  getAllPost,
   getPost,
   getFilteredPost,
   addPost,

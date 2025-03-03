@@ -7,9 +7,11 @@ app.use(express.urlencoded({ extended: false }));
 // app.use(passport.initialize());
 // app.use(passport.session());
 
-const postRouter = require("./routes/postsRouter");
+const postRouter = require("./routes/postRouter");
+const commentRouter = require("./routes/commentRouter");
 
-app.use("/posts", postRouter);
+app.use("/post", postRouter);
+app.use("/comment", commentRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello");
