@@ -1,9 +1,11 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const { v4: uuidv4 } = require("uuid");
 
+// GET POST
 async function getAllPosts(req, res) {
   try {
-    const post = await prisma.post.findMany();
+    const posts = await prisma.post.findMany();
     res.json({ posts });
   } catch (error) {
     console.error("Erroc fetching posts", error);
@@ -20,7 +22,7 @@ async function getPost(req, res) {
       },
     });
     if (!post) {
-      return res.json({ error: "Post not found" });
+      return res.status(404).json({ error: "Post not found" });
     }
     res.json({ post });
   } catch (error) {
@@ -28,7 +30,78 @@ async function getPost(req, res) {
   }
 }
 
+async function getFilteredPost(req, res) {
+  const { content, title, published, author, createdAt } = req.body;
+}
+
+// ADD POST
+
+async function addPost(req, res) {
+  const { content, title, published, authorId } = req.body;
+
+  try {
+    const newPost = await prisma.post.create({
+      data: {
+        id: uuidv4(),
+        title,
+        content,
+        published,
+        authorId,
+      },
+    });
+    res.status(201).json({ post: newPost });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+// UPDATE POST
+
+async function updatePost(req, res) {
+  const { postId } = req.params;
+  const { content, title, published, authorId } = req.body;
+  try {
+    const updatedPost = await prisma.post.update({
+      where: {
+        id: postId,
+      },
+      data: {
+        title,
+        content,
+        published,
+        authorId,
+      },
+    });
+    res.status(201).json({ post: updatedPost });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "internal server error" });
+  }
+}
+
+// DELETE POST
+
+async function deletePost(req, res) {
+  const { postId } = req.params;
+  try {
+    const deletedPost = await prisma.post.delete({
+      where: {
+        id: postId,
+      },
+    });
+    res.json({ post: deletedPost });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 module.exports = {
   getAllPosts,
   getPost,
+  getFilteredPost,
+  addPost,
+  updatePost,
+  deletePost,
 };

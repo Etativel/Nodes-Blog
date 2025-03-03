@@ -20,7 +20,8 @@
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
-    "pg": "^8.13.3"
+    "pg": "^8.13.3",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "prisma": "^6.4.1"

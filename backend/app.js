@@ -9,7 +9,7 @@ app.use(express.urlencoded({ extended: false }));
 
 const postRouter = require("./routes/postsRouter");
 
-app.use("/post", postRouter);
+app.use("/posts", postRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello");
