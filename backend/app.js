@@ -9,9 +9,11 @@ app.use(express.urlencoded({ extended: false }));
 
 const postRouter = require("./routes/postRouter");
 const commentRouter = require("./routes/commentRouter");
+const userRouter = require("./routes/userRouter");
 
 app.use("/post", postRouter);
 app.use("/comment", commentRouter);
+app.use("/user", userRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello");

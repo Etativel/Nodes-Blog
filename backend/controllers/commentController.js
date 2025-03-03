@@ -138,6 +138,9 @@ async function deleteComment(req, res) {
     res.json({ comment: deletedComment });
   } catch (error) {
     console.log(error);
+    if (error.code === "P2025") {
+      return res.status(404).json({ message: "User not found" });
+    }
     res.status(500).json({ error: "Internal server error" });
   }
 }

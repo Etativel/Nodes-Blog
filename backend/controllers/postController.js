@@ -146,6 +146,9 @@ async function deletePost(req, res) {
     res.json({ post: deletedPost });
   } catch (error) {
     console.log(error);
+    if (error.code === "P2025") {
+      return res.status(404).json({ message: "Post not found" });
+    }
     res.status(500).json({ error: "Internal server error" });
   }
 }
