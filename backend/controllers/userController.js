@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const { v4: uuidv4 } = require("uuid");
+const bcrypt = require("bcryptjs");
 
 // Get all user
 async function getAllUser(req, res) {
@@ -20,12 +21,14 @@ async function getAllUser(req, res) {
 async function createUser(req, res) {
   const { username, email, password } = req.body;
 
+  const hashedPassword = await bcrypt.hash(password, 10);
+
   try {
     const newUser = await prisma.user.create({
       data: {
         username,
         email,
-        password,
+        password: hashedPassword,
       },
     });
     res.status(201).json({ newUser });
