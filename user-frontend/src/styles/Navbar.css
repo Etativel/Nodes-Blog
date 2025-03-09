@@ -1,0 +1,14 @@
+* {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+
+.webtitle {
+  font-family: serif;
+}
+
+.navigation-container {
+  display: flex;
+  justify-content: space-between;
+}

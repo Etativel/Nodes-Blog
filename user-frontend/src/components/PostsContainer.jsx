@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import "../styles/PostsContainer.css";
+import PostCard from "./PostCard";
 
 function PostsContainer() {
   const [posts, setPosts] = useState([]);
@@ -23,31 +25,23 @@ function PostsContainer() {
   }, []);
 
   return (
-    <div>
+    <div className="posts-container">
       <h2>📢 Blog Posts</h2>
       {loading ? (
         <p>Loading posts...</p>
       ) : posts.length > 0 ? (
-        <ul>
+        <>
           {posts.map((post) => (
-            <li
-              key={post.id}
-              style={{
-                borderBottom: "1px solid #ddd",
-                paddingBottom: "10px",
-                marginBottom: "10px",
-              }}
-            >
-              <h3>{post.title}</h3>
-              {/* Render TinyMCE content safely */}
-              <div dangerouslySetInnerHTML={{ __html: post.content }} />
-              <small>
-                📝 By {post.authorId} | 🕒{" "}
-                {new Date(post.createdAt).toLocaleString()}
-              </small>
-            </li>
+            //   <div>{post}</div>
+            <PostCard
+              postTitle={post.title}
+              authorName={post.authorId}
+              postSubtext="I’ve used these features of Git for years across teams and projects. I’m still developing opinions around some workflows (like to squash or not) but the core tooling is powerful and flexible (and scriptable!"
+              postDate={post.createdAt}
+              postComment={post.comments}
+            ></PostCard>
           ))}
-        </ul>
+        </>
       ) : (
         <p>No posts available.</p>
       )}

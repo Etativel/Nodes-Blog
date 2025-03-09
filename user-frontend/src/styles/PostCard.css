@@ -1,0 +1,72 @@
+.postcard-container {
+  display: flex;
+  max-width: 700px;
+  border-bottom: solid rgba(0, 0, 0, 0.1) 1px; /* 10% opacity */
+  padding-bottom: 42px;
+  padding-top: 42px;
+  flex-direction: column;
+}
+
+.top {
+  display: flex;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+.profile {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 6px 0px 6px;
+}
+.author-pict {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+}
+
+.author-name {
+  font-size: 0.9rem;
+  border-bottom: solid transparent 1px;
+}
+
+.author-name:hover {
+  border-bottom: solid black 1px;
+}
+
+.right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 0px 24px 64px;
+  /* background-color: red; */
+}
+.post-header-img {
+  height: 120px;
+  width: 120px;
+}
+
+.post-title {
+  font-size: 1.7rem;
+  font-weight: bold;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.post-subtext {
+  padding-top: 6px;
+  font-size: 1rem;
+}
+
+.bottom {
+  padding-top: 32px;
+}
+
+.left-info {
+  display: flex;
+  gap: 18px;
+  font-size: 0.9rem;
+  opacity: 70%;
+}
