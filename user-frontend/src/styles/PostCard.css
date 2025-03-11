@@ -2,9 +2,11 @@
   display: flex;
   max-width: 700px;
   border-bottom: solid rgba(0, 0, 0, 0.1) 1px; /* 10% opacity */
-  padding-bottom: 42px;
-  padding-top: 42px;
+  padding-bottom: 22px;
+  padding-top: 22px;
   flex-direction: column;
+  padding-left: 12px;
+  padding-right: 12px;
 }
 
 .top {
@@ -49,7 +51,7 @@ a {
 }
 
 .post-title {
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   font-weight: bold;
   padding-top: 6px;
   padding-bottom: 6px;
@@ -69,4 +71,29 @@ a {
   gap: 18px;
   font-size: 0.9rem;
   opacity: 70%;
+}
+
+@media (max-width: 500px) {
+  .post-title {
+    font-size: 1rem;
+    font-weight: bold;
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+
+  .post-subtext {
+    padding-top: 6px;
+    font-size: 0.5rem;
+  }
+  .right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 0px 12px 32px;
+    /* background-color: red; */
+  }
+  .post-header-img {
+    height: 70px;
+    width: 70px;
+  }
 }

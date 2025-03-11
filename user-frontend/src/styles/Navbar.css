@@ -6,9 +6,18 @@
 
 .webtitle {
   font-family: serif;
+  font-size: 1.8rem;
+  padding-left: 12px;
 }
 
 .navigation-container {
   display: flex;
   justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  padding: 8px;
+  /* padding-top: 18px;
+  padding-bottom: 18px; */
+  z-index: 2;
 }

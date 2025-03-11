@@ -34,11 +34,13 @@ function PostsContainer() {
           {posts.map((post) => (
             //   <div>{post}</div>
             <PostCard
+              key={post.id}
               postTitle={post.title}
               authorName={post.authorId}
               postSubtext="I’ve used these features of Git for years across teams and projects. I’m still developing opinions around some workflows (like to squash or not) but the core tooling is powerful and flexible (and scriptable!"
               postDate={post.createdAt}
               postComment={post.comments}
+              postId={post.id}
             ></PostCard>
           ))}
         </>

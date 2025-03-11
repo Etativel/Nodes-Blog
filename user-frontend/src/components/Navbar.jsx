@@ -8,7 +8,7 @@ function Navigation() {
       <div className="profile-container">
         <button>Write</button>
         <a href="">
-          <img src="" alt="" />
+          {/* <img src="" alt="" /> */}
           PP
         </a>
       </div>

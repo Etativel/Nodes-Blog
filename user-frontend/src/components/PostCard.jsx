@@ -1,5 +1,6 @@
 import "../styles/PostCard.css";
 import profile from "../assets/img/cat.jpg";
+import { Link } from "react-router-dom";
 
 function PostCard({
   authorName,
@@ -7,20 +8,21 @@ function PostCard({
   postSubtext,
   postDate,
   postComment,
+  postId,
 }) {
   const formattedDate = new Date(postDate).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
   });
   return (
-    <a className="postcard-container" href="/">
+    <Link className="postcard-container" to={`/post/${postId}`}>
       <div className="top">
         <div className="left">
           <div className="profile">
             <img src={profile} alt="profile-pict" className="author-pict" />
-            <a className="author-name" href="/youtube.com">
+            <span className="author-name" href="/youtube.com">
               {authorName}
-            </a>
+            </span>
           </div>
           <div className="post-title">{postTitle}</div>
           <div className="post-subtext">{postSubtext}</div>
@@ -41,7 +43,7 @@ function PostCard({
           </div>
         </div>
       </div>
-    </a>
+    </Link>
   );
 }
 
