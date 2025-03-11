@@ -28,6 +28,9 @@ export default function App() {
   };
 
   const handleSave = async () => {
+    if (!post.title || !post.authorId || !post.content) {
+      alert("You need to fill all of the field");
+    }
     console.log("Saving post...", post);
 
     try {
