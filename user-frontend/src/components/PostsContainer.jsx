@@ -1,10 +1,21 @@
 import { useEffect, useState } from "react";
 import "../styles/PostsContainer.css";
 import PostCard from "./PostCard";
-
+import { useLocation } from "react-router-dom";
 function PostsContainer() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  useEffect(() => {
+    // Restore scroll position after posts load
+    const savedPosition = sessionStorage.getItem("scrollPosition");
+
+    if (!loading && location.pathname === "/" && savedPosition) {
+      window.scrollTo(0, parseInt(savedPosition, 10));
+      sessionStorage.removeItem("scrollPosition");
+    }
+  }, [loading, location.pathname]);
+
   useEffect(() => {
     async function fetchPosts() {
       try {

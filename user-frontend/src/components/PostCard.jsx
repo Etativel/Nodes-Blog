@@ -1,6 +1,6 @@
+import { Link } from "react-router-dom";
 import "../styles/PostCard.css";
 import profile from "../assets/img/cat.jpg";
-import { Link } from "react-router-dom";
 
 function PostCard({
   authorName,
@@ -14,15 +14,22 @@ function PostCard({
     month: "short",
     day: "numeric",
   });
+
+  const handleClick = () => {
+    sessionStorage.setItem("scrollPosition", window.scrollY);
+  };
+
   return (
-    <Link className="postcard-container" to={`/post/${postId}`}>
+    <Link
+      className="postcard-container"
+      to={`/post/${postId}`}
+      onClick={handleClick}
+    >
       <div className="top">
         <div className="left">
           <div className="profile">
             <img src={profile} alt="profile-pict" className="author-pict" />
-            <span className="author-name" href="/youtube.com">
-              {authorName}
-            </span>
+            <span className="author-name">{authorName}</span>
           </div>
           <div className="post-title">{postTitle}</div>
           <div className="post-subtext">{postSubtext}</div>
@@ -36,10 +43,6 @@ function PostCard({
           <div className="left-info">
             <div className="date">{formattedDate}</div>
             <div className="comment">{postComment.length}</div>
-          </div>
-          <div className="right-info">
-            <div className="save-post"></div>
-            <div className="post-sett"></div>
           </div>
         </div>
       </div>
