@@ -1,20 +1,49 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 function DashboardLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    fetch("http://localhost:3000/auth/profile", {
+      credentials: "include",
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error("Not logged in");
+      })
+      .then(() => {
+        setIsLoggedIn(true);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoggedIn(false);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+  if (isLoggedIn) {
+    return <Navigate to="/" />;
+  }
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/login", {
+      const response = await fetch("http://localhost:3000/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({ username, password }),
       });
 
@@ -24,13 +53,9 @@ function DashboardLogin() {
         return;
       }
 
-      const data = await response.json();
-
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", data.user.id);
       navigate("/");
     } catch (error) {
-      setError("An errro occured. Please try again", error);
+      setError("An error occurred. Please try again", error);
     }
   };
 

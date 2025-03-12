@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import "./App.css";
 import { Navigate } from "react-router-dom";
@@ -12,15 +12,37 @@ export default function App() {
     authorId: user,
     content: "",
   });
-  const token = localStorage.getItem("token");
-  if (!token) {
-    // Render a redirect if the user is not authenticated
-    return <Navigate to="/login" />;
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // State for form inputs
+  useEffect(() => {
+    fetch("http://localhost:3000/auth/profile", {
+      credentials: "include",
+    })
+      .then((res) => {
+        if (res.ok) return res.json();
+        throw new Error("Not authenticated");
+      })
+      .then((data) => {
+        // You can set user data here if needed.
+        setPost((prev) => ({ ...prev, authorId: data.user.id }));
+        setIsAuthenticated(true);
+      })
+      .catch(() => {
+        setIsAuthenticated(false);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
 
-  // State for form inputs
-
-  // Update state on input change
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
   const handleChange = (e) => {
     const { name, type, checked, value } = e.target;
     setPost((prev) => ({
@@ -29,7 +51,6 @@ export default function App() {
     }));
   };
 
-  // Sync editor content with state
   const handleEditorChange = (content) => {
     setPost((prev) => ({ ...prev, content }));
   };
