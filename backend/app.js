@@ -4,7 +4,12 @@ const passport = require("passport");
 require("./services/passport");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-app.use(cors({ origin: "http://localhost:5174", credentials: true }));
+app.use(
+  cors({
+    origin: ["http://localhost:5174", "http://localhost:5173"],
+    credentials: true,
+  })
+);
 app.use(passport.initialize());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
