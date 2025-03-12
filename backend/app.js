@@ -11,8 +11,8 @@ app.use(
   })
 );
 app.use(passport.initialize());
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
 app.use(cookieParser());
 // app.use(passport.initialize());
 // app.use(passport.session());
@@ -21,11 +21,13 @@ const postRouter = require("./routes/postRouter");
 const commentRouter = require("./routes/commentRouter");
 const userRouter = require("./routes/userRouter");
 const authRouter = require("./routes/auth");
+const imageUploadRouter = require("./routes/imageUploadRoutes");
 
 app.use("/post", postRouter);
 app.use("/comment", commentRouter);
 app.use("/user", userRouter);
 app.use("/auth", authRouter);
+app.use("/img", imageUploadRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello");
