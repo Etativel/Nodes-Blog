@@ -57,15 +57,35 @@ export default function App() {
 
   const handleSave = async () => {
     if (!post.title || !post.authorId || !post.content) {
-      alert("You need to fill all of the field");
+      return alert("You need to fill all of the field");
     }
-    console.log("Saving post...", post);
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(post.content, "text/html");
+    const images = doc.querySelectorAll("img");
 
+    for (let img of images) {
+      if (img.src.startsWith("blob:")) {
+        try {
+          const response = await fetch(img.src);
+          const blob = await response.blob();
+          const reader = new FileReader();
+
+          reader.readAsDataURL(blob);
+          await new Promise((resolve) => (reader.onloadend = resolve));
+
+          img.src = reader.result;
+        } catch (error) {
+          console.error("Error converting blob to base64:", error);
+        }
+      }
+    }
+
+    const updatedContent = doc.body.innerHTML;
     try {
       const response = await fetch("http://localhost:3000/post/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(post),
+        body: JSON.stringify({ ...post, content: updatedContent }),
       });
 
       if (response.ok) {
@@ -140,16 +160,15 @@ export default function App() {
             "undo redo | blocks | " +
             "bold italic forecolor | alignleft aligncenter " +
             "alignright alignjustify | bullist numlist outdent indent | " +
-            "removeformat | help",
-          content_style:
-            "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+            "removeformat | image | help",
+          images_dataimg_filter: () => false,
         }}
       />
       <button onClick={handleSave}>Save Post</button>
 
       {/* Live Preview */}
       <div className="preview">
-        <h2>Live preview</h2>
+        {/* <h2>Live preview</h2>
         <h3>{post.title}</h3>
         <p>
           <strong>Author Id: </strong>
@@ -158,7 +177,7 @@ export default function App() {
         <p>
           <strong>Publish status: </strong>
           {post.published ? "Yes" : "No"}
-        </p>
+        </p> */}
         <div dangerouslySetInnerHTML={{ __html: post.content }} />
       </div>
     </>
