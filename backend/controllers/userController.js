@@ -17,6 +17,24 @@ async function getAllUser(req, res) {
   }
 }
 
+async function getSpecificUser(req, res) {
+  const { userId } = req.params;
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+    if (!user) {
+      res.json({ message: "No user found" });
+    }
+    res.json({ user });
+  } catch (error) {
+    console.error("Failed to get user ", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 // Create user
 async function createUser(req, res) {
   const { username, email, password } = req.body;
@@ -92,4 +110,5 @@ module.exports = {
   createUser,
   deleteUser,
   updateUser,
+  getSpecificUser,
 };

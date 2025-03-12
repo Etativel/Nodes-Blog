@@ -9,6 +9,9 @@ async function getAllPost(req, res) {
       include: {
         comments: true,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
     res.json({ posts });
   } catch (error) {
