@@ -1,15 +1,26 @@
 import { Link } from "react-router-dom";
 import "../styles/PostCard.css";
 import profile from "../assets/img/cat.jpg";
-
+// import { useEffect, useState } from "react";
+import { useAuthor } from "../utils/useAuthor";
 function PostCard({
-  authorName,
+  authorId,
   postTitle,
   postSubtext,
   postDate,
   postComment,
   postId,
 }) {
+  const { author, loading, error } = useAuthor(authorId);
+  // const [username, setUsername] = useState("")
+  // useEffect(()=>{
+  //   async function getUsername(){
+  //     try {
+  //       const response =await fetch()
+  //     }
+  //   }
+  // console.log(author);
+  // })
   const formattedDate = new Date(postDate).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
@@ -29,7 +40,13 @@ function PostCard({
         <div className="left">
           <div className="profile">
             <img src={profile} alt="profile-pict" className="author-pict" />
-            <span className="author-name">{authorName}</span>
+            <span className="author-name">
+              {loading
+                ? "Loading..."
+                : error
+                ? "Error"
+                : author?.username || authorId}
+            </span>
           </div>
           <div className="post-title">{postTitle}</div>
           <div className="post-subtext">{postSubtext}</div>
