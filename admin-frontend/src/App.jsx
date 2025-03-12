@@ -1,17 +1,24 @@
 import { useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import "./App.css";
+import { Navigate } from "react-router-dom";
 
 export default function App() {
   const editorRef = useRef(null);
-
-  // State for form inputs
+  const user = localStorage.getItem("user");
   const [post, setPost] = useState({
     title: "",
     published: false,
-    authorId: "",
+    authorId: user,
     content: "",
   });
+  const token = localStorage.getItem("token");
+  if (!token) {
+    // Render a redirect if the user is not authenticated
+    return <Navigate to="/login" />;
+  }
+
+  // State for form inputs
 
   // Update state on input change
   const handleChange = (e) => {
@@ -76,7 +83,8 @@ export default function App() {
           name="authorId"
           placeholder="Author ID"
           value={post.authorId}
-          onChange={handleChange}
+          hidden
+          // onChange={handleChange}
         />
       </form>
       <Editor
