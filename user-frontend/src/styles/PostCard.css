@@ -1,6 +1,7 @@
 .postcard-container {
   display: flex;
   max-width: 700px;
+  width: 100%;
   border-bottom: solid rgba(0, 0, 0, 0.1) 1px; /* 10% opacity */
   padding-bottom: 22px;
   padding-top: 22px;
@@ -11,6 +12,7 @@
 
 .top {
   display: flex;
+  justify-content: space-between;
 }
 
 a {
@@ -52,14 +54,15 @@ a {
 
 .post-title {
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 700;
   padding-top: 6px;
   padding-bottom: 6px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .post-subtext {
   padding-top: 6px;
-  font-size: 1rem;
+  font-size: 1.3rem;
 }
 
 .bottom {

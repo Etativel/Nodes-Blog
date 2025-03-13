@@ -6,10 +6,11 @@ import { useAuthor } from "../utils/useAuthor";
 function PostCard({
   authorId,
   postTitle,
-  postSubtext,
   postDate,
   postComment,
   postId,
+  thumbnail,
+  excerpt,
 }) {
   const { author, loading, error } = useAuthor(authorId);
   // const [username, setUsername] = useState("")
@@ -25,6 +26,12 @@ function PostCard({
     month: "short",
     day: "numeric",
   });
+
+  const stripTitle =
+    postTitle.substring(0, 100) + (postTitle.length > 100 ? "..." : "");
+
+  const stripExcerpt =
+    excerpt.substring(0, 200) + (excerpt.length > 200 ? "..." : "");
 
   const handleClick = () => {
     sessionStorage.setItem("scrollPosition", window.scrollY);
@@ -48,8 +55,8 @@ function PostCard({
                 : author?.username || authorId}
             </span>
           </div>
-          <div className="post-title">{postTitle}</div>
-          <div className="post-subtext">{postSubtext}</div>
+          <div className="post-title">{stripTitle}</div>
+          <div className="post-subtext">{stripExcerpt}</div>
         </div>
         <div className="right">
           <img src={profile} alt="" className="post-header-img" />

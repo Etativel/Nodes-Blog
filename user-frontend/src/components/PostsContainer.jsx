@@ -38,7 +38,6 @@ function PostsContainer() {
 
   return (
     <div className="posts-container">
-      <h2>📢 Blog Posts</h2>
       {loading ? (
         <p>Loading posts...</p>
       ) : posts.length > 0 ? (
@@ -49,10 +48,14 @@ function PostsContainer() {
               key={post.id}
               postTitle={post.title}
               authorId={post.authorId}
-              postSubtext="I’ve used these features of Git for years across teams and projects. I’m still developing opinions around some workflows (like to squash or not) but the core tooling is powerful and flexible (and scriptable!"
               postDate={post.createdAt}
               postComment={post.comments}
               postId={post.id}
+              excerpt={
+                post.excerpt ||
+                "I’ve used these features of Git for years across teams and projects. I’m still developing opinions around some workflows (like to squash or not) but the core tooling is powerful and flexible (and scriptable!"
+              }
+              thumbnail={post.thumbnail || null}
             ></PostCard>
           ))}
         </>
