@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const { v4: uuidv4 } = require("uuid");
+const cloudinary = require("../config/cloudinaryConfig");
 
 // GET POST
 async function getAllPost(req, res) {
@@ -97,17 +98,25 @@ async function getFilteredPost(req, res) {
 
 async function addPost(req, res) {
   const { content, title, published, authorId, excerpt } = req.body;
+  let thumbnailUrl = null;
 
   try {
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "posts/thumbnail",
+      });
+      thumbnailUrl = result.secure_url;
+    }
+
     const newPost = await prisma.post.create({
       data: {
         id: uuidv4(),
         title,
         content,
-        published,
+        published: published === "true",
         authorId,
         excerpt,
-        // thumbnail,
+        thumbnail: thumbnailUrl,
       },
     });
     res.status(201).json({ post: newPost });
