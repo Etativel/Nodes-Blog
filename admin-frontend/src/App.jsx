@@ -11,9 +11,15 @@ export default function App() {
     published: false,
     authorId: user,
     content: "",
+    excerpt: "",
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [thumbnail, setThumbnail] = useState(null);
+
+  const handleThumbnailChange = (e) => {
+    setThumbnail(e.target.files[0]);
+  };
   // State for form inputs
   useEffect(() => {
     fetch("http://localhost:3000/auth/profile", {
@@ -56,7 +62,7 @@ export default function App() {
   };
 
   const handleSave = async () => {
-    if (!post.title || !post.authorId || !post.content) {
+    if (!post.title || !post.authorId || !post.content || !post.excerpt) {
       return alert("You need to fill all of the field");
     }
     const parser = new DOMParser();
@@ -81,11 +87,22 @@ export default function App() {
     }
 
     const updatedContent = doc.body.innerHTML;
+
+    const formData = new FormData();
+    formData.append("title", post.title);
+    formData.append("content", updatedContent);
+    formData.append("excerpt", post.excerpt);
+    formData.append("published", post.published);
+    formData.append("authorId", post.authorId);
+    if (thumbnail) {
+      formData.append("thumbnail", thumbnail); // Key must match server expectation
+    }
     try {
       const response = await fetch("http://localhost:3000/post/create", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...post, content: updatedContent }),
+        // headers: { "Content-Type": "application/json" },
+        // body: JSON.stringify({ ...post, content: updatedContent }),
+        body: formData,
       });
 
       if (response.ok) {
@@ -126,6 +143,18 @@ export default function App() {
           value={post.authorId}
           hidden
           // onChange={handleChange}
+        />
+        <textarea
+          name="excerpt"
+          placeholder="Sub title or clickbait text"
+          value={post.excerpt}
+          onChange={handleChange}
+        ></textarea>
+        <input
+          type="file"
+          name="thumbnail"
+          onChange={handleThumbnailChange}
+          accept="image/*"
         />
       </form>
       <Editor
