@@ -9,6 +9,9 @@ async function getAllPost(req, res) {
       include: {
         comments: true,
       },
+      omit: {
+        content: true,
+      },
       orderBy: {
         createdAt: "desc",
       },
@@ -93,7 +96,7 @@ async function getFilteredPost(req, res) {
 // ADD POST
 
 async function addPost(req, res) {
-  const { content, title, published, authorId } = req.body;
+  const { content, title, published, authorId, excerpt } = req.body;
 
   try {
     const newPost = await prisma.post.create({
@@ -103,6 +106,8 @@ async function addPost(req, res) {
         content,
         published,
         authorId,
+        excerpt,
+        // thumbnail,
       },
     });
     res.status(201).json({ post: newPost });
@@ -127,6 +132,7 @@ async function updatePost(req, res) {
         content,
         published,
         authorId,
+        // thumbnail,
       },
     });
     res.status(200).json({ post: updatedPost });
