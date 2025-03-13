@@ -13,15 +13,7 @@ function PostCard({
   excerpt,
 }) {
   const { author, loading, error } = useAuthor(authorId);
-  // const [username, setUsername] = useState("")
-  // useEffect(()=>{
-  //   async function getUsername(){
-  //     try {
-  //       const response =await fetch()
-  //     }
-  //   }
-  // console.log(author);
-  // })
+
   const formattedDate = new Date(postDate).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
@@ -59,7 +51,11 @@ function PostCard({
           <div className="post-subtext">{stripExcerpt}</div>
         </div>
         <div className="right">
-          <img src={profile} alt="" className="post-header-img" />
+          <img
+            src={thumbnail ? thumbnail : profile}
+            alt=""
+            className="post-header-img"
+          />
         </div>
       </div>
       <div className="bottom">
