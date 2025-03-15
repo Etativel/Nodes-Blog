@@ -1,4 +1,4 @@
-img {
+.blog-post-container img {
   max-width: 100vw;
   max-height: calc(100vh - 20px);
   height: auto;
@@ -8,7 +8,7 @@ img {
   padding: 12px;
 }
 @media (max-width: 500px) {
-  img {
+  .blog-post-container img {
     max-width: 100vw;
     max-height: calc(100vh - 20px);
     height: auto;

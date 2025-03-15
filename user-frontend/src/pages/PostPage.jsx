@@ -5,30 +5,30 @@ import "../styles/PostPage.css";
 function PostPage() {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
-  const [loading, setLoading] = useState(true); // ✅ Add loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchCurrentPost() {
       try {
-        setLoading(true); // ✅ Set loading to true before fetching
+        setLoading(true);
         const response = await fetch(`http://localhost:3000/post/${postId}`);
         if (!response.ok) {
           throw new Error("Failed to fetch post");
         }
         const postData = await response.json();
-        console.log("Fetched Post:", Object.keys(postData.post)); // ✅ Debugging: Check response structure
+        console.log("Fetched Post:", Object.keys(postData.post));
         setPost(postData.post);
       } catch (error) {
         console.error("Error fetching post: ", error);
       } finally {
-        setLoading(false); // ✅ Ensure loading stops
+        setLoading(false);
       }
     }
 
     fetchCurrentPost();
   }, [postId]);
 
-  if (loading) return <p>Loading...</p>; // ✅ Show loading while fetching data
+  if (loading) return <p>Loading...</p>;
 
   return (
     <div className="blog-post-container">
