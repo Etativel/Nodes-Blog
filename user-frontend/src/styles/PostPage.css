@@ -1,0 +1,20 @@
+img {
+  max-width: 100vw;
+  max-height: calc(100vh - 20px);
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  padding: 12px;
+}
+@media (max-width: 500px) {
+  img {
+    max-width: 100vw;
+    max-height: calc(100vh - 20px);
+    height: auto;
+    /* object-fit: contain; */
+    display: block;
+    margin: 0 auto;
+    padding: 12px;
+  }
+}

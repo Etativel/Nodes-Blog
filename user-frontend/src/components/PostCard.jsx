@@ -20,10 +20,10 @@ function PostCard({
   });
 
   const stripTitle =
-    postTitle.substring(0, 100) + (postTitle.length > 100 ? "..." : "");
+    postTitle.substring(0, 50) + (postTitle.length > 50 ? "..." : "");
 
   const stripExcerpt =
-    excerpt.substring(0, 200) + (excerpt.length > 200 ? "..." : "");
+    excerpt.substring(0, 100) + (excerpt.length > 100 ? "..." : "");
 
   const handleClick = () => {
     sessionStorage.setItem("scrollPosition", window.scrollY);
@@ -50,12 +50,17 @@ function PostCard({
           <div className="post-title">{stripTitle}</div>
           <div className="post-subtext">{stripExcerpt}</div>
         </div>
-        <div className="right">
-          <img
+        <div
+          className="right"
+          style={{
+            backgroundImage: `url(${thumbnail ? thumbnail : profile})`,
+          }}
+        >
+          {/* <img
             src={thumbnail ? thumbnail : profile}
             alt=""
             className="post-header-img"
-          />
+          /> */}
         </div>
       </div>
       <div className="bottom">

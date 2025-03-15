@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
+import Navigation from "../components/Navbar";
+import "../styles/PostPage.css";
 function PostPage() {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
@@ -31,6 +32,7 @@ function PostPage() {
 
   return (
     <div className="blog-post-container">
+      <Navigation></Navigation>
       {post && post.content ? (
         <div dangerouslySetInnerHTML={{ __html: post.content }} />
       ) : (
