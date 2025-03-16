@@ -31,6 +31,13 @@ async function getPost(req, res) {
       where: {
         id: postId,
       },
+      include: {
+        author: {
+          select: {
+            username: true,
+          },
+        },
+      },
     });
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
