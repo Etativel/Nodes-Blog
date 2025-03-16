@@ -1,0 +1,57 @@
+@font-face {
+  font-family: "Arial Black";
+  src: url("../assets/font/ARIBLK.TTF") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+.post-head-container {
+  padding-left: 24px;
+  padding-right: 24px;
+  max-width: 750px;
+  width: 100%;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.post-title-head {
+  font-size: 1.8rem;
+  font-weight: bold;
+  width: 100%;
+  font-family: "Arial Black";
+}
+
+.author-and-post-info {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  /* max-width: 750px; */
+  /* padding-left: 24px; */
+  /* padding-right: 24px; */
+}
+
+.left-head {
+  height: 70px;
+  width: 70px;
+  transform: translateX(-12px);
+}
+
+.profile-pict {
+  height: 100%;
+  width: 100%;
+  padding: 0px;
+}
+
+.post-info {
+  display: flex;
+  font-size: 1rem;
+  color: gray;
+  gap: 8px;
+}
+
+@media (max-width: 800px) {
+  .author-and-post-info {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}

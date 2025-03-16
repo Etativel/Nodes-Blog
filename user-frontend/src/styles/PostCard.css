@@ -1,6 +1,6 @@
 .postcard-container {
   display: flex;
-  max-width: 700px;
+  max-width: 800px;
   width: 100%;
   border-bottom: solid rgba(0, 0, 0, 0.1) 1px; /* 10% opacity */
   padding-bottom: 22px;

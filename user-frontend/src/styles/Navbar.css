@@ -13,6 +13,7 @@
 .navigation-container {
   display: flex;
   justify-content: space-between;
+  width: 100%;
   position: sticky;
   top: 0;
   background-color: white;
@@ -20,7 +21,12 @@
   /* padding-top: 18px;
   padding-bottom: 18px; */
   z-index: 2;
-  box-shadow: 0px 4px 100px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+  /* top: 0; */
+  /* left: 0; */
+  /* width: 100%; */
+  /* background: white; */
+  transition: transform 0.1s ease-in-out;
 }
 
 @media (max-width: 500px) {

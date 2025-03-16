@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Navigation from "../components/Navbar";
+import PostHead from "../components/PostHead";
 import "../styles/PostPage.css";
 function PostPage() {
   const { postId } = useParams();
@@ -28,17 +29,32 @@ function PostPage() {
     fetchCurrentPost();
   }, [postId]);
 
-  if (loading) return <p>Loading...</p>;
+  // if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="blog-post-container">
+    <>
       <Navigation></Navigation>
-      {post && post.content ? (
-        <div dangerouslySetInnerHTML={{ __html: post.content }} />
-      ) : (
-        <p>No current post</p>
-      )}
-    </div>
+      <div className="blog-post-container">
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <>
+            <PostHead
+              title={post.title}
+              username={post.author.username}
+            ></PostHead>
+
+            <div className="post-container">
+              {post && post.content ? (
+                <div dangerouslySetInnerHTML={{ __html: post.content }} />
+              ) : (
+                <p>No current post</p>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+    </>
   );
 }
 
