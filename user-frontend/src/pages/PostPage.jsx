@@ -3,6 +3,42 @@ import { useParams } from "react-router-dom";
 import Navigation from "../components/Navbar";
 import PostHead from "../components/PostHead";
 import "../styles/PostPage.css";
+
+function timePosted(dateString) {
+  const date = new Date(dateString);
+  const now = new Date();
+  const seconds = Math.round((now - date) / 1000);
+
+  const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+
+  const units = [
+    { unit: "year", value: 31536000 },
+    { unit: "month", value: 2592000 },
+    { unit: "week", value: 604800 },
+    { unit: "day", value: 86400 },
+    { unit: "hour", value: 3600 },
+    { unit: "minute", value: 60 },
+    { unit: "second", value: 1 },
+  ];
+
+  for (const { unit, value } of units) {
+    const diff = Math.floor(seconds / value);
+    if (Math.abs(diff) >= 1) {
+      return rtf.format(-diff, unit);
+    }
+  }
+
+  return "just now";
+}
+function estimateReadingTime(text, wordsPerMinute = 400) {
+  const words = text.trim().split(/\s+/).length; // Count words in the text
+  const minutes = words / wordsPerMinute;
+
+  if (minutes < 1) {
+    return `${Math.ceil(minutes * 60)} sec read`;
+  }
+  return `${Math.ceil(minutes)} min read`;
+}
 function PostPage() {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
@@ -42,6 +78,8 @@ function PostPage() {
             <PostHead
               title={post.title}
               username={post.author.username}
+              timePosted={timePosted(post.createdAt)}
+              estimateReadingTime={estimateReadingTime(post.content)}
             ></PostHead>
 
             <div className="post-container">

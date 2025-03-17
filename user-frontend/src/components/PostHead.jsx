@@ -1,7 +1,7 @@
 import "../styles/PostHead.css";
 import defaultProfile from "../assets/profilePict/profile-picture.png";
 
-function PostHead({ title, username }) {
+function PostHead({ title, username, timePosted, estimateReadingTime }) {
   return (
     <div className="post-head-container">
       <p className="post-title-head">{title}</p>
@@ -16,8 +16,8 @@ function PostHead({ title, username }) {
         <div className="right-head">
           <p className="post-author">{username}</p>
           <div className="post-info">
-            <p className="time-to-read">7 min read</p>·
-            <p className="post-date">3 days ago</p>
+            <p className="time-to-read">{estimateReadingTime}</p>·
+            <p className="post-date">{timePosted}</p>
           </div>
         </div>
       </div>
