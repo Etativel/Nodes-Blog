@@ -1,0 +1,80 @@
+/* .landing-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  background-color: blue;
+} */
+.landing-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  background-color: #f7f4ed;
+}
+
+/* Canvas sits above the background */
+.landing-container canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+/* Content appears above the canvas (if needed) */
+.landing-container .content {
+  position: relative;
+  z-index: 2;
+}
+
+.l-nav-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  border-bottom: solid gray 1px;
+}
+.web-title {
+  font-size: 2.2rem;
+  font-weight: bold;
+}
+.l-foot-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  border-top: solid gray 1px;
+}
+
+.nav-flex-container {
+  /* background-color: red; */
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 12px 12px;
+  max-width: 1200px;
+  width: 100%;
+  /* background-color: red; */
+  align-items: center;
+}
+
+.l-main-container {
+  height: 100%;
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  /* background-color: blue; */
+  justify-content: center;
+  align-items: start;
+}
+
+.foot-flex-container {
+  max-width: 1200px;
+  width: 100%;
+  height: 70px;
+  /* background-color: red; */
+}
+
+.main-title {
+  font-size: 6rem;
+  z-index: 3;
+}

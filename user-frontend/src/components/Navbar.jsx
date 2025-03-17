@@ -35,7 +35,9 @@ function Navigation() {
 
   return (
     <div className="navigation-container" ref={navbarRef}>
-      <h2 className="webtitle">Nodes</h2>
+      <h2 className="webtitle">
+        <a href="/posts">Nodes</a>
+      </h2>
       <input type="text" placeholder="Search" className="post-search-input" />
       <div className="profile-container">
         <button>Write</button>

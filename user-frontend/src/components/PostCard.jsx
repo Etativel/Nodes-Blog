@@ -40,11 +40,7 @@ function PostCard({
           <div className="profile">
             <img src={profile} alt="profile-pict" className="author-pict" />
             <span className="author-name">
-              {loading
-                ? "Loading..."
-                : error
-                ? "Error"
-                : author?.username || authorId}
+              {loading ? "" : error ? "" : author?.username || authorId}
             </span>
           </div>
           <div className="post-title">{stripTitle}</div>

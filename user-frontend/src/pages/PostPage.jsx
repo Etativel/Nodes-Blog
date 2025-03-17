@@ -31,7 +31,7 @@ function timePosted(dateString) {
   return "just now";
 }
 function estimateReadingTime(text, wordsPerMinute = 400) {
-  const words = text.trim().split(/\s+/).length; // Count words in the text
+  const words = text.trim().split(/\s+/).length;
   const minutes = words / wordsPerMinute;
 
   if (minutes < 1) {
