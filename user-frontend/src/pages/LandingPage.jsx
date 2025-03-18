@@ -1,6 +1,6 @@
 import "../styles/LandingPage.css";
-import { useRef, useEffect } from "react";
-function LandingNav() {
+import { useRef, useEffect, useState } from "react";
+function LandingNav({ openDialog, setDialogTitle }) {
   return (
     <div className="l-nav-container">
       <div className="nav-flex-container">
@@ -8,9 +8,33 @@ function LandingNav() {
           <p className="web-title">Nodes</p>
         </div>
         <div className="right-nav">
-          <button className="write-btn">Write</button>
-          <button className="sign-in-btn">Sign in</button>
-          <button className="get-started-btn">Get started</button>
+          <button
+            className="write-btn"
+            onClick={() => {
+              setDialogTitle("Create an account to start writing.");
+              openDialog("signIn");
+            }}
+          >
+            Write
+          </button>
+          <button
+            className="sign-in-btn"
+            onClick={() => {
+              setDialogTitle("Welcome back.");
+              openDialog("signIn");
+            }}
+          >
+            Sign in
+          </button>
+          <button
+            className="get-started-btn"
+            onClick={() => {
+              setDialogTitle("Join nodes.");
+              openDialog("signIn");
+            }}
+          >
+            Get started
+          </button>
         </div>
       </div>
     </div>
@@ -51,14 +75,91 @@ function LandingFooter() {
   );
 }
 
-function SignInDialog() {}
+// function SignInDialog() {
+// return (
+//   <div className="dialog-container">
+//     <div className="sign-in">
+//       <button>Hello</button>
+//       <button>from</button>
+//       <form action="">
+//         <input type="text" placeholder="email" />
+//       </form>
+//     </div>
+//   </div>
+// );
+// }
 
-function SignUpDialog() {}
+function SignDialog({ isOpen, closeDialog, title = "Join nodes" }) {
+  const [activeTab, setActiveTab] = useState("default");
+  if (!isOpen) return null;
+
+  return (
+    <>
+      {activeTab === "default" && (
+        <div className="dialog-container">
+          <div className="sign-in">
+            <p className="dialog-title">{title}</p>
+            <div className="sign-type-container">
+              <button
+                className="email-btn"
+                onClick={() => setActiveTab("email")}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1}
+                  stroke="currentColor"
+                  className="size-6 sign-icon"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
+                  />
+                </svg>
+                Sign up with email
+                <div className="spacer"></div>
+              </button>
+              <p className="sig n-in-info">
+                Already have account? <button>Sign in</button>
+              </p>
+              <button className="close-dialog-btn" onClick={closeDialog}>
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {activeTab === "email" && (
+        <div className="dialog-container">
+          <div className="sign-in">
+            <p className="dialog-title">Sign up with email</p>
+            <div className="sign-type-container">
+              <p>
+                Already have account? <button>Sign in</button>
+              </p>
+              <button
+                onClick={() => {
+                  setActiveTab("default");
+                  closeDialog();
+                }}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
 
 function LandingPage() {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
-
+  const [openDialog, setOpenDialog] = useState(null);
+  const [dialogTitle, setDialogTitle] = useState("");
   useEffect(() => {
     // Define getDistance before any usage
     function getDistance(p1, p2) {
@@ -242,18 +343,20 @@ function LandingPage() {
         style={{ position: "absolute", top: 0, left: 0, zIndex: 2 }}
       />
       <div className="landing-container" ref={containerRef}>
-        <LandingNav />
-        <LandingMain />
+        <LandingNav
+          openDialog={setOpenDialog}
+          setDialogTitle={setDialogTitle}
+        />
+        <LandingMain
+          openDialog={setOpenDialog}
+          setDialogTitle={setDialogTitle}
+        />
         <LandingFooter />
-        <div className="dialog-container">
-          <div className="sign-in">
-            <button>Hello</button>
-            <button>from</button>
-            <form action="">
-              <input type="text" placeholder="email" />
-            </form>
-          </div>
-        </div>
+        <SignDialog
+          title={dialogTitle}
+          isOpen={openDialog === "signIn"}
+          closeDialog={() => setOpenDialog(null)}
+        />
       </div>
     </div>
   );

@@ -159,10 +159,65 @@
   border-radius: 3px;
   height: 95vh;
   width: 44vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sign-type-container {
+  /* background-color: gray; */
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.dialog-title {
+  font-size: 2rem;
+  text-align: center;
+}
+
+.email-btn {
+  /* width: fit-content; */
+  max-width: 250px;
+  width: 100%;
+  padding: 6px 12px;
+  background-color: transparent;
+  border-radius: 50px;
+  border: solid black 1px;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  font-size: 1rem;
+  margin: 24px 0px 24px;
+}
+
+.sign-icon {
+  height: 24px;
+  width: 24px;
+}
+
+.sign-in-info {
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.close-dialog-btn {
+  position: absolute;
+  top: 12px;
+}
+
+.spacer {
+  height: 12px;
+  width: 12px;
 }
 
 .dialog-container {
-  display: none;
+  /* display: none; */
 }
 
 @media (max-width: 470px) {
@@ -183,12 +238,23 @@
   .sign-in {
     height: 70vh;
     width: 90vw;
+    padding: 12px;
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
+  .dialog-title {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
   .sign-in {
     height: 70vh;
     width: 90vw;
+    padding: 12px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+  .email-btn {
+    transform: translateY(-20px);
   }
 }
