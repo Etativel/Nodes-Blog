@@ -8,9 +8,9 @@ function LandingNav() {
           <p className="web-title">Nodes</p>
         </div>
         <div className="right-nav">
-          <button>Write</button>
-          <button>Sign in</button>
-          <button>Get started</button>
+          <button className="write-btn">Write</button>
+          <button className="sign-in-btn">Sign in</button>
+          <button className="get-started-btn">Get started</button>
         </div>
       </div>
     </div>
@@ -36,10 +36,24 @@ function LandingMain() {
 function LandingFooter() {
   return (
     <div className="l-foot-container">
-      <div className="foot-flex-container">This is footer</div>
+      <div className="foot-flex-container">
+        <a href="" className="about-footer">
+          About
+        </a>
+        <a
+          href="https://github.com/Etativel/Nodes-Blog"
+          className="about-github"
+        >
+          Github
+        </a>
+      </div>
     </div>
   );
 }
+
+function SignInDialog() {}
+
+function SignUpDialog() {}
 
 function LandingPage() {
   const canvasRef = useRef(null);
@@ -111,14 +125,18 @@ function LandingPage() {
         if (!this.active) return;
         ctx.beginPath();
         ctx.arc(this.pos.x, this.pos.y, this.radius, 0, 4 * Math.PI, false);
-        ctx.fillStyle = "rgba(52,171,69," + this.active + ")";
+        ctx.fillStyle = "rgba(153, 188, 133," + this.active + ")";
         ctx.fill();
       };
     }
 
     // Create a circle for each point
     points.forEach((p) => {
-      p.circle = new Circle(p, 4 + Math.random() * 2, "rgba(52,171,69,0.3)");
+      p.circle = new Circle(
+        p,
+        4 + Math.random() * 2,
+        "rgba(153, 188, 133,0.3)"
+      );
     });
 
     // Event handlers
@@ -199,7 +217,7 @@ function LandingPage() {
         ctx.beginPath();
         ctx.moveTo(p.x, p.y);
         ctx.lineTo(cp.x, cp.y);
-        ctx.strokeStyle = "rgba(52,171,69," + p.active + ")";
+        ctx.strokeStyle = "rgba(153, 188, 133," + p.active + ")";
         ctx.stroke();
       });
     };
@@ -227,6 +245,15 @@ function LandingPage() {
         <LandingNav />
         <LandingMain />
         <LandingFooter />
+        <div className="dialog-container">
+          <div className="sign-in">
+            <button>Hello</button>
+            <button>from</button>
+            <form action="">
+              <input type="text" placeholder="email" />
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   );

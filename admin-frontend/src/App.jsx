@@ -146,7 +146,7 @@ export default function App() {
         />
         <textarea
           name="excerpt"
-          placeholder="Sub title or clickbait text"
+          placeholder="Intriguing summary or hook"
           value={post.excerpt}
           onChange={handleChange}
         ></textarea>
