@@ -31,5 +31,6 @@
 @media (max-width: 500px) {
   .webtitle {
     padding-left: 0px;
+    font-size: 1.4rem;
   }
 }

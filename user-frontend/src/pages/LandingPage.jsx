@@ -1,6 +1,6 @@
 import "../styles/LandingPage.css";
 import { useRef, useEffect, useState } from "react";
-function LandingNav({ openDialog, setDialogTitle }) {
+function LandingNav({ openDialog, setDialogTitle, setActiveTab }) {
   return (
     <div className="l-nav-container">
       <div className="nav-flex-container">
@@ -20,6 +20,7 @@ function LandingNav({ openDialog, setDialogTitle }) {
           <button
             className="sign-in-btn"
             onClick={() => {
+              setActiveTab("signIn");
               setDialogTitle("Welcome back.");
               openDialog("signIn");
             }}
@@ -89,15 +90,93 @@ function LandingFooter() {
 // );
 // }
 
-function SignDialog({ isOpen, closeDialog, title = "Join nodes" }) {
-  const [activeTab, setActiveTab] = useState("default");
+function SignDialog({
+  activeTab,
+  setActiveTab,
+  isOpen,
+  closeDialog,
+  title = "Join nodes",
+  setDialogTitle,
+}) {
   if (!isOpen) return null;
 
-  return (
-    <>
-      {activeTab === "default" && (
-        <div className="dialog-container">
-          <div className="sign-in">
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert("submitted");
+  };
+
+  const handleClose = () => {
+    setActiveTab("default");
+    closeDialog();
+  };
+
+  const CloseButton = () => (
+    <button className="close-dialog-btn" onClick={handleClose}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+        className="size-6 x-logo"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M6 18 18 6M6 6l12 12"
+        />
+      </svg>
+    </button>
+  );
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case "signIn":
+        return (
+          <>
+            <p className="dialog-title">{title}</p>
+            <div className="sign-type-container">
+              <button
+                className="email-btn"
+                onClick={() => {
+                  setActiveTab("emailSignIn");
+                }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1}
+                  stroke="currentColor"
+                  className="size-6 sign-icon"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
+                  />
+                </svg>
+                Sign in with email
+                <div className="spacer"></div>
+              </button>
+              <p className="sign-in-info">
+                No account?{" "}
+                <button
+                  className="create-acc-btn"
+                  onClick={() => {
+                    setDialogTitle("Join nodes.");
+                    setActiveTab("default");
+                  }}
+                >
+                  Create one
+                </button>
+              </p>
+            </div>
+          </>
+        );
+      case "default":
+        return (
+          <>
             <p className="dialog-title">{title}</p>
             <div className="sign-type-container">
               <button
@@ -121,36 +200,92 @@ function SignDialog({ isOpen, closeDialog, title = "Join nodes" }) {
                 Sign up with email
                 <div className="spacer"></div>
               </button>
-              <p className="sig n-in-info">
-                Already have account? <button>Sign in</button>
+              <p className="sign-in-info">
+                Already have account?{" "}
+                <button
+                  className="sign-up-btn"
+                  onClick={() => {
+                    setDialogTitle("Welcome back.");
+                    setActiveTab("signIn");
+                  }}
+                >
+                  Sign in
+                </button>
               </p>
-              <button className="close-dialog-btn" onClick={closeDialog}>
-                Close
-              </button>
             </div>
-          </div>
-        </div>
-      )}
-      {activeTab === "email" && (
-        <div className="dialog-container">
-          <div className="sign-in">
+          </>
+        );
+      case "email":
+        return (
+          <>
             <p className="dialog-title">Sign up with email</p>
             <div className="sign-type-container">
-              <p>
-                Already have account? <button>Sign in</button>
-              </p>
-              <button
-                onClick={() => {
-                  setActiveTab("default");
-                  closeDialog();
-                }}
+              <form
+                action=""
+                className="sign-up-form"
+                onSubmit={(e) => handleSubmit(e)}
               >
-                Close
-              </button>
+                <label required htmlFor="email-field" className="label">
+                  email
+                </label>
+                <input type="text" id="email-field" name="email" />
+                <label htmlFor="username-field" className="label">
+                  username
+                </label>
+                <input type="text" id="username-field" name="username" />
+                <label htmlFor="password-field" className="label">
+                  password
+                </label>
+                <input type="text" id="password-field" name="password" />
+                <button className="submit-btn" type="submit">
+                  Continue
+                </button>
+              </form>
+              <p className="sign-in-info">
+                <button
+                  className="sign-up-btn options"
+                  onClick={() => {
+                    setActiveTab("default");
+                  }}
+                >
+                  &lt; &nbsp; All sign in option
+                </button>
+              </p>
             </div>
-          </div>
+          </>
+        );
+      case "emailSignIn":
+        return (
+          <>
+            <p className="dialog-title">Sign in with email</p>
+            <div className="sign-type-container">
+              <p className="sign-in-info">
+                <button
+                  className="sign-up-btn options"
+                  onClick={() => {
+                    setDialogTitle("Join Nodes.");
+                    setActiveTab("default");
+                  }}
+                >
+                  &lt; &nbsp; All sign in option
+                </button>
+              </p>
+            </div>
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <>
+      <div className="dialog-container">
+        <div className="sign-in">
+          <CloseButton />
+          {renderContent()}
         </div>
-      )}
+      </div>
     </>
   );
 }
@@ -160,6 +295,7 @@ function LandingPage() {
   const containerRef = useRef(null);
   const [openDialog, setOpenDialog] = useState(null);
   const [dialogTitle, setDialogTitle] = useState("");
+  const [activeTab, setActiveTab] = useState("default");
   useEffect(() => {
     // Define getDistance before any usage
     function getDistance(p1, p2) {
@@ -346,6 +482,7 @@ function LandingPage() {
         <LandingNav
           openDialog={setOpenDialog}
           setDialogTitle={setDialogTitle}
+          setActiveTab={setActiveTab}
         />
         <LandingMain
           openDialog={setOpenDialog}
@@ -354,8 +491,11 @@ function LandingPage() {
         <LandingFooter />
         <SignDialog
           title={dialogTitle}
+          setDialogTitle={setDialogTitle}
           isOpen={openDialog === "signIn"}
           closeDialog={() => setOpenDialog(null)}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
         />
       </div>
     </div>
