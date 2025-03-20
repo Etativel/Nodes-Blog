@@ -45,6 +45,15 @@ router.post("/login", (req, res, next) => {
   })(req, res);
 });
 
+router.post("/logout", (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  });
+  res.json({ message: "Logged out successfully" });
+});
+
 router.get("/profile", authenticateToken, (req, res) => {
   res.json({ user: req.user });
 });
