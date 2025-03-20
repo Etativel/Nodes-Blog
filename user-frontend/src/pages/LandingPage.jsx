@@ -78,20 +78,6 @@ function LandingFooter() {
   );
 }
 
-// function SignInDialog() {
-// return (
-//   <div className="dialog-container">
-//     <div className="sign-in">
-//       <button>Hello</button>
-//       <button>from</button>
-//       <form action="">
-//         <input type="text" placeholder="email" />
-//       </form>
-//     </div>
-//   </div>
-// );
-// }
-
 function SignDialog({
   activeTab,
   setActiveTab,
@@ -104,6 +90,7 @@ function SignDialog({
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [credential, setCredential] = useState("");
   const navigate = useNavigate();
   const [, setLoginError] = useState(null);
 
@@ -123,6 +110,16 @@ function SignDialog({
   function handlePasswordChange(password) {
     setPassword(password);
   }
+
+  function handleCredentialChange(credential) {
+    setCredential(credential);
+  }
+
+  const validateUser = (credential, password) => {
+    const errors = {};
+    console.log(credential + password);
+    console.log(errors);
+  };
 
   const validateForm = (email, username, password) => {
     const errors = {};
@@ -147,6 +144,31 @@ function SignDialog({
 
     return errors;
   };
+
+  async function handleSignIn(e) {
+    e.preventDefault();
+    // const signInValidation = validateUser(credential, password);
+    try {
+      const response = await fetch("http://localhost:3000/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ credential, password }),
+      });
+
+      if (!response.ok) {
+        await response.text();
+        // setError(responseText);
+        return;
+      }
+
+      navigate("/posts");
+    } catch (error) {
+      console.error("An error occurred. Please try again", error);
+    }
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -438,6 +460,82 @@ function SignDialog({
           <>
             <p className="dialog-title">Sign in with email</p>
             <div className="sign-type-container">
+              <form
+                action=""
+                className="sign-up-form"
+                onSubmit={(e) => handleSignIn(e)}
+              >
+                <label required htmlFor="email-field" className="label">
+                  email or username
+                </label>
+                <div className="input-ctr">
+                  <input
+                    type="text"
+                    id="email-field"
+                    name="email"
+                    value={credential}
+                    onChange={(e) => handleCredentialChange(e.target.value)}
+                  />
+                  {errors.emailError && (
+                    <span className="error-exclamation">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1}
+                        stroke="#c94a4a"
+                        className="size-6 exclamation-icon"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+                        />
+                      </svg>
+                    </span>
+                  )}
+                </div>
+                {errors.emailError && (
+                  <p className="email-error">{errors.emailError}</p>
+                )}
+
+                <label htmlFor="password-field" className="label">
+                  password
+                </label>
+                <div className="input-ctr">
+                  <input
+                    type="password"
+                    id="password-field"
+                    name="password"
+                    value={password}
+                    onChange={(e) => handlePasswordChange(e.target.value)}
+                  />
+                  {errors.passwordError && (
+                    <span className="error-exclamation">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1}
+                        stroke="#c94a4a"
+                        className="size-6 exclamation-icon"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+                        />
+                      </svg>
+                    </span>
+                  )}
+                </div>
+                {errors.passwordError && (
+                  <p className="password-error">{errors.passwordError}</p>
+                )}
+                <button className="submit-btn" type="submit">
+                  Continue
+                </button>
+              </form>
               <p className="sign-in-info">
                 <button
                   className="sign-up-btn options"

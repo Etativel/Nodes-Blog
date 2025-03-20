@@ -365,6 +365,12 @@ input:focus {
     width: 90vw;
     padding: 12px;
   }
+  .l-foot-container {
+    background-color: black;
+  }
+  .foot-flex-container > a {
+    color: white;
+  }
 }
 
 @media (max-width: 1000px) {
