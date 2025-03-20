@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import "../styles/Navbar.css";
 import { useRef, useEffect } from "react";
 function Navigation() {
@@ -5,7 +6,7 @@ function Navigation() {
   const lastScrollTopRef = useRef(window.scrollY);
   const hiddenAmountRef = useRef(0);
   const navHeightRef = useRef(0);
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (navbarRef.current) {
       navHeightRef.current = navbarRef.current.offsetHeight;
@@ -33,6 +34,24 @@ function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  async function handleLogout() {
+    try {
+      const response = await fetch("http://localhost:3000/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+      if (!response.ok) {
+        console.log("Failed to logout: ", response.statusText);
+      } else {
+        await response.json();
+        navigate("/");
+        console.log("Logout success");
+      }
+    } catch (error) {
+      console.log("Error loging out: ", error);
+    }
+  }
+
   return (
     <div className="navigation-container" ref={navbarRef}>
       <h2 className="webtitle">
@@ -41,6 +60,7 @@ function Navigation() {
       <input type="text" placeholder="Search" className="post-search-input" />
       <div className="profile-container">
         <button>Write</button>
+        <button onClick={handleLogout}>Log out</button>
         <a href="">
           {/* <img src="" alt="" /> */}
           PP

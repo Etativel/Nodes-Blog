@@ -1,5 +1,7 @@
 import "../styles/LandingPage.css";
 import { useRef, useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 function LandingNav({ openDialog, setDialogTitle, setActiveTab }) {
   return (
     <div className="l-nav-container">
@@ -98,17 +100,106 @@ function SignDialog({
   title = "Join nodes",
   setDialogTitle,
 }) {
-  if (!isOpen) return null;
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
+  const [, setLoginError] = useState(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert("submitted");
-  };
+  if (!isOpen) return null;
 
   const handleClose = () => {
     setActiveTab("default");
     closeDialog();
   };
+
+  function handleEmailChange(email) {
+    setEmail(email);
+  }
+  function handleUsernameChange(username) {
+    setUsername(username);
+  }
+  function handlePasswordChange(password) {
+    setPassword(password);
+  }
+
+  const validateForm = (email, username, password) => {
+    const errors = {};
+
+    if (!email) {
+      errors.emailError = "Email is required.";
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
+      errors.emailError = "Invalid email address.";
+    }
+
+    if (!username) {
+      errors.usernameError = "Username is required.";
+    } else if (username.length < 3) {
+      errors.usernameError = "Username must be at least 3 characters.";
+    }
+
+    if (!password) {
+      errors.passwordError = "Password is required.";
+    } else if (password.length < 6) {
+      errors.passwordError = "Password must be at least 6 characters.";
+    }
+
+    return errors;
+  };
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const validationErrors = validateForm(email, username, password);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+    } else {
+      setErrors({});
+      async function createUser() {
+        try {
+          const response = await fetch("http://localhost:3000/user/create", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email,
+              username,
+              password,
+            }),
+          });
+
+          if (!response.ok) {
+            console.error("Error: ", response.statusText);
+          } else {
+            await response.json();
+            try {
+              const response = await fetch("http://localhost:3000/auth/login", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify({ username, password }),
+              });
+
+              if (!response.ok) {
+                const responseText = await response.text();
+                setLoginError(responseText);
+                return;
+              }
+              navigate("/posts");
+            } catch (error) {
+              setLoginError("An error occurred. Please try again", error);
+            }
+          }
+        } catch (error) {
+          console.error("Fetch error: ", error);
+        }
+      }
+      createUser();
+    }
+  }
 
   const CloseButton = () => (
     <button className="close-dialog-btn" onClick={handleClose}>
@@ -228,15 +319,103 @@ function SignDialog({
                 <label required htmlFor="email-field" className="label">
                   email
                 </label>
-                <input type="text" id="email-field" name="email" />
+                <div className="input-ctr">
+                  <input
+                    type="text"
+                    id="email-field"
+                    name="email"
+                    value={email}
+                    onChange={(e) => handleEmailChange(e.target.value)}
+                  />
+                  {errors.emailError && (
+                    <span className="error-exclamation">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1}
+                        stroke="#c94a4a"
+                        className="size-6 exclamation-icon"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+                        />
+                      </svg>
+                    </span>
+                  )}
+                </div>
+                {errors.emailError && (
+                  <p className="email-error">{errors.emailError}</p>
+                )}
+
                 <label htmlFor="username-field" className="label">
                   username
                 </label>
-                <input type="text" id="username-field" name="username" />
+                <div className="input-ctr">
+                  <input
+                    type="text"
+                    id="username-field"
+                    name="username"
+                    value={username}
+                    onChange={(e) => handleUsernameChange(e.target.value)}
+                  />
+                  {errors.usernameError && (
+                    <span className="error-exclamation">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1}
+                        stroke="#c94a4a"
+                        className="size-6 exclamation-icon"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+                        />
+                      </svg>
+                    </span>
+                  )}
+                </div>
+                {errors.usernameError && (
+                  <p className="username-error">{errors.usernameError}</p>
+                )}
                 <label htmlFor="password-field" className="label">
                   password
                 </label>
-                <input type="text" id="password-field" name="password" />
+                <div className="input-ctr">
+                  <input
+                    type="password"
+                    id="password-field"
+                    name="password"
+                    value={password}
+                    onChange={(e) => handlePasswordChange(e.target.value)}
+                  />
+                  {errors.passwordError && (
+                    <span className="error-exclamation">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1}
+                        stroke="#c94a4a"
+                        className="size-6 exclamation-icon"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+                        />
+                      </svg>
+                    </span>
+                  )}
+                </div>
+                {errors.passwordError && (
+                  <p className="password-error">{errors.passwordError}</p>
+                )}
                 <button className="submit-btn" type="submit">
                   Continue
                 </button>
@@ -296,7 +475,33 @@ function LandingPage() {
   const [openDialog, setOpenDialog] = useState(null);
   const [dialogTitle, setDialogTitle] = useState("");
   const [activeTab, setActiveTab] = useState("default");
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
+    fetch("http://localhost:3000/auth/profile", {
+      credentials: "include",
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error("Not logged in");
+      })
+      .then(() => {
+        setIsLoggedIn(true);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoggedIn(false);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    if (loading) return;
+    if (!canvasRef.current || !containerRef.current) return;
     // Define getDistance before any usage
     function getDistance(p1, p2) {
       return Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2);
@@ -470,34 +675,44 @@ function LandingPage() {
       window.removeEventListener("resize", resize);
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [loading]);
+
+  if (isLoggedIn) {
+    return <Navigate to="/posts" />;
+  }
 
   return (
     <div className="wrapper" style={{ position: "relative" }}>
-      <canvas
-        ref={canvasRef}
-        style={{ position: "absolute", top: 0, left: 0, zIndex: 2 }}
-      />
-      <div className="landing-container" ref={containerRef}>
-        <LandingNav
-          openDialog={setOpenDialog}
-          setDialogTitle={setDialogTitle}
-          setActiveTab={setActiveTab}
-        />
-        <LandingMain
-          openDialog={setOpenDialog}
-          setDialogTitle={setDialogTitle}
-        />
-        <LandingFooter />
-        <SignDialog
-          title={dialogTitle}
-          setDialogTitle={setDialogTitle}
-          isOpen={openDialog === "signIn"}
-          closeDialog={() => setOpenDialog(null)}
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-        />
-      </div>
+      {loading ? (
+        <div></div>
+      ) : (
+        <>
+          <canvas
+            ref={canvasRef}
+            style={{ position: "absolute", top: 0, left: 0, zIndex: 2 }}
+          />
+          <div className="landing-container" ref={containerRef}>
+            <LandingNav
+              openDialog={setOpenDialog}
+              setDialogTitle={setDialogTitle}
+              setActiveTab={setActiveTab}
+            />
+            <LandingMain
+              openDialog={setOpenDialog}
+              setDialogTitle={setDialogTitle}
+            />
+            <LandingFooter />
+            <SignDialog
+              title={dialogTitle}
+              setDialogTitle={setDialogTitle}
+              isOpen={openDialog === "signIn"}
+              closeDialog={() => setOpenDialog(null)}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 }

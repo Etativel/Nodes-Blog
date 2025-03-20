@@ -232,10 +232,6 @@
   width: 12px;
 }
 
-.dialog-container {
-  /* display: none; */
-}
-
 .sign-in-info,
 .sign-in-info > button {
   font-size: 1rem;
@@ -280,10 +276,10 @@
   align-items: center; */
   text-align: center;
   padding-bottom: 8px;
+  margin-top: 12px;
 }
 
 input {
-  margin-bottom: 12px;
   text-align: center;
   height: 32px;
   font-size: 1rem;
@@ -304,6 +300,49 @@ input:focus {
   color: white;
   margin-top: 24px;
   cursor: pointer;
+}
+
+.input-ctr {
+  width: 100%;
+  /* background-color: red; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.input-ctr > input {
+  flex-grow: 1;
+}
+
+.error-exclamation {
+  position: absolute;
+  right: 0;
+  transform: translateX(100%);
+  cursor: pointer;
+  padding-left: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.exclamation-icon {
+  height: 24px;
+  width: 24px;
+}
+
+.username-error,
+.password-error,
+.email-error {
+  text-align: center;
+  /* transform: translateY(-50%); */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+  color: #c94a4a;
+  padding: 0px 6px 0px;
 }
 
 @media (max-width: 470px) {
@@ -334,7 +373,7 @@ input:focus {
     padding-bottom: 12px;
   }
   .sign-in {
-    height: 70vh;
+    height: 90vh;
     width: 90vw;
     padding: 12px;
     padding-top: 24px;
