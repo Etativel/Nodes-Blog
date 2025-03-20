@@ -115,11 +115,11 @@ function SignDialog({
     setCredential(credential);
   }
 
-  const validateUser = (credential, password) => {
-    const errors = {};
-    console.log(credential + password);
-    console.log(errors);
-  };
+  // const validateUser = (credential, password) => {
+  //   const errors = {};
+  //   console.log(credential + password);
+  //   console.log(errors);
+  // };
 
   const validateForm = (email, username, password) => {
     const errors = {};
