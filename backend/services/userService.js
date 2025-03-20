@@ -1,10 +1,18 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-async function getUser(username) {
+async function getUserByUsername(username) {
   return await prisma.user.findUnique({
     where: {
       username,
+    },
+  });
+}
+
+async function getUserByEmail(email) {
+  return await prisma.user.findUnique({
+    where: {
+      email,
     },
   });
 }
@@ -18,6 +26,7 @@ async function getUserById(userId) {
 }
 
 module.exports = {
-  getUser,
+  getUserByUsername,
   getUserById,
+  getUserByEmail,
 };

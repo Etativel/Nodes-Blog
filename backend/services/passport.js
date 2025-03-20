@@ -14,13 +14,19 @@ const ExtractJWT = passportJWT.ExtractJwt;
 passport.use(
   new LocalStrategy(
     {
-      usernameField: "username",
+      usernameField: "credential",
       passwordField: "password",
     },
-    async function (username, password, cb) {
+    async function (credential, password, cb) {
       try {
-        const normalizedUsername = username.toLowerCase();
-        const user = await userService.getUser(normalizedUsername);
+        const normalizedUsername = credential.toLowerCase();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        let user;
+        if (emailRegex.test(normalizedUsername)) {
+          user = await userService.getUserByEmail(normalizedUsername);
+        } else {
+          user = await userService.getUserByUsername(normalizedUsername);
+        }
 
         if (!user) {
           return cb(null, false, { message: "No username found" });
