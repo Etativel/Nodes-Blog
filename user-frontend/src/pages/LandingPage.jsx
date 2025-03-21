@@ -44,7 +44,7 @@ function LandingNav({ openDialog, setDialogTitle, setActiveTab }) {
   );
 }
 
-function LandingMain() {
+function LandingMain({ openDialog, setDialogTitle }) {
   return (
     <div className="l-main-container">
       <div className="main-title">
@@ -55,7 +55,15 @@ function LandingMain() {
       <div className="main-subtitle">
         A space to explore and share your ideas.
       </div>
-      <button className="start-reading-btn">Start reading</button>
+      <button
+        className="start-reading-btn"
+        onClick={() => {
+          setDialogTitle("Join nodes.");
+          openDialog("signIn");
+        }}
+      >
+        Start reading
+      </button>
     </div>
   );
 }
@@ -93,6 +101,24 @@ function SignDialog({
   const [credential, setCredential] = useState("");
   const navigate = useNavigate();
   const [, setLoginError] = useState(null);
+  const dialogRef = useRef(null);
+  const signContainer = useRef(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => {
+        if (dialogRef.current) {
+          dialogRef.current.classList.add("active");
+          signContainer.current.classList.add("active");
+        }
+      }, 10);
+    } else {
+      if (dialogRef.current) {
+        dialogRef.current.classList.remove("active");
+        signContainer.current.classList.remove("active");
+      }
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -114,12 +140,6 @@ function SignDialog({
   function handleCredentialChange(credential) {
     setCredential(credential);
   }
-
-  // const validateUser = (credential, password) => {
-  //   const errors = {};
-  //   console.log(credential + password);
-  //   console.log(errors);
-  // };
 
   const validateForm = (email, username, password) => {
     const errors = {};
@@ -202,7 +222,7 @@ function SignDialog({
                   "Content-Type": "application/json",
                 },
                 credentials: "include",
-                body: JSON.stringify({ username, password }),
+                body: JSON.stringify({ credential: username, password }),
               });
 
               if (!response.ok) {
@@ -557,8 +577,8 @@ function SignDialog({
 
   return (
     <>
-      <div className="dialog-container">
-        <div className="sign-in">
+      <div className="dialog-container" ref={dialogRef}>
+        <div className="sign-in" ref={signContainer}>
           <CloseButton />
           {renderContent()}
         </div>

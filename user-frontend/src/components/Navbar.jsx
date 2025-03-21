@@ -52,6 +52,11 @@ function Navigation() {
     }
   }
 
+  function redirectToAdminFrontend() {
+    window.location = "http://localhost:5174/";
+    sessionStorage.removeItem("scrollPosition");
+  }
+
   return (
     <div className="navigation-container" ref={navbarRef}>
       <h2 className="webtitle">
@@ -59,7 +64,7 @@ function Navigation() {
       </h2>
       <input type="text" placeholder="Search" className="post-search-input" />
       <div className="profile-container">
-        <button>Write</button>
+        <button onClick={redirectToAdminFrontend}>Write</button>
         <button onClick={handleLogout}>Log out</button>
         <a href="">
           {/* <img src="" alt="" /> */}

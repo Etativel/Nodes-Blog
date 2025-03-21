@@ -146,9 +146,19 @@
   width: 100vw;
   display: flex;
   z-index: 4;
-  background-color: rgba(255, 255, 255, 0.96);
+  background-color: rgba(255, 255, 255, 0);
   justify-content: center;
   align-items: center;
+  opacity: 0;
+  /* transform: scale(0.95); */
+  transition: opacity 0.3s ease, background-color 0.3s ease;
+  /* pointer-events: none; */
+}
+
+.dialog-container.active {
+  background-color: rgba(255, 255, 255, 0.96);
+  opacity: 1;
+  /* pointer-events: auto; */
 }
 
 .sign-in {
@@ -164,6 +174,14 @@
   align-items: center;
   justify-content: space-between;
   position: relative;
+  opacity: 0;
+  transform: translateY(10%);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.sign-in.active {
+  opacity: 100%;
+  transform: translateY(0);
 }
 
 .sign-type-container {

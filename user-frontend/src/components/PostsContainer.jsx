@@ -11,7 +11,7 @@ function PostsContainer() {
     // Restore scroll position after posts load
     const savedPosition = sessionStorage.getItem("scrollPosition");
 
-    if (!loading && location.pathname === "/" && savedPosition) {
+    if (!loading && location.pathname === "/posts" && savedPosition) {
       window.scrollTo(0, parseInt(savedPosition, 10));
       // sessionStorage.removeItem("scrollPosition");
     }
