@@ -11,6 +11,7 @@ function PostCard({
   postId,
   thumbnail,
   excerpt,
+  profilePicture = null,
 }) {
   const { author, loading, error } = useAuthor(authorId);
 
@@ -29,6 +30,8 @@ function PostCard({
     sessionStorage.setItem("scrollPosition", window.scrollY);
   };
 
+  console.log(author);
+
   return (
     <Link
       className="postcard-container"
@@ -38,7 +41,22 @@ function PostCard({
       <div className="top">
         <div className="left">
           <div className="profile">
-            <img src={profile} alt="profile-pict" className="author-pict" />
+            {profilePicture ? (
+              <img src={profile} alt="profile-pict" className="author-pict" />
+            ) : (
+              <div
+                className="author-pict-div"
+                style={{
+                  backgroundColor: loading
+                    ? ""
+                    : error
+                    ? ""
+                    : author?.userColor,
+                }}
+              >
+                <p>{loading ? "" : error ? "" : author?.username.charAt(0)}</p>
+              </div>
+            )}
             <span className="author-name">
               {loading ? "" : error ? "" : author?.username || authorId}
             </span>

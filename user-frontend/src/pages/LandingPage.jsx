@@ -72,9 +72,9 @@ function LandingFooter() {
   return (
     <div className="l-foot-container">
       <div className="foot-flex-container">
-        <a href="" className="about-footer">
+        {/* <a href="" className="about-footer">
           About
-        </a>
+        </a> */}
         <a
           href="https://github.com/Etativel/Nodes-Blog"
           className="about-github"

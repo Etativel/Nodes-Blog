@@ -91,6 +91,18 @@ a {
   opacity: 70%;
 }
 
+.author-pict-div {
+  border-radius: 50%;
+  background-color: red;
+  height: 28px;
+  width: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  color: white;
+}
+
 @media (max-width: 500px) {
   .post-title {
     display: flex;
