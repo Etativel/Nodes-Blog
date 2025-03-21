@@ -32,14 +32,14 @@ router.post("/login", (req, res, next) => {
         res.send(err);
       }
       const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-        expiresIn: "1h",
+        expiresIn: "7d",
       });
       res.cookie("token", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
-        // maxAge: 7 * 24 * 60 * 60 * 1000,
-        maxAge: 30000,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        // maxAge: 30000,
       });
       return res.json({ user });
     });

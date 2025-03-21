@@ -3,6 +3,16 @@ const prisma = new PrismaClient();
 const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcryptjs");
 
+// Utils
+function getRandomColor() {
+  let letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
 // Get all user
 async function getAllUser(req, res) {
   try {
@@ -46,6 +56,7 @@ async function createUser(req, res) {
         username: username.toLowerCase(),
         email: email.toLowerCase(),
         password: hashedPassword,
+        userColor: getRandomColor(),
       },
     });
     res.status(201).json({ newUser });
