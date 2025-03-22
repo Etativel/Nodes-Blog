@@ -19,17 +19,21 @@ passport.use(
     },
     async function (credential, password, cb) {
       try {
-        const normalizedUsername = credential.toLowerCase();
+        const normalizedCredential = credential.toLowerCase();
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         let user;
-        if (emailRegex.test(normalizedUsername)) {
-          user = await userService.getUserByEmail(normalizedUsername);
+        if (emailRegex.test(normalizedCredential)) {
+          user = await userService.getUserByEmail(normalizedCredential);
         } else {
-          user = await userService.getUserByUsername(normalizedUsername);
+          user = await userService.getUserByUsername(normalizedCredential);
         }
 
         if (!user) {
-          return cb(null, false, { message: "No username found" });
+          if (emailRegex.test(normalizedCredential)) {
+            return cb(null, false, { message: "Email not registered." });
+          } else {
+            return cb(null, false, { message: "Username not registered." });
+          }
         }
         const match = await bcrypt.compare(password, user.password);
         if (!match) {
