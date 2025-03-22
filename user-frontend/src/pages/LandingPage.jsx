@@ -122,10 +122,10 @@ function SignDialog({
 
   if (!isOpen) return null;
 
-  const handleClose = () => {
+  function handleClose() {
     setActiveTab("default");
     closeDialog();
-  };
+  }
 
   function handleEmailChange(email) {
     setEmail(email);
@@ -141,7 +141,7 @@ function SignDialog({
     setCredential(credential);
   }
 
-  const validateForm = async (email, username, password) => {
+  async function validateForm(email, username, password) {
     const errors = {};
 
     // Validate email
@@ -209,12 +209,38 @@ function SignDialog({
     }
 
     return errors;
-  };
+  }
+
+  async function validateUserLogin(credential, password) {
+    const errors = {};
+
+    if (!credential) {
+      errors.credentialError = "Email or username is required.";
+    } else {
+      const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+      if (credential.includes("@") && !emailRegex.test(credential)) {
+        errors.credentialError = "Invalid email address.";
+      }
+    }
+
+    if (!password) {
+      errors.passwordError = "Password is required.";
+    } else if (password.length < 6) {
+      errors.passwordError = "Password must be at least 6 characters.";
+    }
+
+    return errors;
+  }
 
   async function handleSignIn(e) {
     e.preventDefault();
     setIsValidating(true);
-    // const signInValidation = validateUser(credential, password);
+    const loginErrors = validateUserLogin(credential, password);
+    if (Object.keys(loginErrors).length > 0) {
+      setErrors(loginErrors);
+      setIsValidating(false);
+      return;
+    }
     try {
       const response = await fetch("http://localhost:3000/auth/login", {
         method: "POST",
@@ -226,12 +252,19 @@ function SignDialog({
       });
 
       if (!response.ok) {
-        await response.text();
-        // setError(responseText);
+        const errorData = await response.json();
+        const message = errorData.message || "Login error";
+
+        if (message.toLowerCase().includes("not registered")) {
+          setErrors({ emailError: message });
+        } else if (message.toLowerCase().includes("incorrect password")) {
+          setErrors({ passwordError: message });
+        } else {
+          setErrors({ loginError: message });
+        }
         setIsValidating(false);
         return;
       }
-
       navigate("/posts");
     } catch (error) {
       console.error("An error occurred. Please try again", error);
