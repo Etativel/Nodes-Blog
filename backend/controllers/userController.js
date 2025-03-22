@@ -18,12 +18,12 @@ async function getAllUser(req, res) {
   try {
     const users = await prisma.user.findMany();
     if (!users) {
-      res.json({ message: "No user found" });
+      return res.json({ message: "No user found" });
     }
-    res.json({ users });
+    return res.json({ users });
   } catch (error) {
     console.error("Failed to get all user ", error);
-    res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 }
 
@@ -36,12 +36,45 @@ async function getSpecificUser(req, res) {
       },
     });
     if (!user) {
-      res.json({ message: "No user found" });
+      return res.json({ message: "No user found" });
     }
-    res.json({ user });
+    return res.json({ user });
   } catch (error) {
     console.error("Failed to get user ", error);
-    res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+// Get user by email and username
+async function getUserByEmail(req, res) {
+  const { email } = req.body;
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
+    if (!user) {
+      return res.json({ available: true, message: "Email is available." });
+    }
+    return res.json({ available: false, message: "Email already taken." });
+  } catch (error) {
+    console.error("Failed to get user by email:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+async function getUserByUsername(req, res) {
+  const { username } = req.body;
+  try {
+    const user = await prisma.user.findUnique({
+      where: { username },
+    });
+    if (!user) {
+      return res.json({ available: true, message: "Username is available." });
+    }
+    return res.json({ available: false, message: "Username already taken." });
+  } catch (error) {
+    console.error("Failed to get user by username:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 }
 
@@ -59,10 +92,10 @@ async function createUser(req, res) {
         userColor: getRandomColor(),
       },
     });
-    res.status(201).json({ newUser });
+    return res.status(201).json({ newUser });
   } catch (error) {
     console.error("Failed to create user, ", error);
-    res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 }
 
@@ -82,7 +115,7 @@ async function updateUser(req, res) {
         password,
       },
     });
-    res.json({ user: updatedUser });
+    return res.json({ user: updatedUser });
   } catch (error) {
     console.error("Failed to update user, ", error);
     if (error.code === "P2002") {
@@ -91,7 +124,7 @@ async function updateUser(req, res) {
         .status(409)
         .json({ error: "Username or email already exists" });
     }
-    res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 }
 
@@ -105,13 +138,13 @@ async function deleteUser(req, res) {
       },
     });
 
-    res.json({ deletedUser });
+    return res.json({ deletedUser });
   } catch (error) {
     console.error("Failed to delete user, ", error);
     if (error.code === "P2025") {
       return res.status(404).json({ message: "User not found" });
     }
-    res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 }
 
@@ -121,4 +154,6 @@ module.exports = {
   deleteUser,
   updateUser,
   getSpecificUser,
+  getUserByUsername,
+  getUserByEmail,
 };

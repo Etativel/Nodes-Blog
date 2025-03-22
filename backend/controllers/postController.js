@@ -17,10 +17,10 @@ async function getAllPost(req, res) {
         createdAt: "desc",
       },
     });
-    res.json({ posts });
+    return res.json({ posts });
   } catch (error) {
     console.error("Error fetching posts", error);
-    res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 }
 
@@ -42,9 +42,9 @@ async function getPost(req, res) {
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
-    res.json({ post });
+    return res.json({ post });
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 }
 
@@ -93,11 +93,11 @@ async function getFilteredPost(req, res) {
       where: filterConditions,
     });
     console.log(filterConditions);
-    res.json({ posts });
+    return res.json({ posts });
     // res.end();
   } catch (error) {
     console.error("Error fetching filtered posts:", error);
-    res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 }
 
@@ -126,10 +126,10 @@ async function addPost(req, res) {
         thumbnail: thumbnailUrl,
       },
     });
-    res.status(201).json({ post: newPost });
+    return res.status(201).json({ post: newPost });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 }
 
@@ -151,10 +151,10 @@ async function updatePost(req, res) {
         // thumbnail,
       },
     });
-    res.status(200).json({ post: updatedPost });
+    return res.status(200).json({ post: updatedPost });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "internal server error" });
+    return res.status(500).json({ error: "internal server error" });
   }
 }
 
@@ -168,13 +168,13 @@ async function deletePost(req, res) {
         id: postId,
       },
     });
-    res.json({ post: deletedPost });
+    return res.json({ post: deletedPost });
   } catch (error) {
     console.log(error);
     if (error.code === "P2025") {
       return res.status(404).json({ message: "Post not found" });
     }
-    res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 }
 

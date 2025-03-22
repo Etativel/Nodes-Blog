@@ -6,10 +6,10 @@ const { v4: uuidv4 } = require("uuid");
 async function getAllComment(req, res) {
   try {
     const comments = await prisma.comment.findMany();
-    res.json({ comments });
+    return res.json({ comments });
   } catch (error) {
     console.error("Error fetching comments", error);
-    res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 }
 
@@ -97,10 +97,10 @@ async function addComment(req, res) {
         authorId,
       },
     });
-    res.status(201).json({ comment: newComment });
+    return res.status(201).json({ comment: newComment });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 }
 
@@ -118,10 +118,10 @@ async function updateComment(req, res) {
         content,
       },
     });
-    res.status(200).json({ comment: updatedComment });
+    return res.status(200).json({ comment: updatedComment });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "internal server error" });
+    return res.status(500).json({ error: "internal server error" });
   }
 }
 
@@ -135,13 +135,13 @@ async function deleteComment(req, res) {
         id: commentId,
       },
     });
-    res.json({ comment: deletedComment });
+    return res.json({ comment: deletedComment });
   } catch (error) {
     console.log(error);
     if (error.code === "P2025") {
       return res.status(404).json({ message: "User not found" });
     }
-    res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 }
 
