@@ -103,7 +103,7 @@ function SignDialog({
   const [, setLoginError] = useState(null);
   const dialogRef = useRef(null);
   const signContainer = useRef(null);
-
+  const [isValidating, setIsValidating] = useState(false);
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => {
@@ -141,25 +141,71 @@ function SignDialog({
     setCredential(credential);
   }
 
-  const validateForm = (email, username, password) => {
+  const validateForm = async (email, username, password) => {
     const errors = {};
 
+    // Validate email
     if (!email) {
       errors.emailError = "Email is required.";
+      setIsValidating(false);
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
       errors.emailError = "Invalid email address.";
+      setIsValidating(false);
+    } else {
+      try {
+        const response = await fetch("http://localhost:3000/user/check-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
+        const data = await response.json();
+        if (!data.available) {
+          errors.emailError = "Email already taken.";
+          setIsValidating(false);
+        }
+      } catch (error) {
+        console.error("Error checking email:", error);
+        errors.emailError = "Error checking email availability.";
+        setIsValidating(false);
+      }
     }
 
+    // Validate username
     if (!username) {
       errors.usernameError = "Username is required.";
+      setIsValidating(false);
     } else if (username.length < 3) {
       errors.usernameError = "Username must be at least 3 characters.";
+      setIsValidating(false);
+    } else {
+      try {
+        const response = await fetch(
+          "http://localhost:3000/user/check-username",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username }),
+          }
+        );
+        const data = await response.json();
+        if (!data.available) {
+          errors.usernameError = "Username already taken.";
+          setIsValidating(false);
+        }
+      } catch (error) {
+        console.error("Error checking username:", error);
+        errors.usernameError = "Error checking username availability.";
+        setIsValidating(false);
+      }
     }
 
+    // Validate password
     if (!password) {
       errors.passwordError = "Password is required.";
+      setIsValidating(false);
     } else if (password.length < 6) {
       errors.passwordError = "Password must be at least 6 characters.";
+      setIsValidating(false);
     }
 
     return errors;
@@ -167,6 +213,7 @@ function SignDialog({
 
   async function handleSignIn(e) {
     e.preventDefault();
+    setIsValidating(true);
     // const signInValidation = validateUser(credential, password);
     try {
       const response = await fetch("http://localhost:3000/auth/login", {
@@ -181,20 +228,24 @@ function SignDialog({
       if (!response.ok) {
         await response.text();
         // setError(responseText);
+        setIsValidating(false);
         return;
       }
 
       navigate("/posts");
     } catch (error) {
       console.error("An error occurred. Please try again", error);
+      setIsValidating(false);
     }
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    const validationErrors = validateForm(email, username, password);
+    setIsValidating(true);
+    const validationErrors = await validateForm(email, username, password);
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
+      return;
     } else {
       setErrors({});
       async function createUser() {
@@ -213,6 +264,7 @@ function SignDialog({
 
           if (!response.ok) {
             console.error("Error: ", response.statusText);
+            setIsValidating(false);
           } else {
             await response.json();
             try {
@@ -228,18 +280,21 @@ function SignDialog({
               if (!response.ok) {
                 const responseText = await response.text();
                 setLoginError(responseText);
+                setIsValidating(false);
                 return;
               }
               navigate("/posts");
             } catch (error) {
               setLoginError("An error occurred. Please try again", error);
+              setIsValidating(false);
             }
           }
         } catch (error) {
           console.error("Fetch error: ", error);
+          setIsValidating(false);
         }
       }
-      createUser();
+      await createUser();
     }
   }
 
@@ -458,7 +513,15 @@ function SignDialog({
                 {errors.passwordError && (
                   <p className="password-error">{errors.passwordError}</p>
                 )}
-                <button className="submit-btn" type="submit">
+                <button
+                  className="submit-btn"
+                  type="submit"
+                  disabled={isValidating}
+                  style={{
+                    opacity: isValidating ? 0.5 : 1,
+                    cursor: isValidating ? "not-allowed" : "pointer",
+                  }}
+                >
                   Continue
                 </button>
               </form>
@@ -552,7 +615,15 @@ function SignDialog({
                 {errors.passwordError && (
                   <p className="password-error">{errors.passwordError}</p>
                 )}
-                <button className="submit-btn" type="submit">
+                <button
+                  className="submit-btn"
+                  type="submit"
+                  disabled={isValidating}
+                  style={{
+                    opacity: isValidating ? 0.5 : 1,
+                    cursor: isValidating ? "not-allowed" : "pointer",
+                  }}
+                >
                   Continue
                 </button>
               </form>

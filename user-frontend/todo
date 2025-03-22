@@ -1,0 +1,3 @@
+user profile page (current user) /user/profile
+
+user visit page (visitor) /user/:userId
