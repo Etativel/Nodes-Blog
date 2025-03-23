@@ -28,6 +28,16 @@
   /* background: white; */
 }
 
+.nav-profile {
+  height: 40px;
+  width: 40px;
+  border: 0px;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
 @media (max-width: 500px) {
   .webtitle {
     padding-left: 0px;

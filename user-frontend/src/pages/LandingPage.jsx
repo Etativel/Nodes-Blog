@@ -177,6 +177,12 @@ function SignDialog({
     } else if (username.length < 3) {
       errors.usernameError = "Username must be at least 3 characters.";
       setIsValidating(false);
+    } else if (username.length > 15) {
+      errors.usernameError = "Username must be no more than 15 characters.";
+      setIsValidating(false);
+    } else if (!/^[A-Za-z0-9]+$/.test(username)) {
+      errors.usernameError = "Username can only contain letters and numbers.";
+      setIsValidating(false);
     } else {
       try {
         const response = await fetch(
@@ -488,6 +494,7 @@ function SignDialog({
                     type="text"
                     id="username-field"
                     name="username"
+                    max={15}
                     value={username}
                     onChange={(e) => handleUsernameChange(e.target.value)}
                   />

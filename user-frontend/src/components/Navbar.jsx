@@ -1,12 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import "../styles/Navbar.css";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useContext } from "react";
+import { ProfileContext } from "../contexts/ProfileContext";
 function Navigation() {
   const navbarRef = useRef(null);
   const lastScrollTopRef = useRef(window.scrollY);
   const hiddenAmountRef = useRef(0);
   const navHeightRef = useRef(0);
   const navigate = useNavigate();
+  const { author, loading } = useContext(ProfileContext);
+  console.log(author);
   useEffect(() => {
     if (navbarRef.current) {
       navHeightRef.current = navbarRef.current.offsetHeight;
@@ -46,6 +49,7 @@ function Navigation() {
         await response.json();
         navigate("/");
         console.log("Logout success");
+        // setProfile(null);
       }
     } catch (error) {
       console.log("Error loging out: ", error);
@@ -66,10 +70,14 @@ function Navigation() {
       <div className="profile-container">
         <button onClick={redirectToAdminFrontend}>Write</button>
         <button onClick={handleLogout}>Log out</button>
-        <a href="">
-          {/* <img src="" alt="" /> */}
-          PP
-        </a>
+        <button
+          className="nav-profile"
+          style={{
+            backgroundColor: loading ? "white" : author.userColor,
+          }}
+        >
+          {loading ? "" : author.username.charAt(0)}
+        </button>
       </div>
     </div>
   );

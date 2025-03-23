@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import Navigation from "../components/Navbar";
 import PostHead from "../components/PostHead";
 import "../styles/PostPage.css";
-
+import { ProfileProvider } from "../contexts/ProfileContext";
 function timePosted(dateString) {
   const date = new Date(dateString);
   const now = new Date();
@@ -69,7 +69,9 @@ function PostPage() {
 
   return (
     <>
-      <Navigation></Navigation>
+      <ProfileProvider>
+        <Navigation></Navigation>
+      </ProfileProvider>
       <div className="blog-post-container">
         {loading ? (
           <p>Loading...</p>

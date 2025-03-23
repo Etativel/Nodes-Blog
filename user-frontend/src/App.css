@@ -3,4 +3,12 @@
   padding: 0px;
   box-sizing: border-box;
   /* overflow-x: hidden; */
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+a {
+  -webkit-tap-highlight-color: transparent;
 }
