@@ -70,11 +70,14 @@
 .write-btn {
   display: flex;
   align-items: center;
-  padding: 0px !important;
+  padding: 0px;
   gap: 8px;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 0.9rem;
   margin-right: 32px;
+  background-color: transparent;
+  border: 0px;
+  cursor: pointer;
 }
 
 .write-btn,
@@ -115,5 +118,34 @@
   .webtitle {
     padding-left: 0px;
     font-size: 1.4rem;
+  }
+  .nav-profile {
+    height: 30px;
+    width: 30px;
+    font-size: 1rem;
+  }
+  .write-icon,
+  .logout-icon,
+  .profile-icon {
+    height: 20px;
+    width: 20px;
+  }
+  .write-btn {
+    font-size: 0.8rem;
+    margin-right: 18px;
+  }
+
+  .profile-dropdown {
+    max-width: 230px;
+    width: 100%;
+
+    font-size: 0.8rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20%);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .profile-dropdown.active {
+    transform: translateY(-10px);
   }
 }

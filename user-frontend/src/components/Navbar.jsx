@@ -90,11 +90,15 @@ function Navigation() {
     };
   });
 
+  function redirectProfile() {
+    navigate(`/@${author.username}`);
+  }
+
   return (
     <div className="navigation-container" ref={navbarRef}>
       <div className="profile-dropdown" ref={dropdown}>
         <ul className="profile-dropdown-list">
-          <li className="profile-btn">
+          <li className="profile-btn" onClick={redirectProfile}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

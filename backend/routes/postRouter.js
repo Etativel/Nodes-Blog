@@ -6,6 +6,7 @@ const upload = require("../config/multerConfig");
 // const multer = require("multer");
 // const upload = multer({ dest: "uploads/" });
 
+router.get("/by/:username", postController.getUserPosts);
 router.get("/filter", postController.getFilteredPost);
 router.get("/:postId", postController.getPost);
 router.get("/", postController.getAllPost);

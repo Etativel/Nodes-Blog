@@ -4,7 +4,8 @@ import App from "./App.jsx";
 import PostPage from "./pages/PostPage.jsx";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LandinPage from "./pages/LandingPage.jsx";
-
+import UserProfilePage from "./pages/UserProfilePage.jsx";
+import UserAbout from "./components/UserAbout.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -17,6 +18,16 @@ const router = createBrowserRouter([
   {
     path: "/post/:postId",
     element: <PostPage />,
+  },
+  {
+    path: "/:username",
+    element: <UserProfilePage />,
+    children: [
+      {
+        path: "/:username/about",
+        element: <UserAbout />,
+      },
+    ],
   },
 ]);
 

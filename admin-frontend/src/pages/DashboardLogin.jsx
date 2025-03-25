@@ -44,7 +44,7 @@ function DashboardLogin() {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ credential: username, password }),
       });
 
       if (!response.ok) {

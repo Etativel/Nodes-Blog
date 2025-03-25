@@ -11,7 +11,7 @@ function LandingNav({ openDialog, setDialogTitle, setActiveTab }) {
         </div>
         <div className="right-nav">
           <button
-            className="write-btn"
+            className="write-btn-landing"
             onClick={() => {
               setDialogTitle("Create an account to start writing.");
               openDialog("signIn");

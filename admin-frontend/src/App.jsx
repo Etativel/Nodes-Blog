@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import "./App.css";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export default function App() {
   const editorRef = useRef(null);
@@ -16,7 +16,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [thumbnail, setThumbnail] = useState(null);
-
+  const navigate = useNavigate();
   const handleThumbnailChange = (e) => {
     setThumbnail(e.target.files[0]);
   };
@@ -60,7 +60,23 @@ export default function App() {
   const handleEditorChange = (content) => {
     setPost((prev) => ({ ...prev, content }));
   };
-
+  async function handleLogout() {
+    try {
+      const response = await fetch("http://localhost:3000/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+      if (!response.ok) {
+        console.log("Failed to logout: ", response.statusText);
+      } else {
+        await response.json();
+        navigate("/login");
+        console.log("Logout success");
+      }
+    } catch (error) {
+      console.log("Error loging out: ", error);
+    }
+  }
   const handleSave = async () => {
     if (!post.title || !post.authorId || !post.content || !post.excerpt) {
       return alert("You need to fill all of the field");
@@ -194,7 +210,7 @@ export default function App() {
         }}
       />
       <button onClick={handleSave}>Save Post</button>
-
+      <button onClick={handleLogout}>Log out</button>
       {/* Live Preview */}
       <div className="preview">
         {/* <h2>Live preview</h2>

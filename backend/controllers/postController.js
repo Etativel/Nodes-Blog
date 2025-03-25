@@ -4,6 +4,34 @@ const { v4: uuidv4 } = require("uuid");
 const cloudinary = require("../config/cloudinaryConfig");
 
 // GET POST
+async function getUserPosts(req, res) {
+  const { username } = req.params;
+  try {
+    const posts = await prisma.post.findMany({
+      where: {
+        author: {
+          username: username,
+        },
+      },
+      include: {
+        comments: true,
+        author: {
+          select: {
+            username: true,
+          },
+        },
+      },
+    });
+    if (!posts || posts.length === 0) {
+      return res.status(404).json({ error: "No posts found for this user" });
+    }
+    return res.json({ posts });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 async function getAllPost(req, res) {
   try {
     const posts = await prisma.post.findMany({
@@ -185,4 +213,5 @@ module.exports = {
   addPost,
   updatePost,
   deletePost,
+  getUserPosts,
 };
