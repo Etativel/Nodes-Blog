@@ -103,6 +103,23 @@ a {
   color: white;
 }
 
+.comment {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.comment-icon {
+  height: 18px;
+  width: 18px;
+}
+
+.date {
+  display: flex;
+  align-items: center;
+  color: black;
+}
+
 @media (max-width: 500px) {
   .post-title {
     display: flex;
