@@ -5,6 +5,14 @@ import { ProfileContext, ProfileProvider } from "../contexts/ProfileContext";
 import "../styles/UserProfilePage.css";
 import { useContext, useEffect, useState } from "react";
 
+function EditProfileDialog() {
+  return (
+    <div className="profile-dialog-ctr">
+      <form action=""></form>
+    </div>
+  );
+}
+
 function UserPostCard({
   title,
   thumbnail,
@@ -83,29 +91,28 @@ function UserSideProfile({ pageUsername }) {
         />
       </div>
       <div className="side-profile-name-ctr">
-        <span>Nicholas Wozniak</span>
+        <span className="user-full-name">Nicholas Wozniak</span>
       </div>
       <div className="follower-ctr">
-        <span>0 Followers</span>
+        <span className="user-follower-count">0 Followers</span>
       </div>
       <div className="bio-ctr">
-        <span>
+        <span className="user-biography">
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Veritatis
           modi pariatur iure itaque ad enim, optio illo praesentium reiciendis
           at quaerat tempore amet quas deleniti officia exercitationem totam.
           Doloremque, saepe.
         </span>
       </div>
-      {/* <button>Edit profile</button> */}
-      <div className="edit-profile-btn-ctr">
-        {loading ? (
-          ""
-        ) : author.username === pageUsername ? (
-          <button>Edit profile</button>
-        ) : (
-          ""
-        )}
-      </div>
+      {loading ? (
+        ""
+      ) : author.username === pageUsername ? (
+        <div className="edit-profile-btn-ctr">
+          <button className="edit-profile-btn">Edit profile</button>
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 }
