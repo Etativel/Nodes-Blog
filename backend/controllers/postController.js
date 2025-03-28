@@ -13,6 +13,9 @@ async function getUserPosts(req, res) {
           username: username,
         },
       },
+      orderBy: {
+        createdAt: "desc",
+      },
       include: {
         comments: true,
         author: {

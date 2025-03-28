@@ -24,6 +24,23 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   userColor String?
+  biography String?
+  fullName  String?
+
+  followers Follower[] @relation("followers")
+  following Follower[] @relation("following")
+}
+
+model Follower {
+  id          String   @id @default(uuid())
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+
+  follower  User @relation("followers", fields: [followerId], references: [id])
+  following User @relation("following", fields: [followingId], references: [id])
+
+  @@unique([followerId, followingId])
 }
 
 model Post {
