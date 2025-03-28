@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { useParams, Outlet, useNavigate, useLocation } from "react-router-dom";
 import Navigation from "../components/Navbar";
-import { ProfileProvider } from "../contexts/ProfileContext";
+import { ProfileContext, ProfileProvider } from "../contexts/ProfileContext";
 import "../styles/UserProfilePage.css";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 function UserPostCard({
   title,
@@ -70,7 +70,9 @@ function UserPostCard({
   );
 }
 
-function UserSideProfile() {
+function UserSideProfile({ pageUsername }) {
+  const { author, loading } = useContext(ProfileContext);
+
   return (
     <div className="side-profile-ctr">
       <div className="side-profile-picture">
@@ -82,6 +84,27 @@ function UserSideProfile() {
       </div>
       <div className="side-profile-name-ctr">
         <span>Nicholas Wozniak</span>
+      </div>
+      <div className="follower-ctr">
+        <span>0 Followers</span>
+      </div>
+      <div className="bio-ctr">
+        <span>
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Veritatis
+          modi pariatur iure itaque ad enim, optio illo praesentium reiciendis
+          at quaerat tempore amet quas deleniti officia exercitationem totam.
+          Doloremque, saepe.
+        </span>
+      </div>
+      {/* <button>Edit profile</button> */}
+      <div className="edit-profile-btn-ctr">
+        {loading ? (
+          ""
+        ) : author.username === pageUsername ? (
+          <button>Edit profile</button>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );
@@ -130,7 +153,6 @@ function UserProfilePage() {
         setLoading(false);
       }
     }
-
     fetchUserPost(cleanUsername);
   }, [cleanUsername]);
 
@@ -210,7 +232,7 @@ function UserProfilePage() {
             <Outlet />
           </div>
           <div className="right-ctr">
-            <UserSideProfile />
+            <UserSideProfile pageUsername={cleanUsername} />
           </div>
         </div>
       </ProfileProvider>

@@ -38,9 +38,9 @@ a {
   border-bottom: solid transparent 1px;
 }
 
-.author-name:hover {
+/* .author-name:hover {
   border-bottom: solid black 1px;
-}
+} */
 
 .right {
   display: flex;

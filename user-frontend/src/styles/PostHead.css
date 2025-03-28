@@ -41,6 +41,7 @@
   height: 100%;
   width: 100%;
   padding: 0px;
+  cursor: pointer;
 }
 
 .post-info {
@@ -48,6 +49,15 @@
   font-size: 1rem;
   color: gray;
   gap: 8px;
+}
+
+.post-author {
+  width: fit-content;
+  border-bottom: solid transparent 1px;
+}
+.post-author:hover {
+  border-bottom: solid black 1px;
+  cursor: pointer;
 }
 
 @media (max-width: 800px) {
