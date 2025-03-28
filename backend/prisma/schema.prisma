@@ -26,6 +26,7 @@ model User {
   userColor String?
   biography String?
   fullName  String?
+  profilePicture String?
 
   followers Follower[] @relation("followers")
   following Follower[] @relation("following")
