@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Link } from "react-router-dom";
 import { useParams, Outlet, useNavigate, useLocation } from "react-router-dom";
 import Navigation from "../components/Navbar";
@@ -6,24 +7,74 @@ import "../styles/UserProfilePage.css";
 import { useContext, useEffect, useState, useRef } from "react";
 
 function EditProfileDialog({ setIsOpen }) {
+  const { author, loading } = useContext(ProfileContext);
+
   function handleSubmit(e) {
+    console.log(author);
     e.preventDefault();
     return;
   }
   return (
-    <form action="">
-      <label htmlFor="">Hello</label>
-      <input type="text" placeholder="Hello" />
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          setIsOpen(false);
-        }}
-      >
-        Cancel
-      </button>
-      <button onClick={(e) => handleSubmit(e)}>Save</button>
-    </form>
+    <div className="form-container">
+      <p className="form-title">Profile information</p>
+      <form action="" className="profile-form-input">
+        <label htmlFor="" className="photo-label">
+          Photo
+        </label>
+        <div className="pp-ctr">
+          <button className="pp-btn" onClick={(e) => e.preventDefault()}>
+            <img
+              src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/419d4eb5-b299-4786-9afa-eeb6d90fff89/dj8ki66-e739f5e5-2a64-47e7-a705-0eef9f14a44a.jpg/v1/fill/w_1280,h_979,q_75,strp/lazing_around_pillows_and_quilts_by_pascuau_dj8ki66-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9OTc5IiwicGF0aCI6IlwvZlwvNDE5ZDRlYjUtYjI5OS00Nzg2LTlhZmEtZWViNmQ5MGZmZjg5XC9kajhraTY2LWU3MzlmNWU1LTJhNjQtNDdlNy1hNzA1LTBlZWY5ZjE0YTQ0YS5qcGciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.AGJ7UasaCID6Vxda84Wyze_snXF9NJQ-Xz8P_05wkDY"
+              alt=""
+              className="pp"
+            />
+          </button>
+          <div className="pp-right-div">
+            <div className="pp-update-btn-ctr">
+              <button>Update</button>
+              <button>Remove</button>
+            </div>
+          </div>
+        </div>
+        <div>&nbsp;</div>
+        <label htmlFor="full-name">Full name</label>
+        <input
+          type="text"
+          placeholder=""
+          id="full-name"
+          name="fullName"
+          className="full-name"
+        />
+        <div className="full-name-length length-indicator">
+          <span>0</span>
+          <span className="max-length">/100</span>
+        </div>
+        <label htmlFor="bio">Bio</label>
+        <textarea
+          type="text"
+          placeholder=""
+          id="bio"
+          name="biography"
+          className="biography"
+        />
+        <div className="biography-length length-indicator">
+          <span>0</span>
+          <span className="max-length">/100</span>
+        </div>
+
+        <div className="form-btn-ctr">
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              setIsOpen(false);
+            }}
+          >
+            Cancel
+          </button>
+          <button onClick={(e) => handleSubmit(e)}>Save</button>
+        </div>
+      </form>
+    </div>
   );
 }
 
@@ -167,7 +218,6 @@ function UserProfilePage() {
   const cleanUsername = username.startsWith("@") ? username.slice(1) : username;
 
   const location = useLocation();
-  //   const [currentPage, setCurrentPage] = useState("");
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [userPost, setUserPost] = useState([]);
@@ -233,13 +283,13 @@ function UserProfilePage() {
   );
   return (
     <>
-      <div className="update-profile-ctr" ref={dialogCtr}>
-        <div className="profile-form" ref={profileForm}>
-          <CloseButton />
-          <EditProfileDialog isOpen={isOpen} setIsOpen={setIsOpen} />
-        </div>
-      </div>
       <ProfileProvider>
+        <div className="update-profile-ctr" ref={dialogCtr}>
+          <div className="profile-form" ref={profileForm}>
+            <CloseButton />
+            <EditProfileDialog isOpen={isOpen} setIsOpen={setIsOpen} />
+          </div>
+        </div>
         <Navigation></Navigation>
         <div className="profile-page-container">
           <div className="left-ctr">

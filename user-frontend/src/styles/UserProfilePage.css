@@ -236,18 +236,19 @@
 }
 
 .profile-form {
-  padding: 100px;
+  padding: 50px;
   background-color: white;
   opacity: 100%;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
   border-radius: 3px;
-  height: 600px;
+  height: fit-content;
   width: 500px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   position: relative;
+  overflow-y: auto;
   opacity: 0;
   transform: translateY(10%);
   transition: opacity 0.3s ease, transform 0.3s ease;
@@ -276,6 +277,93 @@
 .x-logo {
   height: 24px;
   width: 24px;
+}
+
+.form-title {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.pp {
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+}
+
+.pp-btn {
+  border-radius: 50%;
+  height: fit-content;
+  border: 0px;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.pp-ctr {
+  display: flex;
+}
+
+.full-name {
+  text-align: start;
+  padding: 12px;
+  border-radius: 4px;
+}
+
+.biography {
+  width: 100%;
+  border-radius: 4px;
+
+  height: 200px;
+  overflow-y: auto;
+  resize: none;
+  flex-direction: start;
+  background-color: #f2f2f2;
+  border: 0px;
+  padding: 12px;
+}
+
+.biography:focus {
+  background-color: white;
+}
+
+.profile-form-input {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 2px;
+}
+
+.form-container {
+  width: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.profile-form-input > label {
+  /* margin-top: 4px; */
+  transform: translateY(5px);
+  font-size: 0.9rem;
+}
+
+.form-btn-ctr {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.length-indicator {
+  /* background-color: red; */
+  font-family: "Times New Roman", Times, serif;
+  justify-content: flex-end;
+  display: flex;
+  font-size: 0.9rem;
+  transform: translateY(-1px);
+}
+
+.max-length {
+  color: #6b6b6b;
 }
 
 @media (max-width: 500px) {
