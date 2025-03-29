@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 function PostHead({ title, username, timePosted, estimateReadingTime }) {
   const navigate = useNavigate();
   function redirectUserPage() {
-    navigate(`/${username}`);
+    navigate(`/@${username}`);
   }
   return (
     <div className="post-head-container">
