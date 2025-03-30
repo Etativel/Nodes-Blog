@@ -103,27 +103,28 @@ async function createUser(req, res) {
 // Update profile
 
 async function updateProfile(req, res) {
-  const { fullName, biography, userId } = req.body;
+  const { fullName, biography, userId, removeProfilePicture } = req.body;
   let profilePicture = null;
+  let profilePicturePublicId = null;
   try {
-    const user = await prisma.users.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         id: userId,
       },
     });
-    if (req.file) {
+    if (req.file && removeProfilePicture !== "true") {
+      profilePicture = req.file.path;
+      profilePicturePublicId = req.file.filename;
+    }
+
+    if (removeProfilePicture === "true" && !req.file) {
       if (user && user.profilePicturePublicId) {
         await cloudinary.uploader.destroy(user.profilePicturePublicId);
       }
-
-      const result = await cloudinary.uploader.upload(req.file.path, {
-        folder: "users/profilePicture",
-      });
-      profilePicture = result.secure_url;
-      profilePicturePublicId = result.public_id;
+      profilePicture = null;
+      profilePicturePublicId = null;
     }
-
-    const updateProfile = await prisma.users.update({
+    const updateProfile = await prisma.user.update({
       where: {
         id: userId,
       },
@@ -136,6 +137,7 @@ async function updateProfile(req, res) {
     });
     return res.status(200).json({ profile: updateProfile });
   } catch (error) {
+    console.error("Error updating profile:", error);
     return res.status(500).json({ error: "internal server error" });
   }
 }
