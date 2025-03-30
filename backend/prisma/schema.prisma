@@ -18,7 +18,7 @@ model User {
   username  String   @unique
   email     String   @unique
   password  String
-  role      Role     @default(USER) // USER or ADMIN
+  role      Role     @default(ADMIN) // USER or ADMIN
   posts     Post[]
   comments  Comment[]
   createdAt DateTime @default(now())
@@ -27,6 +27,7 @@ model User {
   biography String?
   fullName  String?
   profilePicture String?
+  profilePicturePublicId  String? 
 
   followers Follower[] @relation("followers")
   following Follower[] @relation("following")

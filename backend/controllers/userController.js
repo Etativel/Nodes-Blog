@@ -2,6 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcryptjs");
+const cloudinary = require("../config/cloudinaryConfig");
 
 // Utils
 function getRandomColor() {
@@ -99,6 +100,46 @@ async function createUser(req, res) {
   }
 }
 
+// Update profile
+
+async function updateProfile(req, res) {
+  const { fullName, biography, userId } = req.body;
+  let profilePicture = null;
+  try {
+    const user = await prisma.users.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+    if (req.file) {
+      if (user && user.profilePicturePublicId) {
+        await cloudinary.uploader.destroy(user.profilePicturePublicId);
+      }
+
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "users/profilePicture",
+      });
+      profilePicture = result.secure_url;
+      profilePicturePublicId = result.public_id;
+    }
+
+    const updateProfile = await prisma.users.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        biography,
+        fullName,
+        profilePicture,
+        profilePicturePublicId,
+      },
+    });
+    return res.status(200).json({ profile: updateProfile });
+  } catch (error) {
+    return res.status(500).json({ error: "internal server error" });
+  }
+}
+
 // Update user
 async function updateUser(req, res) {
   const { userId } = req.params;
@@ -156,4 +197,5 @@ module.exports = {
   getSpecificUser,
   getUserByUsername,
   getUserByEmail,
+  updateProfile,
 };
