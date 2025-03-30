@@ -342,6 +342,7 @@
 
 .profile-form-input > label {
   /* margin-top: 4px; */
+  padding-bottom: 12px;
   transform: translateY(5px);
   font-size: 0.9rem;
 }
@@ -386,7 +387,7 @@
 
   .post-subtext-p {
     padding-top: 6px;
-    font-size: 0.5rem;
+    font-size: 0.7rem;
   }
   .right-p {
     display: flex;
@@ -397,6 +398,13 @@
     background-position: center;
     width: 140px;
     height: 90px;
+  }
+  .left-info-p {
+    font-size: 0.7rem;
+  }
+  .comment-icon {
+    height: 12px;
+    width: 12px;
   }
 }
 

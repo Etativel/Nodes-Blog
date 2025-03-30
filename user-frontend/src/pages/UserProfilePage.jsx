@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { Link } from "react-router-dom";
 import { useParams, Outlet, useNavigate, useLocation } from "react-router-dom";
 import Navigation from "../components/Navbar";
@@ -8,12 +7,93 @@ import { useContext, useEffect, useState, useRef } from "react";
 
 function EditProfileDialog({ setIsOpen }) {
   const { author, loading } = useContext(ProfileContext);
+  const saveButton = useRef();
+  const [fullName, setFullName] = useState("");
+  const [image, setImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
+  const imageInputRef = useRef(null);
+  const [bio, setBio] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const defaultProfileImage =
+    "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/419d4eb5-b299-4786-9afa-eeb6d90fff89/dj8ki66-e739f5e5-2a64-47e7-a705-0eef9f14a44a.jpg/v1/fill/w_1280,h_979,q_75,strp/lazing_around_pillows_and_quilts_by_pascuau_dj8ki66-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9OTc5IiwicGF0aCI6IlwvZlwvNDE5ZDRlYjUtYjI5OS00Nzg2LTlhZmEtZWViNmQ5MGZmZjg5XC9kajhraTY2LWU3MzlmNWU1LTJhNjQtNDdlNy1hNzA1LTBlZWY5ZjE0YTQ0YS5qcGciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.AGJ7UasaCID6Vxda84Wyze_snXF9NJQ-Xz8P_05wkDY";
+  useEffect(() => {
+    if (!loading) {
+      setFullName(author.fullName || author.username);
+      setBio(author.biography || "");
+      setPreviewImage(author.profilePicture || defaultProfileImage);
+    }
+  }, [loading, author]);
 
-  function handleSubmit(e) {
-    console.log(author);
+  useEffect(() => {
+    if (saveButton.current) {
+      saveButton.current.disabled = fullName.length > 30 || bio.length > 100;
+    }
+  }, [fullName, bio]);
+
+  function handleNameChange(e) {
+    setFullName(e.target.value);
+  }
+
+  function handleBioChange(e) {
+    setBio(e.target.value);
+  }
+
+  function handleImageClick() {
+    imageInputRef.current.click();
+  }
+
+  function handleImageChange(e) {
+    // const imageFile = e.target.files[0];
+    // if (imageFile) {
+    //   const reader = new FileReader();
+    //   reader.onload = () => {
+    //     setImage(reader.result);
+    //   };
+    //   reader.readAsDataURL(imageFile);
+    // }
+    const file = e.target.files[0];
+    if (file) {
+      // Set file object for upload
+      setImage(file);
+      // Create a preview URL from the file object
+      setPreviewImage(URL.createObjectURL(file));
+    }
+  }
+
+  async function handleSubmit(e) {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("fullName", fullName);
+    formData.append("biography", bio);
+    formData.append("userId", author.id);
+    if (image) {
+      formData.append("profilePicture", image);
+    } else {
+      formData.append("profilePicture", null);
+    }
+
+    try {
+      setUploading(true);
+      const response = await fetch(
+        "http://localhost:3000/user/profile/update",
+        {
+          method: "PATCH",
+          body: formData,
+        }
+      );
+      setUploading(false);
+      if (!response.ok) {
+        setUploading(false);
+        console.log(response.status);
+      }
+    } catch (error) {
+      setUploading(false);
+      console.log(error);
+    }
+
     return;
   }
+
   return (
     <div className="form-container">
       <p className="form-title">Profile information</p>
@@ -22,20 +102,43 @@ function EditProfileDialog({ setIsOpen }) {
           Photo
         </label>
         <div className="pp-ctr">
-          <button className="pp-btn" onClick={(e) => e.preventDefault()}>
-            <img
-              src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/419d4eb5-b299-4786-9afa-eeb6d90fff89/dj8ki66-e739f5e5-2a64-47e7-a705-0eef9f14a44a.jpg/v1/fill/w_1280,h_979,q_75,strp/lazing_around_pillows_and_quilts_by_pascuau_dj8ki66-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9OTc5IiwicGF0aCI6IlwvZlwvNDE5ZDRlYjUtYjI5OS00Nzg2LTlhZmEtZWViNmQ5MGZmZjg5XC9kajhraTY2LWU3MzlmNWU1LTJhNjQtNDdlNy1hNzA1LTBlZWY5ZjE0YTQ0YS5qcGciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.AGJ7UasaCID6Vxda84Wyze_snXF9NJQ-Xz8P_05wkDY"
-              alt=""
-              className="pp"
-            />
+          <button
+            className="pp-btn"
+            onClick={(e) => {
+              e.preventDefault();
+              handleImageClick();
+            }}
+          >
+            <img src={previewImage} alt="" className="pp" />
           </button>
           <div className="pp-right-div">
             <div className="pp-update-btn-ctr">
-              <button>Update</button>
-              <button>Remove</button>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleImageClick();
+                }}
+              >
+                Update
+              </button>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setPreviewImage(defaultProfileImage);
+                }}
+              >
+                Remove
+              </button>
             </div>
           </div>
         </div>
+        <input
+          type="file"
+          ref={imageInputRef}
+          style={{ display: "none" }}
+          accept="image/*"
+          onChange={handleImageChange}
+        />
         <div>&nbsp;</div>
         <label htmlFor="full-name">Full name</label>
         <input
@@ -44,10 +147,14 @@ function EditProfileDialog({ setIsOpen }) {
           id="full-name"
           name="fullName"
           className="full-name"
+          value={fullName}
+          onChange={(e) => {
+            handleNameChange(e);
+          }}
         />
         <div className="full-name-length length-indicator">
-          <span>0</span>
-          <span className="max-length">/100</span>
+          <span>{fullName.length}</span>
+          <span className="max-length">/30</span>
         </div>
         <label htmlFor="bio">Bio</label>
         <textarea
@@ -56,9 +163,13 @@ function EditProfileDialog({ setIsOpen }) {
           id="bio"
           name="biography"
           className="biography"
+          value={bio}
+          onChange={(e) => {
+            handleBioChange(e);
+          }}
         />
         <div className="biography-length length-indicator">
-          <span>0</span>
+          <span>{bio.length}</span>
           <span className="max-length">/100</span>
         </div>
 
@@ -71,7 +182,13 @@ function EditProfileDialog({ setIsOpen }) {
           >
             Cancel
           </button>
-          <button onClick={(e) => handleSubmit(e)}>Save</button>
+          <button
+            ref={saveButton}
+            onClick={(e) => handleSubmit(e)}
+            disabled={uploading}
+          >
+            Save
+          </button>
         </div>
       </form>
     </div>
