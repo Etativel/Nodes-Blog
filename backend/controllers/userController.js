@@ -79,6 +79,22 @@ async function getUserByUsername(req, res) {
   }
 }
 
+async function getProfileByUsername(req, res) {
+  const { username } = req.params;
+  try {
+    const user = await prisma.user.findUnique({
+      where: { username },
+    });
+    if (!user) {
+      return res.json({ message: "profile not found." });
+    }
+    return res.json({ user });
+  } catch (error) {
+    console.error("Failed to get profile by username:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 // Create user
 async function createUser(req, res) {
   const { username, email, password } = req.body;
@@ -200,4 +216,5 @@ module.exports = {
   getUserByUsername,
   getUserByEmail,
   updateProfile,
+  getProfileByUsername,
 };

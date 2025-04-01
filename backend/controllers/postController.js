@@ -140,10 +140,7 @@ async function addPost(req, res) {
 
   try {
     if (req.file) {
-      const result = await cloudinary.uploader.upload(req.file.path, {
-        folder: "posts/thumbnail",
-      });
-      thumbnailUrl = result.secure_url;
+      thumbnailUrl = req.file.path;
     }
 
     const newPost = await prisma.post.create({

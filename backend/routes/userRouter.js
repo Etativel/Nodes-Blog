@@ -4,6 +4,7 @@ const userController = require("../controllers/userController");
 const upload = require("../config/multerConfig");
 router.post("/check-username", userController.getUserByUsername);
 router.post("/check-email", userController.getUserByEmail);
+router.get("/user-by-username/:username", userController.getProfileByUsername);
 router.get("/:userId", userController.getSpecificUser);
 router.get("/", userController.getAllUser);
 router.post("/create", userController.createUser);
