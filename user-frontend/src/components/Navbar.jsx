@@ -12,7 +12,7 @@ function Navigation() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const { author, loading } = useContext(ProfileContext);
-  console.log(author);
+  // console.log(author);
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => {
@@ -164,7 +164,14 @@ function Navigation() {
             backgroundColor: loading ? "white" : author.userColor,
           }}
         >
-          {loading ? "" : author.username.charAt(0)}
+          {/* <img src="" alt="" /> */}
+          {loading ? (
+            ""
+          ) : author.profilePicture ? (
+            <img src={author.profilePicture} alt="" className="nav-pp" />
+          ) : (
+            author.username.charAt(0)
+          )}
         </button>
       </div>
     </div>

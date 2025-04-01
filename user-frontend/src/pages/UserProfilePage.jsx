@@ -3,7 +3,7 @@ import { useParams, Outlet, useNavigate, useLocation } from "react-router-dom";
 import Navigation from "../components/Navbar";
 import { ProfileContext, ProfileProvider } from "../contexts/ProfileContext";
 import "../styles/UserProfilePage.css";
-import { useContext, useEffect, useState, useRef } from "react";
+import { useContext, useEffect, useState, useRef, use } from "react";
 
 function EditProfileDialog({ setIsOpen }) {
   const { author, loading } = useContext(ProfileContext);
@@ -14,6 +14,7 @@ function EditProfileDialog({ setIsOpen }) {
   const imageInputRef = useRef(null);
   const [bio, setBio] = useState("");
   const [uploading, setUploading] = useState(false);
+  const isDisabled = fullName.length > 30 || bio.length > 100;
   const defaultProfileImage =
     "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/419d4eb5-b299-4786-9afa-eeb6d90fff89/dj8ki66-e739f5e5-2a64-47e7-a705-0eef9f14a44a.jpg/v1/fill/w_1280,h_979,q_75,strp/lazing_around_pillows_and_quilts_by_pascuau_dj8ki66-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9OTc5IiwicGF0aCI6IlwvZlwvNDE5ZDRlYjUtYjI5OS00Nzg2LTlhZmEtZWViNmQ5MGZmZjg5XC9kajhraTY2LWU3MzlmNWU1LTJhNjQtNDdlNy1hNzA1LTBlZWY5ZjE0YTQ0YS5qcGciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.AGJ7UasaCID6Vxda84Wyze_snXF9NJQ-Xz8P_05wkDY";
   useEffect(() => {
@@ -24,11 +25,11 @@ function EditProfileDialog({ setIsOpen }) {
     }
   }, [loading, author]);
 
-  useEffect(() => {
-    if (saveButton.current) {
-      saveButton.current.disabled = fullName.length > 30 || bio.length > 100;
-    }
-  }, [fullName, bio]);
+  // useEffect(() => {
+  //   if (saveButton.current) {
+  //     saveButton.current.disabled = fullName.length > 30 || bio.length > 100;
+  //   }
+  // }, [fullName, bio]);
 
   function handleNameChange(e) {
     setFullName(e.target.value);
@@ -43,35 +44,30 @@ function EditProfileDialog({ setIsOpen }) {
   }
 
   function handleImageChange(e) {
-    // const imageFile = e.target.files[0];
-    // if (imageFile) {
-    //   const reader = new FileReader();
-    //   reader.onload = () => {
-    //     setImage(reader.result);
-    //   };
-    //   reader.readAsDataURL(imageFile);
-    // }
     const file = e.target.files[0];
     if (file) {
-      // Set file object for upload
       setImage(file);
-      // Create a preview URL from the file object
       setPreviewImage(URL.createObjectURL(file));
     }
   }
-
+  function handleRemoveImage(e) {
+    e.preventDefault();
+    setPreviewImage(defaultProfileImage);
+    setImage(null); // clear the file state
+  }
   async function handleSubmit(e) {
     e.preventDefault();
     const formData = new FormData();
     formData.append("fullName", fullName);
     formData.append("biography", bio);
     formData.append("userId", author.id);
+
     if (image) {
       formData.append("profilePicture", image);
-    } else {
-      formData.append("profilePicture", null);
     }
-
+    if (!image && previewImage === defaultProfileImage) {
+      formData.append("removeProfilePicture", "true");
+    }
     try {
       setUploading(true);
       const response = await fetch(
@@ -82,10 +78,12 @@ function EditProfileDialog({ setIsOpen }) {
         }
       );
       setUploading(false);
+      setIsOpen(false);
       if (!response.ok) {
         setUploading(false);
         console.log(response.status);
       }
+      window.location.reload();
     } catch (error) {
       setUploading(false);
       console.log(error);
@@ -124,6 +122,7 @@ function EditProfileDialog({ setIsOpen }) {
               <button
                 onClick={(e) => {
                   e.preventDefault();
+                  handleRemoveImage(e);
                   setPreviewImage(defaultProfileImage);
                 }}
               >
@@ -185,7 +184,7 @@ function EditProfileDialog({ setIsOpen }) {
           <button
             ref={saveButton}
             onClick={(e) => handleSubmit(e)}
-            disabled={uploading}
+            disabled={uploading || isDisabled}
           >
             Save
           </button>
@@ -266,9 +265,11 @@ function UserSideProfile({
   profileForm,
   isOpen,
   setIsOpen,
+  loadingProfile,
+  visitedUser,
 }) {
   const { author, loading } = useContext(ProfileContext);
-
+  console.log(visitedUser);
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => {
@@ -287,25 +288,34 @@ function UserSideProfile({
   return (
     <>
       <div className="side-profile-ctr">
-        <div className="side-profile-picture">
-          <img
-            src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/419d4eb5-b299-4786-9afa-eeb6d90fff89/dj8ki66-e739f5e5-2a64-47e7-a705-0eef9f14a44a.jpg/v1/fill/w_1280,h_979,q_75,strp/lazing_around_pillows_and_quilts_by_pascuau_dj8ki66-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9OTc5IiwicGF0aCI6IlwvZlwvNDE5ZDRlYjUtYjI5OS00Nzg2LTlhZmEtZWViNmQ5MGZmZjg5XC9kajhraTY2LWU3MzlmNWU1LTJhNjQtNDdlNy1hNzA1LTBlZWY5ZjE0YTQ0YS5qcGciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.AGJ7UasaCID6Vxda84Wyze_snXF9NJQ-Xz8P_05wkDY"
-            alt=""
-            className="side-profile-pict"
-          />
-        </div>
+        {/* <div className="side-profile-picture"> */}
+        <img
+          src={
+            loadingProfile
+              ? ""
+              : visitedUser.profilePicture
+              ? visitedUser.profilePicture
+              : "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/419d4eb5-b299-4786-9afa-eeb6d90fff89/dj8ki66-e739f5e5-2a64-47e7-a705-0eef9f14a44a.jpg/v1/fill/w_1280,h_979,q_75,strp/lazing_around_pillows_and_quilts_by_pascuau_dj8ki66-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9OTc5IiwicGF0aCI6IlwvZlwvNDE5ZDRlYjUtYjI5OS00Nzg2LTlhZmEtZWViNmQ5MGZmZjg5XC9kajhraTY2LWU3MzlmNWU1LTJhNjQtNDdlNy1hNzA1LTBlZWY5ZjE0YTQ0YS5qcGciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.AGJ7UasaCID6Vxda84Wyze_snXF9NJQ-Xz8P_05wkDY"
+          }
+          alt=""
+          className="side-profile-pict"
+        />
+        {/* </div> */}
         <div className="side-profile-name-ctr">
-          <span className="user-full-name">Nicholas Wozniak</span>
+          <span className="user-full-name">
+            {loadingProfile
+              ? ""
+              : visitedUser.fullName
+              ? visitedUser.fullName
+              : visitedUser.username}
+          </span>
         </div>
         <div className="follower-ctr">
           <span className="user-follower-count">0 Followers</span>
         </div>
         <div className="bio-ctr">
           <span className="user-biography">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Veritatis
-            modi pariatur iure itaque ad enim, optio illo praesentium reiciendis
-            at quaerat tempore amet quas deleniti officia exercitationem totam.
-            Doloremque, saepe.
+            {loadingProfile ? "" : visitedUser.biography}
           </span>
         </div>
         {loading ? (
@@ -334,11 +344,13 @@ function UserProfilePage() {
   const [isOpen, setIsOpen] = useState(false);
   const cleanUsername = username.startsWith("@") ? username.slice(1) : username;
 
+  const [loadingProfile, setLoadingProfile] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [userPost, setUserPost] = useState([]);
   const [error, setError] = useState({});
+  const [visitedUser, setVisitedUser] = useState({});
   const currentPage =
     location.pathname === `/${username}`
       ? ""
@@ -357,6 +369,7 @@ function UserProfilePage() {
     async function fetchUserPost() {
       try {
         const response = await fetch(
+          // TODO: FETCH USER AND INCLUDE POST
           `http://localhost:3000/post/by/${cleanUsername}`
         );
         if (!response.ok) {
@@ -374,6 +387,28 @@ function UserProfilePage() {
       }
     }
     fetchUserPost(cleanUsername);
+  }, [cleanUsername]);
+
+  useEffect(() => {
+    async function fetchVisitedUser() {
+      setLoadingProfile(true);
+      try {
+        const response = await fetch(
+          `http://localhost:3000/user/user-by-username/${cleanUsername.toLowerCase()}`
+        );
+
+        if (!response.ok) {
+          setLoadingProfile(false);
+          console.log("no user found");
+        }
+        const data = await response.json();
+        setVisitedUser(data.user);
+        setLoadingProfile(false);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchVisitedUser();
   }, [cleanUsername]);
 
   function redirectChildren(children) {
@@ -409,81 +444,94 @@ function UserProfilePage() {
         </div>
         <Navigation></Navigation>
         <div className="profile-page-container">
-          <div className="left-ctr">
-            <span className="user-header">
-              <div className="mobile-profile">hello</div>
-              <div className="username">{cleanUsername}</div>
-            </span>
-            <div className="user-nav">
-              <div
-                className="home-btn-ctr"
-                style={{
-                  borderBottom: currentPage === "" ? "solid black 1px" : "none",
-                }}
-              >
-                <button
-                  className={`home-btn ${currentPage === "" ? "active" : ""}`}
-                  onClick={() => redirectChildren("")}
-                >
-                  Home
-                </button>
-              </div>
-              <div
-                className="about-btn-ctr"
-                style={{
-                  borderBottom:
-                    currentPage === "about" ? "solid black 1px" : "none",
-                }}
-              >
-                <button
-                  className={`about-btn ${
-                    currentPage === "about  " ? "active" : ""
-                  }`}
-                  onClick={() => {
-                    redirectChildren("about");
-                    sessionStorage.removeItem("profilePosition");
-                  }}
-                >
-                  About
-                </button>
-              </div>
-            </div>
+          {loadingProfile ? (
+            <div></div>
+          ) : !visitedUser || Object.keys(visitedUser || {}).length === 0 ? (
+            <div>No user found</div>
+          ) : (
+            <>
+              <div className="left-ctr">
+                <span className="user-header">
+                  <div className="mobile-profile">hello</div>
+                  <div className="username">{cleanUsername}</div>
+                </span>
+                <div className="user-nav">
+                  <div
+                    className="home-btn-ctr"
+                    style={{
+                      borderBottom:
+                        currentPage === "" ? "solid black 1px" : "none",
+                    }}
+                  >
+                    <button
+                      className={`home-btn ${
+                        currentPage === "" ? "active" : ""
+                      }`}
+                      onClick={() => redirectChildren("")}
+                    >
+                      Home
+                    </button>
+                  </div>
+                  <div
+                    className="about-btn-ctr"
+                    style={{
+                      borderBottom:
+                        currentPage === "about" ? "solid black 1px" : "none",
+                    }}
+                  >
+                    <button
+                      className={`about-btn ${
+                        currentPage === "about  " ? "active" : ""
+                      }`}
+                      onClick={() => {
+                        redirectChildren("about");
+                        sessionStorage.removeItem("profilePosition");
+                      }}
+                    >
+                      About
+                    </button>
+                  </div>
+                </div>
 
-            {currentPage === "" && (
-              <div className="posts">
-                {loading ? (
-                  <div>Loading...</div>
-                ) : error.fetchPostError ? (
-                  <div>{error.fetchPostError}</div>
-                ) : userPost.length > 0 ? (
-                  userPost.map((post) => {
-                    return (
-                      <UserPostCard
-                        title={post.title}
-                        thumbnail={post.thumbnail}
-                        excerpt={post.excerpt}
-                        createdAt={post.createdAt}
-                        comments={post.comments}
-                        postId={post.id}
-                      />
-                    );
-                  })
-                ) : (
-                  <div>No post</div>
+                {currentPage === "" && (
+                  <div className="posts">
+                    {loading ? (
+                      <div>Loading...</div>
+                    ) : error.fetchPostError ? (
+                      <div>{error.fetchPostError}</div>
+                    ) : userPost.length > 0 ? (
+                      userPost.map((post) => {
+                        return (
+                          <UserPostCard
+                            title={post.title}
+                            thumbnail={post.thumbnail}
+                            excerpt={post.excerpt}
+                            createdAt={post.createdAt}
+                            comments={post.comments}
+                            postId={post.id}
+                          />
+                        );
+                      })
+                    ) : (
+                      <div>No post</div>
+                    )}
+                  </div>
                 )}
+                <Outlet />
               </div>
-            )}
-            <Outlet />
-          </div>
-          <div className="right-ctr">
-            <UserSideProfile
-              pageUsername={cleanUsername}
-              dialogCtr={dialogCtr}
-              profileForm={profileForm}
-              isOpen={isOpen}
-              setIsOpen={setIsOpen}
-            />
-          </div>
+              <div className="right-ctr">
+                <UserSideProfile
+                  pageUsername={cleanUsername}
+                  visitedUser={visitedUser}
+                  loadingProfile={loadingProfile}
+                  dialogCtr={dialogCtr}
+                  profileForm={profileForm}
+                  isOpen={isOpen}
+                  setIsOpen={setIsOpen}
+                />
+              </div>
+            </>
+          )}
         </div>
       </ProfileProvider>
     </>
