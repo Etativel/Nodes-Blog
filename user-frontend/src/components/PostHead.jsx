@@ -10,7 +10,6 @@ function PostHead({
   userColor,
   fullName,
 }) {
-  console.log(fullName);
   const navigate = useNavigate();
   function redirectUserPage() {
     navigate(`/@${username}`);
@@ -40,9 +39,15 @@ function PostHead({
           )}
         </div>
         <div className="right-head">
-          <p className="post-author" onClick={redirectUserPage}>
-            {fullName || username}
-          </p>
+          <div className="r-h-flex">
+            <p className="post-author" onClick={redirectUserPage}>
+              {fullName || username}
+            </p>
+            <button className="follow-btn followed">
+              ·<p>Follow</p>
+            </button>
+          </div>
+
           <div className="post-info">
             <p className="time-to-read">{estimateReadingTime}</p>·
             <p className="post-date">{timePosted}</p>

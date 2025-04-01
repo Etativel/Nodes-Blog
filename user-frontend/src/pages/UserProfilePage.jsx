@@ -14,21 +14,23 @@ function EditProfileDialog({ setIsOpen }) {
   const [previewImage, setPreviewImage] = useState(null);
   const imageInputRef = useRef(null);
   const [bio, setBio] = useState("");
+  const [prevName, setPrevName] = useState("");
+  const [prevBio, setPrevBio] = useState("");
   const [uploading, setUploading] = useState(false);
-  const isDisabled = fullName.length > 30 || bio.length > 100;
+  const isDisabled =
+    fullName.length > 30 ||
+    bio.length > 100 ||
+    fullName.length <= 0 ||
+    (fullName === prevName && bio === prevBio);
   useEffect(() => {
     if (!loading) {
       setFullName(author.fullName || author.username);
+      setPrevName(author.fullName || author.username);
       setBio(author.biography || "");
       setPreviewImage(author.profilePicture || defaultProfileImage);
+      setPrevBio(author.biography || "");
     }
   }, [loading, author]);
-
-  // useEffect(() => {
-  //   if (saveButton.current) {
-  //     saveButton.current.disabled = fullName.length > 30 || bio.length > 100;
-  //   }
-  // }, [fullName, bio]);
 
   function handleNameChange(e) {
     setFullName(e.target.value);
@@ -100,6 +102,7 @@ function EditProfileDialog({ setIsOpen }) {
         </label>
         <div className="pp-ctr">
           <button
+            type="button"
             className="pp-btn"
             onClick={(e) => {
               e.preventDefault();
@@ -111,19 +114,23 @@ function EditProfileDialog({ setIsOpen }) {
           <div className="pp-right-div">
             <div className="pp-update-btn-ctr">
               <button
+                type="button"
                 onClick={(e) => {
                   e.preventDefault();
                   handleImageClick();
                 }}
+                className="update-pp-btn"
               >
                 Update
               </button>
               <button
+                type="button"
                 onClick={(e) => {
                   e.preventDefault();
                   handleRemoveImage(e);
                   setPreviewImage(defaultProfileImage);
                 }}
+                className="remove-pp-btn"
               >
                 Remove
               </button>
@@ -177,6 +184,7 @@ function EditProfileDialog({ setIsOpen }) {
               e.preventDefault();
               setIsOpen(false);
             }}
+            className="cancel-update-btn"
           >
             Cancel
           </button>
@@ -184,6 +192,10 @@ function EditProfileDialog({ setIsOpen }) {
             ref={saveButton}
             onClick={(e) => handleSubmit(e)}
             disabled={uploading || isDisabled}
+            style={{
+              opacity: uploading || isDisabled ? 0.5 : 1,
+            }}
+            className="save-update-btn"
           >
             Save
           </button>

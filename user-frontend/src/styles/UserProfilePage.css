@@ -379,6 +379,54 @@
   color: #6b6b6b;
 }
 
+.pp-update-btn-ctr {
+  display: flex;
+  gap: 12px;
+  padding-left: 6px;
+}
+
+.update-pp-btn {
+  background-color: transparent;
+  border: 0px;
+  cursor: pointer;
+  color: #1a8917;
+}
+
+.remove-pp-btn {
+  background-color: transparent;
+  border: 0px;
+  cursor: pointer;
+  color: #c94a4a;
+}
+
+.cancel-update-btn,
+.save-update-btn {
+  background-color: transparent;
+  border-radius: 24px;
+  padding: 9px 16px 9px;
+  border: solid 1px #156d12;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-btn-ctr {
+  margin-top: 12px;
+}
+
+.cancel-update-btn {
+  color: #156d12;
+}
+.save-update-btn {
+  background-color: #156d12;
+  color: white;
+}
+
+.save-update-btn.inactive {
+  opacity: 90%;
+}
+
 @media (max-width: 500px) {
   .profile-page-container {
     padding: 12px;
