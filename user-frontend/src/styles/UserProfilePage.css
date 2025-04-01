@@ -171,6 +171,18 @@
   height: 80px;
   width: 80px;
   border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  color: white;
+  background-color: red;
+}
+
+.side-profile-username {
+  color: #6b6b6b;
+  font-size: 0.9rem;
+  font-weight: 100;
 }
 
 .user-full-name {

@@ -66,7 +66,7 @@ function PostPage() {
   }, [postId]);
 
   // if (loading) return <p>Loading...</p>;
-
+  console.log(post);
   return (
     <>
       <ProfileProvider>
@@ -80,8 +80,11 @@ function PostPage() {
             <PostHead
               title={post.title}
               username={post.author.username}
+              profilePicture={post.author.profilePicture}
               timePosted={timePosted(post.createdAt)}
               estimateReadingTime={estimateReadingTime(post.content)}
+              userColor={post.author.userColor}
+              fullName={post.author.fullName}
             ></PostHead>
 
             <div className="post-container">

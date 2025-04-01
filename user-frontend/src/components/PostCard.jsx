@@ -11,7 +11,6 @@ function PostCard({
   postId,
   thumbnail,
   excerpt,
-  profilePicture = null,
 }) {
   const { author, loading, error } = useAuthor(authorId);
 
@@ -41,8 +40,14 @@ function PostCard({
       <div className="top">
         <div className="left">
           <div className="profile">
-            {profilePicture ? (
-              <img src={profile} alt="profile-pict" className="author-pict" />
+            {loading ? (
+              ""
+            ) : author.profilePicture ? (
+              <img
+                src={author.profilePicture}
+                alt="profile-pict"
+                className="author-pict"
+              />
             ) : (
               <div
                 className="author-pict-div"
@@ -58,7 +63,13 @@ function PostCard({
               </div>
             )}
             <span className="author-name">
-              {loading ? "" : error ? "" : author?.username || authorId}
+              {loading
+                ? ""
+                : error
+                ? ""
+                : author.fullName
+                ? author.fullName
+                : author?.username || authorId}
             </span>
           </div>
           <div className="post-title">{stripTitle}</div>

@@ -3,7 +3,8 @@ import { useParams, Outlet, useNavigate, useLocation } from "react-router-dom";
 import Navigation from "../components/Navbar";
 import { ProfileContext, ProfileProvider } from "../contexts/ProfileContext";
 import "../styles/UserProfilePage.css";
-import { useContext, useEffect, useState, useRef, use } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
+import defaultProfileImage from "../assets/profilePict/profile-picture.png";
 
 function EditProfileDialog({ setIsOpen }) {
   const { author, loading } = useContext(ProfileContext);
@@ -15,8 +16,6 @@ function EditProfileDialog({ setIsOpen }) {
   const [bio, setBio] = useState("");
   const [uploading, setUploading] = useState(false);
   const isDisabled = fullName.length > 30 || bio.length > 100;
-  const defaultProfileImage =
-    "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/419d4eb5-b299-4786-9afa-eeb6d90fff89/dj8ki66-e739f5e5-2a64-47e7-a705-0eef9f14a44a.jpg/v1/fill/w_1280,h_979,q_75,strp/lazing_around_pillows_and_quilts_by_pascuau_dj8ki66-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9OTc5IiwicGF0aCI6IlwvZlwvNDE5ZDRlYjUtYjI5OS00Nzg2LTlhZmEtZWViNmQ5MGZmZjg5XC9kajhraTY2LWU3MzlmNWU1LTJhNjQtNDdlNy1hNzA1LTBlZWY5ZjE0YTQ0YS5qcGciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.AGJ7UasaCID6Vxda84Wyze_snXF9NJQ-Xz8P_05wkDY";
   useEffect(() => {
     if (!loading) {
       setFullName(author.fullName || author.username);
@@ -288,19 +287,25 @@ function UserSideProfile({
   return (
     <>
       <div className="side-profile-ctr">
-        {/* <div className="side-profile-picture"> */}
-        <img
-          src={
-            loadingProfile
-              ? ""
-              : visitedUser.profilePicture
-              ? visitedUser.profilePicture
-              : "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/419d4eb5-b299-4786-9afa-eeb6d90fff89/dj8ki66-e739f5e5-2a64-47e7-a705-0eef9f14a44a.jpg/v1/fill/w_1280,h_979,q_75,strp/lazing_around_pillows_and_quilts_by_pascuau_dj8ki66-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9OTc5IiwicGF0aCI6IlwvZlwvNDE5ZDRlYjUtYjI5OS00Nzg2LTlhZmEtZWViNmQ5MGZmZjg5XC9kajhraTY2LWU3MzlmNWU1LTJhNjQtNDdlNy1hNzA1LTBlZWY5ZjE0YTQ0YS5qcGciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.AGJ7UasaCID6Vxda84Wyze_snXF9NJQ-Xz8P_05wkDY"
-          }
-          alt=""
-          className="side-profile-pict"
-        />
-        {/* </div> */}
+        {loadingProfile ? (
+          ""
+        ) : visitedUser.profilePicture ? (
+          <img
+            src={visitedUser.profilePicture}
+            alt=""
+            className="side-profile-pict"
+          />
+        ) : (
+          <div
+            className="side-profile-pict"
+            style={{
+              backgroundColor: visitedUser.userColor,
+            }}
+          >
+            <p>{visitedUser.username.charAt(0)}</p>
+          </div>
+        )}
+
         <div className="side-profile-name-ctr">
           <span className="user-full-name">
             {loadingProfile
@@ -308,6 +313,8 @@ function UserSideProfile({
               : visitedUser.fullName
               ? visitedUser.fullName
               : visitedUser.username}
+            <br />
+            <p className="side-profile-username">@{visitedUser.username}</p>
           </span>
         </div>
         <div className="follower-ctr">
@@ -365,7 +372,6 @@ function UserProfilePage() {
     }
   }, [loading, location.pathname]);
   useEffect(() => {
-    //
     async function fetchUserPost() {
       try {
         const response = await fetch(
@@ -412,7 +418,6 @@ function UserProfilePage() {
   }, [cleanUsername]);
 
   function redirectChildren(children) {
-    // setCurrentPage(children);
     navigate(`/${username}/${children}`);
   }
   const CloseButton = () => (
@@ -453,7 +458,13 @@ function UserProfilePage() {
               <div className="left-ctr">
                 <span className="user-header">
                   <div className="mobile-profile">hello</div>
-                  <div className="username">{cleanUsername}</div>
+                  <div className="username">
+                    {loadingProfile
+                      ? ""
+                      : visitedUser.fullName
+                      ? visitedUser.fullName
+                      : cleanUsername}
+                  </div>
                 </span>
                 <div className="user-nav">
                   <div
@@ -503,6 +514,7 @@ function UserProfilePage() {
                       userPost.map((post) => {
                         return (
                           <UserPostCard
+                            key={crypto.randomUUID()}
                             title={post.title}
                             thumbnail={post.thumbnail}
                             excerpt={post.excerpt}

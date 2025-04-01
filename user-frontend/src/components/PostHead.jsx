@@ -1,8 +1,16 @@
 import "../styles/PostHead.css";
-import defaultProfile from "../assets/profilePict/profile-picture.png";
 import { useNavigate } from "react-router-dom";
 
-function PostHead({ title, username, timePosted, estimateReadingTime }) {
+function PostHead({
+  title,
+  username,
+  timePosted,
+  estimateReadingTime,
+  profilePicture,
+  userColor,
+  fullName,
+}) {
+  console.log(fullName);
   const navigate = useNavigate();
   function redirectUserPage() {
     navigate(`/@${username}`);
@@ -12,16 +20,28 @@ function PostHead({ title, username, timePosted, estimateReadingTime }) {
       <p className="post-title-head">{title}</p>
       <div className="author-and-post-info">
         <div className="left-head">
-          <img
-            onClick={redirectUserPage}
-            className="profile-pict"
-            src={defaultProfile}
-            alt="profile-pict"
-          />
+          {profilePicture ? (
+            <img
+              onClick={redirectUserPage}
+              className="profile-pict"
+              src={profilePicture}
+              alt="profile-pict"
+            />
+          ) : (
+            <div
+              onClick={redirectUserPage}
+              className="profile-pict"
+              style={{
+                backgroundColor: userColor,
+              }}
+            >
+              {username.charAt(0)}
+            </div>
+          )}
         </div>
         <div className="right-head">
           <p className="post-author" onClick={redirectUserPage}>
-            {username}
+            {fullName || username}
           </p>
           <div className="post-info">
             <p className="time-to-read">{estimateReadingTime}</p>·

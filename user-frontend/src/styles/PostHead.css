@@ -32,16 +32,25 @@
 }
 
 .left-head {
-  height: 70px;
-  width: 70px;
+  height: 60px;
+  width: 60px;
+  margin: 12px;
   transform: translateX(-12px);
 }
 
 .profile-pict {
-  height: 100%;
-  width: 100%;
-  padding: 0px;
+  height: 60px !important;
+  width: 60px !important;
+  padding: 0px !important;
+  border-radius: 50%;
+  /* object-fit: cover !important; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 2rem;
   cursor: pointer;
+  background-color: red;
 }
 
 .post-info {
@@ -64,5 +73,18 @@
   .author-and-post-info {
     padding-left: 0px;
     padding-right: 0px;
+  }
+  .profile-pict {
+    height: 50px !important;
+    width: 50px !important;
+    padding: 0px !important;
+    border-radius: 50%;
+    /* object-fit: cover !important; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 1.7rem;
+    cursor: pointer;
   }
 }

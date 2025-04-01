@@ -164,7 +164,6 @@ function Navigation() {
             backgroundColor: loading ? "white" : author.userColor,
           }}
         >
-          {/* <img src="" alt="" /> */}
           {loading ? (
             ""
           ) : author.profilePicture ? (
