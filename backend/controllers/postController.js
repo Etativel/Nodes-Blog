@@ -66,6 +66,9 @@ async function getPost(req, res) {
         author: {
           select: {
             username: true,
+            profilePicture: true,
+            userColor: true,
+            fullName: true,
           },
         },
       },

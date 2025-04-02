@@ -95,6 +95,43 @@ async function getProfileByUsername(req, res) {
   }
 }
 
+// Followers
+
+async function followUser(req, res) {
+  const { followerId, followingId } = req.body;
+
+  try {
+    const follow = await prisma.follower.create({
+      data: {
+        followerId,
+        followingId,
+      },
+    });
+    return res.status(201).json({ follow });
+  } catch (error) {
+    console.error("Error following", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+async function unFollowUser(req, res) {
+  const { followingId } = req.body;
+  try {
+    const unfollow = await prisma.follower.delete({
+      where: {
+        followingId,
+      },
+    });
+    return res.json({ unfollow });
+  } catch (error) {
+    console.error("Failed to unfollow user, ", error);
+    if (error.code === "P2025") {
+      return res.status(404).json({ message: "User not found" });
+    }
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 // Create user
 async function createUser(req, res) {
   const { username, email, password } = req.body;
@@ -122,39 +159,43 @@ async function updateProfile(req, res) {
   const { fullName, biography, userId, removeProfilePicture } = req.body;
   let profilePicture = null;
   let profilePicturePublicId = null;
+
   try {
     const user = await prisma.user.findUnique({
-      where: {
-        id: userId,
-      },
+      where: { id: userId },
     });
-    if (req.file && removeProfilePicture !== "true") {
-      profilePicture = req.file.path;
-      profilePicturePublicId = req.file.filename;
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
     }
 
-    if (removeProfilePicture === "true" && !req.file) {
-      if (user && user.profilePicturePublicId) {
+    if (req.file) {
+      profilePicture = req.file.path;
+      profilePicturePublicId = req.file.filename;
+
+      if (user.profilePicturePublicId) {
+        await cloudinary.uploader.destroy(user.profilePicturePublicId);
+      }
+    } else if (removeProfilePicture === "true") {
+      if (user.profilePicturePublicId) {
         await cloudinary.uploader.destroy(user.profilePicturePublicId);
       }
       profilePicture = null;
       profilePicturePublicId = null;
+    } else {
+      profilePicture = user.profilePicture;
+      profilePicturePublicId = user.profilePicturePublicId;
     }
-    const updateProfile = await prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        biography,
-        fullName,
-        profilePicture,
-        profilePicturePublicId,
-      },
+
+    const updatedProfile = await prisma.user.update({
+      where: { id: userId },
+      data: { biography, fullName, profilePicture, profilePicturePublicId },
     });
-    return res.status(200).json({ profile: updateProfile });
+
+    return res.status(200).json({ profile: updatedProfile });
   } catch (error) {
     console.error("Error updating profile:", error);
-    return res.status(500).json({ error: "internal server error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 }
 
@@ -217,4 +258,6 @@ module.exports = {
   getUserByEmail,
   updateProfile,
   getProfileByUsername,
+  followUser,
+  unFollowUser,
 };

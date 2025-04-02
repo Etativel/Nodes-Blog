@@ -15,4 +15,6 @@ router.patch(
   upload.single("profilePicture"),
   userController.updateProfile
 );
+router.post("/follow", userController.followUser());
+router.post("/unfollow", userController.unFollowUser());
 module.exports = router;
