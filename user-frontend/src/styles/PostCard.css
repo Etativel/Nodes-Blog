@@ -93,7 +93,7 @@ a {
 
 .author-pict-div {
   border-radius: 50%;
-  background-color: red;
+  background-color: transparent;
   height: 28px;
   width: 28px;
   display: flex;

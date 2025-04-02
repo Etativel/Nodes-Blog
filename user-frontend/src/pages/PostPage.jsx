@@ -71,32 +71,33 @@ function PostPage() {
     <>
       <ProfileProvider>
         <Navigation></Navigation>
-      </ProfileProvider>
-      <div className="blog-post-container">
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          <>
-            <PostHead
-              title={post.title}
-              username={post.author.username}
-              profilePicture={post.author.profilePicture}
-              timePosted={timePosted(post.createdAt)}
-              estimateReadingTime={estimateReadingTime(post.content)}
-              userColor={post.author.userColor}
-              fullName={post.author.fullName}
-            ></PostHead>
 
-            <div className="post-container">
-              {post && post.content ? (
-                <div dangerouslySetInnerHTML={{ __html: post.content }} />
-              ) : (
-                <p>No current post</p>
-              )}
-            </div>
-          </>
-        )}
-      </div>
+        <div className="blog-post-container">
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            <>
+              <PostHead
+                title={post.title}
+                username={post.author.username}
+                profilePicture={post.author.profilePicture}
+                timePosted={timePosted(post.createdAt)}
+                estimateReadingTime={estimateReadingTime(post.content)}
+                userColor={post.author.userColor}
+                fullName={post.author.fullName}
+              ></PostHead>
+
+              <div className="post-container">
+                {post && post.content ? (
+                  <div dangerouslySetInnerHTML={{ __html: post.content }} />
+                ) : (
+                  <p>No current post</p>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+      </ProfileProvider>
     </>
   );
 }

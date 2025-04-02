@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useParams, Outlet, useNavigate, useLocation } from "react-router-dom";
 import Navigation from "../components/Navbar";
-import { ProfileContext, ProfileProvider } from "../contexts/ProfileContext";
+import { ProfileContext } from "../contexts/ProfileContext";
 import "../styles/UserProfilePage.css";
 import { useContext, useEffect, useState, useRef } from "react";
 import defaultProfileImage from "../assets/profilePict/profile-picture.png";
@@ -11,6 +11,7 @@ function EditProfileDialog({ setIsOpen }) {
   const saveButton = useRef();
   const [fullName, setFullName] = useState("");
   const [image, setImage] = useState(null);
+  const [prevImage, setPrevImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const imageInputRef = useRef(null);
   const [bio, setBio] = useState("");
@@ -19,15 +20,16 @@ function EditProfileDialog({ setIsOpen }) {
   const [uploading, setUploading] = useState(false);
   const isDisabled =
     fullName.length > 30 ||
-    bio.length > 100 ||
+    bio.length > 160 ||
     fullName.length <= 0 ||
-    (fullName === prevName && bio === prevBio);
+    (fullName === prevName && bio === prevBio && previewImage === prevImage);
   useEffect(() => {
     if (!loading) {
       setFullName(author.fullName || author.username);
       setPrevName(author.fullName || author.username);
       setBio(author.biography || "");
       setPreviewImage(author.profilePicture || defaultProfileImage);
+      setPrevImage(author.profilePicture || defaultProfileImage);
       setPrevBio(author.biography || "");
     }
   }, [loading, author]);
@@ -175,7 +177,7 @@ function EditProfileDialog({ setIsOpen }) {
         />
         <div className="biography-length length-indicator">
           <span>{bio.length}</span>
-          <span className="max-length">/100</span>
+          <span className="max-length">/160</span>
         </div>
 
         <div className="form-btn-ctr">
@@ -278,9 +280,32 @@ function UserSideProfile({
   setIsOpen,
   loadingProfile,
   visitedUser,
+  author,
+  loading,
 }) {
-  const { author, loading } = useContext(ProfileContext);
-  console.log(visitedUser);
+  const [followers, setFollowers] = useState(visitedUser?.following || []);
+
+  const [isFollowing, setIsFollowing] = useState(
+    followers.some((f) => f.followerId === author?.id)
+  );
+
+  console.log(isFollowing);
+
+  useEffect(() => {
+    if (visitedUser && author) {
+      setFollowers(visitedUser.following || []);
+      setIsFollowing(
+        visitedUser.following?.some((f) => f.followerId === author.id)
+      );
+    }
+  }, [visitedUser, author]);
+
+  useEffect(() => {
+    if (visitedUser) {
+      setFollowers(visitedUser.following);
+    }
+  }, [visitedUser]);
+
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => {
@@ -296,6 +321,59 @@ function UserSideProfile({
       }
     }
   }, [isOpen, dialogCtr, profileForm]);
+
+  async function toggleFollow(e) {
+    e.preventDefault();
+    setIsFollowing((prevState) => !prevState);
+
+    setFollowers((prev) => {
+      if (isFollowing) {
+        return prev.filter((f) => f.followerId !== author.id);
+      } else {
+        return [...prev, { followerId: author.id }];
+      }
+    });
+
+    try {
+      let updatedFollowers;
+      if (isFollowing) {
+        const response = await fetch("http://localhost:3000/user/unfollow", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            followerId: author.id,
+            followingId: visitedUser.id,
+          }),
+        });
+
+        if (response.ok) {
+          updatedFollowers = followers.filter(
+            (f) => f.followerId !== author.id
+          );
+        } else {
+          return;
+        }
+      } else {
+        const response = await fetch("http://localhost:3000/user/follow", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            followerId: author.id,
+            followingId: visitedUser.id,
+          }),
+        });
+        if (response.ok) {
+          updatedFollowers = [...followers, { followerId: author.id }];
+        } else {
+          return;
+        }
+      }
+      setFollowers(updatedFollowers);
+    } catch (error) {
+      console.error("Error toggling follow status:", error);
+    }
+  }
+  console.log(isFollowing);
   return (
     <>
       <div className="side-profile-ctr">
@@ -330,7 +408,9 @@ function UserSideProfile({
           </span>
         </div>
         <div className="follower-ctr">
-          <span className="user-follower-count">0 Followers</span>
+          <span className="user-follower-count">
+            {followers.length} Followers
+          </span>
         </div>
         <div className="bio-ctr">
           <span className="user-biography">
@@ -349,7 +429,14 @@ function UserSideProfile({
             </button>
           </div>
         ) : (
-          ""
+          <button
+            className={`user-side-follow-btn ${
+              isFollowing ? "follow" : "unfollow"
+            }`}
+            onClick={(e) => toggleFollow(e)}
+          >
+            {isFollowing ? "Unfollow" : "Follow"}
+          </button>
         )}
       </div>
     </>
@@ -366,28 +453,26 @@ function UserProfilePage() {
   const [loadingProfile, setLoadingProfile] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+  const [loadingComp, setLoading] = useState(true);
   const [userPost, setUserPost] = useState([]);
   const [error, setError] = useState({});
-  const [visitedUser, setVisitedUser] = useState({});
+  const [visitedUser, setVisitedUser] = useState(null);
   const currentPage =
     location.pathname === `/${username}`
       ? ""
       : location.pathname.split("/").pop();
+  const { author, loading } = useContext(ProfileContext);
   useEffect(() => {
-    // Restore scroll position after posts load
     const savedPosition = sessionStorage.getItem("profilePosition");
-
-    if (!loading && savedPosition) {
+    if (!loadingComp && savedPosition) {
       window.scrollTo(0, parseInt(savedPosition, 10));
-      // sessionStorage.removeItem("scrollPosition");
     }
-  }, [loading, location.pathname]);
+  }, [loadingComp, location.pathname]);
+
   useEffect(() => {
     async function fetchUserPost() {
       try {
         const response = await fetch(
-          // TODO: FETCH USER AND INCLUDE POST
           `http://localhost:3000/post/by/${cleanUsername}`
         );
         if (!response.ok) {
@@ -414,16 +499,17 @@ function UserProfilePage() {
         const response = await fetch(
           `http://localhost:3000/user/user-by-username/${cleanUsername.toLowerCase()}`
         );
-
         if (!response.ok) {
           setLoadingProfile(false);
           console.log("no user found");
+          return;
         }
         const data = await response.json();
         setVisitedUser(data.user);
-        setLoadingProfile(false);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoadingProfile(false);
       }
     }
     fetchVisitedUser();
@@ -432,6 +518,7 @@ function UserProfilePage() {
   function redirectChildren(children) {
     navigate(`/${username}/${children}`);
   }
+
   const CloseButton = () => (
     <button className="close-dialog-btn" onClick={() => setIsOpen(false)}>
       <svg
@@ -450,114 +537,113 @@ function UserProfilePage() {
       </svg>
     </button>
   );
+
   return (
     <>
-      <ProfileProvider>
-        <div className="update-profile-ctr" ref={dialogCtr}>
-          <div className="profile-form" ref={profileForm}>
-            <CloseButton />
-            <EditProfileDialog isOpen={isOpen} setIsOpen={setIsOpen} />
-          </div>
+      <div className="update-profile-ctr" ref={dialogCtr}>
+        <div className="profile-form" ref={profileForm}>
+          <CloseButton />
+          <EditProfileDialog isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
-        <Navigation></Navigation>
-        <div className="profile-page-container">
-          {loadingProfile ? (
-            <div></div>
-          ) : !visitedUser || Object.keys(visitedUser || {}).length === 0 ? (
-            <div>No user found</div>
-          ) : (
-            <>
-              <div className="left-ctr">
-                <span className="user-header">
-                  <div className="mobile-profile">hello</div>
-                  <div className="username">
-                    {loadingProfile
-                      ? ""
-                      : visitedUser.fullName
-                      ? visitedUser.fullName
-                      : cleanUsername}
-                  </div>
-                </span>
-                <div className="user-nav">
-                  <div
-                    className="home-btn-ctr"
-                    style={{
-                      borderBottom:
-                        currentPage === "" ? "solid black 1px" : "none",
-                    }}
-                  >
-                    <button
-                      className={`home-btn ${
-                        currentPage === "" ? "active" : ""
-                      }`}
-                      onClick={() => redirectChildren("")}
-                    >
-                      Home
-                    </button>
-                  </div>
-                  <div
-                    className="about-btn-ctr"
-                    style={{
-                      borderBottom:
-                        currentPage === "about" ? "solid black 1px" : "none",
-                    }}
-                  >
-                    <button
-                      className={`about-btn ${
-                        currentPage === "about  " ? "active" : ""
-                      }`}
-                      onClick={() => {
-                        redirectChildren("about");
-                        sessionStorage.removeItem("profilePosition");
-                      }}
-                    >
-                      About
-                    </button>
-                  </div>
+      </div>
+      <Navigation></Navigation>
+      <div className="profile-page-container">
+        {loadingProfile || visitedUser === null ? (
+          <div></div>
+        ) : !visitedUser ? (
+          <div>No user found</div>
+        ) : (
+          <>
+            <div className="left-ctr">
+              <span className="user-header">
+                <div className="mobile-profile">hello</div>
+                <div className="username">
+                  {loadingProfile
+                    ? ""
+                    : visitedUser.fullName
+                    ? visitedUser.fullName
+                    : cleanUsername}
                 </div>
+              </span>
+              <div className="user-nav">
+                <div
+                  className="home-btn-ctr"
+                  style={{
+                    borderBottom:
+                      currentPage === "" ? "solid black 1px" : "none",
+                  }}
+                >
+                  <button
+                    className={`home-btn ${currentPage === "" ? "active" : ""}`}
+                    onClick={() => redirectChildren("")}
+                  >
+                    Home
+                  </button>
+                </div>
+                <div
+                  className="about-btn-ctr"
+                  style={{
+                    borderBottom:
+                      currentPage === "about" ? "solid black 1px" : "none",
+                  }}
+                >
+                  <button
+                    className={`about-btn ${
+                      currentPage === "about  " ? "active" : ""
+                    }`}
+                    onClick={() => {
+                      redirectChildren("about");
+                      sessionStorage.removeItem("profilePosition");
+                    }}
+                  >
+                    About
+                  </button>
+                </div>
+              </div>
 
-                {currentPage === "" && (
-                  <div className="posts">
-                    {loading ? (
-                      <div>Loading...</div>
-                    ) : error.fetchPostError ? (
-                      <div>{error.fetchPostError}</div>
-                    ) : userPost.length > 0 ? (
-                      userPost.map((post) => {
-                        return (
-                          <UserPostCard
-                            key={crypto.randomUUID()}
-                            title={post.title}
-                            thumbnail={post.thumbnail}
-                            excerpt={post.excerpt}
-                            createdAt={post.createdAt}
-                            comments={post.comments}
-                            postId={post.id}
-                          />
-                        );
-                      })
-                    ) : (
-                      <div>No post</div>
-                    )}
-                  </div>
-                )}
-                <Outlet />
-              </div>
-              <div className="right-ctr">
-                <UserSideProfile
-                  pageUsername={cleanUsername}
-                  visitedUser={visitedUser}
-                  loadingProfile={loadingProfile}
-                  dialogCtr={dialogCtr}
-                  profileForm={profileForm}
-                  isOpen={isOpen}
-                  setIsOpen={setIsOpen}
-                />
-              </div>
-            </>
-          )}
-        </div>
-      </ProfileProvider>
+              {currentPage === "" && (
+                <div className="posts">
+                  {loadingComp ? (
+                    <div>Loading...</div>
+                  ) : error.fetchPostError ? (
+                    <div>{error.fetchPostError}</div>
+                  ) : userPost.length > 0 ? (
+                    userPost.map((post) => {
+                      return (
+                        <UserPostCard
+                          key={crypto.randomUUID()}
+                          title={post.title}
+                          thumbnail={post.thumbnail}
+                          excerpt={post.excerpt}
+                          createdAt={post.createdAt}
+                          comments={post.comments}
+                          postId={post.id}
+                        />
+                      );
+                    })
+                  ) : (
+                    <div>No post</div>
+                  )}
+                </div>
+              )}
+              <Outlet />
+            </div>
+            <div className="right-ctr">
+              <UserSideProfile
+                pageUsername={cleanUsername}
+                visitedUser={visitedUser}
+                loadingProfile={loadingProfile}
+                dialogCtr={dialogCtr}
+                profileForm={profileForm}
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                author={author}
+                loading={loading}
+              />
+            </div>
+          </>
+        )}
+      </div>
     </>
   );
 }

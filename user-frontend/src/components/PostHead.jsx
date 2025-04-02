@@ -1,5 +1,7 @@
+import { useContext } from "react";
 import "../styles/PostHead.css";
 import { useNavigate } from "react-router-dom";
+import { ProfileContext } from "../contexts/ProfileContext";
 
 function PostHead({
   title,
@@ -10,6 +12,8 @@ function PostHead({
   userColor,
   fullName,
 }) {
+  const { author, loading } = useContext(ProfileContext);
+
   const navigate = useNavigate();
   function redirectUserPage() {
     navigate(`/@${username}`);
@@ -43,9 +47,15 @@ function PostHead({
             <p className="post-author" onClick={redirectUserPage}>
               {fullName || username}
             </p>
-            <button className="follow-btn followed">
-              ·<p>Follow</p>
-            </button>
+            {loading ? (
+              ""
+            ) : author.username === username ? (
+              ""
+            ) : (
+              <button className="follow-btn followed">
+                ·<p className="follow-text">Follow</p>
+              </button>
+            )}
           </div>
 
           <div className="post-info">

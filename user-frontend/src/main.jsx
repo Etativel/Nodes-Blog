@@ -6,6 +6,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LandinPage from "./pages/LandingPage.jsx";
 import UserProfilePage from "./pages/UserProfilePage.jsx";
 import UserAbout from "./components/UserAbout.jsx";
+import { ProfileProvider } from "./contexts/ProfileContext.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -21,7 +22,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/:username",
-    element: <UserProfilePage />,
+    element: (
+      <ProfileProvider>
+        <UserProfilePage />
+      </ProfileProvider>
+    ),
     children: [
       {
         path: "/:username/about",

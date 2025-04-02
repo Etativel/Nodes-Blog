@@ -23,7 +23,6 @@ export function ProfileProvider({ children }) {
     fetchProfile();
   }, []);
 
-  // You can pass additional data if needed, like author and loading.
   return (
     <ProfileContext.Provider value={{ profile, author, loading, setProfile }}>
       {children}

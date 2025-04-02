@@ -8,7 +8,6 @@
 .left-ctr {
   max-width: 820px;
   width: 100%;
-  /* background-color: red; */
   height: fit-content;
   padding-top: 24px;
   display: flex;
@@ -176,7 +175,7 @@
   align-items: center;
   font-size: 2rem;
   color: white;
-  background-color: red;
+  background-color: transparent;
 }
 
 .side-profile-username {
@@ -367,7 +366,6 @@
 }
 
 .length-indicator {
-  /* background-color: red; */
   font-family: "Times New Roman", Times, serif;
   justify-content: flex-end;
   display: flex;
@@ -425,6 +423,22 @@
 
 .save-update-btn.inactive {
   opacity: 90%;
+}
+.user-side-follow-btn {
+  background-color: transparent;
+  border: solid #156d12 1px;
+  color: #156d12;
+  border-radius: 24px;
+  padding: 9px 16px 9px;
+  margin-top: 32px;
+  cursor: pointer;
+}
+
+.user-side-follow-btn.unfollow {
+  color: white;
+  background-color: #156d12;
+  border-radius: 24px;
+  padding: 9px 16px 9px;
 }
 
 @media (max-width: 500px) {

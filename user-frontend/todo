@@ -1,5 +1,5 @@
-user profile page (current user) /user/profile
+Follow, unfollow mechanism
 
-user visit page (visitor) /user/:userId
+404 Page
 
 post comments, like mechanism, saved post

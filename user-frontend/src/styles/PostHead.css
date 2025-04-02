@@ -50,7 +50,7 @@
   color: white;
   font-size: 2rem;
   cursor: pointer;
-  background-color: red;
+  background-color: transparent;
 }
 
 .post-info {
@@ -79,12 +79,16 @@
   background-color: transparent;
   border: 0px;
   font-family: "Times New Roman", Times, serif;
-  font-size: 1.1rem;
+
   cursor: pointer;
   padding: 0px;
   display: flex;
   gap: 6px;
   height: fit-content;
+}
+
+.follow-text {
+  font-size: 1.1rem;
 }
 
 .follow-btn.followed {
@@ -114,7 +118,7 @@
     font-size: 1.5rem !important;
   }
 
-  .follow-btn,
+  .follow-text,
   .post-author {
     font-size: 1rem;
   }
