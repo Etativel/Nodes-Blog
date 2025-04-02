@@ -35,6 +35,10 @@ async function getSpecificUser(req, res) {
       where: {
         id: userId,
       },
+      include: {
+        followers: true,
+        following: true,
+      },
     });
     if (!user) {
       return res.json({ message: "No user found" });
@@ -84,6 +88,10 @@ async function getProfileByUsername(req, res) {
   try {
     const user = await prisma.user.findUnique({
       where: { username },
+      include: {
+        followers: true,
+        following: true,
+      },
     });
     if (!user) {
       return res.json({ message: "profile not found." });
@@ -115,11 +123,14 @@ async function followUser(req, res) {
 }
 
 async function unFollowUser(req, res) {
-  const { followingId } = req.body;
+  const { followingId, followerId } = req.body;
   try {
     const unfollow = await prisma.follower.delete({
       where: {
-        followingId,
+        followerId_followingId: {
+          followerId,
+          followingId,
+        },
       },
     });
     return res.json({ unfollow });

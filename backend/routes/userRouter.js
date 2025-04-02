@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/userController");
 const upload = require("../config/multerConfig");
+
 router.post("/check-username", userController.getUserByUsername);
 router.post("/check-email", userController.getUserByEmail);
 router.get("/user-by-username/:username", userController.getProfileByUsername);
@@ -15,6 +16,7 @@ router.patch(
   upload.single("profilePicture"),
   userController.updateProfile
 );
-router.post("/follow", userController.followUser());
-router.post("/unfollow", userController.unFollowUser());
+router.patch("/follow", userController.followUser);
+router.patch("/unfollow", userController.unFollowUser);
+
 module.exports = router;
