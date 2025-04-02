@@ -60,8 +60,8 @@ function Navigation() {
       } else {
         await response.json();
         navigate("/");
+        sessionStorage.removeItem("scrollPosition");
         console.log("Logout success");
-        // setProfile(null);
       }
     } catch (error) {
       console.log("Error loging out: ", error);
