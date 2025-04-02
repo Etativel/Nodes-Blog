@@ -63,6 +63,8 @@
 .post-author {
   width: fit-content;
   border-bottom: solid transparent 1px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
 }
 .post-author:hover {
   border-bottom: solid black 1px;
@@ -88,10 +90,18 @@
 }
 
 .follow-text {
-  font-size: 1.1rem;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-.follow-btn.followed {
+.follow-text {
+  border-bottom: solid transparent 1px;
+}
+
+.follow-text.follow {
+  border-bottom: solid black 1px;
 }
 
 @media (max-width: 470px) {

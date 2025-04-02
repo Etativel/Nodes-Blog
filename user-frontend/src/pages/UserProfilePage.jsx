@@ -289,8 +289,6 @@ function UserSideProfile({
     followers.some((f) => f.followerId === author?.id)
   );
 
-  console.log(isFollowing);
-
   useEffect(() => {
     if (visitedUser && author) {
       setFollowers(visitedUser.following || []);

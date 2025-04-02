@@ -54,6 +54,7 @@ function PostPage() {
         }
         const postData = await response.json();
         console.log("Fetched Post:", Object.keys(postData.post));
+        console.log(postData);
         setPost(postData.post);
       } catch (error) {
         console.error("Error fetching post: ", error);
@@ -80,11 +81,13 @@ function PostPage() {
               <PostHead
                 title={post.title}
                 username={post.author.username}
+                authorId={post.authorId}
                 profilePicture={post.author.profilePicture}
                 timePosted={timePosted(post.createdAt)}
                 estimateReadingTime={estimateReadingTime(post.content)}
                 userColor={post.author.userColor}
                 fullName={post.author.fullName}
+                postAuthor={post.author}
               ></PostHead>
 
               <div className="post-container">

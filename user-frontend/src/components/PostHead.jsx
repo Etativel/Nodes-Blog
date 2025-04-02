@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import "../styles/PostHead.css";
 import { useNavigate } from "react-router-dom";
 import { ProfileContext } from "../contexts/ProfileContext";
@@ -11,8 +11,79 @@ function PostHead({
   profilePicture,
   userColor,
   fullName,
+  postAuthor,
 }) {
   const { author, loading } = useContext(ProfileContext);
+  const [followers, setFollowers] = useState(postAuthor?.following || []);
+  const [isFollowing, setIsFollowing] = useState(
+    followers.some((f) => f.followerId === author?.id)
+  );
+  useEffect(() => {
+    if (postAuthor && author) {
+      setFollowers(postAuthor.following || []);
+      setIsFollowing(
+        postAuthor.following?.some((f) => f.followerId === author.id)
+      );
+    }
+  }, [postAuthor, author]);
+
+  useEffect(() => {
+    if (postAuthor) {
+      setFollowers(postAuthor.following);
+    }
+  }, [postAuthor]);
+
+  async function toggleFollow(e) {
+    e.preventDefault();
+    setIsFollowing((prevState) => !prevState);
+
+    setFollowers((prev) => {
+      if (isFollowing) {
+        return prev.filter((f) => f.followerId !== author.id);
+      } else {
+        return [...prev, { followerId: author.id }];
+      }
+    });
+
+    try {
+      let updatedFollowers;
+      if (isFollowing) {
+        const response = await fetch("http://localhost:3000/user/unfollow", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            followerId: author.id,
+            followingId: postAuthor.id,
+          }),
+        });
+
+        if (response.ok) {
+          updatedFollowers = followers.filter(
+            (f) => f.followerId !== author.id
+          );
+        } else {
+          return;
+        }
+      } else {
+        const response = await fetch("http://localhost:3000/user/follow", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            followerId: author.id,
+            followingId: postAuthor.id,
+          }),
+        });
+        if (response.ok) {
+          updatedFollowers = [...followers, { followerId: author.id }];
+        } else {
+          return;
+        }
+      }
+      setFollowers(updatedFollowers);
+    } catch (error) {
+      console.error("Error toggling follow status:", error);
+    }
+  }
 
   const navigate = useNavigate();
   function redirectUserPage() {
@@ -52,8 +123,14 @@ function PostHead({
             ) : author.username === username ? (
               ""
             ) : (
-              <button className="follow-btn followed">
-                ·<p className="follow-text">Follow</p>
+              <button
+                className="follow-btn followed"
+                onClick={(e) => toggleFollow(e)}
+              >
+                ·
+                <p className={`follow-text ${isFollowing ? "" : "follow"}`}>
+                  {isFollowing ? "Following" : "Follow"}
+                </p>
               </button>
             )}
           </div>
