@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import "../styles/Navbar.css";
 import { useRef, useEffect, useContext, useState } from "react";
-import { ProfileContext } from "../contexts/ProfileContext";
+import ProfileContext from "../contexts/context-create/ProfileContext";
 function Navigation() {
   const navbarRef = useRef(null);
   const lastScrollTopRef = useRef(window.scrollY);

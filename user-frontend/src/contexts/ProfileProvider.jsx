@@ -1,7 +1,6 @@
-import { createContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useAuthor } from "../utils/useAuthor";
-
-export const ProfileContext = createContext();
+import ProfileContext from "./context-create/ProfileContext";
 
 export function ProfileProvider({ children }) {
   const [profile, setProfile] = useState(null);

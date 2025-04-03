@@ -3,15 +3,15 @@ import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import PostPage from "./pages/PostPage.jsx";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import LandinPage from "./pages/LandingPage.jsx";
+import LandingPage from "./pages/LandingPage.jsx";
 import UserProfilePage from "./pages/UserProfilePage.jsx";
 import UserAbout from "./components/UserAbout.jsx";
-import { ProfileProvider } from "./contexts/ProfileContext.jsx";
+import { ProfileProvider } from "./contexts/ProfileProvider.jsx";
 import Loader from "./components/Loader.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <LandinPage />,
+    element: <LandingPage />,
   },
   {
     path: "/posts",

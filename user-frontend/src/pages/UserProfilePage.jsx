@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useParams, Outlet, useNavigate, useLocation } from "react-router-dom";
 import Navigation from "../components/Navbar";
-import { ProfileContext } from "../contexts/ProfileContext";
+import ProfileContext from "../contexts/context-create/ProfileContext";
 import "../styles/UserProfilePage.css";
 import { useContext, useEffect, useState, useRef } from "react";
 import defaultProfileImage from "../assets/profilePict/profile-picture.png";

@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import "../styles/PostHead.css";
 import { useNavigate } from "react-router-dom";
-import { ProfileContext } from "../contexts/ProfileContext";
+import ProfileContext from "../contexts/context-create/ProfileContext";
 
 function PostHead({
   title,
