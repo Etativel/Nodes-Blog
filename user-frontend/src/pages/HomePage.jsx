@@ -2,12 +2,11 @@ import Navigation from "../components/Navbar";
 import PostsContainer from "../components/PostsContainer";
 import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
-import { ProfileProvider } from "../contexts/ProfileContext.jsx";
 import Loader from "../components/Loader.jsx";
 function Homepage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [profile, setProfile] = useState(null);
+
   useEffect(() => {
     fetch("http://localhost:3000/auth/profile", {
       credentials: "include",
@@ -16,8 +15,7 @@ function Homepage() {
         if (res.ok) return res.json();
         throw new Error("Not authenticated");
       })
-      .then((data) => {
-        setProfile(() => data);
+      .then(() => {
         setIsAuthenticated(true);
       })
       .catch(() => {
@@ -37,9 +35,7 @@ function Homepage() {
   }
   return (
     <div className="homepage-container">
-      <ProfileProvider>
-        <Navigation profile={profile}></Navigation>
-      </ProfileProvider>
+      <Navigation></Navigation>
       <PostsContainer></PostsContainer>
     </div>
   );

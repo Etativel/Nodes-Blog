@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import Navigation from "../components/Navbar";
 import PostHead from "../components/PostHead";
 import "../styles/PostPage.css";
-import { ProfileProvider } from "../contexts/ProfileContext";
 import Loader from "../components/Loader";
 function timePosted(dateString) {
   const date = new Date(dateString);
@@ -67,37 +66,34 @@ function PostPage() {
 
   return (
     <>
-      <ProfileProvider>
-        <Navigation></Navigation>
+      <Navigation></Navigation>
+      <div className="blog-post-container">
+        {loading ? (
+          <Loader />
+        ) : (
+          <>
+            <PostHead
+              title={post.title}
+              username={post.author.username}
+              authorId={post.authorId}
+              profilePicture={post.author.profilePicture}
+              timePosted={timePosted(post.createdAt)}
+              estimateReadingTime={estimateReadingTime(post.content)}
+              userColor={post.author.userColor}
+              fullName={post.author.fullName}
+              postAuthor={post.author}
+            ></PostHead>
 
-        <div className="blog-post-container">
-          {loading ? (
-            <Loader />
-          ) : (
-            <>
-              <PostHead
-                title={post.title}
-                username={post.author.username}
-                authorId={post.authorId}
-                profilePicture={post.author.profilePicture}
-                timePosted={timePosted(post.createdAt)}
-                estimateReadingTime={estimateReadingTime(post.content)}
-                userColor={post.author.userColor}
-                fullName={post.author.fullName}
-                postAuthor={post.author}
-              ></PostHead>
-
-              <div className="post-container">
-                {post && post.content ? (
-                  <div dangerouslySetInnerHTML={{ __html: post.content }} />
-                ) : (
-                  <p>No current post</p>
-                )}
-              </div>
-            </>
-          )}
-        </div>
-      </ProfileProvider>
+            <div className="post-container">
+              {post && post.content ? (
+                <div dangerouslySetInnerHTML={{ __html: post.content }} />
+              ) : (
+                <p>No current post</p>
+              )}
+            </div>
+          </>
+        )}
+      </div>
     </>
   );
 }

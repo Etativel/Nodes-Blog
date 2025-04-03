@@ -27,11 +27,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/:username",
-    element: (
-      <ProfileProvider>
-        <UserProfilePage />
-      </ProfileProvider>
-    ),
+    element: <UserProfilePage />,
     children: [
       {
         path: "/:username/about",
@@ -43,6 +39,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <ProfileProvider>
+      <RouterProvider router={router} />
+    </ProfileProvider>
   </StrictMode>
 );
