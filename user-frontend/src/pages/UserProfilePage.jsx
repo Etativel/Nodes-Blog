@@ -460,6 +460,7 @@ function UserProfilePage() {
       ? ""
       : location.pathname.split("/").pop();
   const { author, loading } = useContext(ProfileContext);
+
   useEffect(() => {
     const savedPosition = sessionStorage.getItem("profilePosition");
     if (!loadingComp && savedPosition) {
@@ -554,7 +555,29 @@ function UserProfilePage() {
           <>
             <div className="left-ctr">
               <span className="user-header">
-                <div className="mobile-profile">hello</div>
+                <div className="mobile-profile">
+                  {/* <div className="left-mobile-profile">
+                    <img src="" alt="" />
+                    <div className="name-and-follower-ctr">
+                      <h2>Farhan</h2>
+                      <span>Follower</span>
+                    </div>
+                  </div>
+                  <div className="right-mobile-profile">
+                    <button>Follow</button>
+                  </div> */}
+                  <UserSideProfile
+                    pageUsername={cleanUsername}
+                    visitedUser={visitedUser}
+                    loadingProfile={loadingProfile}
+                    dialogCtr={dialogCtr}
+                    profileForm={profileForm}
+                    isOpen={isOpen}
+                    setIsOpen={setIsOpen}
+                    author={author}
+                    loading={loading}
+                  />
+                </div>
                 <div className="username">
                   {loadingProfile
                     ? ""

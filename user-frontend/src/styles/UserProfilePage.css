@@ -430,7 +430,7 @@
   color: #156d12;
   border-radius: 24px;
   padding: 9px 16px 9px;
-  margin-top: 32px;
+  margin-top: 24px;
   cursor: pointer;
 }
 
@@ -442,8 +442,23 @@
 }
 
 @media (max-width: 500px) {
+  .user-full-name {
+    font-size: 0.8rem;
+    margin-top: 6px;
+    margin-bottom: 6px;
+  }
+  .side-profile-username {
+    font-size: 0.7rem;
+  }
   .profile-page-container {
     padding: 12px;
+  }
+  .user-follower-count {
+    font-size: 0.8rem;
+    margin-bottom: 6px;
+  }
+  .user-biography {
+    font-size: 0.7rem;
   }
   .post-title-p {
     display: flex;
@@ -480,26 +495,48 @@
     height: 12px;
     width: 12px;
   }
+  .side-profile-pict {
+    height: 60px;
+    width: 60px;
+  }
+  .user-side-follow-btn {
+    margin-top: 18px;
+  }
+  .left-ctr {
+    padding-top: 12px;
+  }
 }
 
 @media (max-width: 900px) {
+  .left-ctr {
+    padding-top: 12px;
+  }
   .profile-page-container {
     padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   .postcard-container-profile {
     width: 100% !important;
     display: flex;
     max-width: 100% !important;
   }
-  .profile-page-container {
-    display: flex;
-    flex-direction: column;
+
+  .side-profile-ctr {
+    padding: 0px;
+    margin-bottom: 24px;
   }
+
   .right-ctr {
     display: none;
   }
+
   .mobile-profile {
-    display: block;
+    display: flex;
+    justify-content: space-between;
+    /* background-color: red; */
+    width: 100%;
   }
   .username {
     display: none;
