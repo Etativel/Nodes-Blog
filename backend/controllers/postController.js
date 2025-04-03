@@ -65,10 +65,13 @@ async function getPost(req, res) {
       include: {
         author: {
           select: {
+            id: true,
             username: true,
             profilePicture: true,
             userColor: true,
             fullName: true,
+            followers: true,
+            following: true,
           },
         },
       },
