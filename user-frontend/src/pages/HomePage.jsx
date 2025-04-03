@@ -3,6 +3,7 @@ import PostsContainer from "../components/PostsContainer";
 import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { ProfileProvider } from "../contexts/ProfileContext.jsx";
+import Loader from "../components/Loader.jsx";
 function Homepage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -28,7 +29,7 @@ function Homepage() {
   }, []);
 
   if (isLoading) {
-    return <div></div>;
+    return <Loader />;
   }
 
   if (!isAuthenticated) {

@@ -5,6 +5,7 @@ import { ProfileContext } from "../contexts/ProfileContext";
 import "../styles/UserProfilePage.css";
 import { useContext, useEffect, useState, useRef } from "react";
 import defaultProfileImage from "../assets/profilePict/profile-picture.png";
+import Loader from "../components/Loader";
 
 function EditProfileDialog({ setIsOpen }) {
   const { author, loading } = useContext(ProfileContext);
@@ -371,7 +372,6 @@ function UserSideProfile({
       console.error("Error toggling follow status:", error);
     }
   }
-  console.log(isFollowing);
   return (
     <>
       <div className="side-profile-ctr">
@@ -548,7 +548,7 @@ function UserProfilePage() {
       <Navigation></Navigation>
       <div className="profile-page-container">
         {loadingProfile || visitedUser === null ? (
-          <div></div>
+          <Loader />
         ) : !visitedUser ? (
           <div>No user found</div>
         ) : (
@@ -556,16 +556,6 @@ function UserProfilePage() {
             <div className="left-ctr">
               <span className="user-header">
                 <div className="mobile-profile">
-                  {/* <div className="left-mobile-profile">
-                    <img src="" alt="" />
-                    <div className="name-and-follower-ctr">
-                      <h2>Farhan</h2>
-                      <span>Follower</span>
-                    </div>
-                  </div>
-                  <div className="right-mobile-profile">
-                    <button>Follow</button>
-                  </div> */}
                   <UserSideProfile
                     pageUsername={cleanUsername}
                     visitedUser={visitedUser}
@@ -625,7 +615,7 @@ function UserProfilePage() {
               {currentPage === "" && (
                 <div className="posts">
                   {loadingComp ? (
-                    <div>Loading...</div>
+                    <Loader />
                   ) : error.fetchPostError ? (
                     <div>{error.fetchPostError}</div>
                   ) : userPost.length > 0 ? (

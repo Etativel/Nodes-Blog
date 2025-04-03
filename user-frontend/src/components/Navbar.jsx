@@ -12,7 +12,6 @@ function Navigation() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const { author, loading } = useContext(ProfileContext);
-  // console.log(author);
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => {

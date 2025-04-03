@@ -1,5 +1,5 @@
 function UserAbout() {
-  return <h1></h1>;
+  return <div className="about-container"></div>;
 }
 
 export default UserAbout;

@@ -7,6 +7,7 @@ import LandinPage from "./pages/LandingPage.jsx";
 import UserProfilePage from "./pages/UserProfilePage.jsx";
 import UserAbout from "./components/UserAbout.jsx";
 import { ProfileProvider } from "./contexts/ProfileContext.jsx";
+import Loader from "./components/Loader.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
   {
     path: "/post/:postId",
     element: <PostPage />,
+  },
+  {
+    path: "/loader",
+    element: <Loader />,
   },
   {
     path: "/:username",

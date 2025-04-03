@@ -4,6 +4,7 @@ import Navigation from "../components/Navbar";
 import PostHead from "../components/PostHead";
 import "../styles/PostPage.css";
 import { ProfileProvider } from "../contexts/ProfileContext";
+import Loader from "../components/Loader";
 function timePosted(dateString) {
   const date = new Date(dateString);
   const now = new Date();
@@ -53,8 +54,6 @@ function PostPage() {
           throw new Error("Failed to fetch post");
         }
         const postData = await response.json();
-        console.log("Fetched Post:", Object.keys(postData.post));
-        console.log(postData);
         setPost(postData.post);
       } catch (error) {
         console.error("Error fetching post: ", error);
@@ -66,8 +65,6 @@ function PostPage() {
     fetchCurrentPost();
   }, [postId]);
 
-  // if (loading) return <p>Loading...</p>;
-  console.log(post);
   return (
     <>
       <ProfileProvider>
@@ -75,7 +72,7 @@ function PostPage() {
 
         <div className="blog-post-container">
           {loading ? (
-            <p>Loading...</p>
+            <Loader />
           ) : (
             <>
               <PostHead

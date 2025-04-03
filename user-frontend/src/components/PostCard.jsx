@@ -29,8 +29,6 @@ function PostCard({
     sessionStorage.setItem("scrollPosition", window.scrollY);
   };
 
-  console.log(author);
-
   return (
     <Link
       className="postcard-container"
@@ -80,13 +78,7 @@ function PostCard({
           style={{
             backgroundImage: `url(${thumbnail ? thumbnail : profile})`,
           }}
-        >
-          {/* <img
-            src={thumbnail ? thumbnail : profile}
-            alt=""
-            className="post-header-img"
-          /> */}
-        </div>
+        ></div>
       </div>
       <div className="bottom">
         <div className="post-info">
