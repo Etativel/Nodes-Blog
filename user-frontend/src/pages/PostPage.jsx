@@ -93,7 +93,7 @@ function PostPage() {
               )}
             </div>
             <div className="liner">&nbsp;</div>
-            <CommentSection />
+            <CommentSection postId={postId} />
           </>
         )}
       </div>
