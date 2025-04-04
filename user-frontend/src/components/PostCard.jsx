@@ -73,12 +73,16 @@ function PostCard({
           <div className="post-title">{stripTitle}</div>
           <div className="post-subtext">{stripExcerpt}</div>
         </div>
-        <div
-          className="right"
-          style={{
-            backgroundImage: `url(${thumbnail ? thumbnail : profile})`,
-          }}
-        ></div>
+        {thumbnail ? (
+          <div
+            className="right"
+            style={{
+              backgroundImage: `url(${thumbnail ? thumbnail : profile})`,
+            }}
+          ></div>
+        ) : (
+          ""
+        )}
       </div>
       <div className="bottom">
         <div className="post-info">

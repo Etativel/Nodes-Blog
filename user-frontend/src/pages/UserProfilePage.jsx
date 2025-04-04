@@ -238,12 +238,16 @@ function UserPostCard({
           <div className="post-title-p">{stripTitle}</div>
           <div className="post-subtext-p">{excerpt ? stripExcerpt : ""}</div>
         </div>
-        <div
-          className="right-p"
-          style={{
-            backgroundImage: `url(${thumbnail ? thumbnail : ""})`,
-          }}
-        ></div>
+        {thumbnail ? (
+          <div
+            className="right-p"
+            style={{
+              backgroundImage: `url(${thumbnail ? thumbnail : ""})`,
+            }}
+          ></div>
+        ) : (
+          ""
+        )}
       </div>
       <div className="bottom-p">
         <div className="post-info-p">
