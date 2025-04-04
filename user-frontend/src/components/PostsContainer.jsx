@@ -50,10 +50,7 @@ function PostsContainer() {
               postDate={post.createdAt}
               postComment={post.comments}
               postId={post.id}
-              excerpt={
-                post.excerpt ||
-                "I’ve used these features of Git for years across teams and projects. I’m still developing opinions around some workflows (like to squash or not) but the core tooling is powerful and flexible (and scriptable!"
-              }
+              excerpt={post.excerpt || ""}
               thumbnail={post.thumbnail || null}
             ></PostCard>
           ))}

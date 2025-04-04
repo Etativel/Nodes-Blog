@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import "../styles/PostCard.css";
 import profile from "../assets/img/cat.jpg";
-// import { useEffect, useState } from "react";
 import { useAuthor } from "../utils/useAuthor";
+
 function PostCard({
   authorId,
   postTitle,

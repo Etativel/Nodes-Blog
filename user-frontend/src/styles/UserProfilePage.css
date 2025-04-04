@@ -146,6 +146,7 @@
 
 .posts {
   width: 100%;
+  min-height: 90vh;
 }
 
 .comment-p {
@@ -444,6 +445,43 @@
   background-color: #156d12;
   border-radius: 24px;
   padding: 9px 16px 9px;
+}
+
+.no-about-container,
+.no-post-container {
+  display: flex;
+  height: 60vh;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  /* background-color: red; */
+  padding: 24px;
+  gap: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.no-about-big-text,
+.no-post-big-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.no-about-small-text,
+.no-post-small-text {
+  text-align: center;
+  font-size: 0.9rem;
+  color: gray;
+}
+
+.sub-small-text {
+  display: flex;
+  gap: 4px;
+}
+
+.start-writing {
+  cursor: pointer;
+  color: #1a8917;
 }
 
 @media (max-width: 500px) {

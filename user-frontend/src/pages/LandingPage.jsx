@@ -2,7 +2,7 @@ import "../styles/LandingPage.css";
 import { useRef, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import ProfileContext from "../contexts/context-create/ProfileContext";
+
 function LandingNav({ openDialog, setDialogTitle, setActiveTab }) {
   return (
     <div className="l-nav-container">
@@ -102,6 +102,7 @@ function SignDialog({
   const dialogRef = useRef(null);
   const signContainer = useRef(null);
   const [isValidating, setIsValidating] = useState(false);
+
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => {

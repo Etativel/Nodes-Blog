@@ -18,6 +18,9 @@ function PostHead({
   const [isFollowing, setIsFollowing] = useState(
     followers.some((f) => f.followerId === author?.id)
   );
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (postAuthor && author) {
       setFollowers(postAuthor.following || []);
@@ -85,10 +88,10 @@ function PostHead({
     }
   }
 
-  const navigate = useNavigate();
   function redirectUserPage() {
     navigate(`/@${username}`);
   }
+
   return (
     <div className="post-head-container">
       <p className="post-title-head">{title}</p>

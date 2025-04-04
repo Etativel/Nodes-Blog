@@ -460,6 +460,9 @@ function UserProfilePage() {
       : location.pathname.split("/").pop();
   const { author, loading } = useContext(ProfileContext);
 
+  console.log(cleanUsername);
+  console.log(userPost);
+
   useEffect(() => {
     const savedPosition = sessionStorage.getItem("profilePosition");
     if (!loadingComp && savedPosition) {
@@ -535,7 +538,10 @@ function UserProfilePage() {
       </svg>
     </button>
   );
-
+  // function redirectToAdminFrontend() {
+  //   window.location = "http://localhost:5174/";
+  //   sessionStorage.removeItem("scrollPosition");
+  // }
   return (
     <>
       <div className="profile-page-container">
@@ -631,11 +637,37 @@ function UserProfilePage() {
                       );
                     })
                   ) : (
-                    <div>No post</div>
+                    <div className="no-post-container">
+                      <div className="no-post-big-text">No Post Yet</div>
+                      <div className="no-post-small-text">
+                        {loadingProfile
+                          ? ""
+                          : loading
+                          ? ""
+                          : visitedUser.username === author?.username
+                          ? // <span className="sub-small-text">
+                            "You haven't posted anything yet."
+                          : //   <p
+                            //     className="start-writing"
+                            //     onClick={() => redirectToAdminFrontend()}
+                            //   >
+                            //     Start writing!
+                            //   </p>
+                            // </span>
+                            "Looks like this person hasn't posted anything yet."}
+                      </div>
+                    </div>
                   )}
                 </div>
               )}
-              <Outlet />
+              <Outlet
+                context={{
+                  loadingProfile,
+                  loading,
+                  visitedUser,
+                  author,
+                }}
+              />
             </div>
             <div className="right-ctr">
               <UserSideProfile

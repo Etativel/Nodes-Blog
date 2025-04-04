@@ -12,9 +12,8 @@ function Navigation() {
   const toggleRef = useRef(null);
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const { author, loading, setProfile, profile } = useContext(ProfileContext);
-  console.log("this is author", author);
-  console.log("this is profile", profile);
+  const { author, loading } = useContext(ProfileContext);
+
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => {
@@ -24,6 +23,7 @@ function Navigation() {
       dropdown.current.classList.remove("active");
     }
   }, [isOpen]);
+
   useEffect(() => {
     if (navbarRef.current) {
       navHeightRef.current = navbarRef.current.offsetHeight;
@@ -62,7 +62,6 @@ function Navigation() {
       } else {
         await response.json();
         navigate("/");
-        setProfile(null);
         sessionStorage.removeItem("scrollPosition");
         console.log("Logout success");
       }

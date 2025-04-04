@@ -41,6 +41,7 @@ function CommentSection() {
         <div className="comment-input-ctr">
           <textarea
             ref={textareaInput}
+            placeholder="Write a comment..."
             name=""
             id=""
             className="comment-input"
