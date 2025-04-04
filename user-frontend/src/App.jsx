@@ -1,10 +1,14 @@
-import "./App.css";
-import Homepage from "./pages/HomePage";
+import Navigation from "./components/Navbar";
+import { Outlet } from "react-router-dom";
+import { ProfileProvider } from "./contexts/ProfileProvider";
 function App() {
   return (
-    <div className="app-container">
-      <Homepage></Homepage>
-    </div>
+    <>
+      <ProfileProvider>
+        <Navigation />
+        <Outlet />
+      </ProfileProvider>
+    </>
   );
 }
 

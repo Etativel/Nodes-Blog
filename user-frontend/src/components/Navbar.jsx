@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/Navbar.css";
 import { useRef, useEffect, useContext, useState } from "react";
 import ProfileContext from "../contexts/context-create/ProfileContext";
+
 function Navigation() {
   const navbarRef = useRef(null);
   const lastScrollTopRef = useRef(window.scrollY);
@@ -11,7 +12,9 @@ function Navigation() {
   const toggleRef = useRef(null);
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const { author, loading } = useContext(ProfileContext);
+  const { author, loading, setProfile, profile } = useContext(ProfileContext);
+  console.log("this is author", author);
+  console.log("this is profile", profile);
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => {
@@ -59,6 +62,7 @@ function Navigation() {
       } else {
         await response.json();
         navigate("/");
+        setProfile(null);
         sessionStorage.removeItem("scrollPosition");
         console.log("Logout success");
       }

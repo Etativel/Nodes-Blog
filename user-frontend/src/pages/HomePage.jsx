@@ -1,8 +1,8 @@
-import Navigation from "../components/Navbar";
 import PostsContainer from "../components/PostsContainer";
 import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import Loader from "../components/Loader.jsx";
+
 function Homepage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -35,7 +35,6 @@ function Homepage() {
   }
   return (
     <div className="homepage-container">
-      <Navigation></Navigation>
       <PostsContainer></PostsContainer>
     </div>
   );

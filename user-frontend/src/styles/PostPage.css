@@ -8,7 +8,12 @@
   align-items: center;
 }
 
-.blog-post-container img:not(.profile-pict) {
+.liner {
+  border-bottom: solid #f2f2f2 1px;
+  width: 100%;
+}
+
+.blog-post-container img:not(.profile-pict, .profile-pict-cs) {
   max-width: 100%;
   max-height: calc(100vh - 20px);
   height: auto;
@@ -26,6 +31,7 @@
   padding-left: 24px;
   padding-right: 24px;
   text-align: justify;
+  word-break: break-word;
 }
 .post-container h1 {
   margin-bottom: 0.8em;
@@ -39,7 +45,7 @@
 }
 
 @media (max-width: 500px) {
-  .blog-post-container img {
+  .blog-post-container img:not(.profile-pict, .profile-pict-cs) {
     max-width: 100%;
     max-height: calc(100vh - 20px);
     height: auto;

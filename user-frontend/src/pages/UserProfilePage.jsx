@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { useParams, Outlet, useNavigate, useLocation } from "react-router-dom";
-import Navigation from "../components/Navbar";
 import ProfileContext from "../contexts/context-create/ProfileContext";
 import "../styles/UserProfilePage.css";
 import { useContext, useEffect, useState, useRef } from "react";
@@ -539,14 +538,13 @@ function UserProfilePage() {
 
   return (
     <>
-      <div className="update-profile-ctr" ref={dialogCtr}>
-        <div className="profile-form" ref={profileForm}>
-          <CloseButton />
-          <EditProfileDialog isOpen={isOpen} setIsOpen={setIsOpen} />
-        </div>
-      </div>
-      <Navigation></Navigation>
       <div className="profile-page-container">
+        <div className="update-profile-ctr" ref={dialogCtr}>
+          <div className="profile-form" ref={profileForm}>
+            <CloseButton />
+            <EditProfileDialog isOpen={isOpen} setIsOpen={setIsOpen} />
+          </div>
+        </div>
         {loadingProfile || visitedUser === null ? (
           <Loader />
         ) : !visitedUser ? (

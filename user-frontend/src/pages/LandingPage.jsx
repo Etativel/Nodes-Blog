@@ -2,6 +2,7 @@ import "../styles/LandingPage.css";
 import { useRef, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import ProfileContext from "../contexts/context-create/ProfileContext";
 function LandingNav({ openDialog, setDialogTitle, setActiveTab }) {
   return (
     <div className="l-nav-container">
@@ -72,9 +73,6 @@ function LandingFooter() {
   return (
     <div className="l-foot-container">
       <div className="foot-flex-container">
-        {/* <a href="" className="about-footer">
-          About
-        </a> */}
         <a
           href="https://github.com/Etativel/Nodes-Blog"
           className="about-github"
@@ -322,6 +320,7 @@ function SignDialog({
                 setIsValidating(false);
                 return;
               }
+              // const data = await response.json();
               navigate("/posts");
             } catch (error) {
               setLoginError("An error occurred. Please try again", error);
@@ -704,10 +703,8 @@ function LandingPage() {
   const [openDialog, setOpenDialog] = useState(null);
   const [dialogTitle, setDialogTitle] = useState("");
   const [activeTab, setActiveTab] = useState("default");
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     fetch("http://localhost:3000/auth/profile", {
       credentials: "include",

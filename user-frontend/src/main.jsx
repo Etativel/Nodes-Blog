@@ -6,32 +6,33 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LandingPage from "./pages/LandingPage.jsx";
 import UserProfilePage from "./pages/UserProfilePage.jsx";
 import UserAbout from "./components/UserAbout.jsx";
-import { ProfileProvider } from "./contexts/ProfileProvider.jsx";
-import Loader from "./components/Loader.jsx";
+import Homepage from "./pages/HomePage.jsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <LandingPage />,
   },
   {
-    path: "/posts",
     element: <App />,
-  },
-  {
-    path: "/post/:postId",
-    element: <PostPage />,
-  },
-  {
-    path: "/loader",
-    element: <Loader />,
-  },
-  {
-    path: "/:username",
-    element: <UserProfilePage />,
     children: [
       {
-        path: "/:username/about",
-        element: <UserAbout />,
+        path: "/posts",
+        element: <Homepage />,
+      },
+      {
+        path: "/post/:postId",
+        element: <PostPage />,
+      },
+      {
+        path: "/:username",
+        element: <UserProfilePage />,
+        children: [
+          {
+            path: "about",
+            element: <UserAbout />,
+          },
+        ],
       },
     ],
   },
@@ -39,8 +40,6 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <ProfileProvider>
-      <RouterProvider router={router} />
-    </ProfileProvider>
+    <RouterProvider router={router} />
   </StrictMode>
 );

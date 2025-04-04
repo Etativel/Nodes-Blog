@@ -4,6 +4,7 @@ import Navigation from "../components/Navbar";
 import PostHead from "../components/PostHead";
 import "../styles/PostPage.css";
 import Loader from "../components/Loader";
+import CommentSection from "../components/CommentSection";
 function timePosted(dateString) {
   const date = new Date(dateString);
   const now = new Date();
@@ -66,11 +67,11 @@ function PostPage() {
 
   return (
     <>
-      <Navigation></Navigation>
       <div className="blog-post-container">
         {loading ? (
           <Loader />
         ) : (
+          // <div class Name="sd">ddd</div>
           <>
             <PostHead
               title={post.title}
@@ -91,6 +92,8 @@ function PostPage() {
                 <p>No current post</p>
               )}
             </div>
+            <div className="liner">&nbsp;</div>
+            <CommentSection />
           </>
         )}
       </div>
