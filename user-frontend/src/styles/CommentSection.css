@@ -106,7 +106,7 @@
 }
 
 .comment-content {
-  line-height: 1.5;
+  line-height: 1.1;
   white-space: pre-line;
   overflow-wrap: break-word;
   word-break: break-word;
@@ -169,4 +169,12 @@
 .click-to-delete {
   color: #c94a4a;
   cursor: pointer;
+}
+
+.show-more-btn {
+  background-color: transparent;
+  border: 0px;
+  color: gray;
+  cursor: pointer;
+  transform: translateY(-5px);
 }

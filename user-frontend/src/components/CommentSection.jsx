@@ -10,6 +10,7 @@ function CommentSection({ postId, comments, timePosted }) {
   const disableSubmit = content.trim() === "" || loadingPostComment;
   const [commentList, setCommentList] = useState([]);
   const [openDropdownCommentId, setOpenDropdownCommentId] = useState(null);
+  const [expandComment, setExpandComment] = useState({});
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -125,7 +126,12 @@ function CommentSection({ postId, comments, timePosted }) {
     e.stopPropagation();
     console.log(content);
   }
-
+  function toggleExpanded(commentId) {
+    setExpandComment((prev) => ({
+      ...prev,
+      [commentId]: !prev[commentId],
+    }));
+  }
   return (
     <div className="comment-section-container">
       <div className="write-comment-ctr">
@@ -253,7 +259,19 @@ function CommentSection({ postId, comments, timePosted }) {
                 </div>
               </div>
               <div className="comment-middle">
-                <p className="comment-content">{comment.content}</p>
+                <p className="comment-content">
+                  {expandComment[comment.id] || comment.content.length <= 150
+                    ? comment.content
+                    : `${comment.content.slice(0, 200)}... `}
+                </p>
+                {comment.content.length > 200 && (
+                  <button
+                    className="show-more-btn"
+                    onClick={() => toggleExpanded(comment.id)}
+                  >
+                    {expandComment[comment.id] ? "Show less" : "Show more"}
+                  </button>
+                )}
               </div>
               <div className="comment-bottom">
                 <button>Like</button>
