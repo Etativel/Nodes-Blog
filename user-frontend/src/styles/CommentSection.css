@@ -1,13 +1,10 @@
 .comment-section-container {
   /* background-color: red; */
   max-width: 750px;
-  padding-left: 24px;
-  padding-right: 24px;
   width: 100%;
   text-align: justify;
   padding: 12px;
-  padding-left: 18px;
-  padding-right: 18px;
+
   margin-bottom: 320px;
 }
 
@@ -21,7 +18,7 @@
 
 .user-name {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: medium;
+  font-size: 0.9rem;
   font-weight: 500;
 }
 
@@ -64,4 +61,112 @@
   background-color: #f9f9f9;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
+}
+
+.comment-ctr {
+  border-bottom: solid #f2f2f2 1px;
+  /* padding-right: 12px; */
+  padding-top: 24px;
+  padding-bottom: 18px;
+}
+
+.comment-top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.comment-top-left {
+  display: flex;
+}
+
+.user-comment-profilepicture {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+
+.comment-content,
+.comment-username {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.9rem;
+}
+
+.comment-user-info {
+  padding-left: 12px;
+}
+
+.comment-created-at {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.7rem;
+  color: gray;
+}
+
+.comment-middle {
+  padding-top: 12px;
+}
+
+.comment-content {
+  line-height: 1.5;
+  white-space: pre-line;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.edit-comment-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 0px;
+  position: relative;
+}
+.edit-comment-icon {
+  width: 20px;
+  cursor: pointer;
+}
+
+.comment-content {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.edit-comment-dropdown {
+  position: absolute;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  top: 18px;
+  width: 150px;
+  left: 80%;
+  transform: translateX(-100%);
+
+  flex-direction: column;
+  padding: 12px;
+  gap: 12px;
+  padding-left: 24px;
+  border-radius: 3px;
+  background-color: white;
+  display: flex;
+  /* opacity: 0%; */
+  /* display: none; */
+  /* transform: translateY(-10%); */
+  /* transition: opacity 0.3s ease, transform 0.3s ease; */
+}
+
+.cmnt-edit-btn {
+  width: fit-content;
+  font-size: 0.9rem;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.click-to-edit {
+  color: #6b6b6b;
+  cursor: pointer;
+}
+
+.click-to-edit:hover {
+  color: black;
+}
+
+.click-to-delete {
+  color: #c94a4a;
+  cursor: pointer;
 }

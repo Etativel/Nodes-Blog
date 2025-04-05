@@ -2,12 +2,45 @@ import { useContext, useRef, useState, useEffect } from "react";
 import ProfileContext from "../contexts/context-create/ProfileContext";
 import "../styles/CommentSection.css";
 
-function CommentSection({ postId }) {
+function CommentSection({ postId, comments, timePosted }) {
   const { author, loading } = useContext(ProfileContext);
   const [content, setContent] = useState("");
   const textareaInput = useRef(null);
   const [loadingPostComment, setLoadingPostComment] = useState(false);
   const disableSubmit = content.trim() === "" || loadingPostComment;
+  const [commentList, setCommentList] = useState([]);
+  const [openDropdownCommentId, setOpenDropdownCommentId] = useState(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (openDropdownCommentId === null) return;
+
+      const isInsideButton = event.target.closest(
+        `[data-comment-id="${openDropdownCommentId}"]`
+      );
+
+      const isInsideDropdown = event.target.closest(
+        `.edit-comment-dropdown[data-comment-id="${openDropdownCommentId}"]`
+      );
+
+      if (!isInsideButton && !isInsideDropdown) {
+        setOpenDropdownCommentId(null);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [openDropdownCommentId]);
+
+  function toggleDropdown(commentId) {
+    setOpenDropdownCommentId((prev) => (prev === commentId ? null : commentId));
+  }
+
+  useEffect(() => {
+    setCommentList(comments);
+  }, [comments]);
 
   useEffect(() => {
     if (textareaInput.current) {
@@ -16,6 +49,16 @@ function CommentSection({ postId }) {
         textareaInput.current.scrollHeight + "px";
     }
   }, [content]);
+
+  async function fetchComments() {
+    try {
+      const response = await fetch(`http://localhost:3000/post/${postId}`);
+      const data = await response.json();
+      setCommentList(data.post.comments);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+    }
+  }
 
   function handleCommentChange(e) {
     setContent(e.target.value);
@@ -45,6 +88,7 @@ function CommentSection({ postId }) {
         return;
       }
 
+      fetchComments();
       setLoadingPostComment(false);
       setContent("");
       if (textareaInput.current) {
@@ -56,6 +100,32 @@ function CommentSection({ postId }) {
       console.log(error);
     }
   }
+
+  async function handleDeleteComment(e, commentId) {
+    e.stopPropagation();
+    try {
+      const response = await fetch(
+        `http://localhost:3000/comment/delete/${commentId}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (!response.ok) {
+        console.log("Error deleting comment ", response.status);
+      }
+      await response.json();
+      console.log("Success deleting comment");
+      fetchComments();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  function handleEditComment(e, commentId, content) {
+    e.stopPropagation();
+    console.log(content);
+  }
+
   return (
     <div className="comment-section-container">
       <div className="write-comment-ctr">
@@ -111,7 +181,88 @@ function CommentSection({ postId }) {
           </div>
         </div>
       </div>
-      <div className="display-comment"></div>
+      <div className="display-comment">
+        {commentList.map((comment) => {
+          return (
+            <div key={comment.id} className="comment-ctr">
+              <div className="comment-top">
+                <div className="comment-top-left">
+                  <img
+                    className="user-comment-profilepicture"
+                    src={comment.author.profilePicture}
+                    alt=""
+                  />
+                  <div className="comment-user-info">
+                    <div className="comment-username">
+                      {comment.author.fullName || comment.author.username}
+                    </div>
+                    <div className="comment-created-at">
+                      {timePosted(comment.createdAt)}
+                    </div>
+                  </div>
+                </div>
+                <div className="comment-top-right">
+                  {loading ? (
+                    ""
+                  ) : author?.username !== comment.author.username ? (
+                    <div></div>
+                  ) : (
+                    <button
+                      className="edit-comment-btn"
+                      data-comment-id={comment.id}
+                      onClick={() => toggleDropdown(comment.id)}
+                    >
+                      {openDropdownCommentId === comment.id && (
+                        <div
+                          data-comment-id={comment.id}
+                          className="edit-comment-dropdown"
+                        >
+                          <div
+                            className="click-to-edit cmnt-edit-btn"
+                            onClick={(e) =>
+                              handleEditComment(e, comment.id, comment.content)
+                            }
+                          >
+                            Edit Comment
+                          </div>
+                          <div
+                            className="click-to-delete cmnt-edit-btn"
+                            onClick={(e) => handleDeleteComment(e, comment.id)}
+                          >
+                            Delete comment
+                          </div>
+                        </div>
+                      )}
+
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1}
+                        stroke="currentColor"
+                        className="size-6 edit-comment-icon"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                        />
+                      </svg>
+                    </button>
+                  )}
+                </div>
+              </div>
+              <div className="comment-middle">
+                <p className="comment-content">{comment.content}</p>
+              </div>
+              <div className="comment-bottom">
+                <button>Like</button>
+                <button>Reply</button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

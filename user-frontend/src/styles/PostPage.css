@@ -13,7 +13,8 @@
   width: 100%;
 }
 
-.blog-post-container img:not(.profile-pict, .profile-pict-cs) {
+.blog-post-container
+  img:not(.profile-pict, .profile-pict-cs, .user-comment-profilepicture) {
   max-width: 100%;
   max-height: calc(100vh - 20px);
   height: auto;
@@ -45,7 +46,8 @@
 }
 
 @media (max-width: 500px) {
-  .blog-post-container img:not(.profile-pict, .profile-pict-cs) {
+  .blog-post-container
+    img:not(.profile-pict, .profile-pict-cs, .user-comment-profilepicture) {
     max-width: 100%;
     max-height: calc(100vh - 20px);
     height: auto;

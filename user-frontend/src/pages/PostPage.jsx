@@ -55,7 +55,9 @@ function PostPage() {
         }
         const postData = await response.json();
         setPost(postData.post);
+        setLoading(false);
       } catch (error) {
+        setLoading(false);
         console.error("Error fetching post: ", error);
       } finally {
         setLoading(false);
@@ -93,7 +95,11 @@ function PostPage() {
               )}
             </div>
             <div className="liner">&nbsp;</div>
-            <CommentSection postId={postId} />
+            <CommentSection
+              postId={postId}
+              comments={post?.comments}
+              timePosted={timePosted}
+            />
           </>
         )}
       </div>

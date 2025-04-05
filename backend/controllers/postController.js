@@ -72,6 +72,17 @@ async function getPost(req, res) {
             following: true,
           },
         },
+        comments: {
+          include: {
+            author: {
+              select: {
+                username: true,
+                fullName: true,
+                profilePicture: true,
+              },
+            },
+          },
+        },
       },
     });
     if (!post) {
