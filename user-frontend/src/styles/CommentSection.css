@@ -35,11 +35,13 @@
   background-color: transparent;
 }
 
+.edit-comment-input-ctr,
 .comment-input-ctr {
   display: flex;
   flex-direction: column;
 }
 
+.edit-comment-input,
 .comment-input {
   width: 100%;
   resize: none;

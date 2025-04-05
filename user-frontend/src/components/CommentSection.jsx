@@ -6,12 +6,20 @@ function CommentSection({ postId, comments, timePosted }) {
   const { author, loading } = useContext(ProfileContext);
   const [content, setContent] = useState("");
   const textareaInput = useRef(null);
+  const textareaEditInput = useRef(null);
   const [loadingPostComment, setLoadingPostComment] = useState(false);
   const disableSubmit = content.trim() === "" || loadingPostComment;
   const [commentList, setCommentList] = useState([]);
   const [openDropdownCommentId, setOpenDropdownCommentId] = useState(null);
   const [expandComment, setExpandComment] = useState({});
-
+  const [onEdit, setOnEdit] = useState(null);
+  const [editContent, setEditContent] = useState("");
+  const currentEditValue = useRef("");
+  const disableEditSubmit =
+    !editContent ||
+    editContent.trim() === "" ||
+    editContent === currentEditValue.current ||
+    loadingPostComment;
   useEffect(() => {
     function handleClickOutside(event) {
       if (openDropdownCommentId === null) return;
@@ -50,6 +58,14 @@ function CommentSection({ postId, comments, timePosted }) {
         textareaInput.current.scrollHeight + "px";
     }
   }, [content]);
+
+  useEffect(() => {
+    if (textareaEditInput.current) {
+      textareaEditInput.current.style.height = "auto";
+      textareaEditInput.current.style.height =
+        textareaEditInput.current.scrollHeight + "px";
+    }
+  }, [editContent]);
 
   async function fetchComments() {
     try {
@@ -123,15 +139,63 @@ function CommentSection({ postId, comments, timePosted }) {
   }
 
   function handleEditComment(e, commentId, content) {
+    // Set onEdit with commentId
+    currentEditValue.current = content;
     e.stopPropagation();
-    console.log(content);
+    setEditContent(content);
+    setOnEdit(commentId);
   }
+
   function toggleExpanded(commentId) {
     setExpandComment((prev) => ({
       ...prev,
       [commentId]: !prev[commentId],
     }));
   }
+
+  function handleEditChange(e) {
+    setEditContent(e.target.value);
+  }
+
+  async function handleEditSubmit(e) {
+    e.preventDefault();
+    console.log(editContent);
+    console.log(onEdit);
+    setLoadingPostComment(true);
+    try {
+      const response = await fetch(
+        `http://localhost:3000/comment/update/${onEdit}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          method: "PATCH",
+          body: JSON.stringify({
+            commentId: onEdit,
+            content: editContent,
+          }),
+        }
+      );
+      if (!response.ok) {
+        setLoadingPostComment(false);
+        console.log("Failed to update comment");
+      }
+
+      setCommentList((prev) =>
+        prev.map((comment) =>
+          comment.id === onEdit ? { ...comment, content: editContent } : comment
+        )
+      );
+      setLoadingPostComment(false);
+      setEditContent("");
+      setOnEdit(null);
+      console.log("Update comment successfully");
+    } catch (error) {
+      console.log(error);
+      setLoadingPostComment(false);
+    }
+  }
+
   return (
     <div className="comment-section-container">
       <div className="write-comment-ctr">
@@ -180,7 +244,7 @@ function CommentSection({ postId, comments, timePosted }) {
             </div>
             <div>
               <button>Cancel</button>
-              <button onClick={handleSubmit} disabled={disableSubmit}>
+              <button onClick={(e) => handleSubmit(e)} disabled={disableSubmit}>
                 Submit
               </button>
             </div>
@@ -190,93 +254,144 @@ function CommentSection({ postId, comments, timePosted }) {
       <div className="display-comment">
         {commentList.map((comment) => {
           return (
-            <div key={comment.id} className="comment-ctr">
-              <div className="comment-top">
-                <div className="comment-top-left">
-                  <img
-                    className="user-comment-profilepicture"
-                    src={comment.author.profilePicture}
-                    alt=""
+            <div key={comment.id}>
+              {comment.id === onEdit ? (
+                // Edit comment
+                <div className="edit-comment-input-ctr">
+                  <textarea
+                    name="editContent"
+                    value={editContent}
+                    ref={textareaEditInput}
+                    id=""
+                    className="edit-comment-input"
+                    onChange={(e) => {
+                      handleEditChange(e);
+                    }}
+                    style={{
+                      overflow: "hidden",
+                    }}
                   />
-                  <div className="comment-user-info">
-                    <div className="comment-username">
-                      {comment.author.fullName || comment.author.username}
+                  <div className="submit-comment-btn">
+                    <div>
+                      <button>I</button>
+                      <button>B</button>
                     </div>
-                    <div className="comment-created-at">
-                      {timePosted(comment.createdAt)}
+                    <div>
+                      <button
+                        onClick={() => {
+                          setOnEdit(null);
+                          setEditContent(null);
+                        }}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={(e) => handleEditSubmit(e)}
+                        disabled={disableEditSubmit}
+                      >
+                        Submit
+                      </button>
                     </div>
                   </div>
                 </div>
-                <div className="comment-top-right">
-                  {loading ? (
-                    ""
-                  ) : author?.username !== comment.author.username ? (
-                    <div></div>
-                  ) : (
-                    <button
-                      className="edit-comment-btn"
-                      data-comment-id={comment.id}
-                      onClick={() => toggleDropdown(comment.id)}
-                    >
-                      {openDropdownCommentId === comment.id && (
-                        <div
-                          data-comment-id={comment.id}
-                          className="edit-comment-dropdown"
-                        >
-                          <div
-                            className="click-to-edit cmnt-edit-btn"
-                            onClick={(e) =>
-                              handleEditComment(e, comment.id, comment.content)
-                            }
-                          >
-                            Edit Comment
-                          </div>
-                          <div
-                            className="click-to-delete cmnt-edit-btn"
-                            onClick={(e) => handleDeleteComment(e, comment.id)}
-                          >
-                            Delete comment
-                          </div>
+              ) : (
+                // Comment preview
+                <div key={comment.id} className="comment-ctr">
+                  <div className="comment-top">
+                    <div className="comment-top-left">
+                      <img
+                        className="user-comment-profilepicture"
+                        src={comment.author.profilePicture}
+                        alt=""
+                      />
+                      <div className="comment-user-info">
+                        <div className="comment-username">
+                          {comment.author.fullName || comment.author.username}
                         </div>
-                      )}
+                        <div className="comment-created-at">
+                          {timePosted(comment.createdAt)}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="comment-top-right">
+                      {loading ? (
+                        ""
+                      ) : author?.username !== comment.author.username ? (
+                        <div></div>
+                      ) : (
+                        <button
+                          className="edit-comment-btn"
+                          data-comment-id={comment.id}
+                          onClick={() => toggleDropdown(comment.id)}
+                        >
+                          {openDropdownCommentId === comment.id && (
+                            <div
+                              data-comment-id={comment.id}
+                              className="edit-comment-dropdown"
+                            >
+                              <div
+                                className="click-to-edit cmnt-edit-btn"
+                                onClick={(e) =>
+                                  handleEditComment(
+                                    e,
+                                    comment.id,
+                                    comment.content
+                                  )
+                                }
+                              >
+                                Edit Comment
+                              </div>
+                              <div
+                                className="click-to-delete cmnt-edit-btn"
+                                onClick={(e) =>
+                                  handleDeleteComment(e, comment.id)
+                                }
+                              >
+                                Delete comment
+                              </div>
+                            </div>
+                          )}
 
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1}
-                        stroke="currentColor"
-                        className="size-6 edit-comment-icon"
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1}
+                            stroke="currentColor"
+                            className="size-6 edit-comment-icon"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                            />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                  <div className="comment-middle">
+                    <p className="comment-content">
+                      {expandComment[comment.id] ||
+                      comment.content.length <= 150
+                        ? comment.content
+                        : `${comment.content.slice(0, 200)}... `}
+                    </p>
+                    {comment.content.length > 200 && (
+                      <button
+                        className="show-more-btn"
+                        onClick={() => toggleExpanded(comment.id)}
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
-                        />
-                      </svg>
-                    </button>
-                  )}
+                        {expandComment[comment.id] ? "Show less" : "Show more"}
+                      </button>
+                    )}
+                  </div>
+                  <div className="comment-bottom">
+                    <button>Like</button>
+                    <button>Reply</button>
+                  </div>
                 </div>
-              </div>
-              <div className="comment-middle">
-                <p className="comment-content">
-                  {expandComment[comment.id] || comment.content.length <= 150
-                    ? comment.content
-                    : `${comment.content.slice(0, 200)}... `}
-                </p>
-                {comment.content.length > 200 && (
-                  <button
-                    className="show-more-btn"
-                    onClick={() => toggleExpanded(comment.id)}
-                  >
-                    {expandComment[comment.id] ? "Show less" : "Show more"}
-                  </button>
-                )}
-              </div>
-              <div className="comment-bottom">
-                <button>Like</button>
-                <button>Reply</button>
-              </div>
+              )}
             </div>
           );
         })}
