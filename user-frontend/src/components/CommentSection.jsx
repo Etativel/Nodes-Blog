@@ -299,11 +299,23 @@ function CommentSection({ postId, comments, timePosted }) {
                 <div key={comment.id} className="comment-ctr">
                   <div className="comment-top">
                     <div className="comment-top-left">
-                      <img
-                        className="user-comment-profilepicture"
-                        src={comment.author.profilePicture}
-                        alt=""
-                      />
+                      {comment.author.profilePicture ? (
+                        <img
+                          className="user-comment-profilepicture"
+                          src={comment.author.profilePicture}
+                          alt=""
+                        />
+                      ) : (
+                        <div
+                          className="user-comment-profilepicture"
+                          style={{
+                            backgroundColor: comment.author.userColor,
+                          }}
+                        >
+                          {comment.author.username.charAt(0)}
+                        </div>
+                      )}
+
                       <div className="comment-user-info">
                         <div className="comment-username">
                           {comment.author.fullName || comment.author.username}
