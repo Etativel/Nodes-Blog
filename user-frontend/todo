@@ -1,7 +1,5 @@
-Fix provileProvider on login and logout
-
 separate api return for frontend and backend
 
 404 Page
 
-post comments, like mechanism, saved post
+post comments, like mechanism, saved post, pinned comment
