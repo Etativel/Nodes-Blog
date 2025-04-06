@@ -37,8 +37,7 @@ async function addComment(req, res) {
 // UPDATE POST
 
 async function updateComment(req, res) {
-  const { commentId } = req.params;
-  const { content } = req.body;
+  const { content, commentId } = req.body;
   try {
     const updatedComment = await prisma.comment.update({
       where: {

@@ -73,12 +73,16 @@ async function getPost(req, res) {
           },
         },
         comments: {
+          orderBy: {
+            createdAt: "asc",
+          },
           include: {
             author: {
               select: {
                 username: true,
                 fullName: true,
                 profilePicture: true,
+                userColor: true,
               },
             },
           },

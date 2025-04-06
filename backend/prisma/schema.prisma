@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -31,6 +25,8 @@ model User {
 
   followers Follower[] @relation("followers")
   following Follower[] @relation("following")
+
+  commentReactions           CommentReaction[]
 }
 
 model Follower {
@@ -68,6 +64,30 @@ model Comment {
   author    User?    @relation(fields: [authorId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  parentId    String? 
+  parent      Comment? @relation("CommentReplies", fields: [parentId], references: [id])
+  
+  replies     Comment[] @relation("CommentReplies")
+  reactions   CommentReaction[]
+}
+
+model CommentReaction {
+  id        String   @id @default(uuid())
+  commentId String
+  userId    String
+  reaction  ReactionType
+  createdAt DateTime @default(now())
+
+  comment   Comment @relation(fields: [commentId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
+
+  @@unique([commentId, userId])
+}
+
+enum ReactionType {
+  LIKE
+  DISLIKE
 }
 
 enum Role {
