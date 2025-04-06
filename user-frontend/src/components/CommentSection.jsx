@@ -21,9 +21,15 @@ function CommentPreview({
   toggleDropdown,
   openDropdownCommentId,
   handleDeleteComment,
+  fetchComments,
+  setLoadingPostComment,
+  postId,
+  parentId,
 }) {
   const textareaReplyRef = useRef(null);
   const [replyContent, setReplyContent] = useState("");
+  const disableReplySubmit = replyContent.trim() === "";
+  const [isOnReply, setIsOnReply] = useState(false);
 
   useEffect(() => {
     if (textareaReplyRef.current) {
@@ -35,6 +41,47 @@ function CommentPreview({
 
   function handleReplyChange(e) {
     setReplyContent(e.target.value);
+  }
+  function toggleReply() {
+    setIsOnReply(!isOnReply);
+  }
+
+  async function handleReplySubmit(e) {
+    e.preventDefault();
+    try {
+      setLoadingPostComment(true);
+      const response = await fetch("http://localhost:3000/comment/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          postId,
+          content: replyContent,
+          authorId: author.id,
+          parentId,
+        }),
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        setLoadingPostComment(false);
+        console.error("Failed to post comment:", data.error || "Unknown error");
+        return;
+      }
+
+      fetchComments();
+      setLoadingPostComment(false);
+      setReplyContent("");
+      setIsOnReply(!isOnReply);
+      if (textareaReplyRef.current) {
+        textareaReplyRef.current.style.height = "auto";
+      }
+      console.log("comment posted");
+    } catch (error) {
+      setLoadingPostComment(false);
+      console.log(error);
+    }
   }
 
   return (
@@ -171,7 +218,7 @@ function CommentPreview({
           </div>
           <div className="comment-middle">
             <p className="comment-content">
-              {expandComment[comment.id] || comment.content.length <= 150
+              {expandComment[comment.id] || comment.content.length <= 200
                 ? comment.content
                 : `${comment.content.slice(0, 200)}... `}
             </p>
@@ -220,41 +267,48 @@ function CommentPreview({
             </button>
             <span className="total-dislike-on-comment">12k</span>
             <div className="author-like-ctr"></div>
-            <button className="reply-comment-btn">Reply</button>
+            <button className="reply-comment-btn" onClick={() => toggleReply()}>
+              Reply
+            </button>
           </div>
-          <div className="reply-input-container">
-            <textarea
-              ref={textareaReplyRef}
-              placeholder="Write a reply..."
-              name="reply"
-              value={replyContent}
-              id=""
-              className="reply-input"
-              onChange={(e) => {
-                handleReplyChange(e);
-              }}
-              style={{
-                overflow: "hidden",
-              }}
-            />
-            <div className="submit-reply-btn">
-              <div>
-                {/* <button>I</button> */}
-                {/* <button>B</button> */}
-              </div>
-              <div>
-                <button
-                // className={`submit-reply ${
-                //   disableSubmit ? "disabled" : "active"
-                // }`}
-                // onClick={(e) => handleSubmit(e)}
-                // disabled={disableSubmit}
-                >
-                  Submit
-                </button>
+          {/* Reply content */}
+          {isOnReply ? (
+            <div className="reply-input-container">
+              <textarea
+                ref={textareaReplyRef}
+                placeholder="Write a reply..."
+                name="reply"
+                value={replyContent}
+                id=""
+                className="reply-input"
+                onChange={(e) => {
+                  handleReplyChange(e);
+                }}
+                style={{
+                  overflow: "hidden",
+                }}
+              />
+              <div className="submit-reply-btn">
+                <div>
+                  {/* <button>I</button> */}
+                  {/* <button>B</button> */}
+                </div>
+                <div>
+                  <button
+                    className={`submit-reply ${
+                      disableReplySubmit ? "disabled" : "active"
+                    }`}
+                    onClick={(e) => handleReplySubmit(e)}
+                    disabled={disableReplySubmit}
+                  >
+                    Submit
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            ""
+          )}
         </div>
       )}
     </div>
@@ -273,6 +327,7 @@ function CommentSection({ postId, comments, timePosted }) {
   const [expandComment, setExpandComment] = useState({});
   const [onEdit, setOnEdit] = useState(null);
   const [editContent, setEditContent] = useState("");
+  const [expandedReplies, setExpandedReplies] = useState({});
   const currentEditValue = useRef("");
 
   const disableEditSubmit =
@@ -456,7 +511,12 @@ function CommentSection({ postId, comments, timePosted }) {
       setLoadingPostComment(false);
     }
   }
-
+  function toggleReplies(commentId) {
+    setExpandedReplies((prev) => ({
+      ...prev,
+      [commentId]: !prev[commentId],
+    }));
+  }
   return (
     <div className="comment-section-container">
       <div className="write-comment-ctr">
@@ -520,26 +580,77 @@ function CommentSection({ postId, comments, timePosted }) {
       <div className="display-comment">
         {commentList.map((comment) => {
           return (
-            <CommentPreview
-              comment={comment}
-              onEdit={onEdit}
-              handleEditChange={handleEditChange}
-              handleEditComment={handleEditComment}
-              handleEditSubmit={handleEditSubmit}
-              editContent={editContent}
-              setOnEdit={setOnEdit}
-              setEditContent={setEditContent}
-              disableEditSubmit={disableEditSubmit}
-              author={author}
-              timePosted={timePosted}
-              loading={loading}
-              expandComment={expandComment}
-              toggleExpanded={toggleExpanded}
-              textareaEditInput={textareaEditInput}
-              toggleDropdown={toggleDropdown}
-              openDropdownCommentId={openDropdownCommentId}
-              handleDeleteComment={handleDeleteComment}
-            />
+            <>
+              {comment.parentId === null && (
+                <>
+                  <CommentPreview
+                    key={comment.id}
+                    comment={comment}
+                    onEdit={onEdit}
+                    handleEditChange={handleEditChange}
+                    handleEditComment={handleEditComment}
+                    handleEditSubmit={handleEditSubmit}
+                    editContent={editContent}
+                    setOnEdit={setOnEdit}
+                    setEditContent={setEditContent}
+                    disableEditSubmit={disableEditSubmit}
+                    author={author}
+                    timePosted={timePosted}
+                    loading={loading}
+                    expandComment={expandComment}
+                    toggleExpanded={toggleExpanded}
+                    textareaEditInput={textareaEditInput}
+                    toggleDropdown={toggleDropdown}
+                    openDropdownCommentId={openDropdownCommentId}
+                    handleDeleteComment={handleDeleteComment}
+                    fetchComments={fetchComments}
+                    setLoadingPostComment={setLoadingPostComment}
+                    postId={postId}
+                    parentId={comment.id}
+                    setCommentList={setCommentList}
+                  />
+                  <div className="reply-container">
+                    {expandedReplies[comment.id] &&
+                      comments
+                        .filter((reply) => reply.parentId === comment.id)
+                        .map((reply) => (
+                          <CommentPreview
+                            key={reply.id}
+                            comment={reply}
+                            onEdit={onEdit}
+                            handleEditChange={handleEditChange}
+                            handleEditComment={handleEditComment}
+                            handleEditSubmit={handleEditSubmit}
+                            editContent={editContent}
+                            setOnEdit={setOnEdit}
+                            setEditContent={setEditContent}
+                            disableEditSubmit={disableEditSubmit}
+                            author={author}
+                            timePosted={timePosted}
+                            loading={loading}
+                            expandComment={expandComment}
+                            toggleExpanded={toggleExpanded}
+                            textareaEditInput={textareaEditInput}
+                            toggleDropdown={toggleDropdown}
+                            openDropdownCommentId={openDropdownCommentId}
+                            handleDeleteComment={handleDeleteComment}
+                            fetchComments={fetchComments}
+                            setLoadingPostComment={setLoadingPostComment}
+                            postId={postId}
+                            parentId={comment.id}
+                            setCommentList={setCommentList}
+                          />
+                        ))}
+                  </div>
+
+                  <button onClick={() => toggleReplies(comment.id)}>
+                    {expandedReplies[comment.id]
+                      ? "Hide Replies"
+                      : "Show Replies"}
+                  </button>
+                </>
+              )}
+            </>
           );
         })}
       </div>

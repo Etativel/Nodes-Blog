@@ -326,22 +326,11 @@
   justify-content: space-between;
   padding: 8px;
   padding-top: 0px;
+  padding-bottom: 12px;
   background-color: #f9f9f9;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   /* background-color: red; */
-}
-
-.submit-reply {
-  background-color: transparent;
-  border-radius: 12px;
-  padding: 4px 8px 4px;
-  border: solid 1px #156d12;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #156d12;
 }
 
 .reply-input {
@@ -356,4 +345,32 @@
   outline: none;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
+}
+
+.submit-reply {
+  background-color: transparent;
+  border-radius: 12px;
+  padding: 4px 8px 4px;
+  border: solid 1px #156d12;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #156d12;
+}
+
+.submit-reply.active {
+  background-color: #156d12;
+  color: white;
+}
+
+.submit-reply.disabled {
+  opacity: 50%;
+  cursor: default;
+}
+
+.reply-container {
+  margin-left: 24px;
+  border-left: solid #f2f2f2 1px;
+  padding-left: 24px;
 }
