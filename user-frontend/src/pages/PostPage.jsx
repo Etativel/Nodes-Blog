@@ -44,7 +44,7 @@ function PostPage() {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  console.log(post);
   useEffect(() => {
     async function fetchCurrentPost() {
       try {
@@ -99,6 +99,7 @@ function PostPage() {
               postId={postId}
               comments={post?.comments}
               timePosted={timePosted}
+              postAuthorId={post.authorId}
             />
           </>
         )}

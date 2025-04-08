@@ -25,6 +25,7 @@ function CommentPreview({
   setLoadingPostComment,
   postId,
   parentId,
+  postAuthorId,
 }) {
   const textareaReplyRef = useRef(null);
   const [replyContent, setReplyContent] = useState("");
@@ -37,6 +38,8 @@ function CommentPreview({
         textareaReplyRef.current.scrollHeight + "px";
     }
   }, [replyContent]);
+
+  console.log();
 
   function handleReplyChange(e) {
     setReplyContent(e.target.value);
@@ -161,7 +164,7 @@ function CommentPreview({
               <div className="comment-user-info">
                 <div className="comment-username">
                   {comment.author.fullName || comment.author.username}
-                  {comment.authorId === author?.id ? (
+                  {comment.authorId === postAuthorId ? (
                     <span className="is-author">Author</span>
                   ) : (
                     ""
@@ -181,7 +184,10 @@ function CommentPreview({
                 <button
                   className="edit-comment-btn"
                   data-comment-id={comment.id}
-                  onClick={() => toggleDropdown(comment.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleDropdown(comment.id);
+                  }}
                 >
                   {openDropdownCommentId === comment.id && (
                     <div
@@ -322,7 +328,120 @@ function CommentPreview({
   );
 }
 
-function CommentSection({ postId, comments, timePosted }) {
+function CommentNode({
+  comment,
+  allComments,
+  toggleDropdown,
+  onEdit,
+  handleEditChange,
+  handleEditComment,
+  handleEditSubmit,
+  editContent,
+  setOnEdit,
+  setEditContent,
+  disableEditSubmit,
+  author,
+  timePosted,
+  loading,
+  expandComment,
+  toggleExpanded,
+  textareaEditInput,
+  toggleReplies,
+  expandedReplies,
+  openDropdownCommentId,
+  handleDeleteComment,
+  fetchComments,
+  setLoadingPostComment,
+  postId,
+  setCommentList,
+  postAuthorId,
+}) {
+  const replies = allComments.filter((c) => c.parentId === comment.id);
+
+  return (
+    <div
+      className="comment-node"
+      style={{ marginLeft: comment.parentId ? "1rem" : "0" }}
+    >
+      <CommentPreview
+        comment={comment}
+        onEdit={onEdit}
+        handleEditChange={handleEditChange}
+        handleEditComment={handleEditComment}
+        handleEditSubmit={handleEditSubmit}
+        editContent={editContent}
+        setOnEdit={setOnEdit}
+        setEditContent={setEditContent}
+        disableEditSubmit={disableEditSubmit}
+        author={author}
+        timePosted={timePosted}
+        loading={loading}
+        expandComment={expandComment}
+        toggleExpanded={toggleExpanded}
+        textareaEditInput={textareaEditInput}
+        toggleDropdown={toggleDropdown}
+        openDropdownCommentId={openDropdownCommentId}
+        handleDeleteComment={handleDeleteComment}
+        fetchComments={fetchComments}
+        setLoadingPostComment={setLoadingPostComment}
+        postId={postId}
+        setCommentList={setCommentList}
+        parentId={comment.id}
+        postAuthorId={postAuthorId}
+      />
+
+      {replies.length > 0 ? (
+        <>
+          <button
+            onClick={() => toggleReplies(comment.id)}
+            className="toggle-replies-btn"
+          >
+            {expandedReplies[comment.id] ? "Hide Replies" : "Show Replies"}
+          </button>
+          {expandedReplies[comment.id] && (
+            <div className="nested-replies">
+              {replies.map((reply) => (
+                <CommentNode
+                  key={reply.id}
+                  comment={reply}
+                  allComments={allComments}
+                  toggleReplies={toggleReplies}
+                  expandedReplies={expandedReplies}
+                  toggleDropdown={toggleDropdown}
+                  timePosted={timePosted}
+                  onEdit={onEdit}
+                  handleEditChange={handleEditChange}
+                  handleEditComment={handleEditComment}
+                  handleEditSubmit={handleEditSubmit}
+                  editContent={editContent}
+                  setOnEdit={setOnEdit}
+                  setEditContent={setEditContent}
+                  disableEditSubmit={disableEditSubmit}
+                  author={author}
+                  loading={loading}
+                  expandComment={expandComment}
+                  toggleExpanded={toggleExpanded}
+                  textareaEditInput={textareaEditInput}
+                  handleDeleteComment={handleDeleteComment}
+                  fetchComments={fetchComments}
+                  setLoadingPostComment={setLoadingPostComment}
+                  postId={postId}
+                  setCommentList={setCommentList}
+                  openDropdownCommentId={openDropdownCommentId}
+                  postAuthorId={postAuthorId}
+                />
+              ))}
+            </div>
+          )}
+        </>
+      ) : (
+        ""
+      )}
+    </div>
+  );
+}
+
+function CommentSection({ postId, comments, timePosted, postAuthorId }) {
   const { author, loading } = useContext(ProfileContext);
   const [content, setContent] = useState("");
   const textareaInput = useRef(null);
@@ -347,19 +466,16 @@ function CommentSection({ postId, comments, timePosted }) {
     function handleClickOutside(event) {
       if (openDropdownCommentId === null) return;
 
-      const isInsideButton = event.target.closest(
-        `[data-comment-id="${openDropdownCommentId}"]`
+      const isInsideAnyButton = event.target.closest("[data-comment-id]");
+
+      const isInsideAnyDropdown = event.target.closest(
+        ".edit-comment-dropdown"
       );
 
-      const isInsideDropdown = event.target.closest(
-        `.edit-comment-dropdown[data-comment-id="${openDropdownCommentId}"]`
-      );
-
-      if (!isInsideButton && !isInsideDropdown) {
+      if (!isInsideAnyButton && !isInsideAnyDropdown) {
         setOpenDropdownCommentId(null);
       }
     }
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -368,6 +484,7 @@ function CommentSection({ postId, comments, timePosted }) {
 
   function toggleDropdown(commentId) {
     setOpenDropdownCommentId((prev) => (prev === commentId ? null : commentId));
+    console.log(commentId);
   }
 
   useEffect(() => {
@@ -525,69 +642,6 @@ function CommentSection({ postId, comments, timePosted }) {
     }));
   }
 
-  function CommentNode({ comment, allComments }) {
-    const replies = allComments.filter((c) => c.parentId === comment.id);
-
-    return (
-      <div
-        className="comment-node"
-        style={{ marginLeft: comment.parentId ? "1rem" : "0" }}
-      >
-        <CommentPreview
-          comment={comment}
-          onEdit={onEdit}
-          handleEditChange={handleEditChange}
-          handleEditComment={handleEditComment}
-          handleEditSubmit={handleEditSubmit}
-          editContent={editContent}
-          setOnEdit={setOnEdit}
-          setEditContent={setEditContent}
-          disableEditSubmit={disableEditSubmit}
-          author={author}
-          timePosted={timePosted}
-          loading={loading}
-          expandComment={expandComment}
-          toggleExpanded={toggleExpanded}
-          textareaEditInput={textareaEditInput}
-          toggleDropdown={toggleDropdown}
-          openDropdownCommentId={openDropdownCommentId}
-          handleDeleteComment={handleDeleteComment}
-          fetchComments={fetchComments}
-          setLoadingPostComment={setLoadingPostComment}
-          postId={postId}
-          parentId={comment.id}
-          setCommentList={setCommentList}
-        />
-
-        {replies.length > 0 ? (
-          <>
-            <button
-              onClick={() => toggleReplies(comment.id)}
-              className="toggle-replies-btn"
-            >
-              {expandedReplies[comment.id] ? "Hide Replies" : "Show Replies"}
-            </button>
-            {expandedReplies[comment.id] && (
-              <div className="nested-replies">
-                {replies.map((reply) => (
-                  <CommentNode
-                    key={reply.id}
-                    comment={reply}
-                    allComments={allComments}
-                    toggleReplies={toggleReplies}
-                    expandedReplies={expandedReplies}
-                  />
-                ))}
-              </div>
-            )}
-          </>
-        ) : (
-          ""
-        )}
-      </div>
-    );
-  }
-
   return (
     <div className="comment-section-container">
       <div className="write-comment-ctr">
@@ -649,95 +703,39 @@ function CommentSection({ postId, comments, timePosted }) {
         </div>
       </div>
       <div className="display-comment">
-        {/* {commentList.map((comment) => {
-          return (
-            <>
-              {comment.parentId === null && (
-                <>
-                  <CommentPreview
-                    key={comment.id}
-                    comment={comment}
-                    onEdit={onEdit}
-                    handleEditChange={handleEditChange}
-                    handleEditComment={handleEditComment}
-                    handleEditSubmit={handleEditSubmit}
-                    editContent={editContent}
-                    setOnEdit={setOnEdit}
-                    setEditContent={setEditContent}
-                    disableEditSubmit={disableEditSubmit}
-                    author={author}
-                    timePosted={timePosted}
-                    loading={loading}
-                    expandComment={expandComment}
-                    toggleExpanded={toggleExpanded}
-                    textareaEditInput={textareaEditInput}
-                    toggleDropdown={toggleDropdown}
-                    openDropdownCommentId={openDropdownCommentId}
-                    handleDeleteComment={handleDeleteComment}
-                    fetchComments={fetchComments}
-                    setLoadingPostComment={setLoadingPostComment}
-                    postId={postId}
-                    parentId={comment.id}
-                    setCommentList={setCommentList}
-                  />
-                  <div className="reply-container">
-                    {expandedReplies[comment.id] &&
-                      comments
-                        .filter((reply) => reply.parentId === comment.id)
-                        .map((reply) => (
-                          <CommentPreview
-                            key={reply.id}
-                            comment={reply}
-                            onEdit={onEdit}
-                            handleEditChange={handleEditChange}
-                            handleEditComment={handleEditComment}
-                            handleEditSubmit={handleEditSubmit}
-                            editContent={editContent}
-                            setOnEdit={setOnEdit}
-                            setEditContent={setEditContent}
-                            disableEditSubmit={disableEditSubmit}
-                            author={author}
-                            timePosted={timePosted}
-                            loading={loading}
-                            expandComment={expandComment}
-                            toggleExpanded={toggleExpanded}
-                            textareaEditInput={textareaEditInput}
-                            toggleDropdown={toggleDropdown}
-                            openDropdownCommentId={openDropdownCommentId}
-                            handleDeleteComment={handleDeleteComment}
-                            fetchComments={fetchComments}
-                            setLoadingPostComment={setLoadingPostComment}
-                            postId={postId}
-                            parentId={comment.id}
-                            setCommentList={setCommentList}
-                          />
-                        ))}
-                  </div>
-
-                  <button
-                    className="toggle-replies-btn"
-                    onClick={() => toggleReplies(comment.id)}
-                  >
-                    {expandedReplies[comment.id] ? (
-                      <span>Hide Replies</span>
-                    ) : (
-                      <span>Show replies</span>
-                    )}
-                  </button>
-                </>
-              )}
-            </>
-          );
-        })} */}
         {commentList
           .filter((comment) => comment.parentId === null)
           .map((comment) => (
             <CommentNode
               key={comment.id}
-              comment={comment}
+              // postAuthorId = {}
               allComments={commentList}
               toggleReplies={toggleReplies}
               expandedReplies={expandedReplies}
+              toggleDropdown={toggleDropdown}
+              comment={comment}
+              onEdit={onEdit}
+              handleEditChange={handleEditChange}
+              handleEditComment={handleEditComment}
+              handleEditSubmit={handleEditSubmit}
+              editContent={editContent}
+              setOnEdit={setOnEdit}
+              setEditContent={setEditContent}
+              disableEditSubmit={disableEditSubmit}
+              author={author}
+              timePosted={timePosted}
+              loading={loading}
+              expandComment={expandComment}
+              toggleExpanded={toggleExpanded}
+              textareaEditInput={textareaEditInput}
+              openDropdownCommentId={openDropdownCommentId}
+              handleDeleteComment={handleDeleteComment}
+              fetchComments={fetchComments}
+              setLoadingPostComment={setLoadingPostComment}
+              postId={postId}
+              parentId={comment.id}
+              setCommentList={setCommentList}
+              postAuthorId={postAuthorId}
             />
           ))}
       </div>
