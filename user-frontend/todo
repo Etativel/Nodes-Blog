@@ -3,3 +3,7 @@ separate api return for frontend and backend
 404 Page
 
 post comments, like mechanism, saved post, pinned comment
+
+preview comment and their replies using recursion
+
+delete all child comment (replies) when the parent comment get deleted

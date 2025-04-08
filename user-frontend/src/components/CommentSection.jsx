@@ -30,7 +30,6 @@ function CommentPreview({
   const [replyContent, setReplyContent] = useState("");
   const disableReplySubmit = replyContent.trim() === "";
   const [isOnReply, setIsOnReply] = useState(false);
-
   useEffect(() => {
     if (textareaReplyRef.current) {
       textareaReplyRef.current.style.height = "auto";
@@ -136,13 +135,21 @@ function CommentPreview({
             <div className="comment-top-left">
               {comment.author.profilePicture ? (
                 <img
-                  className="user-comment-profilepicture"
+                  className={
+                    comment.parentId === null
+                      ? "user-comment-profilepicture"
+                      : "user-comment-profilepicture-subcomment"
+                  }
                   src={comment.author.profilePicture}
                   alt=""
                 />
               ) : (
                 <div
-                  className="user-comment-profilepicture"
+                  className={
+                    comment.parentId === null
+                      ? "user-comment-profilepicture"
+                      : "user-comment-profilepicture-subcomment"
+                  }
                   style={{
                     backgroundColor: comment.author.userColor,
                   }}
@@ -517,6 +524,70 @@ function CommentSection({ postId, comments, timePosted }) {
       [commentId]: !prev[commentId],
     }));
   }
+
+  function CommentNode({ comment, allComments }) {
+    const replies = allComments.filter((c) => c.parentId === comment.id);
+
+    return (
+      <div
+        className="comment-node"
+        style={{ marginLeft: comment.parentId ? "1rem" : "0" }}
+      >
+        <CommentPreview
+          comment={comment}
+          onEdit={onEdit}
+          handleEditChange={handleEditChange}
+          handleEditComment={handleEditComment}
+          handleEditSubmit={handleEditSubmit}
+          editContent={editContent}
+          setOnEdit={setOnEdit}
+          setEditContent={setEditContent}
+          disableEditSubmit={disableEditSubmit}
+          author={author}
+          timePosted={timePosted}
+          loading={loading}
+          expandComment={expandComment}
+          toggleExpanded={toggleExpanded}
+          textareaEditInput={textareaEditInput}
+          toggleDropdown={toggleDropdown}
+          openDropdownCommentId={openDropdownCommentId}
+          handleDeleteComment={handleDeleteComment}
+          fetchComments={fetchComments}
+          setLoadingPostComment={setLoadingPostComment}
+          postId={postId}
+          parentId={comment.id}
+          setCommentList={setCommentList}
+        />
+
+        {replies.length > 0 ? (
+          <>
+            <button
+              onClick={() => toggleReplies(comment.id)}
+              className="toggle-replies-btn"
+            >
+              {expandedReplies[comment.id] ? "Hide Replies" : "Show Replies"}
+            </button>
+            {expandedReplies[comment.id] && (
+              <div className="nested-replies">
+                {replies.map((reply) => (
+                  <CommentNode
+                    key={reply.id}
+                    comment={reply}
+                    allComments={allComments}
+                    toggleReplies={toggleReplies}
+                    expandedReplies={expandedReplies}
+                  />
+                ))}
+              </div>
+            )}
+          </>
+        ) : (
+          ""
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="comment-section-container">
       <div className="write-comment-ctr">
@@ -578,7 +649,7 @@ function CommentSection({ postId, comments, timePosted }) {
         </div>
       </div>
       <div className="display-comment">
-        {commentList.map((comment) => {
+        {/* {commentList.map((comment) => {
           return (
             <>
               {comment.parentId === null && (
@@ -643,16 +714,32 @@ function CommentSection({ postId, comments, timePosted }) {
                         ))}
                   </div>
 
-                  <button onClick={() => toggleReplies(comment.id)}>
-                    {expandedReplies[comment.id]
-                      ? "Hide Replies"
-                      : "Show Replies"}
+                  <button
+                    className="toggle-replies-btn"
+                    onClick={() => toggleReplies(comment.id)}
+                  >
+                    {expandedReplies[comment.id] ? (
+                      <span>Hide Replies</span>
+                    ) : (
+                      <span>Show replies</span>
+                    )}
                   </button>
                 </>
               )}
             </>
           );
-        })}
+        })} */}
+        {commentList
+          .filter((comment) => comment.parentId === null)
+          .map((comment) => (
+            <CommentNode
+              key={comment.id}
+              comment={comment}
+              allComments={commentList}
+              toggleReplies={toggleReplies}
+              expandedReplies={expandedReplies}
+            />
+          ))}
       </div>
     </div>
   );
