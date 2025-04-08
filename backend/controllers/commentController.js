@@ -16,7 +16,7 @@ async function getAllComment(req, res) {
 // ADD POST
 
 async function addComment(req, res) {
-  const { content, postId, authorId } = req.body;
+  const { content, postId, authorId, parentId } = req.body;
 
   try {
     const newComment = await prisma.comment.create({
@@ -25,6 +25,7 @@ async function addComment(req, res) {
         postId,
         content,
         authorId,
+        parentId,
       },
     });
     return res.status(201).json({ comment: newComment });
