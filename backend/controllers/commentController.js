@@ -75,8 +75,13 @@ async function deleteComment(req, res) {
   }
 }
 
+// Reaction
 async function toggleReaction(req, res) {
   const { commentId, userId, reaction } = req.body;
+
+  if (!["LIKE", "DISLIKE"].includes(reaction)) {
+    return res.status(400).json({ error: "Invalid reaction type" });
+  }
 
   try {
     const existing = await prisma.commentReaction.findUnique({
@@ -84,20 +89,24 @@ async function toggleReaction(req, res) {
     });
 
     if (existing) {
-      // Remove reaction if clicking the same one
-      await prisma.commentReaction.delete({
-        where: { commentId_userId: { commentId, userId } },
-      });
+      if (existing.reaction === reaction) {
+        // remove reaction if same type clicked
+        await prisma.commentReaction.delete({
+          where: { commentId_userId: { commentId, userId } },
+        });
+      } else {
+        // update to new reaction type
+        await prisma.commentReaction.update({
+          where: { commentId_userId: { commentId, userId } },
+          data: { reaction },
+        });
+      }
     } else {
-      // Create new reaction or replace existing one
-      await prisma.commentReaction.upsert({
-        where: { commentId_userId: { commentId, userId } },
-        create: { commentId, userId, reaction },
-        update: { reaction },
+      await prisma.commentReaction.create({
+        data: { commentId, userId, reaction },
       });
     }
 
-    // Get updated comment with reactions
     const updatedComment = await prisma.comment.findUnique({
       where: { id: commentId },
       include: {
@@ -108,7 +117,7 @@ async function toggleReaction(req, res) {
     });
 
     return res.json({
-      message: `Reaction updated`,
+      message: "Reaction updated",
       comment: updatedComment,
     });
   } catch (error) {
