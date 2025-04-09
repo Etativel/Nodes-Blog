@@ -78,10 +78,9 @@ function CommentPreview({
     }
   }, [replyContent]);
 
-  async function toggleReaction(newReaction) {
+  async function toggleReaction(newReactionType) {
     let previousState;
     try {
-      setIsReacting(true);
       previousState = {
         reactions: [...reactions],
         totalLike,
@@ -90,12 +89,21 @@ function CommentPreview({
         isDislike,
       };
 
-      // Calculate optimistic update
-      const newReactions = reactions.filter((r) => r.userId !== author?.id);
-      if (newReaction && !isLike && !isDislike) {
+      const existingReaction = reactions.find((r) => r.userId === author?.id);
+      let newReactions = [...reactions];
+
+      if (existingReaction) {
+        if (existingReaction.reaction === newReactionType) {
+          newReactions = newReactions.filter((r) => r.userId !== author?.id);
+        } else {
+          newReactions = newReactions.map((r) =>
+            r.userId === author?.id ? { ...r, reaction: newReactionType } : r
+          );
+        }
+      } else {
         newReactions.push({
           userId: author?.id,
-          reaction: newReaction,
+          reaction: newReactionType,
           user: author,
         });
       }
@@ -106,8 +114,14 @@ function CommentPreview({
       setTotalDislike(
         newReactions.filter((r) => r.reaction === "DISLIKE").length
       );
-      setIsLike(newReaction === "LIKE");
-      setIsDislike(newReaction === "DISLIKE");
+      setIsLike(
+        newReactionType === "LIKE" &&
+          existingReaction?.reaction !== newReactionType
+      );
+      setIsDislike(
+        newReactionType === "DISLIKE" &&
+          existingReaction?.reaction !== newReactionType
+      );
 
       // API call
       const response = await fetch(
@@ -118,14 +132,12 @@ function CommentPreview({
           body: JSON.stringify({
             commentId: comment.id,
             userId: author.id,
-            reaction: newReaction,
+            reaction: newReactionType,
           }),
         }
       );
 
-      if (!response.ok) {
-        throw new Error("Failed to update reaction");
-      }
+      if (!response.ok) throw new Error("Failed to update reaction");
 
       // Update with server response
       const data = await response.json();
@@ -376,7 +388,7 @@ function CommentPreview({
               className="like-btn"
               disabled={isReacting}
               aria-label="like"
-              onClick={() => toggleReaction(isLike ? null : "LIKE")}
+              onClick={() => toggleReaction("LIKE")}
             >
               {loading ? (
                 ""
@@ -415,7 +427,7 @@ function CommentPreview({
               className="dislike-btn"
               aria-label="dislike"
               disabled={isReacting}
-              onClick={() => toggleReaction(isDislike ? null : "DISLIKE")}
+              onClick={() => toggleReaction("DISLIKE")}
             >
               {isDislike ? (
                 <>
