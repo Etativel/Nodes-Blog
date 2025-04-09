@@ -161,6 +161,7 @@ function Navigation() {
         <button
           ref={toggleRef}
           onClick={() => setIsOpen(!isOpen)}
+          aria-label="redirectToProfilePage"
           className="nav-profile"
           style={{
             backgroundColor: loading ? "white" : author.userColor,

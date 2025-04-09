@@ -102,6 +102,7 @@
   color: white;
   font-size: 1.5rem;
   background-color: transparent;
+  cursor: pointer;
 }
 
 .user-comment-profilepicture-subcomment {
@@ -115,12 +116,17 @@
   color: white;
   font-size: 1rem;
   background-color: transparent;
+  cursor: pointer;
 }
 
 .comment-content,
 .comment-username {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 0.9rem;
+}
+
+.comment-username {
+  cursor: pointer;
 }
 
 .comment-user-info {
