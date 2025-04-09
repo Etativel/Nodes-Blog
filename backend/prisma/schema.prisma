@@ -85,7 +85,7 @@ model CommentReaction {
   reaction  ReactionType
   createdAt DateTime @default(now())
 
-  comment   Comment @relation(fields: [commentId], references: [id])
+  comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
   user      User    @relation(fields: [userId], references: [id])
 
   @@unique([commentId, userId])
