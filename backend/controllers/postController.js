@@ -77,6 +77,7 @@ async function getPost(req, res) {
             createdAt: "asc",
           },
           include: {
+            reactions: true,
             author: {
               select: {
                 username: true,

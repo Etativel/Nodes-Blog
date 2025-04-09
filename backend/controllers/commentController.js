@@ -75,9 +75,52 @@ async function deleteComment(req, res) {
   }
 }
 
+async function toggleReaction(req, res) {
+  const { commentId, userId, reaction } = req.body;
+
+  try {
+    const existing = await prisma.commentReaction.findUnique({
+      where: { commentId_userId: { commentId, userId } },
+    });
+
+    if (existing) {
+      // Remove reaction if clicking the same one
+      await prisma.commentReaction.delete({
+        where: { commentId_userId: { commentId, userId } },
+      });
+    } else {
+      // Create new reaction or replace existing one
+      await prisma.commentReaction.upsert({
+        where: { commentId_userId: { commentId, userId } },
+        create: { commentId, userId, reaction },
+        update: { reaction },
+      });
+    }
+
+    // Get updated comment with reactions
+    const updatedComment = await prisma.comment.findUnique({
+      where: { id: commentId },
+      include: {
+        reactions: true,
+        author: true,
+        replies: true,
+      },
+    });
+
+    return res.json({
+      message: `Reaction updated`,
+      comment: updatedComment,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 module.exports = {
   getAllComment,
   addComment,
   updateComment,
   deleteComment,
+  toggleReaction,
 };
