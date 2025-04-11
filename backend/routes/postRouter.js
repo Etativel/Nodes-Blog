@@ -11,6 +11,8 @@ router.get("/filter", postController.getFilteredPost);
 router.get("/:postId", postController.getPost);
 router.get("/", postController.getAllPost);
 router.post("/create", upload.single("thumbnail"), postController.addPost);
+router.post("/:postId/like", postController.toggleLike);
+router.post("/:postId/bookmark", postController.toggleBookmark);
 router.put("/update/:postId", postController.updatePost);
 router.delete("/delete/:postId", postController.deletePost);
 

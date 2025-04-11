@@ -61,6 +61,8 @@ async function getPost(req, res) {
         id: postId,
       },
       include: {
+        likedBy: true,
+        bookmarkedBy: true,
         author: {
           select: {
             id: true,
@@ -78,6 +80,7 @@ async function getPost(req, res) {
           },
           include: {
             reactions: true,
+
             author: {
               select: {
                 username: true,
@@ -226,6 +229,108 @@ async function deletePost(req, res) {
   }
 }
 
+// Toggle like
+
+async function toggleLike(req, res) {
+  const { postId } = req.params;
+  const { userId } = req.body;
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      include: {
+        likedPosts: true,
+      },
+    });
+    const hasLiked = user.likedPosts.some((post) => post.id === postId);
+    if (hasLiked) {
+      await prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          likedPosts: {
+            disconnect: {
+              id: postId,
+            },
+          },
+        },
+      });
+      return res.json({ liked: false });
+    } else {
+      await prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          likedPosts: {
+            connect: {
+              id: postId,
+            },
+          },
+        },
+      });
+      return res.json({ liked: true });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+// Toggle bookmark
+
+async function toggleBookmark(req, res) {
+  const { postId } = req.params;
+  const { userId } = req.body;
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      include: {
+        bookmarkedPosts: true,
+      },
+    });
+    const hasBookmark = user.bookmarkedPosts.some((post) => post.id === postId);
+    if (hasBookmark) {
+      await prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          bookmarkedPosts: {
+            disconnect: {
+              id: postId,
+            },
+          },
+        },
+      });
+      return res.json({ bookmarked: false });
+    } else {
+      await prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          bookmarkedPosts: {
+            connect: {
+              id: postId,
+            },
+          },
+        },
+      });
+      return res.json({ bookmarked: true });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 module.exports = {
   getAllPost,
   getPost,
@@ -234,4 +339,6 @@ module.exports = {
   updatePost,
   deletePost,
   getUserPosts,
+  toggleLike,
+  toggleBookmark,
 };
