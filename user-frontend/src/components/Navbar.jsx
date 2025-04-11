@@ -71,7 +71,8 @@ function Navigation() {
   }
 
   function redirectToAdminFrontend() {
-    window.location = "http://localhost:5174/";
+    // window.location = "http://localhost:5173/";
+    navigate("/creator/write-post");
     sessionStorage.removeItem("scrollPosition");
   }
 

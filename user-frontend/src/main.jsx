@@ -7,6 +7,9 @@ import LandingPage from "./pages/LandingPage.jsx";
 import UserProfilePage from "./pages/UserProfilePage.jsx";
 import UserAbout from "./components/UserAbout.jsx";
 import Homepage from "./pages/HomePage.jsx";
+import PostCreation from "./pages/PostCreation.jsx";
+import PreviewPost from "./components/PreviewPost.jsx";
+import WritePost from "./components/WritePost.jsx";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +26,24 @@ const router = createBrowserRouter([
       {
         path: "/post/:postId",
         element: <PostPage />,
+      },
+      {
+        path: "/creator",
+        element: <PostCreation />,
+        children: [
+          {
+            index: true,
+            element: <div>Select an option above.</div>,
+          },
+          {
+            path: "write-post",
+            element: <WritePost />,
+          },
+          {
+            path: "preview-post",
+            element: <PreviewPost />,
+          },
+        ],
       },
       {
         path: "/:username",
