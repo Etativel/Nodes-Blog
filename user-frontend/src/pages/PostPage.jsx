@@ -85,6 +85,9 @@ function PostPage() {
               userColor={post.author.userColor}
               fullName={post.author.fullName}
               postAuthor={post.author}
+              likedBy={post.likedBy}
+              bookmarkedBy={post.bookmarkedBy}
+              postId={postId}
             ></PostHead>
 
             <div className="post-container">
