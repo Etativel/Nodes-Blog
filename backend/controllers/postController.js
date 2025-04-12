@@ -250,6 +250,20 @@ async function updatePost(req, res) {
   }
 }
 
+async function simpleUpdatePost(req, res) {
+  const { postId } = req.params;
+  try {
+    const updatedPost = await prisma.post.update({
+      where: { id: postId },
+      data: { ...req.body }, // only fields present in req.body get updated
+    });
+    return res.status(200).json({ post: updatedPost });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "internal server error" });
+  }
+}
+
 // DELETE POST
 
 async function deletePost(req, res) {
@@ -383,4 +397,5 @@ module.exports = {
   toggleLike,
   toggleBookmark,
   getLimitPost,
+  simpleUpdatePost,
 };

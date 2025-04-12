@@ -14,7 +14,8 @@ router.get("/", postController.getAllPost);
 router.post("/create", upload.single("thumbnail"), postController.addPost);
 router.post("/:postId/like", postController.toggleLike);
 router.post("/:postId/bookmark", postController.toggleBookmark);
-router.put("/update/:postId", postController.updatePost);
+// router.put("/update/:postId", postController.updatePost);
+router.put("/update/:postId", postController.simpleUpdatePost);
 router.delete("/delete/:postId", postController.deletePost);
 
 module.exports = router;
