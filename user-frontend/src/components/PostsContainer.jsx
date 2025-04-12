@@ -16,7 +16,6 @@ function PostsContainer() {
       window.scrollTo(0, parseInt(savedPosition, 10));
     }
   }, [loading, location.pathname]);
-
   useEffect(() => {
     async function fetchPosts() {
       try {
@@ -25,7 +24,8 @@ function PostsContainer() {
           throw new Error(`Http error! status ${response.status}`);
         }
         const data = await response.json();
-        setPosts(data.posts);
+        const published = data.posts.filter((post) => post.published === true);
+        setPosts(published);
         return data;
       } catch (error) {
         console.error("Error fetching posts: ", error);

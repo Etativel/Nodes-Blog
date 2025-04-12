@@ -41,6 +41,7 @@
   border-bottom: solid #f2f2f2 1px;
   display: flex;
   gap: 24px;
+  max-width: 700px;
 }
 
 .home-btn-ctr,
@@ -74,19 +75,40 @@
 
 .postcard-container-profile {
   display: flex;
-  max-width: 700px;
+
+  /* background-color: red; */
   /* max-width: 100%; */
   width: 100%;
   /* width: 1000px; */
-  border-bottom: solid rgba(0, 0, 0, 0.1) 1px; /* 10% opacity */
+  /* border-bottom: solid rgba(0, 0, 0, 0.1) 1px; */
   padding-bottom: 22px;
   padding-top: 22px;
   flex-direction: column;
   padding-left: 12px;
-  padding-right: 12px;
+  padding-right: 0px;
   flex-grow: 1;
 }
 
+.postcard-flex {
+  display: flex;
+  max-width: 700px;
+  border-bottom: solid rgba(0, 0, 0, 0.1) 1px;
+}
+
+.postcard-parent-ctr {
+  display: flex;
+  width: 100%;
+}
+
+.user-post-dropdown-ctr {
+  padding: 12px;
+  margin-left: 24px;
+}
+
+.user-post-dropdown-btn {
+  background-color: transparent;
+  border: 0px;
+}
 .top-p {
   display: flex;
   justify-content: space-between;
@@ -487,7 +509,77 @@
   color: #1a8917;
 }
 
+.user-post-dropdown-ctr {
+  position: relative;
+}
+
+.user-post-dropdown {
+  position: absolute;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  top: 32px;
+  width: 160px;
+  left: 80%;
+  transform: translateX(-100%);
+
+  flex-direction: column;
+
+  /* gap: 12px; */
+  border-radius: 3px;
+  background-color: white;
+  display: flex;
+  opacity: 0;
+  display: none;
+}
+
+.user-post-dropdown.active {
+  opacity: 1;
+  display: flex;
+}
+
+.publish-user-post,
+.edit-user-post,
+.delete-user-post {
+  padding: 12px;
+  padding-left: 24px;
+  background-color: transparent;
+  border: 0px;
+  cursor: pointer;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.edit-user-post:hover {
+  color: rgb(17, 213, 17);
+}
+.delete-user-post:hover {
+  color: red;
+}
+
+.publish-user-post-icon,
+.delete-user-post-icon,
+.edit-user-post-icon {
+  height: 19px;
+  width: 19px;
+}
+
+.publish-user-post {
+  color: #00bcff;
+}
+
+.delete-user-post {
+  color: #c94a4a;
+}
+
+.edit-user-post {
+  color: #1a8917;
+}
+
 @media (max-width: 500px) {
+  .user-post-dropdown-ctr {
+    margin-left: 0px;
+  }
+
   .user-full-name {
     font-size: 0.8rem;
     margin-top: 6px;

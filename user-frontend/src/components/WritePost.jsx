@@ -156,6 +156,7 @@ function Write() {
         }}
       />
       <button onClick={handleSave}>Save Post</button>
+      <button onClick={handleSave}>Save as draft</button>
       {/* Live Preview */}
       <div className="blog-post-preview">
         {/* <div className="post-container"> */}

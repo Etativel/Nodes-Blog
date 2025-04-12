@@ -214,65 +214,272 @@ function UserPostCard({
   excerpt,
   comments,
   postId,
+  onDelete,
+  pageUsername,
+  author,
+  loading,
+  published,
 }) {
   const formattedDate = new Date(createdAt).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
   });
-
+  const userPostDropdownRef = useRef(null);
   const stripTitle = title.substring(0, 50) + (title.length > 50 ? "..." : "");
-
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [loadingPostUpdate, setLoadingPostUpdate] = useState(false);
   const stripExcerpt =
     excerpt?.substring(0, 100) + (excerpt?.length > 100 ? "..." : "");
   const handleClick = () => {
     sessionStorage.setItem("profilePosition", window.scrollY);
   };
-  return (
-    <Link
-      className="postcard-container-profile"
-      onClick={handleClick}
-      to={`/post/${postId}`}
-    >
-      <div className="top-p">
-        <div className="left-p">
-          <div className="post-title-p">{stripTitle}</div>
-          <div className="post-subtext-p">{excerpt ? stripExcerpt : ""}</div>
-        </div>
-        {thumbnail ? (
-          <div
-            className="right-p"
-            style={{
-              backgroundImage: `url(${thumbnail ? thumbnail : ""})`,
-            }}
-          ></div>
-        ) : (
-          ""
-        )}
-      </div>
-      <div className="bottom-p">
-        <div className="post-info-p">
-          <div className="left-info-p">
-            <div className="date-p">{formattedDate}</div>
-            <div className="comment-p">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="#737373"
-                className="size-6 comment-icon"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M5.337 21.718a6.707 6.707 0 0 1-.533-.074.75.75 0 0 1-.44-1.223 3.73 3.73 0 0 0 .814-1.686c.023-.115-.022-.317-.254-.543C3.274 16.587 2.25 14.41 2.25 12c0-5.03 4.428-9 9.75-9s9.75 3.97 9.75 9c0 5.03-4.428 9-9.75 9-.833 0-1.643-.097-2.417-.279a6.721 6.721 0 0 1-4.246.997Z"
-                  clipRule="evenodd"
-                />
-              </svg>
+  const [publishStatus, setPublishStatus] = useState(published);
 
-              <span>{comments.length > 100 ? "100+" : comments.length}</span>
+  useEffect(() => {
+    setPublishStatus(published);
+  }, [published]);
+
+  useEffect(() => {
+    if (isDropdownOpen) {
+      if (userPostDropdownRef.current) {
+        userPostDropdownRef.current.classList.add("active");
+      }
+    } else {
+      if (userPostDropdownRef.current) {
+        userPostDropdownRef.current.classList.remove("active");
+      }
+    }
+  }, [isDropdownOpen]);
+
+  function handleDropdown() {
+    setIsDropdownOpen(!isDropdownOpen);
+  }
+
+  async function handleDelete(postId) {
+    try {
+      setLoadingPostUpdate(true);
+      const response = await fetch(
+        `http://localhost:3000/post/delete/${postId}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (!response.ok) {
+        console.log("failed to delete post", response.status);
+        setLoadingPostUpdate(false);
+      }
+      await response.json();
+      onDelete(postId);
+      setLoadingPostUpdate(false);
+    } catch (error) {
+      console.error(error);
+      setLoadingPostUpdate(false);
+    }
+  }
+
+  async function handlePublish(newStatus) {
+    setLoadingPostUpdate(true);
+    try {
+      const response = await fetch(
+        `http://localhost:3000/post/update/${postId}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ published: newStatus }),
+        }
+      );
+      if (!response.ok) {
+        console.log("Failed to update publish", response.status);
+        setLoadingPostUpdate(false);
+        return;
+      }
+      const data = await response.json();
+      setPublishStatus(data.post.published);
+      setLoadingPostUpdate(false);
+    } catch (error) {
+      console.error(error);
+      setLoadingPostUpdate(false);
+    }
+  }
+
+  return (
+    <div className="postcard-flex">
+      <Link
+        className="postcard-parent-ctr"
+        onClick={handleClick}
+        to={`/post/${postId}`}
+      >
+        <div className="postcard-container-profile">
+          <div className="top-p">
+            <div className="left-p">
+              <div className="post-title-p">{stripTitle}</div>
+              <div className="post-subtext-p">
+                {excerpt ? stripExcerpt : ""}
+              </div>
+            </div>
+            {thumbnail ? (
+              <div
+                className="right-p"
+                style={{
+                  backgroundImage: `url(${thumbnail ? thumbnail : ""})`,
+                }}
+              ></div>
+            ) : (
+              ""
+            )}
+          </div>
+          <div className="bottom-p">
+            <div className="post-info-p">
+              <div className="left-info-p">
+                <div className="date-p">{formattedDate}</div>
+                <div className="comment-p">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="#737373"
+                    className="size-6 comment-icon"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M5.337 21.718a6.707 6.707 0 0 1-.533-.074.75.75 0 0 1-.44-1.223 3.73 3.73 0 0 0 .814-1.686c.023-.115-.022-.317-.254-.543C3.274 16.587 2.25 14.41 2.25 12c0-5.03 4.428-9 9.75-9s9.75 3.97 9.75 9c0 5.03-4.428 9-9.75 9-.833 0-1.643-.097-2.417-.279a6.721 6.721 0 0 1-4.246.997Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+
+                  <span>
+                    {comments.length > 100 ? "100+" : comments.length}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </Link>
+      </Link>
+      {loading ? (
+        ""
+      ) : author.username === pageUsername ? (
+        <div className="user-post-dropdown-ctr">
+          <div className="user-post-dropdown" ref={userPostDropdownRef}>
+            <button className="edit-user-post" aria-label="edit-post">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1}
+                stroke="currentColor"
+                className="size-6 edit-user-post-icon"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                />
+              </svg>
+              Edit post
+            </button>
+            <button
+              className="delete-user-post"
+              aria-label="delete-post"
+              disabled={loadingPostUpdate}
+              onClick={() => handleDelete(postId)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1}
+                stroke="currentColor"
+                className="size-6 delete-user-post-icon"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                />
+              </svg>
+              Delete post
+            </button>
+            <button
+              className="publish-user-post"
+              aria-label="publish-post"
+              onClick={() => {
+                const newPublishStatus = !publishStatus;
+                handlePublish(newPublishStatus);
+              }}
+            >
+              <></>
+              {publishStatus ? (
+                <>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1}
+                    stroke="currentColor"
+                    className="size-6 publish-user-post-icon"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88"
+                    />
+                  </svg>
+                  Unpublish post
+                </>
+              ) : (
+                <>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1}
+                    stroke="currentColor"
+                    className="size-6 publish-user-post-icon"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                    />
+                  </svg>
+                  Publish post
+                </>
+              )}
+            </button>
+          </div>
+          <button
+            className="user-post-dropdown-btn"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleDropdown();
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1}
+              stroke="currentColor"
+              className="size-6 edit-comment-icon"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+              />
+            </svg>
+          </button>
+        </div>
+      ) : (
+        ""
+      )}
+    </div>
   );
 }
 
@@ -464,8 +671,11 @@ function UserProfilePage() {
       : location.pathname.split("/").pop();
   const { author, loading } = useContext(ProfileContext);
 
-  console.log(cleanUsername);
-  console.log(userPost);
+  const handleRemovePostFromState = (deletedPostId) => {
+    setUserPost((prevPosts) =>
+      prevPosts.filter((post) => post.id !== deletedPostId)
+    );
+  };
 
   useEffect(() => {
     const savedPosition = sessionStorage.getItem("profilePosition");
@@ -566,13 +776,13 @@ function UserProfilePage() {
                 <div className="mobile-profile">
                   <UserSideProfile
                     pageUsername={cleanUsername}
+                    author={author}
                     visitedUser={visitedUser}
                     loadingProfile={loadingProfile}
                     dialogCtr={dialogCtr}
                     profileForm={profileForm}
                     isOpen={isOpen}
                     setIsOpen={setIsOpen}
-                    author={author}
                     loading={loading}
                   />
                 </div>
@@ -630,6 +840,8 @@ function UserProfilePage() {
                     userPost.map((post) => {
                       return (
                         <UserPostCard
+                          pageUsername={cleanUsername}
+                          author={author}
                           key={crypto.randomUUID()}
                           title={post.title}
                           thumbnail={post.thumbnail}
@@ -637,6 +849,9 @@ function UserProfilePage() {
                           createdAt={post.createdAt}
                           comments={post.comments}
                           postId={post.id}
+                          loading={loading}
+                          published={post.published}
+                          onDelete={handleRemovePostFromState}
                         />
                       );
                     })
