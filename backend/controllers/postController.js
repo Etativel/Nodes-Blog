@@ -201,10 +201,12 @@ async function getFilteredPost(req, res) {
 async function addPost(req, res) {
   const { content, title, published, authorId, excerpt } = req.body;
   let thumbnailUrl = null;
-
+  let thumbnailPublicId = null;
+  console.log("This is req", req.file);
   try {
     if (req.file) {
       thumbnailUrl = req.file.path;
+      thumbnailPublicId = req.file.filename;
     }
 
     const newPost = await prisma.post.create({
@@ -216,6 +218,7 @@ async function addPost(req, res) {
         authorId,
         excerpt,
         thumbnail: thumbnailUrl,
+        thumbnailPublicId,
       },
     });
     return res.status(201).json({ post: newPost });
@@ -253,9 +256,45 @@ async function updatePost(req, res) {
 async function simpleUpdatePost(req, res) {
   const { postId } = req.params;
   try {
+    const existingPost = await prisma.post.findUnique({
+      where: { id: postId },
+    });
+
+    let updateData = {
+      ...req.body,
+      published: req.body.published === "true",
+    };
+    console.log(updateData);
+    if (req.file) {
+      if (existingPost && existingPost.thumbnailPublicId) {
+        const deleteResult = await cloudinary.uploader.destroy(
+          existingPost.thumbnailPublicId
+        );
+        console.log("Deleted old thumbnail:", deleteResult);
+      }
+
+      updateData.thumbnail = req.file.path;
+      updateData.thumbnailPublicId = req.file.filename;
+    }
+
     const updatedPost = await prisma.post.update({
       where: { id: postId },
-      data: { ...req.body }, // only fields present in req.body get updated
+      data: updateData,
+    });
+
+    return res.status(200).json({ post: updatedPost });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "internal server error" });
+  }
+}
+
+async function togglePublish(req, res) {
+  const { postId } = req.params;
+  try {
+    const updatedPost = await prisma.post.update({
+      where: { id: postId },
+      data: { ...req.body },
     });
     return res.status(200).json({ post: updatedPost });
   } catch (error) {
@@ -265,10 +304,19 @@ async function simpleUpdatePost(req, res) {
 }
 
 // DELETE POST
-
 async function deletePost(req, res) {
   const { postId } = req.params;
   try {
+    const post = await prisma.post.findUnique({
+      where: {
+        id: postId,
+      },
+    });
+
+    if (post && post.thumbnailPublicId) {
+      await cloudinary.uploader.destroy(post.thumbnailPublicId);
+    }
+
     const deletedPost = await prisma.post.delete({
       where: {
         id: postId,
@@ -398,4 +446,5 @@ module.exports = {
   toggleBookmark,
   getLimitPost,
   simpleUpdatePost,
+  togglePublish,
 };

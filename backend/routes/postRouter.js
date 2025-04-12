@@ -15,7 +15,12 @@ router.post("/create", upload.single("thumbnail"), postController.addPost);
 router.post("/:postId/like", postController.toggleLike);
 router.post("/:postId/bookmark", postController.toggleBookmark);
 // router.put("/update/:postId", postController.updatePost);
-router.put("/update/:postId", postController.simpleUpdatePost);
+router.put(
+  "/update/:postId",
+  upload.single("thumbnail"),
+  postController.simpleUpdatePost
+);
+router.put("/publish/:postId", postController.togglePublish);
 router.delete("/delete/:postId", postController.deletePost);
 
 module.exports = router;

@@ -54,6 +54,7 @@
     authorId    String
     excerpt     String?  
     thumbnail   String?  
+    thumbnailPublicId String?
     author      User     @relation(fields: [authorId], references: [id])
     comments    Comment[]
     createdAt   DateTime @default(now())
@@ -120,6 +121,7 @@
   }       
 
   enum PostStatus {
+    DEFAULT
     DRAFT
     BLOCKED
     REPORTED
