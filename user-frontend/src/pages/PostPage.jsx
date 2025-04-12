@@ -88,6 +88,7 @@ function PostPage() {
               likedBy={post.likedBy}
               bookmarkedBy={post.bookmarkedBy}
               postId={postId}
+              post={post}
             ></PostHead>
 
             <div className="post-container">

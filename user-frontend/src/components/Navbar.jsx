@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/Navbar.css";
 import { useRef, useEffect, useContext, useState } from "react";
 import ProfileContext from "../contexts/context-create/ProfileContext";
+import PostContext from "../contexts/context-create/PostContext";
 
 function Navigation() {
   const navbarRef = useRef(null);
@@ -13,7 +14,7 @@ function Navigation() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const { author, loading } = useContext(ProfileContext);
-
+  const { setPostToEdit } = useContext(PostContext);
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => {
@@ -72,6 +73,7 @@ function Navigation() {
 
   function redirectToAdminFrontend() {
     // window.location = "http://localhost:5173/";
+    setPostToEdit(null);
     navigate("/creator/write-post");
     sessionStorage.removeItem("scrollPosition");
   }

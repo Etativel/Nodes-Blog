@@ -162,6 +162,8 @@
   gap: 12px;
   color: #1a8917;
   cursor: pointer;
+  background-color: transparent;
+  border: 0px;
 }
 
 .report-post {
@@ -170,6 +172,8 @@
   gap: 12px;
   color: #c94a4a;
   cursor: pointer;
+  background-color: transparent;
+  border: 0px;
 }
 
 .report-post:hover {

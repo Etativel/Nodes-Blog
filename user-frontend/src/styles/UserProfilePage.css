@@ -149,6 +149,8 @@
   padding-top: 6px;
   font-size: 1.3rem;
   /* padding-left: 12px; */
+  overflow-wrap: break-word;
+  word-break: break-word;
   padding-right: 12px;
 }
 
@@ -170,6 +172,7 @@
 .posts {
   width: 100%;
   min-height: 90vh;
+  margin-bottom: 32px;
 }
 
 .comment-p {
@@ -615,6 +618,8 @@
   .post-subtext-p {
     padding-top: 6px;
     font-size: 0.7rem;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
   .right-p {
     display: flex;

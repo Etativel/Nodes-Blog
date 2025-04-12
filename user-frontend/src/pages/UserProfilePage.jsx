@@ -5,6 +5,7 @@ import "../styles/UserProfilePage.css";
 import { useContext, useEffect, useState, useRef } from "react";
 import defaultProfileImage from "../assets/profilePict/profile-picture.png";
 import Loader from "../components/Loader";
+import PostContext from "../contexts/context-create/PostContext";
 
 function EditProfileDialog({ setIsOpen }) {
   const { author, loading } = useContext(ProfileContext);
@@ -219,11 +220,13 @@ function UserPostCard({
   author,
   loading,
   published,
+  post,
 }) {
   const formattedDate = new Date(createdAt).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
   });
+  const { setPostToEdit } = useContext(PostContext);
   const userPostDropdownRef = useRef(null);
   const stripTitle = title.substring(0, 50) + (title.length > 50 ? "..." : "");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -234,6 +237,7 @@ function UserPostCard({
     sessionStorage.setItem("profilePosition", window.scrollY);
   };
   const [publishStatus, setPublishStatus] = useState(published);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setPublishStatus(published);
@@ -302,6 +306,19 @@ function UserPostCard({
     }
   }
 
+  function handleEditPost() {
+    console.log(post);
+    setPostToEdit({
+      postId: post.id,
+      content: post.content,
+      excerpt: post.excerpt,
+      published: post.published,
+      title: post.title,
+      thumbnail: post.thumbnail,
+    });
+    navigate("/creator/write-post");
+  }
+
   return (
     <div className="postcard-flex">
       <Link
@@ -332,6 +349,7 @@ function UserPostCard({
             <div className="post-info-p">
               <div className="left-info-p">
                 <div className="date-p">{formattedDate}</div>
+
                 <div className="comment-p">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -360,7 +378,13 @@ function UserPostCard({
       ) : author.username === pageUsername ? (
         <div className="user-post-dropdown-ctr">
           <div className="user-post-dropdown" ref={userPostDropdownRef}>
-            <button className="edit-user-post" aria-label="edit-post">
+            <button
+              className="edit-user-post"
+              aria-label="edit-post"
+              onClick={() => {
+                handleEditPost();
+              }}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -851,6 +875,7 @@ function UserProfilePage() {
                           postId={post.id}
                           loading={loading}
                           published={post.published}
+                          post={post}
                           onDelete={handleRemovePostFromState}
                         />
                       );

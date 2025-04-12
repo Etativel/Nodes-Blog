@@ -1,14 +1,29 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 function Write() {
-  const { post, setPost } = useOutletContext();
+  const { post, setPost, isEditing, setPostToEdit, setIsEditing } =
+    useOutletContext();
+
   const editorRef = useRef(null);
   const [thumbnail, setThumbnail] = useState(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isEditing) {
+      setThumbnailPreview(post.thumbnail);
+    }
+  }, [isEditing, post]);
+
   const handleThumbnailChange = (e) => {
-    setThumbnail(e.target.files[0]);
+    const file = e.target.files[0];
+    setThumbnail(file);
+    if (file) {
+      const previewUrl = URL.createObjectURL(file);
+      setThumbnailPreview(previewUrl);
+    }
   };
 
   const handleChange = (e) => {
@@ -24,7 +39,6 @@ function Write() {
   };
 
   const handleSave = async () => {
-    console.log(post);
     if (!post.title || !post.authorId || !post.content || !post.excerpt) {
       return alert("You need to fill all of the field");
     }
@@ -58,17 +72,42 @@ function Write() {
     formData.append("published", post.published);
     formData.append("authorId", post.authorId);
     if (thumbnail) {
-      formData.append("thumbnail", thumbnail); // Key must match server expectation
+      formData.append("thumbnail", thumbnail);
+    }
+    let editFormData;
+    if (isEditing) {
+      editFormData = new FormData();
+      editFormData.append("title", post.title);
+      editFormData.append("content", updatedContent);
+      editFormData.append("excerpt", post.excerpt);
+      editFormData.append("published", post.published);
+      editFormData.append("authorId", post.authorId);
+      if (thumbnail) {
+        editFormData.append("thumbnail", thumbnail);
+      }
     }
     try {
-      const response = await fetch("http://localhost:3000/post/create", {
-        method: "POST",
-        body: formData,
-      });
+      let response;
+      if (!isEditing) {
+        response = await fetch("http://localhost:3000/post/create", {
+          method: "POST",
+          body: formData,
+        });
+      } else if (isEditing) {
+        response = await fetch(
+          `http://localhost:3000/post/update/${post.postId}`,
+          {
+            method: "PUT",
+            body: editFormData,
+          }
+        );
+      }
 
       if (response.ok) {
-        // alert("Post saved successfully!");
+        alert("Post saved successfully!");
         navigate(`/@${post.username}`);
+        setPostToEdit(null);
+        setIsEditing(false);
       } else {
         console.error("Error saving post");
       }
@@ -85,7 +124,7 @@ function Write() {
           type="text"
           name="title"
           placeholder="Enter title"
-          value={post.title}
+          value={post.title || ""}
           onChange={handleChange}
           required
         />
@@ -93,7 +132,7 @@ function Write() {
           <input
             type="checkbox"
             name="published"
-            checked={post.published}
+            checked={post.published || false}
             onChange={handleChange}
           />{" "}
           Publish
@@ -102,14 +141,14 @@ function Write() {
           type="text"
           name="authorId"
           placeholder="Author ID"
-          value={post.authorId}
+          defaultValue={post.authorId || ""}
           hidden
           // onChange={handleChange}
         />
         <textarea
           name="excerpt"
           placeholder="Intriguing summary or hook"
-          value={post.excerpt}
+          value={post.excerpt || ""}
           onChange={handleChange}
         ></textarea>
         <input
@@ -119,6 +158,21 @@ function Write() {
           accept="image/*"
         />
       </form>
+      {thumbnailPreview ? (
+        <img
+          src={thumbnailPreview}
+          alt="Thumbnail Preview"
+          style={{ width: "100px", height: "100px" }}
+        />
+      ) : (
+        post.thumbnail && (
+          <img
+            src={post.thumbnail}
+            alt="Existing Thumbnail"
+            style={{ width: "100px", height: "100px" }}
+          />
+        )
+      )}
       <Editor
         apiKey="ohszzdask1vfnrdtf3o5quted1o3fg2xchacfnopeokho1am"
         onInit={(_, editor) => (editorRef.current = editor)}

@@ -2,6 +2,7 @@ import { useContext, useState, useEffect, useRef } from "react";
 import "../styles/PostHead.css";
 import { useNavigate } from "react-router-dom";
 import ProfileContext from "../contexts/context-create/ProfileContext";
+import PostContext from "../contexts/context-create/PostContext";
 
 function PostHead({
   title,
@@ -15,8 +16,10 @@ function PostHead({
   likedBy,
   bookmarkedBy,
   postId,
+  post,
 }) {
   const { author, loading } = useContext(ProfileContext);
+  const { setPostToEdit } = useContext(PostContext);
   const [followers, setFollowers] = useState(postAuthor?.following || []);
   const [isFollowing, setIsFollowing] = useState(
     followers.some((f) => f.followerId === author?.id)
@@ -186,6 +189,19 @@ function PostHead({
     navigate(`/@${username}`);
   }
 
+  function handleEditPost() {
+    console.log(post);
+    setPostToEdit({
+      postId: post.id,
+      content: post.content,
+      excerpt: post.excerpt,
+      published: post.published,
+      title: post.title,
+      thumbnail: post.thumbnail,
+    });
+    navigate("/creator/write-post");
+  }
+
   return (
     <div className="post-head-container">
       <p className="post-title-head">{title}</p>
@@ -324,7 +340,13 @@ function PostHead({
           >
             <div className="post-options-dropdown" ref={postDropdownRef}>
               {postAuthor?.id === author?.id ? (
-                <div className="edit-post">
+                <button
+                  className="edit-post"
+                  aria-label="edit-post"
+                  onClick={() => {
+                    handleEditPost();
+                  }}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -340,13 +362,14 @@ function PostHead({
                     />
                   </svg>
                   Edit post
-                </div>
+                </button>
               ) : (
-                <div
+                <button
                   className="report-post"
                   onClick={() => {
                     console.log("report");
                   }}
+                  aria-label="report-post"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -363,7 +386,7 @@ function PostHead({
                     />
                   </svg>
                   Report post
-                </div>
+                </button>
               )}
             </div>
             <svg
