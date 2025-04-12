@@ -3,7 +3,7 @@ import "../styles/Navbar.css";
 import { useRef, useEffect, useContext, useState } from "react";
 import ProfileContext from "../contexts/context-create/ProfileContext";
 import PostContext from "../contexts/context-create/PostContext";
-
+import formatCloudinaryUrl from "../utils/cloudinaryUtils";
 function Navigation() {
   const navbarRef = useRef(null);
   const lastScrollTopRef = useRef(window.scrollY);
@@ -108,7 +108,7 @@ function Navigation() {
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              strokeWidth={1.5}
+              strokeWidth={1}
               stroke="currentColor"
               className="size-6 profile-icon"
             >
@@ -125,7 +125,7 @@ function Navigation() {
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              strokeWidth={1.5}
+              strokeWidth={1}
               stroke="currentColor"
               className="size-6 logout-icon"
             >
@@ -173,7 +173,18 @@ function Navigation() {
           {loading ? (
             ""
           ) : author.profilePicture ? (
-            <img src={author.profilePicture} alt="" className="nav-pp" />
+            <img
+              src={formatCloudinaryUrl(author.profilePicture, {
+                width: 41,
+                height: 41,
+                crop: "fit",
+                quality: "auto:best",
+                format: "auto",
+                dpr: 3,
+              })}
+              alt=""
+              className="nav-pp"
+            />
           ) : (
             author.username.charAt(0)
           )}

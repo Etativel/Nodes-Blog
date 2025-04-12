@@ -6,7 +6,7 @@ import { useContext, useEffect, useState, useRef } from "react";
 import defaultProfileImage from "../assets/profilePict/profile-picture.png";
 import Loader from "../components/Loader";
 import PostContext from "../contexts/context-create/PostContext";
-
+import formatCloudinaryUrl from "../utils/cloudinaryUtils";
 function EditProfileDialog({ setIsOpen }) {
   const { author, loading } = useContext(ProfileContext);
   const saveButton = useRef();
@@ -338,7 +338,18 @@ function UserPostCard({
               <div
                 className="right-p"
                 style={{
-                  backgroundImage: `url(${thumbnail ? thumbnail : ""})`,
+                  backgroundImage: `url(${
+                    thumbnail
+                      ? formatCloudinaryUrl(thumbnail, {
+                          width: 170,
+                          height: 120,
+                          crop: "fit",
+                          quality: "auto:best",
+                          format: "auto",
+                          dpr: 3,
+                        })
+                      : ""
+                  })`,
                 }}
               ></div>
             ) : (
@@ -613,7 +624,14 @@ function UserSideProfile({
           ""
         ) : visitedUser.profilePicture ? (
           <img
-            src={visitedUser.profilePicture}
+            src={formatCloudinaryUrl(visitedUser.profilePicture, {
+              width: 80,
+              height: 80,
+              crop: "fit",
+              quality: "auto:best",
+              format: "auto",
+              dpr: 3,
+            })}
             alt=""
             className="side-profile-pict"
           />
@@ -764,7 +782,7 @@ function UserProfilePage() {
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
-        strokeWidth={1.5}
+        strokeWidth={1}
         stroke="currentColor"
         className="size-6 x-logo"
       >

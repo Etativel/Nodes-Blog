@@ -24,8 +24,8 @@ function PostsContainer() {
           throw new Error(`Http error! status ${response.status}`);
         }
         const data = await response.json();
-        const published = data.posts.filter((post) => post.published === true);
-        setPosts(published);
+        // const published = data.posts.filter((post) => post.published === true);
+        setPosts(data.posts);
         return data;
       } catch (error) {
         console.error("Error fetching posts: ", error);

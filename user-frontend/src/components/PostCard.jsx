@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import "../styles/PostCard.css";
 import profile from "../assets/img/cat.jpg";
 import { useAuthor } from "../utils/useAuthor";
+import formatCloudinaryUrl from "../utils/cloudinaryUtils";
 
 function PostCard({
   authorId,
@@ -45,7 +46,14 @@ function PostCard({
               ""
             ) : author.profilePicture ? (
               <img
-                src={author.profilePicture}
+                src={formatCloudinaryUrl(author.profilePicture, {
+                  width: 25,
+                  height: 25,
+                  crop: "fit",
+                  quality: "auto:best",
+                  format: "auto",
+                  dpr: 3,
+                })}
                 alt="profile-pict"
                 className="author-pict"
               />
@@ -80,7 +88,18 @@ function PostCard({
           <div
             className="right"
             style={{
-              backgroundImage: `url(${thumbnail ? thumbnail : profile})`,
+              backgroundImage: `url(${
+                thumbnail
+                  ? formatCloudinaryUrl(thumbnail, {
+                      width: 200,
+                      height: 150,
+                      crop: "fit",
+                      quality: "auto:best",
+                      format: "auto",
+                      dpr: 3,
+                    })
+                  : profile
+              })`,
             }}
           ></div>
         ) : (

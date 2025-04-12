@@ -38,7 +38,7 @@ function Write() {
     setPost((prev) => ({ ...prev, content }));
   };
 
-  const handleSave = async () => {
+  const handleSave = async (asDraft) => {
     if (!post.title || !post.authorId || !post.content || !post.excerpt) {
       return alert("You need to fill all of the field");
     }
@@ -71,6 +71,9 @@ function Write() {
     formData.append("excerpt", post.excerpt);
     formData.append("published", post.published);
     formData.append("authorId", post.authorId);
+    if (asDraft) {
+      formData.append("status", "DRAFT");
+    }
     if (thumbnail) {
       formData.append("thumbnail", thumbnail);
     }
@@ -81,7 +84,11 @@ function Write() {
       editFormData.append("content", updatedContent);
       editFormData.append("excerpt", post.excerpt);
       editFormData.append("published", post.published);
-      editFormData.append("authorId", post.authorId);
+
+      if (asDraft) {
+        editFormData.append("status", "DRAFT");
+      }
+
       if (thumbnail) {
         editFormData.append("thumbnail", thumbnail);
       }
@@ -210,7 +217,7 @@ function Write() {
         }}
       />
       <button onClick={handleSave}>Save Post</button>
-      <button onClick={handleSave}>Save as draft</button>
+      <button onClick={() => handleSave(true)}>Save as draft</button>
       {/* Live Preview */}
       <div className="blog-post-preview">
         {/* <div className="post-container"> */}

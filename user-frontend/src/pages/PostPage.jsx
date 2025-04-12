@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Navigation from "../components/Navbar";
 import PostHead from "../components/PostHead";
 import "../styles/PostPage.css";
@@ -44,7 +44,7 @@ function PostPage() {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const navigate = useNavigate();
   useEffect(() => {
     async function fetchCurrentPost() {
       try {
@@ -54,18 +54,23 @@ function PostPage() {
           throw new Error("Failed to fetch post");
         }
         const postData = await response.json();
+        if (!postData.post) {
+          navigate("/404"); // Redirect to 404 page if post doesn't exist
+          return;
+        }
         setPost(postData.post);
         setLoading(false);
       } catch (error) {
         setLoading(false);
         console.error("Error fetching post: ", error);
+        navigate("/404");
       } finally {
         setLoading(false);
       }
     }
 
     fetchCurrentPost();
-  }, [postId]);
+  }, [postId, navigate]);
 
   return (
     <>
