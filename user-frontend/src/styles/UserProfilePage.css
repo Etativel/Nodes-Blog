@@ -578,6 +578,11 @@
   color: #1a8917;
 }
 
+.draft-text {
+  color: red;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 @media (max-width: 500px) {
   .user-post-dropdown-ctr {
     margin-left: 0px;

@@ -69,10 +69,14 @@ function Write() {
     formData.append("title", post.title);
     formData.append("content", updatedContent);
     formData.append("excerpt", post.excerpt);
-    formData.append("published", post.published);
+
     formData.append("authorId", post.authorId);
     if (asDraft) {
       formData.append("status", "DRAFT");
+      formData.append("published", false);
+    } else {
+      formData.append("status", "DEFAULT");
+      formData.append("published", post.published);
     }
     if (thumbnail) {
       formData.append("thumbnail", thumbnail);
@@ -83,10 +87,13 @@ function Write() {
       editFormData.append("title", post.title);
       editFormData.append("content", updatedContent);
       editFormData.append("excerpt", post.excerpt);
-      editFormData.append("published", post.published);
 
       if (asDraft) {
         editFormData.append("status", "DRAFT");
+        editFormData.append("published", false);
+      } else {
+        editFormData.append("status", "DEFAULT");
+        editFormData.append("published", post.published);
       }
 
       if (thumbnail) {
@@ -141,7 +148,7 @@ function Write() {
             name="published"
             checked={post.published || false}
             onChange={handleChange}
-          />{" "}
+          />
           Publish
         </label>
         <input
@@ -216,7 +223,7 @@ function Write() {
           images_dataimg_filter: () => false,
         }}
       />
-      <button onClick={handleSave}>Save Post</button>
+      <button onClick={() => handleSave(false)}>Save Post</button>
       <button onClick={() => handleSave(true)}>Save as draft</button>
       {/* Live Preview */}
       <div className="blog-post-preview">

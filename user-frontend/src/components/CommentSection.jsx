@@ -2,7 +2,7 @@ import { useContext, useRef, useState, useEffect } from "react";
 import ProfileContext from "../contexts/context-create/ProfileContext";
 import "../styles/CommentSection.css";
 import { useNavigate } from "react-router-dom";
-// import { BiLike, BiSolidLike, BiSolidDislike } from "react-icons/bi";
+import formatCloudinaryUrl from "../utils/cloudinaryUtils";
 
 function formatLike(like) {
   const number = parseInt(like, 10);
@@ -293,7 +293,14 @@ function CommentPreview({
                       ? "user-comment-profilepicture"
                       : "user-comment-profilepicture-subcomment"
                   }
-                  src={comment.author.profilePicture}
+                  src={formatCloudinaryUrl(comment.author.profilePicture, {
+                    width: 40,
+                    height: 40,
+                    crop: "fit",
+                    quality: "auto:best",
+                    format: "auto",
+                    dpr: 3,
+                  })}
                   alt=""
                 />
               ) : (
@@ -853,7 +860,14 @@ function CommentSection({ postId, comments, timePosted, postAuthorId }) {
           ) : author.profilePicture ? (
             <img
               className="profile-pict-cs"
-              src={author.profilePicture}
+              src={formatCloudinaryUrl(author.profilePicture, {
+                width: 40,
+                height: 40,
+                crop: "fit",
+                quality: "auto:best",
+                format: "auto",
+                dpr: 3,
+              })}
               alt="profile-pict"
             />
           ) : (

@@ -3,6 +3,7 @@ import "../styles/PostHead.css";
 import { useNavigate } from "react-router-dom";
 import ProfileContext from "../contexts/context-create/ProfileContext";
 import PostContext from "../contexts/context-create/PostContext";
+import formatCloudinaryUrl from "../utils/cloudinaryUtils";
 
 function PostHead({
   title,
@@ -211,7 +212,14 @@ function PostHead({
             <img
               onClick={redirectUserPage}
               className="profile-pict"
-              src={profilePicture}
+              src={formatCloudinaryUrl(profilePicture, {
+                width: 55,
+                height: 55,
+                crop: "fit",
+                quality: "auto:best",
+                format: "auto",
+                dpr: 3,
+              })}
               alt="profile-pict"
             />
           ) : (
