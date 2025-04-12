@@ -9,6 +9,7 @@ const upload = require("../config/multerConfig");
 router.get("/by/:username", postController.getUserPosts);
 router.get("/filter", postController.getFilteredPost);
 router.get("/:postId", postController.getPost);
+// router.get("/", postController.getLimitPost);
 router.get("/", postController.getAllPost);
 router.post("/create", upload.single("thumbnail"), postController.addPost);
 router.post("/:postId/like", postController.toggleLike);

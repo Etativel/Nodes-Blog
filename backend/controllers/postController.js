@@ -33,6 +33,46 @@ async function getUserPosts(req, res) {
   }
 }
 
+// Limit Post Fetch
+
+async function getLimitPost(req, res) {
+  const cursor = req.query.cursor;
+  const limit = parseInt(req.query.limit) || 5;
+
+  try {
+    let posts;
+    if (cursor) {
+      posts = await prisma.post.findMany({
+        cursor: { id: cursor },
+        skip: 1,
+        omit: {
+          content: true,
+        },
+        include: {
+          comments: true,
+        },
+        take: limit,
+        orderBy: { createdAt: "desc" },
+      });
+    } else {
+      posts = await prisma.post.findMany({
+        take: limit,
+        omit: {
+          content: true,
+        },
+        include: {
+          comments: true,
+        },
+        orderBy: { createdAt: "desc" },
+      });
+    }
+    return res.json({ posts });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 async function getAllPost(req, res) {
   try {
     const posts = await prisma.post.findMany({
@@ -60,6 +100,7 @@ async function getPost(req, res) {
       where: {
         id: postId,
       },
+
       include: {
         likedBy: true,
         bookmarkedBy: true,
@@ -341,4 +382,5 @@ module.exports = {
   getUserPosts,
   toggleLike,
   toggleBookmark,
+  getLimitPost,
 };

@@ -30,6 +30,8 @@ model User {
 
   likedPosts                 Post[]              @relation("PostLikes")
   bookmarkedPosts            Post[]              @relation("PostBookmarks")
+
+  postReports PostReport[]
 }
 
 model Follower {
@@ -59,6 +61,10 @@ model Post {
 
   likedBy     User[]     @relation("PostLikes")
   bookmarkedBy User[]    @relation("PostBookmarks")
+
+  status PostStatus?
+
+  reports     PostReport[]
 }
 
 model Comment {
@@ -89,6 +95,35 @@ model CommentReaction {
   user      User    @relation(fields: [userId], references: [id])
 
   @@unique([commentId, userId])
+}
+
+model PostReport {
+  id         String     @id @default(uuid())
+  postId     String
+  reporterId String     
+  type       ReportType
+  message    String?    
+  createdAt  DateTime   @default(now())
+
+  post       Post       @relation(fields: [postId], references: [id])
+  reporter   User       @relation(fields: [reporterId], references: [id])
+
+  // @@unique([postId, reporterId])
+}
+
+enum ReportType {
+  SPAM
+  ABUSE
+  MISINFORMATION
+  OTHER
+  PORNOGRAPHY
+}   
+
+enum PostStatus {
+  DRAFT
+  BLOCKED
+  REPORTED
+  ARCHIEVED
 }
 
 enum ReactionType {
