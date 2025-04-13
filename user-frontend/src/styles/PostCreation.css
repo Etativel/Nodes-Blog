@@ -16,7 +16,6 @@
 .blog-post-preview {
   width: 100%;
   display: flex;
-  /* justify-content: center; */
   font-size: 1.3rem;
   line-height: 1.5;
   flex-direction: column;
@@ -73,14 +72,12 @@
     max-width: 100%;
     max-height: calc(100vh - 20px);
     height: auto;
-    /* object-fit: contain; */
     display: block;
     margin: 0 auto;
     padding: 12px;
   }
   .blog-post-preview {
     font-size: 1.2rem;
-    /* line-height: 1.5; */
   }
   .preview-post-container {
     max-width: 100%;
@@ -88,21 +85,20 @@
 }
 
 /* CREATOR SECTION */
-
 .right-creator-mobile {
   display: none;
 }
 
 .creator-container {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   padding-top: 24px;
+  height: fit-content;
 }
 
 .right-creator {
   display: flex;
-  height: 100vh;
   max-width: 300px;
   width: 100%;
   position: relative;
@@ -112,7 +108,6 @@
   flex-grow: 2;
   max-width: 750px;
   width: 100%;
-  height: 100vh;
 }
 
 .write-container {
@@ -124,6 +119,8 @@
   .creator-container {
     flex-direction: column;
     padding-top: 12px;
+    align-items: center;
+    justify-content: center;
   }
   .right-creator {
     display: none;
@@ -194,17 +191,13 @@
 
 .blog-title {
   width: 100%;
-  /* resize: none; */
   height: fit-content;
   padding: 12px;
-
   background-color: #f9f9f9;
   border: 0px;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 2rem;
   outline: none;
-  /* border-top-left-radius: 8px;
-  border-top-right-radius: 8px; */
   text-align: start;
   font-weight: bold;
 }
@@ -224,26 +217,19 @@
   font-family: Arial, Helvetica, sans-serif;
   font-size: 1rem;
   outline: none;
-  /* border-top-left-radius: 8px;
-  border-top-right-radius: 8px; */
 }
 
 .sub-input-ctr {
   display: flex;
-  /* background-color: red; */
-  /* padding: 12px; */
   flex-direction: column;
 }
 
 .thumbnail-input-ctr {
   padding-top: 12px;
-  /* background-color: red; */
-  /* max-width: 400px; */
   height: fit-content;
   width: 100%;
   display: flex;
   justify-content: center;
-  /* padding: 12px; */
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
   color: #3d3d3d;
@@ -325,8 +311,6 @@
 
 .write-btn-selection {
   display: flex;
-  /* background-color: red; */
-  /* justify-content: space-around; */
   justify-content: end;
   gap: 12px;
   padding: 12px;
@@ -364,8 +348,6 @@
 @media (max-width: 640px) {
   .sub-input-ctr {
     display: flex;
-    /* background-color: red; */
-    /* padding: 12px; */
     flex-direction: column;
   }
 }

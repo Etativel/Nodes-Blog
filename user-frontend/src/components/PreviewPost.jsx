@@ -57,7 +57,7 @@ function PreviewPost() {
           {post && post.content ? (
             <div dangerouslySetInnerHTML={{ __html: post.content }} />
           ) : (
-            <p>No current post</p>
+            <p></p>
           )}
         </div>
       </div>
