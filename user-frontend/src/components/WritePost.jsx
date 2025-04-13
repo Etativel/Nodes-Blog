@@ -2,15 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import imageCompression from "browser-image-compression";
+import Loader from "./Loader";
+
 function Write() {
   const { post, setPost, isEditing, setPostToEdit, setIsEditing } =
     useOutletContext();
   const imageInputRef = useRef(null);
   const editorRef = useRef(null);
-  const [thumbnail, setThumbnail] = useState(null);
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
   const navigate = useNavigate();
-
+  const [loadingSave, setLoadingSave] = useState(false);
   useEffect(() => {
     if (post.thumbnail) {
       setThumbnailPreview(post.thumbnail);
@@ -26,10 +27,13 @@ function Write() {
         useWebWorker: true,
       };
       const compressedFile = await imageCompression(file, options);
-      setThumbnail(compressedFile);
       const previewUrl = URL.createObjectURL(compressedFile);
       setThumbnailPreview(previewUrl);
-      setPost((prev) => ({ ...prev, thumbnail: previewUrl }));
+      setPost((prev) => ({
+        ...prev,
+        thumbnail: previewUrl,
+        thumbnailFile: compressedFile,
+      }));
     }
   };
 
@@ -46,7 +50,9 @@ function Write() {
   };
 
   const handleSave = async (asDraft) => {
+    setLoadingSave(true);
     if (!post.title || !post.authorId || !post.content || !post.excerpt) {
+      setLoadingSave(false);
       return alert("You need to fill all of the field");
     }
     const parser = new DOMParser();
@@ -65,6 +71,7 @@ function Write() {
 
           img.src = reader.result;
         } catch (error) {
+          setLoadingSave(false);
           console.error("Error converting blob to base64:", error);
         }
       }
@@ -85,8 +92,8 @@ function Write() {
       formData.append("status", "DEFAULT");
       formData.append("published", post.published);
     }
-    if (thumbnail) {
-      formData.append("thumbnail", thumbnail);
+    if (post.thumbnailFile) {
+      formData.append("thumbnail", post.thumbnailFile);
     }
     let editFormData;
     if (isEditing) {
@@ -103,8 +110,8 @@ function Write() {
         editFormData.append("published", post.published);
       }
 
-      if (thumbnail) {
-        editFormData.append("thumbnail", thumbnail);
+      if (post.thumbnailFile) {
+        editFormData.append("thumbnail", post.thumbnailFile);
       }
     }
     try {
@@ -125,14 +132,20 @@ function Write() {
       }
 
       if (response.ok) {
-        alert("Post saved successfully!");
-        navigate(`/@${post.username}`);
+        setLoadingSave(false);
+        setTimeout(() => {
+          alert("Post saved successfully!");
+          navigate(`/@${post.username}`);
+        }, 5);
+
         setPostToEdit(null);
         setIsEditing(false);
       } else {
+        setLoadingSave(false);
         console.error("Error saving post");
       }
     } catch (error) {
+      setLoadingSave(false);
       console.error("Error:", error);
     }
   };
@@ -214,6 +227,7 @@ function Write() {
           onChange={handleThumbnailChange}
         />
       </form>
+
       <Editor
         apiKey="ohszzdask1vfnrdtf3o5quted1o3fg2xchacfnopeokho1am"
         onInit={(_, editor) => (editorRef.current = editor)}
@@ -252,11 +266,45 @@ function Write() {
           images_dataimg_filter: () => false,
         }}
       />
-      <button onClick={() => handleSave(false)}>Save Post</button>
-      <button onClick={() => handleSave(true)}>Save as draft</button>
-      <button onClick={() => handleCancel()}>Cancel</button>
-
-      <div className="blog-post-preview">
+      <div className="write-btn-selection">
+        {loadingSave ? (
+          <Loader />
+        ) : (
+          <>
+            <button
+              disabled={loadingSave}
+              className="btn-selection save-post-btn"
+              onClick={() => handleSave(false)}
+              style={{
+                opacity: loadingSave ? 0.5 : 1,
+              }}
+            >
+              Save Post
+            </button>
+            <button
+              disabled={loadingSave}
+              className="btn-selection save-draft-btn"
+              onClick={() => handleSave(true)}
+              style={{
+                opacity: loadingSave ? 0.5 : 1,
+              }}
+            >
+              Save as draft
+            </button>
+            <button
+              disabled={loadingSave}
+              className="btn-selection cancel-save-btn"
+              onClick={() => handleCancel()}
+              style={{
+                opacity: loadingSave ? 0.5 : 1,
+              }}
+            >
+              Cancel
+            </button>
+          </>
+        )}
+      </div>
+      {/* <div className="blog-post-preview">
         <div className="preview-post-container-write">
           {post && post.content ? (
             <div dangerouslySetInnerHTML={{ __html: post.content }} />
@@ -264,7 +312,7 @@ function Write() {
             <p></p>
           )}
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

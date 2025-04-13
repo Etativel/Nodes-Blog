@@ -20,6 +20,8 @@ function PostCreation() {
     content: "",
     excerpt: "",
     username: "",
+    thumbnail: "",
+    thumbnailFile: null,
   });
 
   useEffect(() => {
@@ -71,6 +73,8 @@ function PostCreation() {
               setPostToEdit,
               isEditing,
               setIsEditing,
+              author,
+              loading,
             }}
           />
         </div>

@@ -105,6 +105,7 @@
   height: 100vh;
   max-width: 300px;
   width: 100%;
+  position: relative;
 }
 
 .left-creator {
@@ -150,6 +151,9 @@
 
 .right-creator > a {
   height: fit-content;
+  position: sticky;
+  top: 0;
+  transform: translateY(60px);
 }
 
 .post-form {
@@ -317,6 +321,44 @@
   height: 20px;
   width: 20px;
   border-radius: 6px;
+}
+
+.write-btn-selection {
+  display: flex;
+  /* background-color: red; */
+  /* justify-content: space-around; */
+  justify-content: end;
+  gap: 12px;
+  padding: 12px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.loader-container {
+  height: fit-content;
+}
+
+.btn-selection {
+  font-size: 1rem;
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: solid 1px transparent;
+  cursor: pointer;
+}
+
+.save-post-btn {
+  background-color: #1a8917;
+  color: white;
+}
+
+.save-draft-btn {
+  background-color: #00bcff;
+  color: white;
+}
+
+.cancel-save-btn {
+  background-color: red;
+  color: white;
 }
 
 @media (max-width: 640px) {
