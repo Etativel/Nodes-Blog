@@ -6,7 +6,6 @@ function PreviewPost() {
     <>
       <h1>Preview</h1>
       <div className="blog-post-preview">
-        {/* <div className="post-container"> */}
         <div className="preview-post-container">
           {post && post.content ? (
             <div dangerouslySetInnerHTML={{ __html: post.content }} />

@@ -228,6 +228,7 @@ function UserPostCard({
   });
   const { setPostToEdit } = useContext(PostContext);
   const userPostDropdownRef = useRef(null);
+  const toggleDropdownRef = useRef(null);
   const stripTitle = title.substring(0, 50) + (title.length > 50 ? "..." : "");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [loadingPostUpdate, setLoadingPostUpdate] = useState(false);
@@ -254,6 +255,23 @@ function UserPostCard({
       }
     }
   }, [isDropdownOpen]);
+
+  useEffect(() => {
+    function handleOutsideClick(e) {
+      if (
+        userPostDropdownRef.current &&
+        !userPostDropdownRef.current.contains(e.target) &&
+        toggleDropdownRef.current &&
+        !toggleDropdownRef.current.contains(e.target)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  });
 
   function handleDropdown() {
     setIsDropdownOpen(!isDropdownOpen);
@@ -380,7 +398,23 @@ function UserPostCard({
                   </span>
                 </div>
                 {post.status === "DRAFT" && (
-                  <div className="draft-text">Draft</div>
+                  <div className="draft-text">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1}
+                      stroke="red"
+                      className="size-6 draft-icon"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
+                      />
+                    </svg>
+                    <p>Draft</p>
+                  </div>
                 )}
               </div>
             </div>
@@ -395,6 +429,7 @@ function UserPostCard({
             <button
               className="edit-user-post"
               aria-label="edit-post"
+              disabled={loadingPostUpdate}
               onClick={() => {
                 handleEditPost();
               }}
@@ -419,7 +454,10 @@ function UserPostCard({
               className="delete-user-post"
               aria-label="delete-post"
               disabled={loadingPostUpdate}
-              onClick={() => handleDelete(postId)}
+              onClick={() => {
+                setIsDropdownOpen(false);
+                handleDelete(postId);
+              }}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -441,8 +479,10 @@ function UserPostCard({
               <button
                 className="publish-user-post"
                 aria-label="publish-post"
+                disabled={loadingPostUpdate}
                 onClick={() => {
                   const newPublishStatus = !publishStatus;
+                  // setIsDropdownOpen(false);
                   handlePublish(newPublishStatus);
                 }}
               >
@@ -496,6 +536,7 @@ function UserPostCard({
           </div>
           <button
             className="user-post-dropdown-btn"
+            ref={toggleDropdownRef}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();

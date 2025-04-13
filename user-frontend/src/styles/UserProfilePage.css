@@ -580,14 +580,29 @@
 
 .draft-text {
   color: red;
-  font-family: Arial, Helvetica, sans-serif;
+  /* font-family: Arial, Helvetica, sans-serif; */
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.draft-text > p {
+  transform: translateY(1px);
+}
+
+.draft-icon {
+  height: 20px;
+  width: 20px;
 }
 
 @media (max-width: 500px) {
   .user-post-dropdown-ctr {
     margin-left: 0px;
   }
-
+  .draft-icon {
+    height: 15px;
+    width: 15px;
+  }
   .user-full-name {
     font-size: 0.8rem;
     margin-top: 6px;

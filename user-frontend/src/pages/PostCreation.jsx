@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import "../styles/PostCreation.css";
 import { useContext, useState, useEffect } from "react";
 import ProfileContext from "../contexts/context-create/ProfileContext";
@@ -8,7 +8,10 @@ function PostCreation() {
   const { author, loading } = useContext(ProfileContext);
   const [isEditing, setIsEditing] = useState(false);
   const { postToEdit, setPostToEdit } = useContext(PostContext);
-  // console.log(author);
+  const location = useLocation();
+  const isWriting = location.pathname.endsWith("write-post");
+  console.log(location.pathname);
+  console.log(isWriting);
   const [post, setPost] = useState({
     postId: "",
     title: "",
@@ -49,21 +52,71 @@ function PostCreation() {
   return (
     <>
       <div className="creator-container">
-        <Link to="write-post">
-          <h3>write</h3>
-        </Link>
-        <Link to="preview-post">
-          <h3>Preview</h3>
-        </Link>
-        <Outlet
-          context={{
-            post,
-            setPost,
-            setPostToEdit,
-            isEditing,
-            setIsEditing,
-          }}
-        />
+        <div className="right-creator-mobile">
+          {isWriting ? (
+            <Link to="preview-post">
+              <h3>Preview Post</h3>
+            </Link>
+          ) : (
+            <Link to="write-post">
+              <h3>Continue Editing</h3>
+            </Link>
+          )}
+        </div>
+        <div className="left-creator">
+          <Outlet
+            context={{
+              post,
+              setPost,
+              setPostToEdit,
+              isEditing,
+              setIsEditing,
+            }}
+          />
+        </div>
+        <div className="right-creator">
+          {isWriting ? (
+            <Link to="preview-post">
+              <div className="preview-post-text">
+                <p>Preview Post</p>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1}
+                  stroke="white"
+                  className="size-6 arrow-icon"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                  />
+                </svg>
+              </div>
+            </Link>
+          ) : (
+            <Link to="write-post">
+              <div className="write-post-text">
+                <p>Continue Editing</p>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1}
+                  stroke="white"
+                  className="size-6 arrow-icon"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                  />
+                </svg>
+              </div>
+            </Link>
+          )}
+        </div>
       </div>
     </>
   );

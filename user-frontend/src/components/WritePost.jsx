@@ -1,28 +1,35 @@
 import { useEffect, useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-
+import imageCompression from "browser-image-compression";
 function Write() {
   const { post, setPost, isEditing, setPostToEdit, setIsEditing } =
     useOutletContext();
-
+  const imageInputRef = useRef(null);
   const editorRef = useRef(null);
   const [thumbnail, setThumbnail] = useState(null);
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isEditing) {
+    if (post.thumbnail) {
       setThumbnailPreview(post.thumbnail);
     }
-  }, [isEditing, post]);
+  }, [post.thumbnail]);
 
-  const handleThumbnailChange = (e) => {
+  const handleThumbnailChange = async (e) => {
     const file = e.target.files[0];
-    setThumbnail(file);
     if (file) {
-      const previewUrl = URL.createObjectURL(file);
+      const options = {
+        maxSizeMB: 10,
+        maxWidthOrHeight: 800,
+        useWebWorker: true,
+      };
+      const compressedFile = await imageCompression(file, options);
+      setThumbnail(compressedFile);
+      const previewUrl = URL.createObjectURL(compressedFile);
       setThumbnailPreview(previewUrl);
+      setPost((prev) => ({ ...prev, thumbnail: previewUrl }));
     }
   };
 
@@ -130,9 +137,17 @@ function Write() {
     }
   };
 
+  function handleCancel() {
+    navigate(`/@${post.username}`);
+    setPostToEdit(null);
+    setIsEditing(false);
+  }
+  function handleImageClick() {
+    imageInputRef.current.click();
+  }
   return (
     <>
-      <form>
+      <form className="post-form">
         <input
           className="blog-title"
           type="text"
@@ -142,15 +157,7 @@ function Write() {
           onChange={handleChange}
           required
         />
-        <label>
-          <input
-            type="checkbox"
-            name="published"
-            checked={post.published || false}
-            onChange={handleChange}
-          />
-          Publish
-        </label>
+
         <input
           type="text"
           name="authorId"
@@ -161,38 +168,60 @@ function Write() {
         />
         <textarea
           name="excerpt"
-          placeholder="Intriguing summary or hook"
+          placeholder="Write an intriguing subtitle..."
           value={post.excerpt || ""}
           onChange={handleChange}
+          className="excerpt-input"
         ></textarea>
+        <div className="sub-input-ctr">
+          <div className="thumbnail-input-ctr">
+            {/* <div className="post-preview-text">Post Preview</div> */}
+            {thumbnailPreview ? (
+              <img
+                src={thumbnailPreview}
+                className={
+                  thumbnailPreview ? "preview-img active" : "preview-img"
+                }
+                onClick={() => handleImageClick()}
+              />
+            ) : (
+              <div
+                className="preview-img preview-placeholder"
+                onClick={() => handleImageClick()}
+              >
+                Click to add thumbnail
+              </div>
+            )}
+          </div>
+
+          <label className="publish-checkbox">
+            <input
+              type="checkbox"
+              name="published"
+              className="p-cbox"
+              checked={post.published || false}
+              onChange={handleChange}
+            />
+            Publish Now
+          </label>
+        </div>
         <input
           type="file"
+          ref={imageInputRef}
           name="thumbnail"
-          onChange={handleThumbnailChange}
+          style={{ display: "none" }}
           accept="image/*"
+          onChange={handleThumbnailChange}
         />
       </form>
-      {thumbnailPreview ? (
-        <img
-          src={thumbnailPreview}
-          alt="Thumbnail Preview"
-          style={{ width: "100px", height: "100px" }}
-        />
-      ) : (
-        post.thumbnail && (
-          <img
-            src={post.thumbnail}
-            alt="Existing Thumbnail"
-            style={{ width: "100px", height: "100px" }}
-          />
-        )
-      )}
       <Editor
         apiKey="ohszzdask1vfnrdtf3o5quted1o3fg2xchacfnopeokho1am"
         onInit={(_, editor) => (editorRef.current = editor)}
         value={post.content}
         onEditorChange={handleEditorChange}
         init={{
+          skin: "snow",
+          icons: "thin",
           height: 500,
           menubar: false,
           plugins: [
@@ -225,10 +254,10 @@ function Write() {
       />
       <button onClick={() => handleSave(false)}>Save Post</button>
       <button onClick={() => handleSave(true)}>Save as draft</button>
-      {/* Live Preview */}
+      <button onClick={() => handleCancel()}>Cancel</button>
+
       <div className="blog-post-preview">
-        {/* <div className="post-container"> */}
-        <div className="preview-post-container">
+        <div className="preview-post-container-write">
           {post && post.content ? (
             <div dangerouslySetInnerHTML={{ __html: post.content }} />
           ) : (
@@ -242,7 +271,7 @@ function Write() {
 
 function WritePost() {
   return (
-    <div className="wirte-post-container">
+    <div className="write-container">
       <Write />
     </div>
   );
