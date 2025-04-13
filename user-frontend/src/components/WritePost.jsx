@@ -22,7 +22,7 @@ function Write() {
     const file = e.target.files[0];
     if (file) {
       const options = {
-        maxSizeMB: 10,
+        maxSizeMB: 5,
         maxWidthOrHeight: 800,
         useWebWorker: true,
       };

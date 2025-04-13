@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Navigation from "../components/Navbar";
 import PostHead from "../components/PostHead";
 import "../styles/PostPage.css";
 import Loader from "../components/Loader";

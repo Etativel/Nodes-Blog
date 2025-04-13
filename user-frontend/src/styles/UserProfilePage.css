@@ -671,6 +671,15 @@
 }
 
 @media (max-width: 900px) {
+  /* .postcard-flex {
+    width: 100%;
+  }
+  .posts {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    align-items: center;
+  } */
   .left-ctr {
     padding-top: 12px;
   }

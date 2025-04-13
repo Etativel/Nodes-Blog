@@ -164,6 +164,7 @@
   cursor: pointer;
   background-color: transparent;
   border: 0px;
+  /* background-color: red; */
 }
 
 .report-post {
@@ -187,7 +188,7 @@
   width: 150px;
   left: 80%;
   transform: translateX(-100%);
-
+  cursor: default;
   flex-direction: column;
   padding: 12px;
   gap: 12px;

@@ -7,6 +7,7 @@ import defaultProfileImage from "../assets/profilePict/profile-picture.png";
 import Loader from "../components/Loader";
 import PostContext from "../contexts/context-create/PostContext";
 import formatCloudinaryUrl from "../utils/cloudinaryUtils";
+
 function EditProfileDialog({ setIsOpen }) {
   const { author, loading } = useContext(ProfileContext);
   const saveButton = useRef();
