@@ -199,7 +199,7 @@ async function getFilteredPost(req, res) {
 // ADD POST
 
 async function addPost(req, res) {
-  const { content, title, published, authorId, excerpt } = req.body;
+  const { content, title, published, authorId, excerpt, status } = req.body;
   let thumbnailUrl = null;
   let thumbnailPublicId = null;
   console.log("This is req", req.file);
@@ -219,6 +219,7 @@ async function addPost(req, res) {
         excerpt,
         thumbnail: thumbnailUrl,
         thumbnailPublicId,
+        status,
       },
     });
     return res.status(201).json({ post: newPost });
