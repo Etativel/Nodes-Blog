@@ -2,7 +2,8 @@
   display: flex;
   justify-content: center;
   padding: 24px;
-  padding-right: 0px;
+  padding-right: 24px;
+  padding-bottom: 0px;
 }
 
 .about-container {
@@ -596,6 +597,9 @@
 }
 
 @media (max-width: 500px) {
+  .notfound-ctr {
+    padding-right: 0px;
+  }
   .user-post-dropdown-ctr {
     margin-left: 0px;
   }

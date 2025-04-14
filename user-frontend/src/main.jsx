@@ -10,6 +10,7 @@ import Homepage from "./pages/HomePage.jsx";
 import PostCreation from "./pages/PostCreation.jsx";
 import PreviewPost from "./components/PreviewPost.jsx";
 import WritePost from "./components/WritePost.jsx";
+import NotFound from "./pages/NotFound.jsx";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
             element: <UserAbout />,
           },
         ],
+      },
+      {
+        path: "*",
+        element: <NotFound />, // <-- Catch-all route for 404 page
       },
     ],
   },

@@ -8,6 +8,7 @@ import Loader from "../components/Loader";
 import PostContext from "../contexts/context-create/PostContext";
 import formatCloudinaryUrl from "../utils/cloudinaryUtils";
 import imageCompression from "browser-image-compression";
+import NotFound from "./NotFound";
 
 function EditProfileDialog({ setIsOpen }) {
   const { author, loading } = useContext(ProfileContext);
@@ -866,7 +867,12 @@ function UserProfilePage() {
         {loadingProfile || visitedUser === null ? (
           <Loader />
         ) : !visitedUser ? (
-          <div>No user found</div>
+          <div className="notfound-ctr">
+            <NotFound
+              title="Page not found"
+              subtitle="Sorry, we couldn't find the page you're looking for"
+            />
+          </div>
         ) : (
           <>
             <div className="left-ctr">
