@@ -113,12 +113,18 @@
   }
 
   enum ReportType {
-    SPAM
-    ABUSE
-    MISINFORMATION
-    OTHER
-    PORNOGRAPHY
-  }       
+    sexual_content
+    violent_content
+    hateful_content
+    harassment
+    dangerous_acts
+    misinformation
+    child_abuse
+    terrorism
+    spam_misleading
+
+  }      
+   
 
   enum PostStatus {
     DEFAULT

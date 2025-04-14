@@ -205,7 +205,169 @@
   display: block;
 }
 
+.post-report-ctr {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  opacity: 0;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  background-color: rgba(255, 255, 255, 0);
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.3s ease, background-color 0.3s ease;
+}
+
+.post-report-ctr.active {
+  /* background-color: rgba(255, 255, 255, 0.96); */
+  opacity: 1;
+  display: flex;
+  /* pointer-events: auto; */
+}
+
+.report-form {
+  padding: 50px;
+  background-color: white;
+  opacity: 100%;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+  height: fit-content;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  margin: 12px;
+  /* align-items: center; */
+  justify-content: space-between;
+  position: relative;
+  overflow-y: auto;
+  opacity: 0;
+  transform: translateY(10%);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.report-form.active {
+  opacity: 100%;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.r-i-ctr {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.1rem;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.report-radio {
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+}
+
+.r-i-ctr > label {
+  cursor: pointer;
+}
+
+.report-post-title {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+}
+
+.additional-info-txt {
+  width: 100%;
+  resize: none;
+  height: fit-content;
+  padding: 12px;
+  background-color: #e8e8e8;
+  border: 0px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  outline: none;
+  /* border-top-left-radius: 8px; */
+  /* border-top-right-radius: 8px; */
+}
+
+.additional-info-ctr {
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+.add-info-text {
+  font-size: 1.1rem;
+}
+
+.submit-report-btn-ctr {
+  /* background-color: red; */
+  display: flex;
+  justify-content: end;
+  gap: 12px;
+  padding: 12px;
+}
+
+.cancel-report-btn {
+  background-color: transparent;
+  border-radius: 24px;
+  padding: 9px 16px 9px;
+  border: solid 1px red;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: red;
+}
+
+.submit-report-btn {
+  background-color: transparent;
+  border-radius: 24px;
+  padding: 9px 16px 9px;
+  border: solid 1px #156d12;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #156d12;
+}
+
+.cancel-report-btn:hover {
+  background-color: red;
+  color: white;
+}
+
+.submit-report-btn:hover {
+  background-color: #156d12;
+  color: white;
+}
+
 @media (max-width: 470px) {
+  .report-form {
+    padding: 25px;
+  }
+  .r-i-ctr {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1rem;
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+
+  .report-radio {
+    height: 15px;
+    width: 15px;
+  }
+
+  .report-post-title {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.1rem;
+  }
+
   .post-like-icon,
   .post-bookmark-icon,
   .post-options-icon {

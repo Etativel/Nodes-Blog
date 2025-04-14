@@ -5,6 +5,189 @@ import ProfileContext from "../contexts/context-create/ProfileContext";
 import PostContext from "../contexts/context-create/PostContext";
 import formatCloudinaryUrl from "../utils/cloudinaryUtils";
 
+function ReportForm({
+  setDialogOpen,
+  reportType,
+  setReportType,
+  reportAdditionalInfo,
+  setReportAdditionalInfo,
+  handleReportSubmit,
+}) {
+  return (
+    <div className="report-from-ctr">
+      <form onSubmit={(e) => handleReportSubmit(e)}>
+        <div className="r-i-ctr">
+          <input
+            type="radio"
+            id="sexual-content"
+            name="reportCategory"
+            className="report-radio"
+            value="sexual-content"
+            checked={reportType === "sexual-content"}
+            onChange={(e) => {
+              setReportType(e.target.value);
+              console.log(e.target.value);
+            }}
+          />
+          <label htmlFor="sexual-content">Sexual content</label>
+        </div>
+        <div className="r-i-ctr">
+          <input
+            type="radio"
+            id="violent-content"
+            name="reportCategory"
+            className="report-radio"
+            value="violent-content"
+            checked={reportType === "violent-content"}
+            onChange={(e) => {
+              setReportType(e.target.value);
+              console.log(e.target.value);
+            }}
+          />
+          <label htmlFor="violent-content">Violent or repulsive content</label>
+        </div>
+        <div className="r-i-ctr">
+          <input
+            type="radio"
+            id="hateful-content"
+            name="reportCategory"
+            className="report-radio"
+            value="hateful-content"
+            checked={reportType === "hateful-content"}
+            onChange={(e) => {
+              setReportType(e.target.value);
+              console.log(e.target.value);
+            }}
+          />
+          <label htmlFor="hateful-content">Hateful or abusive content</label>
+        </div>
+        <div className="r-i-ctr">
+          <input
+            type="radio"
+            id="harassment"
+            name="reportCategory"
+            className="report-radio"
+            value="harassment"
+            checked={reportType === "harassment"}
+            onChange={(e) => {
+              setReportType(e.target.value);
+              console.log(e.target.value);
+            }}
+          />
+          <label htmlFor="harassment">Harassment or bullying</label>
+        </div>
+        <div className="r-i-ctr">
+          <input
+            type="radio"
+            id="dangerous-acts"
+            name="reportCategory"
+            className="report-radio"
+            value="dangerous-acts"
+            checked={reportType === "dangerous-acts"}
+            onChange={(e) => {
+              setReportType(e.target.value);
+              console.log(e.target.value);
+            }}
+          />
+          <label htmlFor="dangerous-acts">Harmful or dangerous acts</label>
+        </div>
+        <div className="r-i-ctr">
+          <input
+            type="radio"
+            id="misinformation"
+            name="reportCategory"
+            className="report-radio"
+            value="misinformation"
+            checked={reportType === "misinformation"}
+            onChange={(e) => {
+              setReportType(e.target.value);
+              console.log(e.target.value);
+            }}
+          />
+          <label htmlFor="misinformation">Misinformation</label>
+        </div>
+        <div className="r-i-ctr">
+          <input
+            type="radio"
+            id="child-abuse"
+            name="reportCategory"
+            className="report-radio"
+            value="child-abuse"
+            checked={reportType === "child-abuse"}
+            onChange={(e) => {
+              setReportType(e.target.value);
+              console.log(e.target.value);
+            }}
+          />
+          <label htmlFor="child-abuse">Child abuse</label>
+        </div>
+        <div className="r-i-ctr">
+          <input
+            type="radio"
+            id="terrorism"
+            name="reportCategory"
+            className="report-radio"
+            value="terrorism"
+            checked={reportType === "terrorism"}
+            onChange={(e) => {
+              setReportType(e.target.value);
+              console.log(e.target.value);
+            }}
+          />
+          <label htmlFor="terrorism">Promotes terrorism</label>
+        </div>
+        <div className="r-i-ctr">
+          <input
+            type="radio"
+            id="spam-misleading"
+            name="reportCategory"
+            className="report-radio"
+            value="spam-misleading"
+            checked={reportType === "spam-misleading"}
+            onChange={(e) => {
+              setReportType(e.target.value);
+              console.log(e.target.value);
+            }}
+          />
+          <label htmlFor="spam-misleading">Spam or misleading</label>
+        </div>
+        <div className="additional-info-ctr">
+          <label htmlFor="add-info" className="add-info-text">
+            Additional information
+          </label>
+          <textarea
+            name="report-message"
+            id="add-info"
+            className="additional-info-txt"
+            placeholder="Write here..."
+            value={reportAdditionalInfo}
+            onChange={(e) => {
+              setReportAdditionalInfo(e.target.value);
+            }}
+          ></textarea>
+        </div>
+        <div className="submit-report-btn-ctr">
+          <button
+            aria-label="cancel-report"
+            type="button"
+            className="cancel-report-btn"
+            onClick={() => setDialogOpen(false)}
+          >
+            Cancel
+          </button>
+          <button
+            aria-label="submit-report"
+            type="submit"
+            className="submit-report-btn"
+          >
+            Report
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
+
 function PostHead({
   title,
   username,
@@ -25,11 +208,32 @@ function PostHead({
   const [isFollowing, setIsFollowing] = useState(
     followers.some((f) => f.followerId === author?.id)
   );
+  const postReportFormRef = useRef(null);
+  const reportCtrRef = useRef(null);
   const postDropdownRef = useRef(null);
   const toggleDropdownRef = useRef(null);
   const [postLike, setPostLike] = useState(false);
   const [postBookmark, setPostBookmark] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [reportType, setReportType] = useState("");
+  const [reportAdditionalInfo, setReportAdditionalInfo] = useState("");
+  const [reportLoading, setReportLoading] = useState(false);
+  useEffect(() => {
+    if (dialogOpen) {
+      setTimeout(() => {
+        if (reportCtrRef.current) {
+          reportCtrRef.current.classList.add("active");
+          postReportFormRef.current.classList.add("active");
+        }
+      }, 10);
+    } else {
+      if (reportCtrRef.current) {
+        postReportFormRef.current.classList.remove("active");
+        reportCtrRef.current.classList.remove("active");
+      }
+    }
+  }, [dialogOpen, reportCtrRef, postReportFormRef]);
 
   useEffect(() => {
     if (isOpen) {
@@ -59,7 +263,7 @@ function PostHead({
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   });
-  console.log(postAuthor);
+
   useEffect(() => {
     if (likedBy && author) {
       setPostLike(likedBy.some((u) => u.id === author.id));
@@ -203,8 +407,49 @@ function PostHead({
     navigate("/creator/write-post");
   }
 
+  function handleReportDialog() {
+    setDialogOpen(!dialogOpen);
+  }
+
+  const CloseButton = () => (
+    <button className="close-dialog-btn" onClick={() => setDialogOpen(false)}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1}
+        stroke="currentColor"
+        className="size-6 x-logo"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M6 18 18 6M6 6l12 12"
+        />
+      </svg>
+    </button>
+  );
+
+  async function handleReportSubmit(e) {
+    e.preventDefault();
+  }
+
   return (
     <div className="post-head-container">
+      <div className="post-report-ctr" ref={reportCtrRef}>
+        <div className="report-form" ref={postReportFormRef}>
+          <div className="report-post-title">Report post</div>
+          <CloseButton />
+          <ReportForm
+            setDialogOpen={setDialogOpen}
+            reportType={reportType}
+            setReportType={setReportType}
+            reportAdditionalInfo={reportAdditionalInfo}
+            setReportAdditionalInfo={setReportAdditionalInfo}
+            handleReportSubmit={handleReportSubmit}
+          />
+        </div>
+      </div>
       <p className="post-title-head">{title}</p>
       <div className="author-and-post-info">
         <div className="left-head">
@@ -338,7 +583,7 @@ function PostHead({
               </>
             )}
           </button>
-          <button
+          <div
             ref={toggleDropdownRef}
             className="post-options"
             aria-label="post-options"
@@ -375,7 +620,7 @@ function PostHead({
                 <button
                   className="report-post"
                   onClick={() => {
-                    console.log("report");
+                    handleReportDialog();
                   }}
                   aria-label="report-post"
                 >
@@ -411,7 +656,7 @@ function PostHead({
                 d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
               />
             </svg>
-          </button>
+          </div>
         </div>
       </div>
     </div>
