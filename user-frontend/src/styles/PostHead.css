@@ -333,6 +333,12 @@
   align-items: center;
   justify-content: center;
   color: #156d12;
+  opacity: 100%;
+}
+
+.submit-report-btn.disabled {
+  opacity: 50%;
+  cursor: default;
 }
 
 .cancel-report-btn:hover {

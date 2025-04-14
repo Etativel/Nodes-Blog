@@ -12,7 +12,9 @@ function ReportForm({
   reportAdditionalInfo,
   setReportAdditionalInfo,
   handleReportSubmit,
+  reportLoading,
 }) {
+  const disableButton = reportLoading || reportAdditionalInfo.length > 160;
   return (
     <div className="report-from-ctr">
       <form onSubmit={(e) => handleReportSubmit(e)}>
@@ -22,8 +24,8 @@ function ReportForm({
             id="sexual-content"
             name="reportCategory"
             className="report-radio"
-            value="sexual-content"
-            checked={reportType === "sexual-content"}
+            value="sexual_content"
+            checked={reportType === "sexual_content"}
             onChange={(e) => {
               setReportType(e.target.value);
               console.log(e.target.value);
@@ -37,8 +39,8 @@ function ReportForm({
             id="violent-content"
             name="reportCategory"
             className="report-radio"
-            value="violent-content"
-            checked={reportType === "violent-content"}
+            value="violent_content"
+            checked={reportType === "violent_content"}
             onChange={(e) => {
               setReportType(e.target.value);
               console.log(e.target.value);
@@ -52,8 +54,8 @@ function ReportForm({
             id="hateful-content"
             name="reportCategory"
             className="report-radio"
-            value="hateful-content"
-            checked={reportType === "hateful-content"}
+            value="hateful_content"
+            checked={reportType === "hateful_content"}
             onChange={(e) => {
               setReportType(e.target.value);
               console.log(e.target.value);
@@ -82,8 +84,8 @@ function ReportForm({
             id="dangerous-acts"
             name="reportCategory"
             className="report-radio"
-            value="dangerous-acts"
-            checked={reportType === "dangerous-acts"}
+            value="dangerous_acts"
+            checked={reportType === "dangerous_acts"}
             onChange={(e) => {
               setReportType(e.target.value);
               console.log(e.target.value);
@@ -112,8 +114,8 @@ function ReportForm({
             id="child-abuse"
             name="reportCategory"
             className="report-radio"
-            value="child-abuse"
-            checked={reportType === "child-abuse"}
+            value="child_abuse"
+            checked={reportType === "child_abuse"}
             onChange={(e) => {
               setReportType(e.target.value);
               console.log(e.target.value);
@@ -142,8 +144,8 @@ function ReportForm({
             id="spam-misleading"
             name="reportCategory"
             className="report-radio"
-            value="spam-misleading"
-            checked={reportType === "spam-misleading"}
+            value="spam_misleading"
+            checked={reportType === "spam_misleading"}
             onChange={(e) => {
               setReportType(e.target.value);
               console.log(e.target.value);
@@ -165,6 +167,10 @@ function ReportForm({
               setReportAdditionalInfo(e.target.value);
             }}
           ></textarea>
+          <div className="biography-length length-indicator">
+            <span>{reportAdditionalInfo.length}</span>
+            <span className="max-length">/160</span>
+          </div>
         </div>
         <div className="submit-report-btn-ctr">
           <button
@@ -178,7 +184,8 @@ function ReportForm({
           <button
             aria-label="submit-report"
             type="submit"
-            className="submit-report-btn"
+            className={`submit-report-btn ${disableButton ? "disabled" : ""}`}
+            disabled={disableButton}
           >
             Report
           </button>
@@ -432,6 +439,30 @@ function PostHead({
 
   async function handleReportSubmit(e) {
     e.preventDefault();
+    try {
+      const response = await fetch(
+        `http://localhost:3000/post/report/${postId}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            reporterId: author?.id,
+            type: reportType,
+            message: reportAdditionalInfo,
+          }),
+        }
+      );
+      if (!response.ok) {
+        setReportLoading(false);
+        console.log("failed to fetch report", response.status);
+      }
+      await response.json();
+      setReportLoading(false);
+      setDialogOpen(false);
+    } catch (error) {
+      setReportLoading(false);
+      console.error("failed to report post", error);
+    }
   }
 
   return (
@@ -447,6 +478,7 @@ function PostHead({
             reportAdditionalInfo={reportAdditionalInfo}
             setReportAdditionalInfo={setReportAdditionalInfo}
             handleReportSubmit={handleReportSubmit}
+            reportLoading={reportLoading}
           />
         </div>
       </div>
