@@ -7,6 +7,7 @@ import defaultProfileImage from "../assets/profilePict/profile-picture.png";
 import Loader from "../components/Loader";
 import PostContext from "../contexts/context-create/PostContext";
 import formatCloudinaryUrl from "../utils/cloudinaryUtils";
+import imageCompression from "browser-image-compression";
 
 function EditProfileDialog({ setIsOpen }) {
   const { author, loading } = useContext(ProfileContext);
@@ -48,11 +49,17 @@ function EditProfileDialog({ setIsOpen }) {
     imageInputRef.current.click();
   }
 
-  function handleImageChange(e) {
+  async function handleImageChange(e) {
     const file = e.target.files[0];
     if (file) {
-      setImage(file);
-      setPreviewImage(URL.createObjectURL(file));
+      const options = {
+        maxSizeMB: 5,
+        maxWidthOrHeight: 800,
+        useWebWorker: true,
+      };
+      const compressedFile = await imageCompression(file, options);
+      setImage(compressedFile);
+      setPreviewImage(URL.createObjectURL(compressedFile));
     }
   }
   function handleRemoveImage(e) {

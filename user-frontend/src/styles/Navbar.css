@@ -58,6 +58,7 @@
   transform: translateY(0);
 }
 
+.admin-icon,
 .write-icon,
 .logout-icon,
 .profile-icon {
@@ -84,10 +85,12 @@
 
 .write-btn,
 .sign-out-btn,
+.admin-portal-btn,
 .profile-btn {
   color: #6b6b6b;
 }
 
+.admin-portal-btn:hover,
 .write-btn:hover,
 .sign-out-btn:hover,
 .profile-btn:hover {
@@ -139,6 +142,8 @@
     justify-content: center;
     align-items: center;
   }
+
+  .admin-icon,
   .write-icon,
   .logout-icon,
   .profile-icon {

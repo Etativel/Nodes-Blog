@@ -1,3 +1,5 @@
+import "../styles/NotFoundPage.css";
+
 function NotFound() {
   return (
     <div className="not-found-ctr">

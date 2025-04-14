@@ -459,6 +459,8 @@ function PostHead({
       await response.json();
       setReportLoading(false);
       setDialogOpen(false);
+      setReportAdditionalInfo("");
+      setReportType("");
     } catch (error) {
       setReportLoading(false);
       console.error("failed to report post", error);

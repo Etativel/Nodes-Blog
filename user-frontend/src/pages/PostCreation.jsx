@@ -56,7 +56,7 @@ function PostCreation() {
       <div className="creator-container">
         <div className="right-creator-mobile">
           {isWriting ? (
-            <Link to="preview-post mobile">
+            <Link to="preview-post">
               <div className="preview-post-text">
                 <p>Preview Post</p>
                 <svg
