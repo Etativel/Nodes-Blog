@@ -22,5 +22,6 @@ router.put(
 );
 router.put("/publish/:postId", postController.togglePublish);
 router.delete("/delete/:postId", postController.deletePost);
+router.post("/report/:postId", postController.reportPost);
 
 module.exports = router;

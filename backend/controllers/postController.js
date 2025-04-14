@@ -102,6 +102,7 @@ async function getPost(req, res) {
       },
 
       include: {
+        reports: true,
         likedBy: true,
         bookmarkedBy: true,
         author: {
@@ -435,6 +436,38 @@ async function toggleBookmark(req, res) {
   }
 }
 
+// REPORT POST
+
+async function reportPost(req, res) {
+  const { postId } = req.params;
+  const { reporterId, type, message } = req.body;
+
+  try {
+    const trimmedMessage = message?.trim() || "";
+    await prisma.postReport.create({
+      data: {
+        postId,
+        reporterId,
+        type,
+        message: trimmedMessage,
+      },
+    });
+
+    const updatedPost = await prisma.post.update({
+      where: { id: postId },
+      data: { status: "REPORTED" },
+    });
+
+    return res.status(201).json({
+      message: "Report submitted and post marked as REPORTED",
+      post: updatedPost,
+    });
+  } catch (error) {
+    console.error("Error reporting post:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 module.exports = {
   getAllPost,
   getPost,
@@ -448,4 +481,5 @@ module.exports = {
   getLimitPost,
   simpleUpdatePost,
   togglePublish,
+  reportPost,
 };
