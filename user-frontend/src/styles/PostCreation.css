@@ -127,13 +127,24 @@
   }
 
   .right-creator-mobile {
-    display: block;
-    background-color: blue;
+    display: flex;
+    justify-content: end;
+    /* background-color: blue; */
     max-width: 750px;
     padding-left: 24px;
     padding-right: 24px;
+    margin-right: 24px;
     width: 100%;
+    padding: 12px;
   }
+
+  .preview-post.mobile {
+    height: fit-content;
+    position: sticky;
+    top: 0;
+    transform: translateY(60px);
+  }
+
   .preview-post-container {
     padding-right: 24px;
     padding-left: 24px;

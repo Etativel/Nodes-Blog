@@ -56,12 +56,44 @@ function PostCreation() {
       <div className="creator-container">
         <div className="right-creator-mobile">
           {isWriting ? (
-            <Link to="preview-post">
-              <h3>Preview Post</h3>
+            <Link to="preview-post mobile">
+              <div className="preview-post-text">
+                <p>Preview Post</p>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1}
+                  stroke="white"
+                  className="size-6 arrow-icon"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                  />
+                </svg>
+              </div>
             </Link>
           ) : (
             <Link to="write-post">
-              <h3>Continue Editing</h3>
+              <div className="write-post-text">
+                <p>Continue Editing</p>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1}
+                  stroke="white"
+                  className="size-6 arrow-icon"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                  />
+                </svg>
+              </div>
             </Link>
           )}
         </div>
