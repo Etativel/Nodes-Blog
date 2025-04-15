@@ -91,7 +91,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     // Simulate loading dummy stats
-    setTimeout(() => setStats(statsDum), 1000); // Optional delay to mimic fetch
+    setTimeout(() => setStats(statsDum), 0); // Optional delay to mimic fetch
   }, []);
 
   if (!stats) {

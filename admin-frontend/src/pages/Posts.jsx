@@ -20,7 +20,7 @@ import {
   TextField,
 } from "@mui/material";
 
-// dummy post
+// Dummy posts data mimicking your structure
 const postsData = [
   {
     id: "d5386468-4667-402a-9963-ad985efd90c7",
@@ -33,268 +33,7 @@ const postsData = [
       {
         id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
         type: "harassment",
-        message:
-          "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Optio id blanditiis asperiores ipsum. Laborum autem placeat nemo, aperiam reprehenderit reiciendis, iste est ducimus nostrum labore repellendus, voluptatem enim aliquam voluptatum.",
-        createdAt: "2025-04-14T05:36:27.827Z",
-      },
-      {
-        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
-        type: "terrorism",
-        message: "Content inciting fear.",
-        createdAt: "2025-04-14T05:39:27.417Z",
-      },
-      {
-        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
-        type: "harassment",
-        message:
-          "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Optio id blanditiis asperiores ipsum. Laborum autem placeat nemo, aperiam reprehenderit reiciendis, iste est ducimus nostrum labore repellendus, voluptatem enim aliquam voluptatum.",
-        createdAt: "2025-04-14T05:36:27.827Z",
-      },
-      {
-        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
-        type: "terrorism",
-        message: "Content inciting fear.",
-        createdAt: "2025-04-14T05:39:27.417Z",
-      },
-      {
-        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
-        type: "harassment",
-        message:
-          "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Optio id blanditiis asperiores ipsum. Laborum autem placeat nemo, aperiam reprehenderit reiciendis, iste est ducimus nostrum labore repellendus, voluptatem enim aliquam voluptatum.",
-        createdAt: "2025-04-14T05:36:27.827Z",
-      },
-      {
-        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
-        type: "terrorism",
-        message: "Content inciting fear.",
-        createdAt: "2025-04-14T05:39:27.417Z",
-      },
-      {
-        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
-        type: "harassment",
-        message:
-          "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Optio id blanditiis asperiores ipsum. Laborum autem placeat nemo, aperiam reprehenderit reiciendis, iste est ducimus nostrum labore repellendus, voluptatem enim aliquam voluptatum.",
-        createdAt: "2025-04-14T05:36:27.827Z",
-      },
-      {
-        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
-        type: "terrorism",
-        message: "Content inciting fear.",
-        createdAt: "2025-04-14T05:39:27.417Z",
-      },
-      {
-        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
-        type: "harassment",
-        message:
-          "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Optio id blanditiis asperiores ipsum. Laborum autem placeat nemo, aperiam reprehenderit reiciendis, iste est ducimus nostrum labore repellendus, voluptatem enim aliquam voluptatum.",
-        createdAt: "2025-04-14T05:36:27.827Z",
-      },
-      {
-        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
-        type: "terrorism",
-        message: "Content inciting fear.",
-        createdAt: "2025-04-14T05:39:27.417Z",
-      },
-      {
-        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
-        type: "harassment",
-        message:
-          "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Optio id blanditiis asperiores ipsum. Laborum autem placeat nemo, aperiam reprehenderit reiciendis, iste est ducimus nostrum labore repellendus, voluptatem enim aliquam voluptatum.",
-        createdAt: "2025-04-14T05:36:27.827Z",
-      },
-      {
-        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
-        type: "terrorism",
-        message: "Content inciting fear.",
-        createdAt: "2025-04-14T05:39:27.417Z",
-      },
-      {
-        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
-        type: "harassment",
-        message:
-          "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Optio id blanditiis asperiores ipsum. Laborum autem placeat nemo, aperiam reprehenderit reiciendis, iste est ducimus nostrum labore repellendus, voluptatem enim aliquam voluptatum.",
-        createdAt: "2025-04-14T05:36:27.827Z",
-      },
-      {
-        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
-        type: "terrorism",
-        message: "Content inciting fear.",
-        createdAt: "2025-04-14T05:39:27.417Z",
-      },
-      {
-        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
-        type: "harassment",
-        message:
-          "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Optio id blanditiis asperiores ipsum. Laborum autem placeat nemo, aperiam reprehenderit reiciendis, iste est ducimus nostrum labore repellendus, voluptatem enim aliquam voluptatum.",
-        createdAt: "2025-04-14T05:36:27.827Z",
-      },
-      {
-        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
-        type: "terrorism",
-        message: "Content inciting fear.",
-        createdAt: "2025-04-14T05:39:27.417Z",
-      },
-      {
-        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
-        type: "harassment",
-        message:
-          "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Optio id blanditiis asperiores ipsum. Laborum autem placeat nemo, aperiam reprehenderit reiciendis, iste est ducimus nostrum labore repellendus, voluptatem enim aliquam voluptatum.",
-        createdAt: "2025-04-14T05:36:27.827Z",
-      },
-      {
-        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
-        type: "terrorism",
-        message: "Content inciting fear.",
-        createdAt: "2025-04-14T05:39:27.417Z",
-      },
-      {
-        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
-        type: "harassment",
-        message:
-          "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Optio id blanditiis asperiores ipsum. Laborum autem placeat nemo, aperiam reprehenderit reiciendis, iste est ducimus nostrum labore repellendus, voluptatem enim aliquam voluptatum.",
-        createdAt: "2025-04-14T05:36:27.827Z",
-      },
-      {
-        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
-        type: "terrorism",
-        message: "Content inciting fear.",
-        createdAt: "2025-04-14T05:39:27.417Z",
-      },
-      {
-        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
-        type: "harassment",
-        message:
-          "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Optio id blanditiis asperiores ipsum. Laborum autem placeat nemo, aperiam reprehenderit reiciendis, iste est ducimus nostrum labore repellendus, voluptatem enim aliquam voluptatum.",
-        createdAt: "2025-04-14T05:36:27.827Z",
-      },
-      {
-        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
-        type: "terrorism",
-        message: "Content inciting fear.",
-        createdAt: "2025-04-14T05:39:27.417Z",
-      },
-      {
-        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
-        type: "harassment",
-        message:
-          "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Optio id blanditiis asperiores ipsum. Laborum autem placeat nemo, aperiam reprehenderit reiciendis, iste est ducimus nostrum labore repellendus, voluptatem enim aliquam voluptatum.",
-        createdAt: "2025-04-14T05:36:27.827Z",
-      },
-      {
-        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
-        type: "terrorism",
-        message: "Content inciting fear.",
-        createdAt: "2025-04-14T05:39:27.417Z",
-      },
-      {
-        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
-        type: "harassment",
-        message:
-          "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Optio id blanditiis asperiores ipsum. Laborum autem placeat nemo, aperiam reprehenderit reiciendis, iste est ducimus nostrum labore repellendus, voluptatem enim aliquam voluptatum.",
-        createdAt: "2025-04-14T05:36:27.827Z",
-      },
-      {
-        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
-        type: "terrorism",
-        message: "Content inciting fear.",
-        createdAt: "2025-04-14T05:39:27.417Z",
-      },
-      {
-        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
-        type: "harassment",
-        message:
-          "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Optio id blanditiis asperiores ipsum. Laborum autem placeat nemo, aperiam reprehenderit reiciendis, iste est ducimus nostrum labore repellendus, voluptatem enim aliquam voluptatum.",
-        createdAt: "2025-04-14T05:36:27.827Z",
-      },
-      {
-        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
-        type: "terrorism",
-        message: "Content inciting fear.",
-        createdAt: "2025-04-14T05:39:27.417Z",
-      },
-      {
-        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
-        type: "harassment",
-        message:
-          "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Optio id blanditiis asperiores ipsum. Laborum autem placeat nemo, aperiam reprehenderit reiciendis, iste est ducimus nostrum labore repellendus, voluptatem enim aliquam voluptatum.",
-        createdAt: "2025-04-14T05:36:27.827Z",
-      },
-      {
-        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
-        type: "terrorism",
-        message: "Content inciting fear.",
-        createdAt: "2025-04-14T05:39:27.417Z",
-      },
-      {
-        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
-        type: "harassment",
-        message:
-          "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Optio id blanditiis asperiores ipsum. Laborum autem placeat nemo, aperiam reprehenderit reiciendis, iste est ducimus nostrum labore repellendus, voluptatem enim aliquam voluptatum.",
-        createdAt: "2025-04-14T05:36:27.827Z",
-      },
-      {
-        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
-        type: "terrorism",
-        message: "Content inciting fear.",
-        createdAt: "2025-04-14T05:39:27.417Z",
-      },
-      {
-        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
-        type: "harassment",
-        message:
-          "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Optio id blanditiis asperiores ipsum. Laborum autem placeat nemo, aperiam reprehenderit reiciendis, iste est ducimus nostrum labore repellendus, voluptatem enim aliquam voluptatum.",
-        createdAt: "2025-04-14T05:36:27.827Z",
-      },
-      {
-        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
-        type: "terrorism",
-        message: "Content inciting fear.",
-        createdAt: "2025-04-14T05:39:27.417Z",
-      },
-      {
-        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
-        type: "harassment",
-        message:
-          "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Optio id blanditiis asperiores ipsum. Laborum autem placeat nemo, aperiam reprehenderit reiciendis, iste est ducimus nostrum labore repellendus, voluptatem enim aliquam voluptatum.",
-        createdAt: "2025-04-14T05:36:27.827Z",
-      },
-      {
-        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
-        type: "terrorism",
-        message: "Content inciting fear.",
-        createdAt: "2025-04-14T05:39:27.417Z",
-      },
-      {
-        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
-        type: "harassment",
-        message:
-          "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Optio id blanditiis asperiores ipsum. Laborum autem placeat nemo, aperiam reprehenderit reiciendis, iste est ducimus nostrum labore repellendus, voluptatem enim aliquam voluptatum.",
-        createdAt: "2025-04-14T05:36:27.827Z",
-      },
-      {
-        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
-        type: "terrorism",
-        message: "Content inciting fear.",
-        createdAt: "2025-04-14T05:39:27.417Z",
-      },
-      {
-        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
-        type: "harassment",
-        message:
-          "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Optio id blanditiis asperiores ipsum. Laborum autem placeat nemo, aperiam reprehenderit reiciendis, iste est ducimus nostrum labore repellendus, voluptatem enim aliquam voluptatum.",
-        createdAt: "2025-04-14T05:36:27.827Z",
-      },
-      {
-        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
-        type: "terrorism",
-        message: "Content inciting fear.",
-        createdAt: "2025-04-14T05:39:27.417Z",
-      },
-      {
-        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
-        type: "harassment",
-        message:
-          "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Optio id blanditiis asperiores ipsum. Laborum autem placeat nemo, aperiam reprehenderit reiciendis, iste est ducimus nostrum labore repellendus, voluptatem enim aliquam voluptatum.",
+        message: "Inappropriate language used.",
         createdAt: "2025-04-14T05:36:27.827Z",
       },
       {
@@ -305,12 +44,565 @@ const postsData = [
       },
     ],
   },
+  {
+    id: "d5386468-4667-402a-9963-ad985efd90c7",
+    title: "Post Title Example",
+    excerpt: "This is a sample excerpt for the post.",
+    status: "REPORTED",
+    author: { username: "asdfadsfa" },
+    createdAt: "2025-03-22T08:02:04.171Z",
+    reports: [
+      {
+        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
+        type: "harassment",
+        message: "Inappropriate language used.",
+        createdAt: "2025-04-14T05:36:27.827Z",
+      },
+      {
+        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
+        type: "terrorism",
+        message: "Content inciting fear.",
+        createdAt: "2025-04-14T05:39:27.417Z",
+      },
+    ],
+  },
+  {
+    id: "d5386468-4667-402a-9963-ad985efd90c7",
+    title: "Post Title Example",
+    excerpt: "This is a sample excerpt for the post.",
+    status: "REPORTED",
+    author: { username: "asdfadsfa" },
+    createdAt: "2025-03-22T08:02:04.171Z",
+    reports: [
+      {
+        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
+        type: "harassment",
+        message: "Inappropriate language used.",
+        createdAt: "2025-04-14T05:36:27.827Z",
+      },
+      {
+        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
+        type: "terrorism",
+        message: "Content inciting fear.",
+        createdAt: "2025-04-14T05:39:27.417Z",
+      },
+    ],
+  },
+  {
+    id: "d5386468-4667-402a-9963-ad985efd90c7",
+    title: "Post Title Example",
+    excerpt: "This is a sample excerpt for the post.",
+    status: "REPORTED",
+    author: { username: "asdfadsfa" },
+    createdAt: "2025-03-22T08:02:04.171Z",
+    reports: [
+      {
+        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
+        type: "harassment",
+        message: "Inappropriate language used.",
+        createdAt: "2025-04-14T05:36:27.827Z",
+      },
+      {
+        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
+        type: "terrorism",
+        message: "Content inciting fear.",
+        createdAt: "2025-04-14T05:39:27.417Z",
+      },
+    ],
+  },
+  {
+    id: "d5386468-4667-402a-9963-ad985efd90c7",
+    title: "Post Title Example",
+    excerpt: "This is a sample excerpt for the post.",
+    status: "REPORTED",
+    author: { username: "asdfadsfa" },
+    createdAt: "2025-03-22T08:02:04.171Z",
+    reports: [
+      {
+        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
+        type: "harassment",
+        message: "Inappropriate language used.",
+        createdAt: "2025-04-14T05:36:27.827Z",
+      },
+      {
+        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
+        type: "terrorism",
+        message: "Content inciting fear.",
+        createdAt: "2025-04-14T05:39:27.417Z",
+      },
+    ],
+  },
+  {
+    id: "d5386468-4667-402a-9963-ad985efd90c7",
+    title: "Post Title Example",
+    excerpt: "This is a sample excerpt for the post.",
+    status: "REPORTED",
+    author: { username: "asdfadsfa" },
+    createdAt: "2025-03-22T08:02:04.171Z",
+    reports: [
+      {
+        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
+        type: "harassment",
+        message: "Inappropriate language used.",
+        createdAt: "2025-04-14T05:36:27.827Z",
+      },
+      {
+        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
+        type: "terrorism",
+        message: "Content inciting fear.",
+        createdAt: "2025-04-14T05:39:27.417Z",
+      },
+    ],
+  },
+  {
+    id: "d5386468-4667-402a-9963-ad985efd90c7",
+    title: "Post Title Example",
+    excerpt: "This is a sample excerpt for the post.",
+    status: "REPORTED",
+    author: { username: "asdfadsfa" },
+    createdAt: "2025-03-22T08:02:04.171Z",
+    reports: [
+      {
+        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
+        type: "harassment",
+        message: "Inappropriate language used.",
+        createdAt: "2025-04-14T05:36:27.827Z",
+      },
+      {
+        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
+        type: "terrorism",
+        message: "Content inciting fear.",
+        createdAt: "2025-04-14T05:39:27.417Z",
+      },
+    ],
+  },
+  {
+    id: "d5386468-4667-402a-9963-ad985efd90c7",
+    title: "Post Title Example",
+    excerpt: "This is a sample excerpt for the post.",
+    status: "REPORTED",
+    author: { username: "asdfadsfa" },
+    createdAt: "2025-03-22T08:02:04.171Z",
+    reports: [
+      {
+        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
+        type: "harassment",
+        message: "Inappropriate language used.",
+        createdAt: "2025-04-14T05:36:27.827Z",
+      },
+      {
+        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
+        type: "terrorism",
+        message: "Content inciting fear.",
+        createdAt: "2025-04-14T05:39:27.417Z",
+      },
+    ],
+  },
+  {
+    id: "d5386468-4667-402a-9963-ad985efd90c7",
+    title: "Post Title Example",
+    excerpt: "This is a sample excerpt for the post.",
+    status: "REPORTED",
+    author: { username: "asdfadsfa" },
+    createdAt: "2025-03-22T08:02:04.171Z",
+    reports: [
+      {
+        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
+        type: "harassment",
+        message: "Inappropriate language used.",
+        createdAt: "2025-04-14T05:36:27.827Z",
+      },
+      {
+        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
+        type: "terrorism",
+        message: "Content inciting fear.",
+        createdAt: "2025-04-14T05:39:27.417Z",
+      },
+    ],
+  },
+  {
+    id: "d5386468-4667-402a-9963-ad985efd90c7",
+    title: "Post Title Example",
+    excerpt: "This is a sample excerpt for the post.",
+    status: "REPORTED",
+    author: { username: "asdfadsfa" },
+    createdAt: "2025-03-22T08:02:04.171Z",
+    reports: [
+      {
+        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
+        type: "harassment",
+        message: "Inappropriate language used.",
+        createdAt: "2025-04-14T05:36:27.827Z",
+      },
+      {
+        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
+        type: "terrorism",
+        message: "Content inciting fear.",
+        createdAt: "2025-04-14T05:39:27.417Z",
+      },
+    ],
+  },
+  {
+    id: "d5386468-4667-402a-9963-ad985efd90c7",
+    title: "Post Title Example",
+    excerpt: "This is a sample excerpt for the post.",
+    status: "REPORTED",
+    author: { username: "asdfadsfa" },
+    createdAt: "2025-03-22T08:02:04.171Z",
+    reports: [
+      {
+        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
+        type: "harassment",
+        message: "Inappropriate language used.",
+        createdAt: "2025-04-14T05:36:27.827Z",
+      },
+      {
+        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
+        type: "terrorism",
+        message: "Content inciting fear.",
+        createdAt: "2025-04-14T05:39:27.417Z",
+      },
+    ],
+  },
+  {
+    id: "d5386468-4667-402a-9963-ad985efd90c7",
+    title: "Post Title Example",
+    excerpt: "This is a sample excerpt for the post.",
+    status: "REPORTED",
+    author: { username: "asdfadsfa" },
+    createdAt: "2025-03-22T08:02:04.171Z",
+    reports: [
+      {
+        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
+        type: "harassment",
+        message: "Inappropriate language used.",
+        createdAt: "2025-04-14T05:36:27.827Z",
+      },
+      {
+        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
+        type: "terrorism",
+        message: "Content inciting fear.",
+        createdAt: "2025-04-14T05:39:27.417Z",
+      },
+    ],
+  },
+  {
+    id: "d5386468-4667-402a-9963-ad985efd90c7",
+    title: "Post Title Example",
+    excerpt: "This is a sample excerpt for the post.",
+    status: "REPORTED",
+    author: { username: "asdfadsfa" },
+    createdAt: "2025-03-22T08:02:04.171Z",
+    reports: [
+      {
+        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
+        type: "harassment",
+        message: "Inappropriate language used.",
+        createdAt: "2025-04-14T05:36:27.827Z",
+      },
+      {
+        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
+        type: "terrorism",
+        message: "Content inciting fear.",
+        createdAt: "2025-04-14T05:39:27.417Z",
+      },
+    ],
+  },
+  {
+    id: "d5386468-4667-402a-9963-ad985efd90c7",
+    title: "Post Title Example",
+    excerpt: "This is a sample excerpt for the post.",
+    status: "REPORTED",
+    author: { username: "asdfadsfa" },
+    createdAt: "2025-03-22T08:02:04.171Z",
+    reports: [
+      {
+        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
+        type: "harassment",
+        message: "Inappropriate language used.",
+        createdAt: "2025-04-14T05:36:27.827Z",
+      },
+      {
+        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
+        type: "terrorism",
+        message: "Content inciting fear.",
+        createdAt: "2025-04-14T05:39:27.417Z",
+      },
+    ],
+  },
+  {
+    id: "d5386468-4667-402a-9963-ad985efd90c7",
+    title: "Post Title Example",
+    excerpt: "This is a sample excerpt for the post.",
+    status: "REPORTED",
+    author: { username: "asdfadsfa" },
+    createdAt: "2025-03-22T08:02:04.171Z",
+    reports: [
+      {
+        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
+        type: "harassment",
+        message: "Inappropriate language used.",
+        createdAt: "2025-04-14T05:36:27.827Z",
+      },
+      {
+        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
+        type: "terrorism",
+        message: "Content inciting fear.",
+        createdAt: "2025-04-14T05:39:27.417Z",
+      },
+    ],
+  },
+  {
+    id: "d5386468-4667-402a-9963-ad985efd90c7",
+    title: "Post Title Example",
+    excerpt: "This is a sample excerpt for the post.",
+    status: "REPORTED",
+    author: { username: "asdfadsfa" },
+    createdAt: "2025-03-22T08:02:04.171Z",
+    reports: [
+      {
+        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
+        type: "harassment",
+        message: "Inappropriate language used.",
+        createdAt: "2025-04-14T05:36:27.827Z",
+      },
+      {
+        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
+        type: "terrorism",
+        message: "Content inciting fear.",
+        createdAt: "2025-04-14T05:39:27.417Z",
+      },
+    ],
+  },
+  {
+    id: "d5386468-4667-402a-9963-ad985efd90c7",
+    title: "Post Title Example",
+    excerpt: "This is a sample excerpt for the post.",
+    status: "REPORTED",
+    author: { username: "asdfadsfa" },
+    createdAt: "2025-03-22T08:02:04.171Z",
+    reports: [
+      {
+        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
+        type: "harassment",
+        message: "Inappropriate language used.",
+        createdAt: "2025-04-14T05:36:27.827Z",
+      },
+      {
+        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
+        type: "terrorism",
+        message: "Content inciting fear.",
+        createdAt: "2025-04-14T05:39:27.417Z",
+      },
+    ],
+  },
+  {
+    id: "d5386468-4667-402a-9963-ad985efd90c7",
+    title: "Post Title Example",
+    excerpt: "This is a sample excerpt for the post.",
+    status: "REPORTED",
+    author: { username: "asdfadsfa" },
+    createdAt: "2025-03-22T08:02:04.171Z",
+    reports: [
+      {
+        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
+        type: "harassment",
+        message: "Inappropriate language used.",
+        createdAt: "2025-04-14T05:36:27.827Z",
+      },
+      {
+        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
+        type: "terrorism",
+        message: "Content inciting fear.",
+        createdAt: "2025-04-14T05:39:27.417Z",
+      },
+    ],
+  },
+  {
+    id: "d5386468-4667-402a-9963-ad985efd90c7",
+    title: "Post Title Example",
+    excerpt: "This is a sample excerpt for the post.",
+    status: "REPORTED",
+    author: { username: "asdfadsfa" },
+    createdAt: "2025-03-22T08:02:04.171Z",
+    reports: [
+      {
+        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
+        type: "harassment",
+        message: "Inappropriate language used.",
+        createdAt: "2025-04-14T05:36:27.827Z",
+      },
+      {
+        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
+        type: "terrorism",
+        message: "Content inciting fear.",
+        createdAt: "2025-04-14T05:39:27.417Z",
+      },
+    ],
+  },
+  {
+    id: "d5386468-4667-402a-9963-ad985efd90c7",
+    title: "Post Title Example",
+    excerpt: "This is a sample excerpt for the post.",
+    status: "REPORTED",
+    author: { username: "asdfadsfa" },
+    createdAt: "2025-03-22T08:02:04.171Z",
+    reports: [
+      {
+        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
+        type: "harassment",
+        message: "Inappropriate language used.",
+        createdAt: "2025-04-14T05:36:27.827Z",
+      },
+      {
+        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
+        type: "terrorism",
+        message: "Content inciting fear.",
+        createdAt: "2025-04-14T05:39:27.417Z",
+      },
+    ],
+  },
+  {
+    id: "d5386468-4667-402a-9963-ad985efd90c7",
+    title: "Post Title Example",
+    excerpt: "This is a sample excerpt for the post.",
+    status: "REPORTED",
+    author: { username: "asdfadsfa" },
+    createdAt: "2025-03-22T08:02:04.171Z",
+    reports: [
+      {
+        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
+        type: "harassment",
+        message: "Inappropriate language used.",
+        createdAt: "2025-04-14T05:36:27.827Z",
+      },
+      {
+        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
+        type: "terrorism",
+        message: "Content inciting fear.",
+        createdAt: "2025-04-14T05:39:27.417Z",
+      },
+    ],
+  },
+  {
+    id: "d5386468-4667-402a-9963-ad985efd90c7",
+    title: "Post Title Example",
+    excerpt: "This is a sample excerpt for the post.",
+    status: "REPORTED",
+    author: { username: "asdfadsfa" },
+    createdAt: "2025-03-22T08:02:04.171Z",
+    reports: [
+      {
+        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
+        type: "harassment",
+        message: "Inappropriate language used.",
+        createdAt: "2025-04-14T05:36:27.827Z",
+      },
+      {
+        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
+        type: "terrorism",
+        message: "Content inciting fear.",
+        createdAt: "2025-04-14T05:39:27.417Z",
+      },
+    ],
+  },
+  {
+    id: "d5386468-4667-402a-9963-ad985efd90c7",
+    title: "Post Title Example",
+    excerpt: "This is a sample excerpt for the post.",
+    status: "REPORTED",
+    author: { username: "asdfadsfa" },
+    createdAt: "2025-03-22T08:02:04.171Z",
+    reports: [
+      {
+        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
+        type: "harassment",
+        message: "Inappropriate language used.",
+        createdAt: "2025-04-14T05:36:27.827Z",
+      },
+      {
+        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
+        type: "terrorism",
+        message: "Content inciting fear.",
+        createdAt: "2025-04-14T05:39:27.417Z",
+      },
+    ],
+  },
+  {
+    id: "d5386468-4667-402a-9963-ad985efd90c7",
+    title: "Post Title Example",
+    excerpt: "This is a sample excerpt for the post.",
+    status: "REPORTED",
+    author: { username: "asdfadsfa" },
+    createdAt: "2025-03-22T08:02:04.171Z",
+    reports: [
+      {
+        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
+        type: "harassment",
+        message: "Inappropriate language used.",
+        createdAt: "2025-04-14T05:36:27.827Z",
+      },
+      {
+        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
+        type: "terrorism",
+        message: "Content inciting fear.",
+        createdAt: "2025-04-14T05:39:27.417Z",
+      },
+    ],
+  },
+  {
+    id: "d5386468-4667-402a-9963-ad985efd90c7",
+    title: "Post Title Example",
+    excerpt: "This is a sample excerpt for the post.",
+    status: "REPORTED",
+    author: { username: "asdfadsfa" },
+    createdAt: "2025-03-22T08:02:04.171Z",
+    reports: [
+      {
+        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
+        type: "harassment",
+        message: "Inappropriate language used.",
+        createdAt: "2025-04-14T05:36:27.827Z",
+      },
+      {
+        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
+        type: "terrorism",
+        message: "Content inciting fear.",
+        createdAt: "2025-04-14T05:39:27.417Z",
+      },
+    ],
+  },
+  {
+    id: "d5386468-4667-402a-9963-ad985efd90c7",
+    title: "Post Title Example",
+    excerpt: "This is a sample excerpt for the post.",
+    status: "REPORTED",
+    author: { username: "asdfadsfa" },
+    createdAt: "2025-03-22T08:02:04.171Z",
+    reports: [
+      {
+        id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
+        type: "harassment",
+        message: "Inappropriate language used.",
+        createdAt: "2025-04-14T05:36:27.827Z",
+      },
+      {
+        id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
+        type: "terrorism",
+        message: "Content inciting fear.",
+        createdAt: "2025-04-14T05:39:27.417Z",
+      },
+    ],
+  },
+  // Add additional posts if necessary
 ];
 
 export default function Posts() {
+  // State for the "View Details" modal
   const [openDetails, setOpenDetails] = useState(false);
   const [selectedReports, setSelectedReports] = useState([]);
 
+  // State for the "Review" modal
   const [openReview, setOpenReview] = useState(false);
   const [reviewComment, setReviewComment] = useState("");
   const [selectedPostForReview, setSelectedPostForReview] = useState(null);
@@ -327,7 +619,7 @@ export default function Posts() {
 
   const handleOpenReview = (post) => {
     setSelectedPostForReview(post);
-    setReviewComment("");
+    setReviewComment(""); // reset the comment
     setOpenReview(true);
   };
 
@@ -337,15 +629,18 @@ export default function Posts() {
   };
 
   const handleSubmitReview = () => {
+    // Here, integrate your API call to submit the review/feedback
     console.log("Review for post", selectedPostForReview.id, reviewComment);
+    // After successful submission, close the modal
     setOpenReview(false);
   };
 
   return (
     <Box p={3} pt={2}>
-      <Typography variant="h4" gutterBottom>
-        Posts Moderation
-      </Typography>
+      <h2 class="text-2xl font-bold text-gray-800">Posts moderation</h2>
+      <p class="mt-1 text-sm text-gray-600 mb-4">
+        Monitoring platform activity and content reports
+      </p>
       <TableContainer component={Paper}>
         <Table aria-label="posts table">
           <TableHead>
@@ -404,7 +699,7 @@ export default function Posts() {
                     size="small"
                     color="secondary"
                     sx={{ mr: 1 }}
-                    href={`http://localhost:5173/post/${post.id}`}
+                    href={`http://localhost:5173/post/${post.id}`} // 👈 Link to public post preview
                     target="_blank"
                     rel="noopener noreferrer"
                   >

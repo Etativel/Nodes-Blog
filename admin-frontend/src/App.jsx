@@ -11,7 +11,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:3000/auth/profile", {
+    fetch("http://localhost:3000/adminauth/profile", {
       credentials: "include",
     })
       .then((res) => (res.ok ? res.json() : Promise.reject()))
