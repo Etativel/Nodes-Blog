@@ -12,6 +12,7 @@ const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
 
 passport.use(
+  "user-local",
   new LocalStrategy(
     {
       usernameField: "credential",

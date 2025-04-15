@@ -1,8 +1,10 @@
 const express = require("express");
 const app = express();
 const passport = require("passport");
-require("./services/passport");
-require("./services/passportAdmin");
+// require("./services/passportAdmin");
+// require("./services/passport");
+require("./services/passportConfig");
+
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 app.use(
@@ -21,8 +23,9 @@ app.use(cookieParser());
 const postRouter = require("./routes/postRouter");
 const commentRouter = require("./routes/commentRouter");
 const userRouter = require("./routes/userRouter");
-const authRouter = require("./routes/auth");
 const adminAuthRouter = require("./routes/adminAuth");
+const authRouter = require("./routes/auth");
+
 const imageUploadRouter = require("./routes/imageUploadRoutes");
 
 app.use("/post", postRouter);

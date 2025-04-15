@@ -25,7 +25,7 @@ function authenticateToken(req, res, next) {
 }
 
 router.post("/login", (req, res, next) => {
-  passport.authenticate("local", { session: false }, (err, user, info) => {
+  passport.authenticate("user-local", { session: false }, (err, user, info) => {
     if (err || !user) {
       return res.status(400).json({
         message: info && info.message ? info.message : "Bad request",

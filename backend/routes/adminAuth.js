@@ -6,7 +6,7 @@ const passport = require("passport");
 
 // Authentication middleware to verify JWT from httpOnly cookie
 function authenticateToken(req, res, next) {
-  const token = req.cookies.token;
+  const token = req.cookies.admintoken;
   if (!token) {
     return res.status(401).json({
       message: "Unauthorized: No token provided",
@@ -25,34 +25,38 @@ function authenticateToken(req, res, next) {
 }
 
 router.post("/login", (req, res, next) => {
-  passport.authenticate("local", { session: false }, (err, user, info) => {
-    if (err || !user) {
-      return res.status(400).json({
-        message: info && info.message ? info.message : "Bad request",
-        user: user,
+  passport.authenticate(
+    "admin-local",
+    { session: false },
+    (err, user, info) => {
+      if (err || !user) {
+        return res.status(400).json({
+          message: info && info.message ? info.message : "Bad request",
+          user: user,
+        });
+      }
+      req.login(user, { session: false }, (err) => {
+        if (err) {
+          res.send(err);
+        }
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+          expiresIn: "7d",
+        });
+        res.cookie("admintoken", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "strict",
+          maxAge: 7 * 24 * 60 * 60 * 1000,
+          // maxAge: 30000,
+        });
+        return res.json({ user });
       });
     }
-    req.login(user, { session: false }, (err) => {
-      if (err) {
-        res.send(err);
-      }
-      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-        expiresIn: "7d",
-      });
-      res.cookie("token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-        // maxAge: 30000,
-      });
-      return res.json({ user });
-    });
-  })(req, res);
+  )(req, res);
 });
 
 router.post("/logout", (req, res) => {
-  res.clearCookie("token", {
+  res.clearCookie("admintoken", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
