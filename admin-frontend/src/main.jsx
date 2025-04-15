@@ -2,17 +2,34 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+
 import App from "./App.jsx";
 import DashboardLogin from "./pages/DashboardLogin.jsx";
+// import NotFound from "./pages/NotFound.jsx";
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <App />,
-  },
-  {
     path: "/login",
     element: <DashboardLogin />,
+  },
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      {
+        index: true,
+        lazy: () => import("./pages/Dashboard.jsx"),
+      },
+      {
+        path: "posts",
+        lazy: () => import("./pages/Posts.jsx"),
+      },
+
+      // {
+      //   path: "*",
+      //   element: <NotFound />, // fallback 404 route
+      // },
+    ],
   },
 ]);
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Navigate } from "react-router-dom";
+import Loader from "../components/Loader";
 
 function DashboardLogin() {
   const [username, setUsername] = useState("");
@@ -33,7 +34,7 @@ function DashboardLogin() {
     return <Navigate to="/" />;
   }
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
