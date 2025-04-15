@@ -2,12 +2,13 @@
   display: flex;
   height: 100vh;
   font-family: "Segoe UI", sans-serif;
+  /* font-family: Arial, Helvetica, sans-serif; */
   width: 100vw;
 }
 
 .sidebar {
-  width: 220px;
-  background-color: #1a1a2e;
+  width: 320px;
+  background-color: black;
   color: #fff;
   padding: 20px;
 }
@@ -34,16 +35,19 @@
 .main-content {
   flex: 1;
   background-color: #f4f5f7;
-  padding: 20px;
+  padding-bottom: 20px;
   overflow-y: auto;
   width: 100%;
 }
 
 .dashboard-header {
   background: #fff;
-  padding: 20px;
+  /* padding: 20px; */
   border-bottom: 1px solid #ddd;
   color: black;
+  display: flex;
+  justify-content: flex-end;
+  padding: 6px 12px;
 }
 
 .dashboard-page {
@@ -84,4 +88,98 @@
 
 .admin-profile-form button:hover {
   background-color: #0d0d1a;
+}
+
+.nav-profile {
+  height: 40px;
+  width: 40px;
+  border: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.nav-pp {
+  height: 41px;
+  width: 41px;
+  border: 0px;
+  border-radius: 50%;
+}
+
+.profile-dropdown {
+  position: absolute;
+  right: 2px;
+  top: 50px;
+  background-color: white;
+  border: solid black 1px;
+  max-width: 270px;
+  width: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.9rem;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  border: 0px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10%);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.profile-dropdown.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.admin-icon,
+.write-icon,
+.logout-icon,
+.profile-icon {
+  height: 24px;
+  width: 24px;
+}
+
+.write-btn,
+.sign-out-btn,
+.admin-portal-btn,
+.profile-btn {
+  color: #6b6b6b;
+}
+
+.admin-portal-btn:hover,
+.write-btn:hover,
+.sign-out-btn:hover,
+.profile-btn:hover {
+  color: #252525;
+}
+
+.profile-dropdown-list {
+  padding: 0px;
+}
+.profile-dropdown-list > li {
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  padding: 18px;
+  padding-bottom: 6px;
+  gap: 24px;
+  cursor: pointer;
+}
+.profile-dropdown-list:last-child {
+  padding-bottom: 18px;
+}
+
+@media (max-width: 500px) {
+  .nav-profile {
+    height: 30px;
+    width: 30px;
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }

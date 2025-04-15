@@ -12,7 +12,7 @@ function DashboardLogin() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:3000/auth/profile", {
+    fetch("http://localhost:3000/adminauth/profile", {
       credentials: "include",
     })
       .then((res) => {
@@ -39,7 +39,7 @@ function DashboardLogin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/auth/login", {
+      const response = await fetch("http://localhost:3000/adminauth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
