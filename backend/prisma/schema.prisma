@@ -12,7 +12,7 @@
     username  String   @unique
     email     String   @unique
     password  String
-    role      Role     @default(ADMIN) // USER or ADMIN
+    role      Role     @default(USER) // USER or ADMIN
     posts     Post[]
     comments  Comment[]
     createdAt DateTime @default(now())

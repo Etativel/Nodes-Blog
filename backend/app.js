@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const passport = require("passport");
 require("./services/passport");
+require("./services/passportAdmin");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 app.use(
@@ -21,12 +22,14 @@ const postRouter = require("./routes/postRouter");
 const commentRouter = require("./routes/commentRouter");
 const userRouter = require("./routes/userRouter");
 const authRouter = require("./routes/auth");
+const adminAuthRouter = require("./routes/adminAuth");
 const imageUploadRouter = require("./routes/imageUploadRoutes");
 
 app.use("/post", postRouter);
 app.use("/comment", commentRouter);
 app.use("/user", userRouter);
 app.use("/auth", authRouter);
+app.use("/adminauth", adminAuthRouter);
 app.use("/img", imageUploadRouter);
 
 app.get("/", (req, res) => {
