@@ -324,7 +324,7 @@ const userActivityData = {
 };
 
 export default function Users() {
-  // States for modals
+  // states for modals
   const [openUserDetails, setOpenUserDetails] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [activeDetailTab, setActiveDetailTab] = useState(0);
@@ -339,11 +339,11 @@ export default function Users() {
     biography: "",
   });
 
-  // States for account actions
+  // states for account actions
   const [openAccountActions, setOpenAccountActions] = useState(false);
   const [actionReason, setActionReason] = useState("");
 
-  // States for filtering and search
+  // states for filtering and search
   const [searchQuery, setSearchQuery] = useState("");
   const [roleFilter, setRoleFilter] = useState("ALL");
   const [reportFilter, setReportFilter] = useState(false);
@@ -352,15 +352,15 @@ export default function Users() {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [activeFilter, setActiveFilter] = useState("ALL");
 
-  // Pagination states
+  // pagination states
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  // Apply filters when criteria change
+  // apply filters when criteria change
   useEffect(() => {
     let result = [...usersData];
 
-    // Filter by search query on username, email, fullName
+    // filter by search query on username, email, fullName
     if (searchQuery) {
       const lowerCaseQuery = searchQuery.toLowerCase();
       result = result.filter(
@@ -479,7 +479,7 @@ export default function Users() {
     setEndDate(null);
   };
 
-  // Pagination handlers
+  // pagination handlers
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
