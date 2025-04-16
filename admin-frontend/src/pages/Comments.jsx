@@ -65,7 +65,7 @@ const commentsData = [
         authorId: "u2345678-9abc-defg-1234-56789abcdefg",
         author: {
           username: "moderator1",
-          role: "ADMIN",
+          role: "USER",
           profilePicture: "/api/placeholder/32/32",
         },
         createdAt: "2025-04-15T14:35:42.391Z",
