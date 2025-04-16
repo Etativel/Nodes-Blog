@@ -1,9 +1,40 @@
 import Navigation from "./components/Navbar";
-import { Outlet } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
 import { ProfileProvider } from "./contexts/ProfileProvider";
 import { PostProvider } from "./contexts/PostPorvider";
-
+import { useEffect, useState } from "react";
+import Loader from "./components/Loader";
+import "../src/styles/Loader.css";
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/auth/profile", {
+      credentials: "include",
+    })
+      .then((res) => {
+        if (res.ok) return res.json();
+        throw new Error("Not authenticated");
+      })
+      .then(() => {
+        setIsAuthenticated(true);
+      })
+      .catch(() => {
+        setIsAuthenticated(false);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/" />;
+  }
   return (
     <>
       <ProfileProvider>

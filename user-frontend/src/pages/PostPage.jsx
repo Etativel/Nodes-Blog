@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Navigate } from "react-router-dom";
 import PostHead from "../components/PostHead";
 import "../styles/PostPage.css";
 import Loader from "../components/Loader";
@@ -12,6 +12,7 @@ function PostPage() {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
   useEffect(() => {
     async function fetchCurrentPost() {
       try {

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useParams, Outlet, useNavigate, useLocation } from "react-router-dom";
 import ProfileContext from "../contexts/context-create/ProfileContext";
 import "../styles/UserProfilePage.css";

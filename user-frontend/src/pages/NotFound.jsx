@@ -1,5 +1,6 @@
 import "../styles/NotFoundPage.css";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+
 function NotFound({
   title = "Page not found",
   subtitle = "Sorry, we couldn't find the page you're looking for",
