@@ -23,7 +23,10 @@ ChartJS.register(
 
 export default function Dashboard() {
   const [stats, setStats] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [reportsPerPage] = useState(5);
 
+  // Expanded dummy data with more reports for pagination demo
   const statsDum = {
     totalUsers: 1280,
     totalPublishedPosts: 542,
@@ -86,6 +89,55 @@ export default function Dashboard() {
         reporter: "adminbot",
         postTitle: "Explicit Post in General",
       },
+      {
+        id: "rep6",
+        type: "violent_content",
+        createdAt: new Date(Date.now() - 3600 * 1000 * 40).toISOString(),
+        reporter: "securitymod",
+        postTitle: "Violence in Gaming Communities",
+      },
+      {
+        id: "rep7",
+        type: "misinformation",
+        createdAt: new Date(Date.now() - 3600 * 1000 * 48).toISOString(),
+        reporter: "factchecker",
+        postTitle: "Disputed Climate Science Claims",
+      },
+      {
+        id: "rep8",
+        type: "dangerous_acts",
+        createdAt: new Date(Date.now() - 3600 * 1000 * 50).toISOString(),
+        reporter: "safetyguard",
+        postTitle: "DIY Chemistry Experiments",
+      },
+      {
+        id: "rep9",
+        type: "hateful_content",
+        createdAt: new Date(Date.now() - 3600 * 1000 * 55).toISOString(),
+        reporter: "communitylead",
+        postTitle: "Divisive Political Commentary",
+      },
+      {
+        id: "rep10",
+        type: "terrorism",
+        createdAt: new Date(Date.now() - 3600 * 1000 * 60).toISOString(),
+        reporter: "watchdog",
+        postTitle: "Glorifying Extremist Actions",
+      },
+      {
+        id: "rep11",
+        type: "misleading",
+        createdAt: new Date(Date.now() - 3600 * 1000 * 65).toISOString(),
+        reporter: "truthseeker",
+        postTitle: "Financial Advice That Seems Too Good",
+      },
+      {
+        id: "rep12",
+        type: "child_abuse",
+        createdAt: new Date(Date.now() - 3600 * 1000 * 72).toISOString(),
+        reporter: "protector",
+        postTitle: "Concerning Youth Content",
+      },
     ],
   };
 
@@ -106,6 +158,21 @@ export default function Dashboard() {
       </div>
     );
   }
+
+  // Pagination logic
+  const indexOfLastReport = currentPage * reportsPerPage;
+  const indexOfFirstReport = indexOfLastReport - reportsPerPage;
+  const currentReports = stats.recentReports.slice(
+    indexOfFirstReport,
+    indexOfLastReport
+  );
+  const totalPages = Math.ceil(stats.recentReports.length / reportsPerPage);
+
+  // Change page handler
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const goToPrevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
+  const goToNextPage = () =>
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
 
   return (
     <div className="min-h-screen bg-gray-50 flex justify-center">
@@ -253,7 +320,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* RECENT REPORTS TABLE */}
+        {/* RECENT REPORTS TABLE WITH PAGINATION */}
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           <div className="border-b border-gray-200 px-6 py-4">
             <h3 className="text-lg font-medium text-gray-900">
@@ -300,7 +367,7 @@ export default function Dashboard() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {stats.recentReports.map((report) => (
+                {currentReports.map((report) => (
                   <tr key={report.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
@@ -342,16 +409,89 @@ export default function Dashboard() {
               </tbody>
             </table>
           </div>
-          <div className="bg-gray-50 px-6 py-3 flex justify-between items-center">
-            <div className="text-sm text-gray-500">
-              Showing <span className="font-medium">5</span> of{" "}
-              <span className="font-medium">{stats.totalReportedPosts}</span>{" "}
+
+          {/* Pagination Controls */}
+          <div className="bg-gray-50 px-6 py-3 flex flex-col sm:flex-row justify-between items-center">
+            <div className="text-sm text-gray-500 mb-2 sm:mb-0">
+              Showing{" "}
+              <span className="font-medium">{indexOfFirstReport + 1}</span> to{" "}
+              <span className="font-medium">
+                {Math.min(indexOfLastReport, stats.recentReports.length)}
+              </span>{" "}
+              of{" "}
+              <span className="font-medium">{stats.recentReports.length}</span>{" "}
               reports
             </div>
-            <div>
-              <button className="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                View All
-              </button>
+            <div className="flex items-center">
+              <nav
+                className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+                aria-label="Pagination"
+              >
+                <button
+                  onClick={goToPrevPage}
+                  disabled={currentPage === 1}
+                  className={`relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium ${
+                    currentPage === 1
+                      ? "text-gray-300 cursor-not-allowed"
+                      : "text-gray-500 hover:bg-gray-50"
+                  }`}
+                >
+                  <span className="sr-only">Previous</span>
+                  <svg
+                    className="h-5 w-5"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+
+                {/* Page numbers */}
+                {[...Array(totalPages).keys()].map((number) => (
+                  <button
+                    key={number + 1}
+                    onClick={() => paginate(number + 1)}
+                    className={`relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium ${
+                      currentPage === number + 1
+                        ? "z-10 bg-blue-50 border-blue-500 text-blue-600"
+                        : "bg-white text-gray-500 hover:bg-gray-50"
+                    }`}
+                  >
+                    {number + 1}
+                  </button>
+                ))}
+
+                <button
+                  onClick={goToNextPage}
+                  disabled={currentPage === totalPages}
+                  className={`relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium ${
+                    currentPage === totalPages
+                      ? "text-gray-300 cursor-not-allowed"
+                      : "text-gray-500 hover:bg-gray-50"
+                  }`}
+                >
+                  <span className="sr-only">Next</span>
+                  <svg
+                    className="h-5 w-5"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </nav>
             </div>
           </div>
         </div>
