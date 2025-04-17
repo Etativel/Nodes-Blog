@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
+  Accordion,
+  AccordionSummary,
   Table,
   TableBody,
   TableCell,
@@ -34,7 +36,9 @@ import {
   Divider,
   Tabs,
   Tab,
+  AccordionDetails,
 } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 import PersonIcon from "@mui/icons-material/Person";
@@ -50,204 +54,204 @@ import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 
 // Dummy data for users
 const usersData = [
-  {
-    id: "a1234567-7890-4abc-a123-456789abcdef",
-    username: "johndoe",
-    email: "john.doe@example.com",
-    role: "USER",
-    createdAt: "2025-01-15T08:30:04.171Z",
-    updatedAt: "2025-04-10T14:22:04.171Z",
-    userColor: "#4287f5",
-    biography: "Software developer passionate about UI/UX design",
-    fullName: "John Doe",
-    profilePicture: "https://randomuser.me/api/portraits/men/1.jpg",
-    postCount: 12,
-    commentCount: 45,
-    followerCount: 78,
-    followingCount: 34,
-    reportCount: 0,
-    active: true,
-  },
-  {
-    id: "b2345678-8901-5bcd-b234-56789abcdefg",
-    username: "janesmith",
-    email: "jane.smith@example.com",
-    role: "ADMIN",
-    createdAt: "2024-11-22T12:45:30.171Z",
-    updatedAt: "2025-04-12T09:15:04.171Z",
-    userColor: "#e83e8c",
-    biography: "Platform administrator and content moderator",
-    fullName: "Jane Smith",
-    profilePicture: "https://randomuser.me/api/portraits/women/2.jpg",
-    postCount: 8,
-    commentCount: 156,
-    followerCount: 245,
-    followingCount: 112,
-    reportCount: 0,
-    active: true,
-  },
-  {
-    id: "c3456789-9012-6cde-c345-6789abcdefgh",
-    username: "mikewilson",
-    email: "mike.wilson@example.com",
-    role: "USER",
-    createdAt: "2025-02-08T10:15:22.171Z",
-    updatedAt: "2025-04-05T18:33:04.171Z",
-    userColor: "#28a745",
-    biography: "Fitness enthusiast and travel blogger",
-    fullName: "Michael Wilson",
-    profilePicture: "https://randomuser.me/api/portraits/men/3.jpg",
-    postCount: 35,
-    commentCount: 92,
-    followerCount: 310,
-    followingCount: 174,
-    reportCount: 2,
-    active: true,
-  },
-  {
-    id: "d4567890-0123-7def-d456-789abcdefghi",
-    username: "sarahparker",
-    email: "sarah.parker@example.com",
-    role: "USER",
-    createdAt: "2025-03-17T15:20:18.171Z",
-    updatedAt: "2025-04-14T11:45:04.171Z",
-    userColor: "#fd7e14",
-    biography: "Digital artist and photography enthusiast",
-    fullName: "Sarah Parker",
-    profilePicture: "https://randomuser.me/api/portraits/women/4.jpg",
-    postCount: 28,
-    commentCount: 67,
-    followerCount: 425,
-    followingCount: 201,
-    reportCount: 0,
-    active: true,
-  },
-  {
-    id: "e5678901-1234-8efg-e567-89abcdefghij",
-    username: "alexjohnson",
-    email: "alex.johnson@example.com",
-    role: "USER",
-    createdAt: "2024-12-05T09:10:45.171Z",
-    updatedAt: "2025-04-02T22:05:04.171Z",
-    userColor: "#20c997",
-    biography: "Tech reviewer and gaming enthusiast",
-    fullName: "Alex Johnson",
-    profilePicture: "https://randomuser.me/api/portraits/men/5.jpg",
-    postCount: 42,
-    commentCount: 137,
-    followerCount: 512,
-    followingCount: 98,
-    reportCount: 1,
-    active: true,
-  },
-  {
-    id: "f6789012-2345-9fgh-f678-9abcdefghijk",
-    username: "emilybrown",
-    email: "emily.brown@example.com",
-    role: "USER",
-    createdAt: "2025-01-30T11:25:36.171Z",
-    updatedAt: "2025-03-29T16:40:04.171Z",
-    userColor: "#6f42c1",
-    biography: "Book lover and aspiring author",
-    fullName: "Emily Brown",
-    profilePicture: "https://randomuser.me/api/portraits/women/6.jpg",
-    postCount: 17,
-    commentCount: 83,
-    followerCount: 156,
-    followingCount: 142,
-    reportCount: 0,
-    active: true,
-  },
-  {
-    id: "g7890123-3456-0ghi-g789-0abcdefghijkl",
-    username: "davidmiller",
-    email: "david.miller@example.com",
-    role: "USER",
-    createdAt: "2025-02-22T14:50:12.171Z",
-    updatedAt: "2025-04-08T08:15:04.171Z",
-    userColor: "#dc3545",
-    biography: "Music producer and audio engineer",
-    fullName: "David Miller",
-    profilePicture: "https://randomuser.me/api/portraits/men/7.jpg",
-    postCount: 9,
-    commentCount: 41,
-    followerCount: 78,
-    followingCount: 63,
-    reportCount: 0,
-    active: true,
-  },
-  {
-    id: "h8901234-4567-1hij-h890-1abcdefghijklm",
-    username: "olivialee",
-    email: "olivia.lee@example.com",
-    role: "USER",
-    createdAt: "2024-11-10T07:35:28.171Z",
-    updatedAt: "2025-03-25T13:20:04.171Z",
-    userColor: "#17a2b8",
-    biography: "Food blogger and recipe developer",
-    fullName: "Olivia Lee",
-    profilePicture: "https://randomuser.me/api/portraits/women/8.jpg",
-    postCount: 31,
-    commentCount: 114,
-    followerCount: 892,
-    followingCount: 235,
-    reportCount: 0,
-    active: true,
-  },
-  {
-    id: "i9012345-5678-2ijk-i901-2abcdefghijklmn",
-    username: "roberttaylor",
-    email: "robert.taylor@example.com",
-    role: "USER",
-    createdAt: "2025-03-05T16:40:54.171Z",
-    updatedAt: "2025-04-11T10:55:04.171Z",
-    userColor: "#ffc107",
-    biography: "Sports analyst and former athlete",
-    fullName: "Robert Taylor",
-    profilePicture: "https://randomuser.me/api/portraits/men/9.jpg",
-    postCount: 14,
-    commentCount: 68,
-    followerCount: 203,
-    followingCount: 87,
-    reportCount: 3,
-    active: false,
-  },
-  {
-    id: "j0123456-6789-3jkl-j012-3abcdefghijklmno",
-    username: "sophiawilliams",
-    email: "sophia.williams@example.com",
-    role: "ADMIN",
-    createdAt: "2024-12-18T13:15:39.171Z",
-    updatedAt: "2025-04-09T19:30:04.171Z",
-    userColor: "#007bff",
-    biography: "Content strategist and platform moderator",
-    fullName: "Sophia Williams",
-    profilePicture: "https://randomuser.me/api/portraits/women/10.jpg",
-    postCount: 22,
-    commentCount: 167,
-    followerCount: 321,
-    followingCount: 145,
-    reportCount: 0,
-    active: true,
-  },
-  {
-    id: "k1234567-7890-4klm-k123-4abcdefghijklmnop",
-    username: "danielclark",
-    email: "daniel.clark@example.com",
-    role: "USER",
-    createdAt: "2025-01-05T09:25:17.171Z",
-    updatedAt: "2025-04-07T12:10:04.171Z",
-    userColor: "#6c757d",
-    biography: "Software engineer and open source contributor",
-    fullName: "Daniel Clark",
-    profilePicture: "https://randomuser.me/api/portraits/men/11.jpg",
-    postCount: 19,
-    commentCount: 55,
-    followerCount: 134,
-    followingCount: 98,
-    reportCount: 0,
-    active: true,
-  },
+  // {
+  //   id: "a1234567-7890-4abc-a123-456789abcdef",
+  //   username: "johndoe",
+  //   email: "john.doe@example.com",
+  //   role: "USER",
+  //   createdAt: "2025-01-15T08:30:04.171Z",
+  //   updatedAt: "2025-04-10T14:22:04.171Z",
+  //   userColor: "#4287f5",
+  //   biography: "Software developer passionate about UI/UX design",
+  //   fullName: "John Doe",
+  //   profilePicture: "https://randomuser.me/api/portraits/men/1.jpg",
+  //   postCount: 12,
+  //   commentCount: 45,
+  //   followerCount: 78,
+  //   followingCount: 34,
+  //   reportCount: 2,
+  //   active: true,
+  // },
+  // {
+  //   id: "b2345678-8901-5bcd-b234-56789abcdefg",
+  //   username: "janesmith",
+  //   email: "jane.smith@example.com",
+  //   role: "ADMIN",
+  //   createdAt: "2024-11-22T12:45:30.171Z",
+  //   updatedAt: "2025-04-12T09:15:04.171Z",
+  //   userColor: "#e83e8c",
+  //   biography: "Platform administrator and content moderator",
+  //   fullName: "Jane Smith",
+  //   profilePicture: "https://randomuser.me/api/portraits/women/2.jpg",
+  //   postCount: 8,
+  //   commentCount: 156,
+  //   followerCount: 245,
+  //   followingCount: 112,
+  //   reportCount: 0,
+  //   active: true,
+  // },
+  // {
+  //   id: "c3456789-9012-6cde-c345-6789abcdefgh",
+  //   username: "mikewilson",
+  //   email: "mike.wilson@example.com",
+  //   role: "USER",
+  //   createdAt: "2025-02-08T10:15:22.171Z",
+  //   updatedAt: "2025-04-05T18:33:04.171Z",
+  //   userColor: "#28a745",
+  //   biography: "Fitness enthusiast and travel blogger",
+  //   fullName: "Michael Wilson",
+  //   profilePicture: "https://randomuser.me/api/portraits/men/3.jpg",
+  //   postCount: 35,
+  //   commentCount: 92,
+  //   followerCount: 310,
+  //   followingCount: 174,
+  //   reportCount: 2,
+  //   active: true,
+  // },
+  // {
+  //   id: "d4567890-0123-7def-d456-789abcdefghi",
+  //   username: "sarahparker",
+  //   email: "sarah.parker@example.com",
+  //   role: "USER",
+  //   createdAt: "2025-03-17T15:20:18.171Z",
+  //   updatedAt: "2025-04-14T11:45:04.171Z",
+  //   userColor: "#fd7e14",
+  //   biography: "Digital artist and photography enthusiast",
+  //   fullName: "Sarah Parker",
+  //   profilePicture: "https://randomuser.me/api/portraits/women/4.jpg",
+  //   postCount: 28,
+  //   commentCount: 67,
+  //   followerCount: 425,
+  //   followingCount: 201,
+  //   reportCount: 0,
+  //   active: true,
+  // },
+  // {
+  //   id: "e5678901-1234-8efg-e567-89abcdefghij",
+  //   username: "alexjohnson",
+  //   email: "alex.johnson@example.com",
+  //   role: "USER",
+  //   createdAt: "2024-12-05T09:10:45.171Z",
+  //   updatedAt: "2025-04-02T22:05:04.171Z",
+  //   userColor: "#20c997",
+  //   biography: "Tech reviewer and gaming enthusiast",
+  //   fullName: "Alex Johnson",
+  //   profilePicture: "https://randomuser.me/api/portraits/men/5.jpg",
+  //   postCount: 42,
+  //   commentCount: 137,
+  //   followerCount: 512,
+  //   followingCount: 98,
+  //   reportCount: 1,
+  //   active: true,
+  // },
+  // {
+  //   id: "f6789012-2345-9fgh-f678-9abcdefghijk",
+  //   username: "emilybrown",
+  //   email: "emily.brown@example.com",
+  //   role: "USER",
+  //   createdAt: "2025-01-30T11:25:36.171Z",
+  //   updatedAt: "2025-03-29T16:40:04.171Z",
+  //   userColor: "#6f42c1",
+  //   biography: "Book lover and aspiring author",
+  //   fullName: "Emily Brown",
+  //   profilePicture: "https://randomuser.me/api/portraits/women/6.jpg",
+  //   postCount: 17,
+  //   commentCount: 83,
+  //   followerCount: 156,
+  //   followingCount: 142,
+  //   reportCount: 0,
+  //   active: true,
+  // },
+  // {
+  //   id: "g7890123-3456-0ghi-g789-0abcdefghijkl",
+  //   username: "davidmiller",
+  //   email: "david.miller@example.com",
+  //   role: "USER",
+  //   createdAt: "2025-02-22T14:50:12.171Z",
+  //   updatedAt: "2025-04-08T08:15:04.171Z",
+  //   userColor: "#dc3545",
+  //   biography: "Music producer and audio engineer",
+  //   fullName: "David Miller",
+  //   profilePicture: "https://randomuser.me/api/portraits/men/7.jpg",
+  //   postCount: 9,
+  //   commentCount: 41,
+  //   followerCount: 78,
+  //   followingCount: 63,
+  //   reportCount: 0,
+  //   active: true,
+  // },
+  // {
+  //   id: "h8901234-4567-1hij-h890-1abcdefghijklm",
+  //   username: "olivialee",
+  //   email: "olivia.lee@example.com",
+  //   role: "USER",
+  //   createdAt: "2024-11-10T07:35:28.171Z",
+  //   updatedAt: "2025-03-25T13:20:04.171Z",
+  //   userColor: "#17a2b8",
+  //   biography: "Food blogger and recipe developer",
+  //   fullName: "Olivia Lee",
+  //   profilePicture: "https://randomuser.me/api/portraits/women/8.jpg",
+  //   postCount: 31,
+  //   commentCount: 114,
+  //   followerCount: 892,
+  //   followingCount: 235,
+  //   reportCount: 0,
+  //   active: true,
+  // },
+  // {
+  //   id: "i9012345-5678-2ijk-i901-2abcdefghijklmn",
+  //   username: "roberttaylor",
+  //   email: "robert.taylor@example.com",
+  //   role: "USER",
+  //   createdAt: "2025-03-05T16:40:54.171Z",
+  //   updatedAt: "2025-04-11T10:55:04.171Z",
+  //   userColor: "#ffc107",
+  //   biography: "Sports analyst and former athlete",
+  //   fullName: "Robert Taylor",
+  //   profilePicture: "https://randomuser.me/api/portraits/men/9.jpg",
+  //   postCount: 14,
+  //   commentCount: 68,
+  //   followerCount: 203,
+  //   followingCount: 87,
+  //   reportCount: 3,
+  //   active: false,
+  // },
+  // {
+  //   id: "j0123456-6789-3jkl-j012-3abcdefghijklmno",
+  //   username: "sophiawilliams",
+  //   email: "sophia.williams@example.com",
+  //   role: "ADMIN",
+  //   createdAt: "2024-12-18T13:15:39.171Z",
+  //   updatedAt: "2025-04-09T19:30:04.171Z",
+  //   userColor: "#007bff",
+  //   biography: "Content strategist and platform moderator",
+  //   fullName: "Sophia Williams",
+  //   profilePicture: "https://randomuser.me/api/portraits/women/10.jpg",
+  //   postCount: 22,
+  //   commentCount: 167,
+  //   followerCount: 321,
+  //   followingCount: 145,
+  //   reportCount: 0,
+  //   active: true,
+  // },
+  // {
+  //   id: "k1234567-7890-4klm-k123-4abcdefghijklmnop",
+  //   username: "danielclark",
+  //   email: "daniel.clark@example.com",
+  //   role: "USER",
+  //   createdAt: "2025-01-05T09:25:17.171Z",
+  //   updatedAt: "2025-04-07T12:10:04.171Z",
+  //   userColor: "#6c757d",
+  //   biography: "Software engineer and open source contributor",
+  //   fullName: "Daniel Clark",
+  //   profilePicture: "https://randomuser.me/api/portraits/men/11.jpg",
+  //   postCount: 19,
+  //   commentCount: 55,
+  //   followerCount: 134,
+  //   followingCount: 98,
+  //   reportCount: 0,
+  //   active: true,
+  // },
   {
     id: "l2345678-8901-5lmn-l234-5abcdefghijklmnopq",
     username: "emmawilson",
@@ -263,65 +267,141 @@ const usersData = [
     commentCount: 91,
     followerCount: 567,
     followingCount: 302,
-    reportCount: 0,
+    // reportCount: 2,
     active: true,
+    posts: [
+      {
+        id: "post1",
+        title:
+          "Getting Started with React Getting Started with ReactGetting Started with ReactGetting Started with ReactGetting Started with ReactGetting Started with React",
+        createdAt: "2025-03-15T10:30:00Z",
+      },
+      {
+        id: "post2",
+        title: "Understanding State Management",
+        createdAt: "2025-03-20T14:45:00Z",
+      },
+      {
+        id: "post3",
+        title: "Advanced Component Patterns",
+        createdAt: "2025-04-01T09:15:00Z",
+      },
+    ],
+    comments: [
+      {
+        id: "comment1",
+        content: "Great article, thanks for sharing!",
+        postId: "post5",
+        createdAt: "2025-04-05T11:20:00Z",
+      },
+      {
+        id: "comment2",
+        content: "I have a question about this approach...",
+        postId: "post7",
+        createdAt: "2025-04-07T16:30:00Z",
+      },
+      {
+        id: "comment3",
+        content: "This solved my problem, thank you!",
+        postId: "post2",
+        createdAt: "2025-04-10T13:45:00Z",
+      },
+    ],
+    reports: [
+      {
+        id: "report1",
+        type: "misinformation",
+        postId: "post12",
+        createdAt: "2025-04-02T08:10:00Z",
+      },
+      {
+        id: "report2",
+        type: "harassment",
+        postId: "post18",
+        createdAt: "2025-04-09T17:25:00Z",
+      },
+      {
+        id: "report1",
+        type: "misinformation",
+        postId: "post12",
+        createdAt: "2025-04-02T08:10:00Z",
+      },
+      {
+        id: "report2",
+        type: "harassment",
+        postId: "post18",
+        createdAt: "2025-04-09T17:25:00Z",
+      },
+      {
+        id: "report1",
+        type: "misinformation",
+        postId: "post12",
+        createdAt: "2025-04-02T08:10:00Z",
+      },
+      {
+        id: "report2",
+        type: "harassment",
+        postId: "post18",
+        createdAt: "2025-04-09T17:25:00Z",
+      },
+    ],
   },
 ];
 
 // Mock data for user activity details
-const userActivityData = {
-  posts: [
-    {
-      id: "post1",
-      title: "Getting Started with React",
-      createdAt: "2025-03-15T10:30:00Z",
-    },
-    {
-      id: "post2",
-      title: "Understanding State Management",
-      createdAt: "2025-03-20T14:45:00Z",
-    },
-    {
-      id: "post3",
-      title: "Advanced Component Patterns",
-      createdAt: "2025-04-01T09:15:00Z",
-    },
-  ],
-  comments: [
-    {
-      id: "comment1",
-      content: "Great article, thanks for sharing!",
-      postId: "post5",
-      createdAt: "2025-04-05T11:20:00Z",
-    },
-    {
-      id: "comment2",
-      content: "I have a question about this approach...",
-      postId: "post7",
-      createdAt: "2025-04-07T16:30:00Z",
-    },
-    {
-      id: "comment3",
-      content: "This solved my problem, thank you!",
-      postId: "post2",
-      createdAt: "2025-04-10T13:45:00Z",
-    },
-  ],
-  reports: [
-    {
-      id: "report1",
-      type: "misinformation",
-      postId: "post12",
-      createdAt: "2025-04-02T08:10:00Z",
-    },
-    {
-      id: "report2",
-      type: "harassment",
-      postId: "post18",
-      createdAt: "2025-04-09T17:25:00Z",
-    },
-  ],
-};
+// const userActivityData = {
+//   posts: [
+//     {
+//       id: "post1",
+//       title: "Getting Started with React",
+//       createdAt: "2025-03-15T10:30:00Z",
+//     },
+//     {
+//       id: "post2",
+//       title: "Understanding State Management",
+//       createdAt: "2025-03-20T14:45:00Z",
+//     },
+//     {
+//       id: "post3",
+//       title: "Advanced Component Patterns",
+//       createdAt: "2025-04-01T09:15:00Z",
+//     },
+//   ],
+//   comments: [
+//     {
+//       id: "comment1",
+//       content: "Great article, thanks for sharing!",
+//       postId: "post5",
+//       createdAt: "2025-04-05T11:20:00Z",
+//     },
+//     {
+//       id: "comment2",
+//       content: "I have a question about this approach...",
+//       postId: "post7",
+//       createdAt: "2025-04-07T16:30:00Z",
+//     },
+//     {
+//       id: "comment3",
+//       content: "This solved my problem, thank you!",
+//       postId: "post2",
+//       createdAt: "2025-04-10T13:45:00Z",
+//     },
+//   ],
+//   reports: [
+//     {
+//       id: "report1",
+//       type: "misinformation",
+//       postId: "post12",
+//       createdAt: "2025-04-02T08:10:00Z",
+//     },
+//     {
+//       id: "report2",
+//       type: "harassment",
+//       postId: "post18",
+//       createdAt: "2025-04-09T17:25:00Z",
+//     },
+//   ],
+// };
 
 export default function Users() {
   // states for modals
@@ -379,7 +459,7 @@ export default function Users() {
 
     // Report filter
     if (reportFilter) {
-      result = result.filter((user) => user.reportCount > 0);
+      result = result.filter((user) => user.reports.length > 0);
     }
 
     // Active status filter
@@ -770,10 +850,10 @@ export default function Users() {
                         color={user.active ? "success" : "error"}
                         size="small"
                       />
-                      {user.reportCount > 0 && (
+                      {user.reports.length > 0 && (
                         <Chip
                           icon={<ReportIcon />}
-                          label={`${user.reportCount} Reports`}
+                          label={`${user.reports.length} Reports`}
                           color="warning"
                           size="small"
                           sx={{ mt: 1 }}
@@ -875,304 +955,411 @@ export default function Users() {
         </DialogTitle>
         <DialogContent dividers>
           {selectedUser && (
-            <Grid container spacing={3}>
-              {/* User Profile Card with Detailed Info */}
-              <Grid item xs={12} md={4}>
-                <Card variant="outlined">
-                  <CardContent>
-                    <Box
-                      display="flex"
-                      flexDirection="column"
-                      alignItems="center"
-                      mb={2}
+            <Box sx={{ width: "100%" }}>
+              {/* User Profile Header - Always Visible */}
+              <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                mb={2}
+                p={1}
+              >
+                <Avatar
+                  src={selectedUser.profilePicture}
+                  alt={selectedUser.username}
+                  sx={{
+                    width: { xs: 80, sm: 100 },
+                    height: { xs: 80, sm: 100 },
+                    mb: 1,
+                    bgcolor: selectedUser.userColor || "primary.main",
+                  }}
+                >
+                  {selectedUser.username.charAt(0).toUpperCase()}
+                </Avatar>
+                <Typography variant="h6" align="center">
+                  {selectedUser.fullName || selectedUser.username}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  align="center"
+                  gutterBottom
+                >
+                  @{selectedUser.username}
+                </Typography>
+                <Chip
+                  icon={
+                    selectedUser.role === "ADMIN" ? (
+                      <AdminPanelSettingsIcon />
+                    ) : (
+                      <PersonIcon />
+                    )
+                  }
+                  label={selectedUser.role}
+                  color={selectedUser.role === "ADMIN" ? "primary" : "default"}
+                  size="small"
+                  sx={{ mb: 1 }}
+                />
+
+                <Chip
+                  size="small"
+                  label={selectedUser.active ? "Active" : "Inactive"}
+                  color={selectedUser.active ? "success" : "error"}
+                  sx={{ mt: 1 }}
+                />
+
+                {selectedUser.reports.length > 0 && (
+                  <Chip
+                    size="small"
+                    label={`${selectedUser.reports.length} Reports`}
+                    color="warning"
+                    sx={{ mt: 1 }}
+                  />
+                )}
+              </Box>
+
+              {/* Activity Stats - Horizontal Row on Mobile */}
+              <Box sx={{ mb: 2 }}>
+                <Grid
+                  container
+                  spacing={1}
+                  display="flex"
+                  justifyContent="center"
+                >
+                  <Grid item xs={3}>
+                    <Paper
+                      variant="outlined"
+                      sx={{ p: 1, textAlign: "center" }}
                     >
-                      <Avatar
-                        src={selectedUser.profilePicture}
-                        alt={selectedUser.username}
-                        sx={{
-                          width: 100,
-                          height: 100,
-                          mb: 2,
-                          bgcolor: selectedUser.userColor || "primary.main",
-                        }}
-                      >
-                        {selectedUser.username.charAt(0).toUpperCase()}
-                      </Avatar>
-                      <Typography variant="h6">
-                        {selectedUser.fullName || selectedUser.username}
-                      </Typography>
                       <Typography
-                        variant="body2"
-                        color="textSecondary"
-                        gutterBottom
+                        variant="h6"
+                        sx={{ fontSize: { xs: "1rem", sm: "1.25rem" } }}
                       >
-                        @{selectedUser.username}
+                        {selectedUser.postCount}
                       </Typography>
-                      <Chip
-                        icon={
-                          selectedUser.role === "ADMIN" ? (
-                            <AdminPanelSettingsIcon />
-                          ) : (
-                            <PersonIcon />
-                          )
-                        }
-                        label={selectedUser.role}
-                        color={
-                          selectedUser.role === "ADMIN" ? "primary" : "default"
-                        }
-                        size="small"
-                        sx={{ mb: 1 }}
-                      />
-                    </Box>
-                    <Divider sx={{ mb: 2 }} />
+                      <Typography variant="caption">Posts</Typography>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Paper
+                      variant="outlined"
+                      sx={{ p: 1, textAlign: "center" }}
+                    >
+                      <Typography
+                        variant="h6"
+                        sx={{ fontSize: { xs: "1rem", sm: "1.25rem" } }}
+                      >
+                        {selectedUser.commentCount}
+                      </Typography>
+                      <Typography variant="caption">Comments</Typography>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Paper
+                      variant="outlined"
+                      sx={{ p: 1, textAlign: "center" }}
+                    >
+                      <Typography
+                        variant="h6"
+                        sx={{ fontSize: { xs: "1rem", sm: "1.25rem" } }}
+                      >
+                        {selectedUser.followerCount}
+                      </Typography>
+                      <Typography variant="caption">Followers</Typography>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Paper
+                      variant="outlined"
+                      sx={{ p: 1, textAlign: "center" }}
+                    >
+                      <Typography
+                        variant="h6"
+                        sx={{ fontSize: { xs: "1rem", sm: "1.25rem" } }}
+                      >
+                        {selectedUser.followingCount}
+                      </Typography>
+                      <Typography variant="caption">Following</Typography>
+                    </Paper>
+                  </Grid>
+                </Grid>
+              </Box>
 
-                    <Typography variant="subtitle2" gutterBottom>
-                      About
-                    </Typography>
-                    <Typography variant="body2" paragraph>
-                      {selectedUser.biography || "No biography provided."}
-                    </Typography>
+              {/* Accordion for User Details */}
+              <Accordion sx={{ mb: 1 }}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography>About & Contact</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  {/* <Typography variant="subtitle2" gutterBottom>
+                    About
+                  </Typography>
+                  <Typography variant="body2" paragraph>
+                    {selectedUser.biography || "No biography provided."}
+                  </Typography>
 
-                    <Typography variant="subtitle2" gutterBottom>
-                      Contact
-                    </Typography>
+                  <Typography variant="subtitle2" gutterBottom>
+                    Contact
+                  </Typography>
+                  <Typography variant="body2" sx={{ wordBreak: "break-word" }}>
+                    {selectedUser.email}
+                  </Typography>
+
+                  <Typography variant="subtitle2" gutterBottom sx={{ mt: 2 }}>
+                    Account Details
+                  </Typography>
+                  <Typography variant="body2" sx={{ mt: 1 }}>
+                    <strong>Created:</strong>{" "}
+                    {new Date(selectedUser.createdAt).toLocaleDateString()}
+                  </Typography>
+                  <Typography variant="body2" sx={{ mt: 1 }}>
+                    <strong>Last Updated:</strong>{" "}
+                    {new Date(selectedUser.updatedAt).toLocaleDateString()}
+                  </Typography> */}
+                  <Typography variant="subtitle2" gutterBottom>
+                    About
+                  </Typography>
+                  <Typography variant="body2" paragraph>
+                    {selectedUser.biography || "No biography provided."}
+                  </Typography>
+
+                  <Typography variant="subtitle2" gutterBottom>
+                    Contact
+                  </Typography>
+                  <Typography variant="body2">{selectedUser.email}</Typography>
+
+                  <Divider sx={{ my: 2 }} />
+                  <Typography
+                    variant="h8" // or "h5", "body1", etc.
+                    gutterBottom
+                    sx={{ mt: 2 }}
+                  >
+                    Account Details
+                  </Typography>
+
+                  <Box sx={{ mt: 2 }}>
                     <Typography variant="body2">
-                      {selectedUser.email}
+                      <strong>Status:</strong>{" "}
+                      <Chip
+                        size="small"
+                        label={selectedUser.active ? "Active" : "Inactive"}
+                        color={selectedUser.active ? "success" : "error"}
+                      />
                     </Typography>
-
-                    <Divider sx={{ my: 2 }} />
-
-                    <Box>
-                      <Typography variant="subtitle2" gutterBottom>
-                        Activity Overview
-                      </Typography>
-                      <Grid container spacing={1}>
-                        <Grid item xs={6}>
-                          <Paper
-                            variant="outlined"
-                            sx={{ p: 1, textAlign: "center" }}
-                          >
-                            <Typography variant="h6">
-                              {selectedUser.postCount}
-                            </Typography>
-                            <Typography variant="caption">Posts</Typography>
-                          </Paper>
-                        </Grid>
-                        <Grid item xs={6}>
-                          <Paper
-                            variant="outlined"
-                            sx={{ p: 1, textAlign: "center" }}
-                          >
-                            <Typography variant="h6">
-                              {selectedUser.commentCount}
-                            </Typography>
-                            <Typography variant="caption">Comments</Typography>
-                          </Paper>
-                        </Grid>
-                        <Grid item xs={6}>
-                          <Paper
-                            variant="outlined"
-                            sx={{ p: 1, textAlign: "center" }}
-                          >
-                            <Typography variant="h6">
-                              {selectedUser.followerCount}
-                            </Typography>
-                            <Typography variant="caption">Followers</Typography>
-                          </Paper>
-                        </Grid>
-                        <Grid item xs={6}>
-                          <Paper
-                            variant="outlined"
-                            sx={{ p: 1, textAlign: "center" }}
-                          >
-                            <Typography variant="h6">
-                              {selectedUser.followingCount}
-                            </Typography>
-                            <Typography variant="caption">Following</Typography>
-                          </Paper>
-                        </Grid>
-                      </Grid>
-                    </Box>
-
-                    <Divider sx={{ my: 2 }} />
-
-                    <Typography variant="subtitle2" gutterBottom>
-                      Account Information
+                    <Typography variant="body2" sx={{ mt: 1 }}>
+                      <strong>Created:</strong>{" "}
+                      {new Date(selectedUser.createdAt).toLocaleString()}
                     </Typography>
-                    <Box>
-                      <Typography variant="body2">
-                        <strong>Status:</strong>{" "}
+                    <Typography variant="body2" sx={{ mt: 1 }}>
+                      <strong>Last Updated:</strong>{" "}
+                      {new Date(selectedUser.updatedAt).toLocaleString()}
+                    </Typography>
+                    <Typography variant="body2" sx={{ mt: 1 }}>
+                      <strong>Reports:</strong>{" "}
+                      {selectedUser.reports.length > 0 ? (
                         <Chip
                           size="small"
-                          label={selectedUser.active ? "Active" : "Inactive"}
-                          color={selectedUser.active ? "success" : "error"}
+                          label={`${selectedUser.reports.length} Reports`}
+                          color="warning"
                         />
-                      </Typography>
-                      <Typography variant="body2" sx={{ mt: 1 }}>
-                        <strong>Created:</strong>{" "}
-                        {new Date(selectedUser.createdAt).toLocaleString()}
-                      </Typography>
-                      <Typography variant="body2" sx={{ mt: 1 }}>
-                        <strong>Last Updated:</strong>{" "}
-                        {new Date(selectedUser.updatedAt).toLocaleString()}
-                      </Typography>
-                      <Typography variant="body2" sx={{ mt: 1 }}>
-                        <strong>Reports:</strong>{" "}
-                        {selectedUser.reportCount > 0 ? (
-                          <Chip
-                            size="small"
-                            label={`${selectedUser.reportCount} Reports`}
-                            color="warning"
-                          />
-                        ) : (
-                          "None"
-                        )}
-                      </Typography>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Grid>
+                      ) : (
+                        "None"
+                      )}
+                    </Typography>
+                  </Box>
+                </AccordionDetails>
+              </Accordion>
 
-              {/* User Activity Tabs */}
-              <Grid item xs={12} md={8}>
-                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                  <Tabs
-                    value={activeDetailTab}
-                    onChange={handleDetailTabChange}
-                    aria-label="user activity tabs"
-                  >
-                    <Tab label="Recent Posts" />
-                    <Tab label="Recent Comments" />
-                    {selectedUser.reportCount > 0 && <Tab label="Reports" />}
-                  </Tabs>
+              {/* Tabs for Activity */}
+              <Box sx={{ mt: 3 }}>
+                <Tabs
+                  value={activeDetailTab}
+                  onChange={handleDetailTabChange}
+                  aria-label="user activity tabs"
+                  variant="fullWidth"
+                >
+                  <Tab label="Posts" />
+                  <Tab label="Comments" />
+                  {selectedUser.reports.length > 0 && <Tab label="Reports" />}
+                </Tabs>
+              </Box>
+
+              {/* Recent Posts Tab */}
+              {activeDetailTab === 0 && (
+                <Box sx={{ mt: 2 }}>
+                  {selectedUser.posts.length > 0 ? (
+                    <List disablePadding>
+                      {selectedUser.posts.map((post) => (
+                        <ListItem
+                          key={post.id}
+                          divider
+                          sx={{
+                            flexDirection: "column",
+                            alignItems: "flex-start",
+                            py: 2,
+                          }}
+                        >
+                          <Box sx={{ display: "flex", width: "100%", mb: 1 }}>
+                            <PostAddIcon sx={{ mr: 1 }} />
+                            <Typography
+                              noWrap
+                              sx={{
+                                flexGrow: 1,
+                                fontWeight: 500,
+                              }}
+                            >
+                              {post.title.length > 30
+                                ? post.title.slice(0, 30) + "..."
+                                : post.title}
+                            </Typography>
+                          </Box>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              width: "100%",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Typography variant="caption" color="textSecondary">
+                              {new Date(post.createdAt).toLocaleDateString()}
+                            </Typography>
+                            <Button size="small" variant="outlined">
+                              View
+                            </Button>
+                          </Box>
+                        </ListItem>
+                      ))}
+                    </List>
+                  ) : (
+                    <Typography
+                      color="textSecondary"
+                      align="center"
+                      sx={{ py: 3 }}
+                    >
+                      No posts found for this user.
+                    </Typography>
+                  )}
                 </Box>
+              )}
 
-                {/* Recent Posts Tab */}
-                {activeDetailTab === 0 && (
-                  <Box sx={{ p: 2 }}>
-                    {userActivityData.posts.length > 0 ? (
-                      <List>
-                        {userActivityData.posts.map((post) => (
-                          <ListItem
-                            key={post.id}
-                            divider
-                            secondaryAction={
-                              <Button size="small" variant="outlined">
-                                View
-                              </Button>
-                            }
+              {/* Recent Comments Tab */}
+              {activeDetailTab === 1 && (
+                <Box sx={{ mt: 2 }}>
+                  {selectedUser.comments.length > 0 ? (
+                    <List disablePadding>
+                      {selectedUser.comments.map((comment) => (
+                        <ListItem
+                          key={comment.id}
+                          divider
+                          sx={{
+                            flexDirection: "column",
+                            alignItems: "flex-start",
+                            py: 2,
+                          }}
+                        >
+                          <Box sx={{ display: "flex", width: "100%", mb: 1 }}>
+                            <CommentIcon sx={{ mr: 1 }} />
+                            <Typography
+                              sx={{
+                                flexGrow: 1,
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                display: "-webkit-box",
+                                WebkitLineClamp: 2,
+                                WebkitBoxOrient: "vertical",
+                              }}
+                            >
+                              {comment.content.length > 50
+                                ? comment.content.slice(0, 50).trim() + "..."
+                                : comment.content}
+                            </Typography>
+                          </Box>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              width: "100%",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                            }}
                           >
-                            <ListItemIcon>
-                              <PostAddIcon />
-                            </ListItemIcon>
-                            <ListItemText
-                              primary={post.title}
-                              secondary={`Posted on ${new Date(
-                                post.createdAt
-                              ).toLocaleDateString()}`}
-                            />
-                          </ListItem>
-                        ))}
-                      </List>
-                    ) : (
-                      <Typography
-                        color="textSecondary"
-                        align="center"
-                        sx={{ py: 3 }}
-                      >
-                        No posts found for this user.
-                      </Typography>
-                    )}
-                  </Box>
-                )}
+                            <Typography variant="caption" color="textSecondary">
+                              Post ID: {comment.postId}
+                            </Typography>
+                            <Button size="small" variant="outlined">
+                              View Post
+                            </Button>
+                          </Box>
+                        </ListItem>
+                      ))}
+                    </List>
+                  ) : (
+                    <Typography
+                      color="textSecondary"
+                      align="center"
+                      sx={{ py: 3 }}
+                    >
+                      No comments found for this user.
+                    </Typography>
+                  )}
+                </Box>
+              )}
 
-                {/* Recent Comments Tab */}
-                {activeDetailTab === 1 && (
-                  <Box sx={{ p: 2 }}>
-                    {userActivityData.comments.length > 0 ? (
-                      <List>
-                        {userActivityData.comments.map((comment) => (
-                          <ListItem
-                            key={comment.id}
-                            divider
-                            secondaryAction={
-                              <Button size="small" variant="outlined">
-                                View Post
-                              </Button>
-                            }
+              {/* Reports Tab */}
+              {activeDetailTab === 2 && selectedUser.reports.length > 0 && (
+                <Box sx={{ mt: 2 }}>
+                  {selectedUser.reports.length > 0 ? (
+                    <List disablePadding>
+                      {selectedUser.reports.map((report) => (
+                        <ListItem
+                          key={report.id}
+                          divider
+                          sx={{
+                            flexDirection: "column",
+                            alignItems: "flex-start",
+                            py: 2,
+                          }}
+                        >
+                          <Box sx={{ display: "flex", width: "100%", mb: 1 }}>
+                            <ReportIcon color="error" sx={{ mr: 1 }} />
+                            <Typography fontWeight="medium">
+                              Report Type: {report.type}
+                            </Typography>
+                          </Box>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              width: "100%",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                            }}
                           >
-                            <ListItemIcon>
-                              <CommentIcon />
-                            </ListItemIcon>
-                            <ListItemText
-                              primary={comment.content}
-                              secondary={`Commented on ${new Date(
-                                comment.createdAt
-                              ).toLocaleDateString()} • Post ID: ${
-                                comment.postId
-                              }`}
-                            />
-                          </ListItem>
-                        ))}
-                      </List>
-                    ) : (
-                      <Typography
-                        color="textSecondary"
-                        align="center"
-                        sx={{ py: 3 }}
-                      >
-                        No comments found for this user.
-                      </Typography>
-                    )}
-                  </Box>
-                )}
-
-                {/* Reports Tab */}
-                {activeDetailTab === 2 && selectedUser.reportCount > 0 && (
-                  <Box sx={{ p: 2 }}>
-                    {userActivityData.reports.length > 0 ? (
-                      <List>
-                        {userActivityData.reports.map((report) => (
-                          <ListItem
-                            key={report.id}
-                            divider
-                            secondaryAction={
-                              <Button
-                                size="small"
-                                variant="outlined"
-                                color="primary"
-                              >
-                                Review
-                              </Button>
-                            }
-                          >
-                            <ListItemIcon>
-                              <ReportIcon color="error" />
-                            </ListItemIcon>
-                            <ListItemText
-                              primary={`Report Type: ${report.type}`}
-                              secondary={`Reported on ${new Date(
-                                report.createdAt
-                              ).toLocaleDateString()} • Post ID: ${
-                                report.postId
-                              }`}
-                            />
-                          </ListItem>
-                        ))}
-                      </List>
-                    ) : (
-                      <Typography
-                        color="textSecondary"
-                        align="center"
-                        sx={{ py: 3 }}
-                      >
-                        No report details available.
-                      </Typography>
-                    )}
-                  </Box>
-                )}
-              </Grid>
-            </Grid>
+                            <Typography variant="caption" color="textSecondary">
+                              Post ID: {report.postId}
+                            </Typography>
+                            <Button
+                              size="small"
+                              variant="outlined"
+                              color="primary"
+                            >
+                              Review
+                            </Button>
+                          </Box>
+                        </ListItem>
+                      ))}
+                    </List>
+                  ) : (
+                    <Typography
+                      color="textSecondary"
+                      align="center"
+                      sx={{ py: 3 }}
+                    >
+                      No report details available.
+                    </Typography>
+                  )}
+                </Box>
+              )}
+            </Box>
           )}
         </DialogContent>
         <DialogActions>
