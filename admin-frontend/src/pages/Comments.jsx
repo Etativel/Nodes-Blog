@@ -50,7 +50,7 @@ const commentsData = [
     authorId: "u1234567-89ab-cdef-0123-456789abcdef",
     author: {
       username: "problematicUser",
-      role: "USER",
+      role: "ADMIN",
       profilePicture: null,
     },
     createdAt: "2025-04-15T14:25:17.827Z",
@@ -1001,6 +1001,7 @@ export default function Comments() {
                             component="div"
                             sx={{
                               mb: 1,
+                              minWidth: 200, // 👈 adjust the value as needed
                               fontWeight:
                                 comment.status === "REPORTED"
                                   ? "bold"
@@ -1028,24 +1029,24 @@ export default function Comments() {
                       </TableCell>
                       <TableCell>
                         <Box display="flex" alignItems="center">
-                          {comment.author.role === "ADMIN" ? (
+                          <Typography variant="body2">
+                            {comment.author.username}
+                          </Typography>
+                          {/* {comment.author.role === "ADMIN" ? (
                             <Chip
                               size="small"
                               label="ADMIN"
                               color="primary"
-                              sx={{ mr: 1 }}
+                              sx={{ ml: 1 }}
                             />
-                          ) : null}
-                          <Typography variant="body2">
-                            {comment.author.username}
-                          </Typography>
+                          ) : null} */}
                         </Box>
                       </TableCell>
                       <TableCell>
                         <Tooltip title={comment.postTitle}>
                           <Typography
                             variant="body2"
-                            noWrap
+                            display="flex"
                             sx={{ maxWidth: "150px" }}
                           >
                             {comment.postTitle}
@@ -1077,24 +1078,32 @@ export default function Comments() {
                           </Typography>
                         </Tooltip>
                       </TableCell>
-                      <TableCell align="right">
-                        <Button
-                          variant="outlined"
-                          size="small"
-                          color="primary"
-                          onClick={() => handleOpenReview(comment, "APPROVE")}
-                          sx={{ mr: 1, mb: { xs: 1, md: 0 } }}
+                      <TableCell>
+                        <Box
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="center"
+                          gap={1}
+                          flexWrap="wrap"
                         >
-                          Approve
-                        </Button>
-                        <Button
-                          variant="outlined"
-                          size="small"
-                          color="error"
-                          onClick={() => handleOpenReview(comment, "REMOVE")}
-                        >
-                          Remove
-                        </Button>
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            color="primary"
+                            onClick={() => handleOpenReview(comment, "APPROVE")}
+                            // sx={{ mr: 1, mb: { xs: 1, md: 0 } }}
+                          >
+                            Approve
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            color="error"
+                            onClick={() => handleOpenReview(comment, "REMOVE")}
+                          >
+                            Remove
+                          </Button>
+                        </Box>
                       </TableCell>
                     </TableRow>
 

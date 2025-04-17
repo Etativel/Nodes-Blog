@@ -5,7 +5,8 @@ import Dashboard from "./pages/Dashboard";
 import Posts from "./pages/Posts";
 import "./styles/Dashboard.css";
 import Loader from "./components/Loader";
-
+import Users from "./pages/Users";
+import Comments from "./pages/Comments";
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -28,6 +29,8 @@ export default function App() {
       <Route element={<DashboardLayout />}>
         <Route path="/" element={<Dashboard />} />
         <Route path="/posts" element={<Posts />} />
+        <Route path="/users" element={<Users />} />
+        <Route path="/comments" element={<Comments />} />
       </Route>
     </Routes>
   );

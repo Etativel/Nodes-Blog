@@ -744,69 +744,89 @@ export default function Users() {
                     />
                   </TableCell>
                   <TableCell>
-                    <Typography variant="body2">
-                      {user.postCount} posts • {user.commentCount} comments
+                    <Typography noWrap>{user.postCount} posts</Typography>
+                    <Typography noWrap variant="body2">
+                      {user.commentCount} comments
                     </Typography>
-                    <Typography variant="body2">
-                      {user.followerCount} followers • {user.followingCount}{" "}
-                      following
+                    <Typography noWrap variant="body2">
+                      {user.followerCount} followers
+                    </Typography>
+                    <Typography noWrap variant="body2">
+                      {user.followingCount} following
                     </Typography>
                   </TableCell>
+
                   <TableCell>
-                    <Chip
-                      icon={user.active ? <VerifiedUserIcon /> : <BlockIcon />}
-                      label={user.active ? "Active" : "Inactive"}
-                      color={user.active ? "success" : "error"}
-                      size="small"
-                    />
-                    {user.reportCount > 0 && (
+                    <Box
+                      display="flex"
+                      flexDirection="column"
+                      alignItems="center"
+                    >
                       <Chip
-                        icon={<ReportIcon />}
-                        label={`${user.reportCount} Reports`}
-                        color="warning"
+                        icon={
+                          user.active ? <VerifiedUserIcon /> : <BlockIcon />
+                        }
+                        label={user.active ? "Active" : "Inactive"}
+                        color={user.active ? "success" : "error"}
                         size="small"
-                        sx={{ mt: 1 }}
                       />
-                    )}
+                      {user.reportCount > 0 && (
+                        <Chip
+                          icon={<ReportIcon />}
+                          label={`${user.reportCount} Reports`}
+                          color="warning"
+                          size="small"
+                          sx={{ mt: 1 }}
+                        />
+                      )}
+                    </Box>
                   </TableCell>
                   <TableCell>
                     {new Date(user.createdAt).toLocaleDateString()}
                   </TableCell>
-                  <TableCell align="right">
-                    <Tooltip title="View Details">
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        color="primary"
-                        onClick={() => handleOpenUserDetails(user)}
-                        sx={{ mr: 1, mb: 1 }}
-                      >
-                        Details
-                      </Button>
-                    </Tooltip>
-                    <Tooltip title="Edit User">
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        color="secondary"
-                        onClick={() => handleOpenEditUser(user)}
-                        sx={{ mr: 1, mb: 1 }}
-                        startIcon={<EditIcon />}
-                      >
-                        Edit
-                      </Button>
-                    </Tooltip>
-                    <Tooltip title="Account Actions">
-                      <Button
-                        variant="contained"
-                        size="small"
-                        color={user.active ? "error" : "success"}
-                        onClick={() => handleOpenAccountActions(user)}
-                        sx={{ mb: 1 }}
-                      >
-                        {user.active ? "Suspend" : "Activate"}
-                      </Button>
-                    </Tooltip>
+                  <TableCell>
+                    <Box
+                      display="flex"
+                      flexWrap="wrap"
+                      alignItems="center"
+                      justifyContent="center"
+                      gap={1}
+                    >
+                      <Tooltip title="View Details">
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          color="primary"
+                          onClick={() => handleOpenUserDetails(user)}
+                          // sx={{ mr: 1, mb: 1 }}
+                        >
+                          Details
+                        </Button>
+                      </Tooltip>
+                      <Tooltip title="Edit User">
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          color="secondary"
+                          onClick={() => handleOpenEditUser(user)}
+                          // sx={{ mr: 1, mb: 1 }}
+                          startIcon={<EditIcon />}
+                        >
+                          Edit
+                        </Button>
+                      </Tooltip>
+                      <Tooltip title="Account Actions">
+                        <Button
+                          variant="contained"
+                          size="small"
+                          color={user.active ? "error" : "success"}
+                          onClick={() => handleOpenAccountActions(user)}
+                          // sx={{ mb: 1 }}
+                        >
+                          {user.active ? "Suspend" : "Activate"}
+                        </Button>
+                      </Tooltip>
+                    </Box>
                   </TableCell>
                 </TableRow>
               ))

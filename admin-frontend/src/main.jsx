@@ -24,6 +24,14 @@ const router = createBrowserRouter([
         path: "posts",
         lazy: () => import("./pages/Posts.jsx"),
       },
+      {
+        path: "users",
+        lazy: () => import("./pages/Users.jsx"),
+      },
+      {
+        path: "comments",
+        lazy: () => import("./pages/Comments.jsx"),
+      },
 
       // {
       //   path: "*",

@@ -10,6 +10,7 @@ import {
   Title,
 } from "chart.js";
 import { Pie, Bar } from "react-chartjs-2";
+import formatCloudinaryUrl from "../utils/cloudinaryUtils";
 
 ChartJS.register(
   CategoryScale,
@@ -26,124 +27,27 @@ export default function Dashboard() {
   const [currentPage, setCurrentPage] = useState(1);
   const [reportsPerPage] = useState(5);
 
-  // Expanded dummy data with more reports for pagination demo
-  const statsDum = {
-    totalUsers: 1280,
-    totalPublishedPosts: 542,
-    totalReportedPosts: 35,
-    totalComments: 890,
-
-    reportCounts: {
-      sexual_content: 5,
-      violent_content: 7,
-      hateful_content: 6,
-      harassment: 4,
-      dangerous_acts: 2,
-      misinformation: 3,
-      child_abuse: 1,
-      terrorism: 1,
-      misleading: 6,
-    },
-
-    postStatusCounts: {
-      DEFAULT: 300,
-      DRAFT: 120,
-      BLOCKED: 15,
-      REPORTED: 35,
-      ARCHIEVED: 72,
-    },
-
-    recentReports: [
-      {
-        id: "rep1",
-        type: "hateful_content",
-        createdAt: new Date(Date.now() - 3600 * 1000 * 1).toISOString(), // 1 hour ago
-        reporter: "johndoe",
-        postTitle: "Controversial Thoughts on Society",
-      },
-      {
-        id: "rep2",
-        type: "misinformation",
-        createdAt: new Date(Date.now() - 3600 * 1000 * 5).toISOString(), // 5 hours ago
-        reporter: "janesmith",
-        postTitle: "Covid-19 Cure Found",
-      },
-      {
-        id: "rep3",
-        type: "misleading",
-        createdAt: new Date(Date.now() - 3600 * 1000 * 10).toISOString(),
-        reporter: "techguy88",
-        postTitle: "Earn $1000 in a Day!",
-      },
-      {
-        id: "rep4",
-        type: "harassment",
-        createdAt: new Date(Date.now() - 3600 * 1000 * 20).toISOString(),
-        reporter: "coolcat22",
-        postTitle: "Targeting Specific Users",
-      },
-      {
-        id: "rep5",
-        type: "sexual_content",
-        createdAt: new Date(Date.now() - 3600 * 1000 * 36).toISOString(),
-        reporter: "adminbot",
-        postTitle: "Explicit Post in General",
-      },
-      {
-        id: "rep6",
-        type: "violent_content",
-        createdAt: new Date(Date.now() - 3600 * 1000 * 40).toISOString(),
-        reporter: "securitymod",
-        postTitle: "Violence in Gaming Communities",
-      },
-      {
-        id: "rep7",
-        type: "misinformation",
-        createdAt: new Date(Date.now() - 3600 * 1000 * 48).toISOString(),
-        reporter: "factchecker",
-        postTitle: "Disputed Climate Science Claims",
-      },
-      {
-        id: "rep8",
-        type: "dangerous_acts",
-        createdAt: new Date(Date.now() - 3600 * 1000 * 50).toISOString(),
-        reporter: "safetyguard",
-        postTitle: "DIY Chemistry Experiments",
-      },
-      {
-        id: "rep9",
-        type: "hateful_content",
-        createdAt: new Date(Date.now() - 3600 * 1000 * 55).toISOString(),
-        reporter: "communitylead",
-        postTitle: "Divisive Political Commentary",
-      },
-      {
-        id: "rep10",
-        type: "terrorism",
-        createdAt: new Date(Date.now() - 3600 * 1000 * 60).toISOString(),
-        reporter: "watchdog",
-        postTitle: "Glorifying Extremist Actions",
-      },
-      {
-        id: "rep11",
-        type: "misleading",
-        createdAt: new Date(Date.now() - 3600 * 1000 * 65).toISOString(),
-        reporter: "truthseeker",
-        postTitle: "Financial Advice That Seems Too Good",
-      },
-      {
-        id: "rep12",
-        type: "child_abuse",
-        createdAt: new Date(Date.now() - 3600 * 1000 * 72).toISOString(),
-        reporter: "protector",
-        postTitle: "Concerning Youth Content",
-      },
-    ],
-  };
-
   useEffect(() => {
-    // Simulate loading dummy stats
-    setTimeout(() => setStats(statsDum), 0); // Optional delay to mimic fetch
+    async function fetchSummaryData() {
+      try {
+        const response = await fetch(
+          "http://localhost:3000/admin-dashboard-api/all-stats",
+          {
+            method: "GET",
+          }
+        );
+
+        if (!response.ok) {
+          console.log("Failed to fetch dashboard data", response.status);
+        }
+        const data = await response.json();
+        setStats(data);
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchSummaryData();
   }, []);
 
   if (!stats) {
@@ -214,8 +118,8 @@ export default function Dashboard() {
                 />
               </svg>
             }
-            trend="+12% from last month"
-            trendPositive={true}
+            trend={`${stats.trends.users.label} from last month`}
+            trendPositive={stats.trends.users.isPositive}
           />
           <StatCard
             title="Published Posts"
@@ -236,8 +140,8 @@ export default function Dashboard() {
                 />
               </svg>
             }
-            trend="+5% from last month"
-            trendPositive={true}
+            trend={`${stats.trends.posts.label} from last month`}
+            trendPositive={stats.trends.posts.isPositive}
           />
           <StatCard
             title="Reported Posts"
@@ -258,8 +162,8 @@ export default function Dashboard() {
                 />
               </svg>
             }
-            trend="-3% from last month"
-            trendPositive={false}
+            trend={`${stats.trends.reports.label} from last month`}
+            trendPositive={stats.trends.reports.isPositive}
           />
           <StatCard
             title="Total Comments"
@@ -280,8 +184,8 @@ export default function Dashboard() {
                 />
               </svg>
             }
-            trend="+8% from last month"
-            trendPositive={true}
+            trend={`${stats.trends.comments.label} from last month`}
+            trendPositive={stats.trends.comments.isPositive}
           />
         </div>
 
@@ -338,7 +242,7 @@ export default function Dashboard() {
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
-                    Reporter
+                    Author
                   </th>
                   <th
                     scope="col"
@@ -358,12 +262,12 @@ export default function Dashboard() {
                   >
                     Reported At
                   </th>
-                  <th
+                  {/* <th
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Action
-                  </th>
+                  </th> */}
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -371,22 +275,50 @@ export default function Dashboard() {
                   <tr key={report.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                        <div className="flex-shrink-0 h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center">
+                        <div className="flex-shrink-0 h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
                           <span className="text-xs font-medium text-gray-700">
-                            {report.reporter.charAt(0).toUpperCase()}
+                            {report.author.profilePicture ? (
+                              <img
+                                src={formatCloudinaryUrl(
+                                  report.author.profilePicture,
+                                  {
+                                    width: 41,
+                                    height: 41,
+                                    crop: "fill", // Changed from "fit" to "fill"
+                                    quality: "auto:best",
+                                    format: "auto",
+                                    dpr: 3,
+                                  }
+                                )}
+                                alt=""
+                                className="rounded-full object-cover h-full w-full"
+                              />
+                            ) : (
+                              report.author.username.charAt(0).toUpperCase()
+                            )}
                           </span>
                         </div>
                         <div className="ml-3">
                           <div className="text-sm font-medium text-gray-900">
-                            {report.reporter}
+                            <a
+                              className="text-sm font-medium hover:underline cursor-pointer"
+                              href={`http://localhost:5173/@${report.author.username}`}
+                            >
+                              {report.author.username}
+                            </a>
                           </div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-blue-600 hover:underline">
-                        {report.postTitle}
-                      </div>
+                      <a
+                        className="text-sm font-medium text-blue-600 hover:underline"
+                        href={`http://localhost:5173/post/${report.postId}`}
+                      >
+                        {report.postTitle.length > 50
+                          ? report.postTitle.slice(0, 50).trim() + "..."
+                          : report.postTitle}
+                      </a>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <ReportBadge type={report.type} />
@@ -397,12 +329,12 @@ export default function Dashboard() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <button className="text-blue-600 hover:text-blue-900 mr-3">
-                        Review
-                      </button>
-                      <button className="text-red-600 hover:text-red-900">
+                      {/* <button className="text-blue-600 hover:text-blue-900 mr-3 cursor-pointer">
+                        Visit Post
+                      </button> */}
+                      {/* <button className="text-red-600 hover:text-red-900">
                         Dismiss
-                      </button>
+                      </button> */}
                     </td>
                   </tr>
                 ))}
