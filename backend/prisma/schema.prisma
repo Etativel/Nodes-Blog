@@ -63,7 +63,7 @@
     likedBy     User[]     @relation("PostLikes")
     bookmarkedBy User[]    @relation("PostBookmarks")
 
-    status PostStatus?
+    status      PostStatus?  
 
     reports     PostReport[]
   }
@@ -131,7 +131,7 @@
     DRAFT
     BLOCKED
     REPORTED
-    ARCHIEVED
+    ARCHIVED
   }
 
   enum ReactionType {

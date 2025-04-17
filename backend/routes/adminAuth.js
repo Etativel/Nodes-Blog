@@ -24,6 +24,14 @@ function authenticateToken(req, res, next) {
   });
 }
 
+function isAdmin(req, res, next) {
+  if (req.user && req.user.id) {
+    return next();
+  }
+
+  return res.status(403).json({ message: "Forbidden: Admins only" });
+}
+
 router.post("/login", (req, res, next) => {
   passport.authenticate(
     "admin-local",
@@ -68,4 +76,4 @@ router.get("/profile", authenticateToken, (req, res) => {
   res.json({ user: req.user });
 });
 
-module.exports = router;
+module.exports = { router, authenticateToken, isAdmin };

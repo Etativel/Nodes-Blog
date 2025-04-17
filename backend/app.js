@@ -26,6 +26,7 @@ const userRouter = require("./routes/userRouter");
 const adminAuthRouter = require("./routes/adminAuth");
 const authRouter = require("./routes/auth");
 const adminPanelDashboardRouter = require("./routes/AdminPanel/DashboardPageRouter");
+const adminPostsPanelRouter = require("./routes/AdminPanel/PostsPageRouter");
 
 const imageUploadRouter = require("./routes/imageUploadRoutes");
 
@@ -33,9 +34,10 @@ app.use("/post", postRouter);
 app.use("/comment", commentRouter);
 app.use("/user", userRouter);
 app.use("/auth", authRouter);
-app.use("/adminauth", adminAuthRouter);
+app.use("/adminauth", adminAuthRouter.router);
 app.use("/img", imageUploadRouter);
-app.use("/adminpanel-api", adminPanelDashboardRouter);
+app.use("/admin-dashboard-api", adminPanelDashboardRouter);
+app.use("/admin-posts-api", adminPostsPanelRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello");

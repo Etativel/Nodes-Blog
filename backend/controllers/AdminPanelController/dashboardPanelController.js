@@ -119,24 +119,27 @@ async function getRecentReports(req, res) {
   }
 }
 
+function getLastMonthRange() {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const end = new Date(now.getFullYear(), now.getMonth(), 1);
+  return { start, end };
+}
+
 async function getAllStats(req, res) {
   try {
     const totalUsers = await prisma.user.count();
-
     const totalPublishedPosts = await prisma.post.count({
       where: {
         published: true,
       },
     });
-
     const totalReportedPosts = await prisma.post.count({
       where: {
         status: "REPORTED",
       },
     });
-
     const totalComments = await prisma.comment.count();
-
     const reportCounts = await prisma.postReport.groupBy({
       by: ["type"],
       _count: {
@@ -180,6 +183,7 @@ async function getAllStats(req, res) {
           select: {
             title: true,
             id: true,
+            author: true,
           },
         },
         reporter: {
@@ -197,7 +201,56 @@ async function getAllStats(req, res) {
       reporter: report.reporter.username,
       postTitle: report.post.title,
       postId: report.post.id,
+      author: report.post.author,
     }));
+
+    const { start, end } = getLastMonthRange();
+
+    const lastMonthUsers = await prisma.user.count({
+      where: { createdAt: { gte: start, lt: end } },
+    });
+
+    const lastMonthPosts = await prisma.post.count({
+      where: {
+        published: true,
+        createdAt: { gte: start, lt: end },
+      },
+    });
+
+    const lastMonthReports = await prisma.post.count({
+      where: {
+        status: "REPORTED",
+        updatedAt: { gte: start, lt: end },
+      },
+    });
+
+    const lastMonthComments = await prisma.comment.count({
+      where: { createdAt: { gte: start, lt: end } },
+    });
+
+    function getTrend(current, previous) {
+      if (previous === 0) {
+        if (current === 0) {
+          return { label: "0%", isPositive: null };
+        }
+        return { label: "+100%", isPositive: true };
+      }
+
+      const diff = current - previous;
+      const percent = ((diff / previous) * 100).toFixed(1);
+      const symbol = diff >= 0 ? "+" : "";
+      return {
+        label: `${symbol}${percent}%`,
+        isPositive: diff >= 0,
+      };
+    }
+
+    const trends = {
+      users: getTrend(totalUsers, lastMonthUsers),
+      posts: getTrend(totalPublishedPosts, lastMonthPosts),
+      reports: getTrend(totalReportedPosts, lastMonthReports),
+      comments: getTrend(totalComments, lastMonthComments),
+    };
 
     return res.json({
       totalUsers,
@@ -207,6 +260,7 @@ async function getAllStats(req, res) {
       reportCounts: formattedReportCounts,
       postStatusCounts: formattedStatusCounts,
       recentReports: formattedReports,
+      trends,
     });
   } catch (error) {
     console.error("Error fetching all statistics:", error);

@@ -203,7 +203,7 @@ async function addPost(req, res) {
   const { content, title, published, authorId, excerpt, status } = req.body;
   let thumbnailUrl = null;
   let thumbnailPublicId = null;
-  console.log("This is req", req.file);
+
   try {
     if (req.file) {
       thumbnailUrl = req.file.path;
