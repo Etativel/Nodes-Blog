@@ -51,357 +51,7 @@ import ReportIcon from "@mui/icons-material/Report";
 import EditIcon from "@mui/icons-material/Edit";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
-
-// Dummy data for users
-const usersData = [
-  // {
-  //   id: "a1234567-7890-4abc-a123-456789abcdef",
-  //   username: "johndoe",
-  //   email: "john.doe@example.com",
-  //   role: "USER",
-  //   createdAt: "2025-01-15T08:30:04.171Z",
-  //   updatedAt: "2025-04-10T14:22:04.171Z",
-  //   userColor: "#4287f5",
-  //   biography: "Software developer passionate about UI/UX design",
-  //   fullName: "John Doe",
-  //   profilePicture: "https://randomuser.me/api/portraits/men/1.jpg",
-  //   postCount: 12,
-  //   commentCount: 45,
-  //   followerCount: 78,
-  //   followingCount: 34,
-  //   reportCount: 2,
-  //   active: true,
-  // },
-  // {
-  //   id: "b2345678-8901-5bcd-b234-56789abcdefg",
-  //   username: "janesmith",
-  //   email: "jane.smith@example.com",
-  //   role: "ADMIN",
-  //   createdAt: "2024-11-22T12:45:30.171Z",
-  //   updatedAt: "2025-04-12T09:15:04.171Z",
-  //   userColor: "#e83e8c",
-  //   biography: "Platform administrator and content moderator",
-  //   fullName: "Jane Smith",
-  //   profilePicture: "https://randomuser.me/api/portraits/women/2.jpg",
-  //   postCount: 8,
-  //   commentCount: 156,
-  //   followerCount: 245,
-  //   followingCount: 112,
-  //   reportCount: 0,
-  //   active: true,
-  // },
-  // {
-  //   id: "c3456789-9012-6cde-c345-6789abcdefgh",
-  //   username: "mikewilson",
-  //   email: "mike.wilson@example.com",
-  //   role: "USER",
-  //   createdAt: "2025-02-08T10:15:22.171Z",
-  //   updatedAt: "2025-04-05T18:33:04.171Z",
-  //   userColor: "#28a745",
-  //   biography: "Fitness enthusiast and travel blogger",
-  //   fullName: "Michael Wilson",
-  //   profilePicture: "https://randomuser.me/api/portraits/men/3.jpg",
-  //   postCount: 35,
-  //   commentCount: 92,
-  //   followerCount: 310,
-  //   followingCount: 174,
-  //   reportCount: 2,
-  //   active: true,
-  // },
-  // {
-  //   id: "d4567890-0123-7def-d456-789abcdefghi",
-  //   username: "sarahparker",
-  //   email: "sarah.parker@example.com",
-  //   role: "USER",
-  //   createdAt: "2025-03-17T15:20:18.171Z",
-  //   updatedAt: "2025-04-14T11:45:04.171Z",
-  //   userColor: "#fd7e14",
-  //   biography: "Digital artist and photography enthusiast",
-  //   fullName: "Sarah Parker",
-  //   profilePicture: "https://randomuser.me/api/portraits/women/4.jpg",
-  //   postCount: 28,
-  //   commentCount: 67,
-  //   followerCount: 425,
-  //   followingCount: 201,
-  //   reportCount: 0,
-  //   active: true,
-  // },
-  // {
-  //   id: "e5678901-1234-8efg-e567-89abcdefghij",
-  //   username: "alexjohnson",
-  //   email: "alex.johnson@example.com",
-  //   role: "USER",
-  //   createdAt: "2024-12-05T09:10:45.171Z",
-  //   updatedAt: "2025-04-02T22:05:04.171Z",
-  //   userColor: "#20c997",
-  //   biography: "Tech reviewer and gaming enthusiast",
-  //   fullName: "Alex Johnson",
-  //   profilePicture: "https://randomuser.me/api/portraits/men/5.jpg",
-  //   postCount: 42,
-  //   commentCount: 137,
-  //   followerCount: 512,
-  //   followingCount: 98,
-  //   reportCount: 1,
-  //   active: true,
-  // },
-  // {
-  //   id: "f6789012-2345-9fgh-f678-9abcdefghijk",
-  //   username: "emilybrown",
-  //   email: "emily.brown@example.com",
-  //   role: "USER",
-  //   createdAt: "2025-01-30T11:25:36.171Z",
-  //   updatedAt: "2025-03-29T16:40:04.171Z",
-  //   userColor: "#6f42c1",
-  //   biography: "Book lover and aspiring author",
-  //   fullName: "Emily Brown",
-  //   profilePicture: "https://randomuser.me/api/portraits/women/6.jpg",
-  //   postCount: 17,
-  //   commentCount: 83,
-  //   followerCount: 156,
-  //   followingCount: 142,
-  //   reportCount: 0,
-  //   active: true,
-  // },
-  // {
-  //   id: "g7890123-3456-0ghi-g789-0abcdefghijkl",
-  //   username: "davidmiller",
-  //   email: "david.miller@example.com",
-  //   role: "USER",
-  //   createdAt: "2025-02-22T14:50:12.171Z",
-  //   updatedAt: "2025-04-08T08:15:04.171Z",
-  //   userColor: "#dc3545",
-  //   biography: "Music producer and audio engineer",
-  //   fullName: "David Miller",
-  //   profilePicture: "https://randomuser.me/api/portraits/men/7.jpg",
-  //   postCount: 9,
-  //   commentCount: 41,
-  //   followerCount: 78,
-  //   followingCount: 63,
-  //   reportCount: 0,
-  //   active: true,
-  // },
-  // {
-  //   id: "h8901234-4567-1hij-h890-1abcdefghijklm",
-  //   username: "olivialee",
-  //   email: "olivia.lee@example.com",
-  //   role: "USER",
-  //   createdAt: "2024-11-10T07:35:28.171Z",
-  //   updatedAt: "2025-03-25T13:20:04.171Z",
-  //   userColor: "#17a2b8",
-  //   biography: "Food blogger and recipe developer",
-  //   fullName: "Olivia Lee",
-  //   profilePicture: "https://randomuser.me/api/portraits/women/8.jpg",
-  //   postCount: 31,
-  //   commentCount: 114,
-  //   followerCount: 892,
-  //   followingCount: 235,
-  //   reportCount: 0,
-  //   active: true,
-  // },
-  // {
-  //   id: "i9012345-5678-2ijk-i901-2abcdefghijklmn",
-  //   username: "roberttaylor",
-  //   email: "robert.taylor@example.com",
-  //   role: "USER",
-  //   createdAt: "2025-03-05T16:40:54.171Z",
-  //   updatedAt: "2025-04-11T10:55:04.171Z",
-  //   userColor: "#ffc107",
-  //   biography: "Sports analyst and former athlete",
-  //   fullName: "Robert Taylor",
-  //   profilePicture: "https://randomuser.me/api/portraits/men/9.jpg",
-  //   postCount: 14,
-  //   commentCount: 68,
-  //   followerCount: 203,
-  //   followingCount: 87,
-  //   reportCount: 3,
-  //   active: false,
-  // },
-  // {
-  //   id: "j0123456-6789-3jkl-j012-3abcdefghijklmno",
-  //   username: "sophiawilliams",
-  //   email: "sophia.williams@example.com",
-  //   role: "ADMIN",
-  //   createdAt: "2024-12-18T13:15:39.171Z",
-  //   updatedAt: "2025-04-09T19:30:04.171Z",
-  //   userColor: "#007bff",
-  //   biography: "Content strategist and platform moderator",
-  //   fullName: "Sophia Williams",
-  //   profilePicture: "https://randomuser.me/api/portraits/women/10.jpg",
-  //   postCount: 22,
-  //   commentCount: 167,
-  //   followerCount: 321,
-  //   followingCount: 145,
-  //   reportCount: 0,
-  //   active: true,
-  // },
-  // {
-  //   id: "k1234567-7890-4klm-k123-4abcdefghijklmnop",
-  //   username: "danielclark",
-  //   email: "daniel.clark@example.com",
-  //   role: "USER",
-  //   createdAt: "2025-01-05T09:25:17.171Z",
-  //   updatedAt: "2025-04-07T12:10:04.171Z",
-  //   userColor: "#6c757d",
-  //   biography: "Software engineer and open source contributor",
-  //   fullName: "Daniel Clark",
-  //   profilePicture: "https://randomuser.me/api/portraits/men/11.jpg",
-  //   postCount: 19,
-  //   commentCount: 55,
-  //   followerCount: 134,
-  //   followingCount: 98,
-  //   reportCount: 0,
-  //   active: true,
-  // },
-  {
-    id: "l2345678-8901-5lmn-l234-5abcdefghijklmnopq",
-    username: "emmawilson",
-    email: "emma.wilson@example.com",
-    role: "USER",
-    createdAt: "2025-02-28T11:05:43.171Z",
-    updatedAt: "2025-04-13T17:25:04.171Z",
-    userColor: "#e83e8c",
-    biography: "Fashion designer and style consultant",
-    fullName: "Emma Wilson",
-    profilePicture: "https://randomuser.me/api/portraits/women/12.jpg",
-    postCount: 37,
-    commentCount: 91,
-    followerCount: 567,
-    followingCount: 302,
-    // reportCount: 2,
-    active: true,
-    posts: [
-      {
-        id: "post1",
-        title:
-          "Getting Started with React Getting Started with ReactGetting Started with ReactGetting Started with ReactGetting Started with ReactGetting Started with React",
-        createdAt: "2025-03-15T10:30:00Z",
-      },
-      {
-        id: "post2",
-        title: "Understanding State Management",
-        createdAt: "2025-03-20T14:45:00Z",
-      },
-      {
-        id: "post3",
-        title: "Advanced Component Patterns",
-        createdAt: "2025-04-01T09:15:00Z",
-      },
-    ],
-    comments: [
-      {
-        id: "comment1",
-        content: "Great article, thanks for sharing!",
-        postId: "post5",
-        createdAt: "2025-04-05T11:20:00Z",
-      },
-      {
-        id: "comment2",
-        content: "I have a question about this approach...",
-        postId: "post7",
-        createdAt: "2025-04-07T16:30:00Z",
-      },
-      {
-        id: "comment3",
-        content: "This solved my problem, thank you!",
-        postId: "post2",
-        createdAt: "2025-04-10T13:45:00Z",
-      },
-    ],
-    reports: [
-      {
-        id: "report1",
-        type: "misinformation",
-        postId: "post12",
-        createdAt: "2025-04-02T08:10:00Z",
-      },
-      {
-        id: "report2",
-        type: "harassment",
-        postId: "post18",
-        createdAt: "2025-04-09T17:25:00Z",
-      },
-      {
-        id: "report1",
-        type: "misinformation",
-        postId: "post12",
-        createdAt: "2025-04-02T08:10:00Z",
-      },
-      {
-        id: "report2",
-        type: "harassment",
-        postId: "post18",
-        createdAt: "2025-04-09T17:25:00Z",
-      },
-      {
-        id: "report1",
-        type: "misinformation",
-        postId: "post12",
-        createdAt: "2025-04-02T08:10:00Z",
-      },
-      {
-        id: "report2",
-        type: "harassment",
-        postId: "post18",
-        createdAt: "2025-04-09T17:25:00Z",
-      },
-    ],
-  },
-];
-
-// Mock data for user activity details
-// const userActivityData = {
-//   posts: [
-//     {
-//       id: "post1",
-//       title: "Getting Started with React",
-//       createdAt: "2025-03-15T10:30:00Z",
-//     },
-//     {
-//       id: "post2",
-//       title: "Understanding State Management",
-//       createdAt: "2025-03-20T14:45:00Z",
-//     },
-//     {
-//       id: "post3",
-//       title: "Advanced Component Patterns",
-//       createdAt: "2025-04-01T09:15:00Z",
-//     },
-//   ],
-//   comments: [
-//     {
-//       id: "comment1",
-//       content: "Great article, thanks for sharing!",
-//       postId: "post5",
-//       createdAt: "2025-04-05T11:20:00Z",
-//     },
-//     {
-//       id: "comment2",
-//       content: "I have a question about this approach...",
-//       postId: "post7",
-//       createdAt: "2025-04-07T16:30:00Z",
-//     },
-//     {
-//       id: "comment3",
-//       content: "This solved my problem, thank you!",
-//       postId: "post2",
-//       createdAt: "2025-04-10T13:45:00Z",
-//     },
-//   ],
-//   reports: [
-//     {
-//       id: "report1",
-//       type: "misinformation",
-//       postId: "post12",
-//       createdAt: "2025-04-02T08:10:00Z",
-//     },
-//     {
-//       id: "report2",
-//       type: "harassment",
-//       postId: "post18",
-//       createdAt: "2025-04-09T17:25:00Z",
-//     },
-//   ],
-// };
+import formatCloudinaryUrl from "../utils/cloudinaryUtils";
 
 export default function Users() {
   // states for modals
@@ -435,6 +85,31 @@ export default function Users() {
   // pagination states
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const [usersData, setUsersData] = useState([]);
+
+  useEffect(() => {
+    async function fetchSummaryData() {
+      try {
+        const response = await fetch(
+          "http://localhost:3000/admin-users-api/all-users",
+          {
+            method: "GET",
+          }
+        );
+
+        if (!response.ok) {
+          console.log("Failed to fetch dashboard data", response.status);
+        }
+        const data = await response.json();
+        setUsersData(data);
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchSummaryData();
+  }, []);
 
   // apply filters when criteria change
   useEffect(() => {
@@ -483,12 +158,20 @@ export default function Users() {
     result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     setFilteredUsers(result);
     setPage(0); // Reset page when filters change
-  }, [searchQuery, roleFilter, reportFilter, startDate, endDate, activeFilter]);
+  }, [
+    searchQuery,
+    roleFilter,
+    reportFilter,
+    startDate,
+    endDate,
+    activeFilter,
+    usersData,
+  ]);
 
   // Initialize filteredUsers with all data on mount
   useEffect(() => {
     setFilteredUsers(usersData);
-  }, []);
+  }, [usersData]);
 
   // Dialog handlers
   const handleOpenUserDetails = (user) => {
@@ -577,6 +260,19 @@ export default function Users() {
   const handleDetailTabChange = (event, newValue) => {
     setActiveDetailTab(newValue);
   };
+
+  if (usersData.length === 0) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-gray-50">
+        <div className="flex flex-col items-center">
+          <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-t-2 border-blue-500"></div>
+          <p className="mt-4 text-lg font-medium text-gray-600">
+            Loading dashboard data...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Box p={3} pt={2}>
@@ -786,7 +482,14 @@ export default function Users() {
                   <TableCell>
                     <Box display="flex" alignItems="center">
                       <Avatar
-                        src={user.profilePicture}
+                        src={formatCloudinaryUrl(user.profilePicture, {
+                          width: 41,
+                          height: 41,
+                          crop: "fill",
+                          quality: "auto:best",
+                          format: "auto",
+                          dpr: 3,
+                        })}
                         alt={user.username}
                         sx={{
                           mr: 2,
@@ -965,7 +668,14 @@ export default function Users() {
                 p={1}
               >
                 <Avatar
-                  src={selectedUser.profilePicture}
+                  src={formatCloudinaryUrl(selectedUser.profilePicture, {
+                    width: 80,
+                    height: 80,
+                    crop: "fill",
+                    quality: "auto:best",
+                    format: "auto",
+                    dpr: 3,
+                  })}
                   alt={selectedUser.username}
                   sx={{
                     width: { xs: 80, sm: 100 },
@@ -1091,31 +801,6 @@ export default function Users() {
                   <Typography>About & Contact</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  {/* <Typography variant="subtitle2" gutterBottom>
-                    About
-                  </Typography>
-                  <Typography variant="body2" paragraph>
-                    {selectedUser.biography || "No biography provided."}
-                  </Typography>
-
-                  <Typography variant="subtitle2" gutterBottom>
-                    Contact
-                  </Typography>
-                  <Typography variant="body2" sx={{ wordBreak: "break-word" }}>
-                    {selectedUser.email}
-                  </Typography>
-
-                  <Typography variant="subtitle2" gutterBottom sx={{ mt: 2 }}>
-                    Account Details
-                  </Typography>
-                  <Typography variant="body2" sx={{ mt: 1 }}>
-                    <strong>Created:</strong>{" "}
-                    {new Date(selectedUser.createdAt).toLocaleDateString()}
-                  </Typography>
-                  <Typography variant="body2" sx={{ mt: 1 }}>
-                    <strong>Last Updated:</strong>{" "}
-                    {new Date(selectedUser.updatedAt).toLocaleDateString()}
-                  </Typography> */}
                   <Typography variant="subtitle2" gutterBottom>
                     About
                   </Typography>
@@ -1400,7 +1085,14 @@ export default function Users() {
             <Grid container spacing={2}>
               <Grid item xs={12} display="flex" justifyContent="center" mb={2}>
                 <Avatar
-                  src={selectedUser.profilePicture}
+                  src={formatCloudinaryUrl(selectedUser.profilePicture, {
+                    width: 80,
+                    height: 80,
+                    crop: "fill",
+                    quality: "auto:best",
+                    format: "auto",
+                    dpr: 3,
+                  })}
                   alt={selectedUser.username}
                   sx={{
                     width: 80,
@@ -1521,7 +1213,14 @@ export default function Users() {
               </Typography>
               <Box display="flex" alignItems="center" my={2}>
                 <Avatar
-                  src={selectedUser.profilePicture}
+                  src={formatCloudinaryUrl(selectedUser.profilePicture, {
+                    width: 41,
+                    height: 41,
+                    crop: "fill",
+                    quality: "auto:best",
+                    format: "auto",
+                    dpr: 3,
+                  })}
                   alt={selectedUser.username}
                   sx={{
                     width: 40,
