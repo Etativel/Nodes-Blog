@@ -59,7 +59,7 @@ export default function DashboardHeader() {
     <header className="dashboard-header">
       <div className="profile-dropdown" ref={dropdown}>
         <ul className="profile-dropdown-list">
-          <li className="profile-btn">
+          {/* <li className="profile-btn">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -75,7 +75,7 @@ export default function DashboardHeader() {
               />
             </svg>
             Profile
-          </li>
+          </li> */}
           <li className="sign-out-btn" onClick={handleLogout}>
             <svg
               xmlns="http://www.w3.org/2000/svg"

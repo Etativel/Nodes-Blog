@@ -25,149 +25,14 @@ import {
   MenuItem,
   Grid,
   IconButton,
+  InputLabel,
   Tooltip,
 } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
-
-// Expanded dummy posts data to demonstrate pagination
-// const postsData = [
-//   {
-//     id: "d5386468-4667-402a-9963-ad985efd90c7",
-//     title: "Post Title Example",
-//     excerpt: "This is a sample excerpt for the post.",
-//     status: "REPORTED",
-//     author: { username: "asdfadsfa" },
-//     createdAt: "2025-03-22T08:02:04.171Z",
-//     reports: [
-//       {
-//         id: "5f35fb3f-4798-4b87-a3ee-eebf05acab3c",
-//         type: "harassment",
-//         message: "Inappropriate language used.",
-//         createdAt: "2025-04-14T05:36:27.827Z",
-//       },
-//       {
-//         id: "748fc927-1532-42ec-a7c0-90de2e1f5da9",
-//         type: "terrorism",
-//         message: "Content inciting fear.",
-//         createdAt: "2025-04-14T05:39:27.417Z",
-//       },
-//     ],
-//   },
-//   {
-//     id: "e6397579-5778-513b-b064-bf085efd90d8",
-//     title: "Community Guidelines",
-//     excerpt: "Everything you need to know about our platform rules.",
-//     status: "ACTIVE",
-//     author: { username: "moderator1" },
-//     createdAt: "2025-04-10T12:25:14.171Z",
-//     reports: [],
-//   },
-//   {
-//     id: "f7408680-6889-624c-c175-cf196fge01e9",
-//     title: "Questionable Content",
-//     excerpt: "This post has been flagged multiple times by users.",
-//     status: "REPORTED",
-//     author: { username: "newuser123" },
-//     createdAt: "2025-04-12T15:42:37.171Z",
-//     reports: [
-//       {
-//         id: "859gec38-2643-53fd-b4ff-ffcg16bdbd4d",
-//         type: "misinformation",
-//         message: "Contains factually incorrect information.",
-//         createdAt: "2025-04-13T09:22:15.827Z",
-//       },
-//     ],
-//   },
-//   {
-//     id: "h8519791-7990-735d-d286-dg307ghe12f0",
-//     title: "Old Post Example",
-//     excerpt: "This is an older post to test date filtering.",
-//     status: "ACTIVE",
-//     author: { username: "olduser" },
-//     createdAt: "2025-02-15T10:12:45.171Z",
-//     reports: [],
-//   },
-//   {
-//     id: "i9620802-8001-846e-e397-eh418ihe23g1",
-//     title: "Technical Tutorial",
-//     excerpt: "Learning how to use our platform features.",
-//     status: "ACTIVE",
-//     author: { username: "techguru" },
-//     createdAt: "2025-04-05T14:22:18.171Z",
-//     reports: [],
-//   },
-//   {
-//     id: "j0731913-9112-957f-f408-fi529jif34h2",
-//     title: "Controversial Discussion",
-//     excerpt: "This post contains politically sensitive content.",
-//     status: "REPORTED",
-//     author: { username: "debater" },
-//     createdAt: "2025-04-08T09:37:29.171Z",
-//     reports: [
-//       {
-//         id: "960hed49-3754-64ge-c5gg-ggdh27cece5e",
-//         type: "politics",
-//         message: "Contains potentially divisive political content.",
-//         createdAt: "2025-04-09T11:45:33.827Z",
-//       },
-//     ],
-//   },
-//   {
-//     id: "k1842024-0223-068g-g519-gj630kjg45i3",
-//     title: "Product Announcement",
-//     excerpt: "Introducing our newest platform feature.",
-//     status: "ACTIVE",
-//     author: { username: "productmanager" },
-//     createdAt: "2025-04-01T16:51:03.171Z",
-//     reports: [],
-//   },
-//   {
-//     id: "l2953135-1334-179h-h620-hk741lkh56j4",
-//     title: "Bug Report Thread",
-//     excerpt: "Users documenting issues with the mobile app.",
-//     status: "ACTIVE",
-//     author: { username: "bugreporter" },
-//     createdAt: "2025-03-28T13:05:47.171Z",
-//     reports: [],
-//   },
-//   {
-//     id: "m3064246-2445-280i-i731-il852mli67k5",
-//     title: "User Feedback Collection",
-//     excerpt: "We want to hear your thoughts on our new design.",
-//     status: "ACTIVE",
-//     author: { username: "designteam" },
-//     createdAt: "2025-03-25T10:19:31.171Z",
-//     reports: [],
-//   },
-//   {
-//     id: "n4175357-3556-391j-j842-jm963nmj78l6",
-//     title: "Policy Violation",
-//     excerpt: "This content appears to violate our terms of service.",
-//     status: "REPORTED",
-//     author: { username: "problemuser" },
-//     createdAt: "2025-04-11T17:33:15.171Z",
-//     reports: [
-//       {
-//         id: "061iei50-4865-75hf-d6hh-hhei38dfdf6f",
-//         type: "terms_violation",
-//         message: "Potential violation of platform terms.",
-//         createdAt: "2025-04-12T08:59:42.827Z",
-//       },
-//     ],
-//   },
-//   {
-//     id: "o5286468-4667-402k-k953-ko074bok89m7",
-//     title: "Help Request",
-//     excerpt: "User needs assistance with account settings.",
-//     status: "ACTIVE",
-//     author: { username: "newmember" },
-//     createdAt: "2025-04-09T20:47:59.171Z",
-//     reports: [],
-//   },
-// ];
 
 export default function Posts() {
   // State for the "View Details" modal
@@ -178,6 +43,10 @@ export default function Posts() {
   const [openReview, setOpenReview] = useState(false);
   const [reviewComment, setReviewComment] = useState("");
   const [selectedPostForReview, setSelectedPostForReview] = useState(null);
+
+  // State for the edit modal
+  const [openEdit, setOpenEdit] = useState(false);
+  const [postStatus, setPostStatus] = useState("DEFAULT");
 
   // State for filtering and search
   const [searchQuery, setSearchQuery] = useState("");
@@ -290,11 +159,11 @@ export default function Posts() {
     setSelectedReports([]);
   };
 
-  const handleOpenReview = (post) => {
-    setSelectedPostForReview(post);
-    setReviewComment(""); // reset the comment
-    setOpenReview(true);
-  };
+  // const handleOpenReview = (post) => {
+  //   setSelectedPostForReview(post);
+  //   setReviewComment(""); // reset the comment
+  //   setOpenReview(true);
+  // };
 
   const handleCloseReview = () => {
     setOpenReview(false);
@@ -343,6 +212,23 @@ export default function Posts() {
         </div>
       </div>
     );
+  }
+
+  function handleOpenEditPost(post) {
+    setPostStatus(post.status);
+    setOpenEdit(true);
+  }
+
+  function handleClosePostStatus() {
+    setOpenEdit(false);
+  }
+
+  function handleStatusChange(status) {
+    setPostStatus(status);
+  }
+
+  async function handleEditSubmit() {
+    console.log(postStatus);
   }
 
   return (
@@ -602,10 +488,10 @@ export default function Posts() {
                       // alignItems="center"
                       justifyContent="center"
                       alignItems="center"
-                      flexWrap="wrap"
+                      // flexWrap="wrap"
                       gap={1}
                     >
-                      <Button
+                      {/* <Button
                         variant="outlined"
                         size="small"
                         color="primary"
@@ -613,19 +499,22 @@ export default function Posts() {
                         // sx={{ mr: 1 }}
                       >
                         Review
-                      </Button>
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        color="secondary"
-                        // sx={{ mr: 1 }}
-                        href={`http://localhost:5173/post/${post.id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Preview
-                      </Button>
-                      <Button
+                      </Button> */}
+                      <Tooltip title="Visit Post">
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          color="secondary"
+                          // sx={{ mr: 1 }}
+                          href={`http://localhost:5173/post/${post.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Visit
+                        </Button>
+                      </Tooltip>
+
+                      {/* <Button
                         variant="contained"
                         size="small"
                         color="success"
@@ -635,7 +524,19 @@ export default function Posts() {
                       </Button>
                       <Button variant="contained" size="small" color="error">
                         Reject
-                      </Button>
+                      </Button> */}
+                      <Tooltip title="Edit User">
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          color="primary"
+                          onClick={() => handleOpenEditPost(post)}
+                          // sx={{ mr: 1, mb: 1 }}
+                          startIcon={<EditIcon />}
+                        >
+                          Edit
+                        </Button>
+                      </Tooltip>
                     </Box>
                   </TableCell>
                 </TableRow>
@@ -669,6 +570,50 @@ export default function Posts() {
         />
       </TableContainer>
 
+      {/* Dialog for edit post */}
+      <Dialog
+        open={openEdit}
+        onClose={handleClosePostStatus}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle>Change Post Status</DialogTitle>
+        <DialogContent dividers>
+          <>
+            <Box sx={{ mb: 2 }}>
+              <FormControl fullWidth size="small">
+                <InputLabel id="status-select-label">Status</InputLabel>
+                <Select
+                  labelId="status-select-label"
+                  id="status-select"
+                  value={postStatus}
+                  label="Status"
+                  onChange={(e) => handleStatusChange(e.target.value)}
+                >
+                  <MenuItem value="DEFAULT">Default</MenuItem>
+                  <MenuItem value="ACTIVE">Active</MenuItem>
+                  <MenuItem value="REPORTED">Reported</MenuItem>
+                  <MenuItem value="BLOCKED">Blocked</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+          </>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClosePostStatus} color="primary">
+            Close
+          </Button>
+          <Button
+            onClick={() => {
+              handleEditSubmit();
+            }}
+            color="primary"
+          >
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       {/* Dialog for Viewing Report Details */}
       <Dialog
         open={openDetails}
@@ -683,7 +628,11 @@ export default function Posts() {
               {selectedReports.map((report) => (
                 <ListItem key={report.id} divider>
                   <ListItemText
-                    primary={`Type: ${report.type}`}
+                    primary={
+                      <>
+                        Type: <ReportBadge type={report.type || "unknown"} />
+                      </>
+                    }
                     secondary={`Message: ${
                       report.message || "No additional details."
                     }
@@ -749,5 +698,40 @@ export default function Posts() {
         </DialogActions>
       </Dialog>
     </Box>
+  );
+}
+
+function ReportBadge({ type }) {
+  const getBadgeColor = () => {
+    switch (type) {
+      case "sexual_content":
+        return "bg-red-100 text-red-800";
+      case "violent_content":
+        return "bg-orange-100 text-orange-800";
+      case "hateful_content":
+        return "bg-yellow-100 text-yellow-800";
+      case "harassment":
+        return "bg-blue-100 text-blue-800";
+      case "dangerous_acts":
+        return "bg-purple-100 text-purple-800";
+      case "misinformation":
+        return "bg-indigo-100 text-indigo-800";
+      case "child_abuse":
+        return "bg-pink-100 text-pink-800";
+      case "terrorism":
+        return "bg-red-100 text-red-800";
+      case "misleading":
+        return "bg-green-100 text-green-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  return (
+    <span
+      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getBadgeColor()}`}
+    >
+      {type.replace("_", " ")}
+    </span>
   );
 }
