@@ -70,7 +70,7 @@ passport.use(
             });
           }
         }
-        if (user.role !== "ADMIN") {
+        if (user.role !== "ADMIN" && user.role !== "SUPERADMIN") {
           return cb(null, false, {
             message:
               "Access Denied: Your account does not have administrative privileges. Please contact support if you believe this is an error.",

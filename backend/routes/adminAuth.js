@@ -25,14 +25,6 @@ function authenticateToken(req, res, next) {
 }
 
 function isAdmin(req, res, next) {
-  if (req.user && req.user.id) {
-    return next();
-  }
-
-  return res.status(403).json({ message: "Forbidden: Admins only" });
-}
-
-function isAdmin(req, res, next) {
   // allow both ADMIN and SUPERUSER
   if (req.user?.role === "ADMIN" || req.user?.role === "SUPERADMIN") {
     return next();

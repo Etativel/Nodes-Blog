@@ -11,6 +11,7 @@ router.get(
   "/all-posts",
   authenticateToken,
   isAdmin,
+  isSuperAdmin,
   moderationController.getAllPosts
 );
 
