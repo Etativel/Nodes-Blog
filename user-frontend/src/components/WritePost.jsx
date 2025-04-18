@@ -89,7 +89,7 @@ function Write() {
       formData.append("status", "DRAFT");
       formData.append("published", false);
     } else {
-      formData.append("status", "DEFAULT");
+      formData.append("status", "ACTIVE");
       formData.append("published", post.published);
     }
     if (post.thumbnailFile) {
@@ -106,7 +106,7 @@ function Write() {
         editFormData.append("status", "DRAFT");
         editFormData.append("published", false);
       } else {
-        editFormData.append("status", "DEFAULT");
+        editFormData.append("status", "ACTIVE");
         editFormData.append("published", post.published);
       }
 

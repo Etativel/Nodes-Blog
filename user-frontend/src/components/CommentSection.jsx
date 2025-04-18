@@ -18,6 +18,203 @@ function formatLike(like) {
   }
 }
 
+function ReportForm({
+  setDialogOpen,
+  reportType,
+  setReportType,
+  reportAdditionalInfo,
+  setReportAdditionalInfo,
+  handleReportSubmit,
+  reportLoading,
+  commentId,
+}) {
+  const disableButton = reportLoading || reportAdditionalInfo.length > 160;
+  return (
+    <div className="report-from-ctr">
+      <form onSubmit={(e) => handleReportSubmit(e, commentId)}>
+        <div className="r-i-ctr">
+          <input
+            type="radio"
+            id="sexual-content-comment"
+            name="reportCategory"
+            className="report-radio"
+            value="sexual_content"
+            checked={reportType === "sexual_content"}
+            onChange={(e) => {
+              setReportType(e.target.value);
+              console.log(e.target.value);
+            }}
+          />
+          <label htmlFor="sexual-content-comment">Sexual content</label>
+        </div>
+        <div className="r-i-ctr">
+          <input
+            type="radio"
+            id="violent-content-comment"
+            name="reportCategory"
+            className="report-radio"
+            value="violent_content"
+            checked={reportType === "violent_content"}
+            onChange={(e) => {
+              setReportType(e.target.value);
+              console.log(e.target.value);
+            }}
+          />
+          <label htmlFor="violent-content-comment">
+            Violent or repulsive content
+          </label>
+        </div>
+        <div className="r-i-ctr">
+          <input
+            type="radio"
+            id="hateful-content-comment"
+            name="reportCategory"
+            className="report-radio"
+            value="hateful_content"
+            checked={reportType === "hateful_content"}
+            onChange={(e) => {
+              setReportType(e.target.value);
+              console.log(e.target.value);
+            }}
+          />
+          <label htmlFor="hateful-content-comment">
+            Hateful or abusive content
+          </label>
+        </div>
+        <div className="r-i-ctr">
+          <input
+            type="radio"
+            id="harassment-comment"
+            name="reportCategory"
+            className="report-radio"
+            value="harassment"
+            checked={reportType === "harassment"}
+            onChange={(e) => {
+              setReportType(e.target.value);
+              console.log(e.target.value);
+            }}
+          />
+          <label htmlFor="harassment-comment">Harassment or bullying</label>
+        </div>
+        <div className="r-i-ctr">
+          <input
+            type="radio"
+            id="dangerous-acts-comment"
+            name="reportCategory"
+            className="report-radio"
+            value="dangerous_acts"
+            checked={reportType === "dangerous_acts"}
+            onChange={(e) => {
+              setReportType(e.target.value);
+              console.log(e.target.value);
+            }}
+          />
+          <label htmlFor="dangerous-acts-comment">
+            Harmful or dangerous acts
+          </label>
+        </div>
+        <div className="r-i-ctr">
+          <input
+            type="radio"
+            id="misinformation-comment"
+            name="reportCategory"
+            className="report-radio"
+            value="misinformation"
+            checked={reportType === "misinformation"}
+            onChange={(e) => {
+              setReportType(e.target.value);
+              console.log(e.target.value);
+            }}
+          />
+          <label htmlFor="misinformation-comment">Misinformation</label>
+        </div>
+        <div className="r-i-ctr">
+          <input
+            type="radio"
+            id="child-abuse-comment"
+            name="reportCategory"
+            className="report-radio"
+            value="child_abuse"
+            checked={reportType === "child_abuse"}
+            onChange={(e) => {
+              setReportType(e.target.value);
+              console.log(e.target.value);
+            }}
+          />
+          <label htmlFor="child-abuse-comment">Child abuse</label>
+        </div>
+        <div className="r-i-ctr">
+          <input
+            type="radio"
+            id="terrorism-comment"
+            name="reportCategory"
+            className="report-radio"
+            value="terrorism"
+            checked={reportType === "terrorism"}
+            onChange={(e) => {
+              setReportType(e.target.value);
+              console.log(e.target.value);
+            }}
+          />
+          <label htmlFor="terrorism-comment">Promotes terrorism</label>
+        </div>
+        <div className="r-i-ctr">
+          <input
+            type="radio"
+            id="spam-misleading-comment"
+            name="reportCategory"
+            className="report-radio"
+            value="spam_misleading"
+            checked={reportType === "spam_misleading"}
+            onChange={(e) => {
+              setReportType(e.target.value);
+              console.log(e.target.value);
+            }}
+          />
+          <label htmlFor="spam-misleading-comment">Spam or misleading</label>
+        </div>
+        <div className="additional-info-ctr">
+          <label htmlFor="add-info" className="add-info-text">
+            Additional information
+          </label>
+          <textarea
+            name="report-message"
+            id="add-info"
+            className="additional-info-txt"
+            placeholder="Write here..."
+            value={reportAdditionalInfo}
+            onChange={(e) => {
+              setReportAdditionalInfo(e.target.value);
+            }}
+          ></textarea>
+          <div className="biography-length length-indicator">
+            <span>{reportAdditionalInfo.length}</span>
+            <span className="max-length">/160</span>
+          </div>
+        </div>
+        <div className="submit-report-btn-ctr">
+          <button
+            aria-label="cancel-report"
+            type="button"
+            className="cancel-report-btn"
+            onClick={() => setDialogOpen(false)}
+          >
+            Cancel
+          </button>
+          <button
+            aria-label="submit-report"
+            type="submit"
+            className={`submit-report-btn ${disableButton ? "disabled" : ""}`}
+            disabled={disableButton}
+          >
+            Report
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
+
 function CommentPreview({
   comment,
   onEdit,
@@ -54,7 +251,28 @@ function CommentPreview({
   const [isDislike, setIsDislike] = useState(false);
   const [isReacting, setIsReacting] = useState(false);
   const navigate = useNavigate();
+  const [reportLoading, setReportLoading] = useState(false);
+  const reportCtrRef = useRef(null);
+  const postReportFormRef = useRef(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [reportType, setReportType] = useState("");
+  const [reportAdditionalInfo, setReportAdditionalInfo] = useState("");
 
+  useEffect(() => {
+    if (dialogOpen) {
+      setTimeout(() => {
+        if (reportCtrRef.current) {
+          reportCtrRef.current.classList.add("active");
+          postReportFormRef.current.classList.add("active");
+        }
+      }, 10);
+    } else {
+      if (reportCtrRef.current) {
+        postReportFormRef.current.classList.remove("active");
+        reportCtrRef.current.classList.remove("active");
+      }
+    }
+  }, [dialogOpen, reportCtrRef, postReportFormRef]);
   useEffect(() => {
     if (!author) return;
 
@@ -235,8 +453,78 @@ function CommentPreview({
     navigate(`/@${profile}`);
   }
 
+  function CloseButton() {
+    return (
+      <button className="close-dialog-btn" onClick={() => setDialogOpen(false)}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1}
+          stroke="currentColor"
+          className="size-6 x-logo"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6 18 18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+    );
+  }
+
+  function handleOpenReport() {
+    setDialogOpen(true);
+  }
+
+  async function handleReportSubmit(e, commentId) {
+    e.preventDefault();
+    try {
+      const response = await fetch(
+        `http://localhost:3000/comment/report/${commentId}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            reporterId: author?.id,
+            type: reportType,
+            message: reportAdditionalInfo,
+          }),
+        }
+      );
+      if (!response.ok) {
+        setReportLoading(false);
+        console.log("failed to fetch report", response.status);
+      }
+      await response.json();
+      setReportLoading(false);
+      setDialogOpen(false);
+      setReportAdditionalInfo("");
+      setReportType("");
+    } catch (error) {
+      setReportLoading(false);
+      console.error("failed to report post", error);
+    }
+  }
   return (
     <div key={comment.id}>
+      <div className="comment-report-ctr" ref={reportCtrRef}>
+        <div className="report-form" ref={postReportFormRef}>
+          <div className="report-post-title">Report Comment</div>
+          <CloseButton />
+          <ReportForm
+            commentId={comment.id}
+            setDialogOpen={setDialogOpen}
+            reportType={reportType}
+            setReportType={setReportType}
+            reportAdditionalInfo={reportAdditionalInfo}
+            setReportAdditionalInfo={setReportAdditionalInfo}
+            handleReportSubmit={handleReportSubmit}
+            reportLoading={reportLoading}
+          />
+        </div>
+      </div>
       {comment.id === onEdit ? (
         // Edit comment
         <div className="edit-comment-input-ctr">
@@ -339,7 +627,44 @@ function CommentPreview({
               {loading ? (
                 ""
               ) : author?.username !== comment.author.username ? (
-                <div></div>
+                <button
+                  className="edit-comment-btn"
+                  aria-label="edit-comment"
+                  data-comment-id={comment.id}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleDropdown(comment.id);
+                  }}
+                >
+                  {openDropdownCommentId === comment.id && (
+                    <div
+                      data-comment-id={comment.id}
+                      className="edit-comment-dropdown"
+                    >
+                      <div
+                        className="click-to-delete cmnt-edit-btn"
+                        onClick={() => handleOpenReport()}
+                      >
+                        Report comment
+                      </div>
+                    </div>
+                  )}
+
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1}
+                    stroke="currentColor"
+                    className="size-6 edit-comment-icon"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                    />
+                  </svg>
+                </button>
               ) : (
                 <button
                   className="edit-comment-btn"

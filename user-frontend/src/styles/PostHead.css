@@ -205,6 +205,7 @@
   display: block;
 }
 
+.comment-report-ctr,
 .post-report-ctr {
   position: fixed;
   height: 100vh;
@@ -221,6 +222,7 @@
   transition: opacity 0.3s ease, background-color 0.3s ease;
 }
 
+.comment-report-ctr.active,
 .post-report-ctr.active {
   /* background-color: rgba(255, 255, 255, 0.96); */
   opacity: 1;
