@@ -32,6 +32,21 @@ function isAdmin(req, res, next) {
   return res.status(403).json({ message: "Forbidden: Admins only" });
 }
 
+function isAdmin(req, res, next) {
+  // allow both ADMIN and SUPERUSER
+  if (req.user?.role === "ADMIN" || req.user?.role === "SUPERADMIN") {
+    return next();
+  }
+  return res.status(403).json({ message: "Admins only" });
+}
+
+function isSuperAdmin(req, res, next) {
+  if (req.user?.role === "SUPERADMIN") {
+    return next();
+  }
+  return res.status(403).json({ message: "Superusers only" });
+}
+
 router.post("/login", (req, res, next) => {
   passport.authenticate(
     "admin-local",
@@ -47,7 +62,8 @@ router.post("/login", (req, res, next) => {
         if (err) {
           res.send(err);
         }
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+        const payload = { id: user.id, role: user.role };
+        const token = jwt.sign(payload, process.env.JWT_SECRET, {
           expiresIn: "7d",
         });
         res.cookie("admintoken", token, {
@@ -76,4 +92,4 @@ router.get("/profile", authenticateToken, (req, res) => {
   res.json({ user: req.user });
 });
 
-module.exports = { router, authenticateToken, isAdmin };
+module.exports = { router, authenticateToken, isAdmin, isSuperAdmin };
