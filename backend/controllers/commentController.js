@@ -167,6 +167,36 @@ async function getSpecificComment(req, res) {
       where: { id: commentId },
       include: {
         reports: true,
+        post: {
+          select: {
+            title: true,
+          },
+        },
+        author: {
+          select: {
+            username: true,
+            role: true,
+            profilePicture: true,
+          },
+        },
+        replies: {
+          select: {
+            id: true,
+            content: true,
+            postId: true,
+            authorId: true,
+            createdAt: true,
+            updatedAt: true,
+            parentId: true,
+            author: {
+              select: {
+                username: true,
+                role: true,
+                profilePicture: true,
+              },
+            },
+          },
+        },
       },
     });
 
