@@ -1,165 +1,179 @@
-generator client {
-  provider = "prisma-client-js"
+  generator client {
+    provider = "prisma-client-js"
+  }
+
+  datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+  }
+
+  model User {
+    id        String   @id @default(uuid())
+    username  String   @unique
+    email     String   @unique
+    password  String
+    role      Role     @default(USER) // USER or ADMIN
+    posts     Post[]
+    comments  Comment[]
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    userColor String?
+    biography String?
+    fullName  String?
+    profilePicture String?
+    profilePicturePublicId  String? 
+
+    followers Follower[] @relation("followers")
+    following Follower[] @relation("following")
+
+    commentReactions           CommentReaction[]
+
+    likedPosts                 Post[]              @relation("PostLikes")
+    bookmarkedPosts            Post[]              @relation("PostBookmarks")
+
+    postReports PostReport[]
+
+    commentReports CommentReport[]
+
+    suspensions Suspension[]
+  }
+
+  model Follower {
+    id          String   @id @default(uuid())
+    followerId  String
+    followingId String
+    createdAt   DateTime @default(now())
+
+    follower  User @relation("followers", fields: [followerId], references: [id])
+    following User @relation("following", fields: [followingId], references: [id])
+
+    @@unique([followerId, followingId])
+  }
+
+  model Post {
+    id          String   @id @default(uuid())
+    title       String
+    content     String
+    published   Boolean  @default(false)
+    authorId    String
+    excerpt     String?  
+    thumbnail   String?  
+    thumbnailPublicId String?
+    author      User     @relation(fields: [authorId], references: [id])
+    comments    Comment[]
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    likedBy     User[]     @relation("PostLikes")
+    bookmarkedBy User[]    @relation("PostBookmarks")
+
+    status      PostStatus?  
+
+    reports     PostReport[]
+  }
+
+  model Comment {
+    id        String   @id @default(uuid())
+    content   String
+    postId    String
+    post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+    authorId  String?
+    author    User?    @relation(fields: [authorId], references: [id])
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    parentId    String? 
+    parent      Comment? @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+    
+    replies     Comment[] @relation("CommentReplies")
+    reactions   CommentReaction[]
+
+    reports     CommentReport[]
+  }
+
+  model CommentReaction {
+    id        String   @id @default(uuid())
+    commentId String
+    userId    String
+    reaction  ReactionType
+    createdAt DateTime @default(now())
+
+    comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+    user      User    @relation(fields: [userId], references: [id])
+
+    @@unique([commentId, userId])
+  }
+
+  model CommentReport {
+    id          String     @id @default(uuid())
+    commentId   String
+    reporterId  String
+    type        ReportType
+    message     String?
+    createdAt   DateTime   @default(now())
+
+    comment     Comment   @relation(fields: [commentId],  references: [id], onDelete: Cascade)
+    reporter    User      @relation(fields: [reporterId], references: [id])
+
+    @@unique([commentId, reporterId])
+  }
+
+
+  model PostReport {
+    id         String     @id @default(uuid())
+    postId     String
+    reporterId String     
+    type       ReportType
+    message    String?    
+    createdAt  DateTime   @default(now())
+
+    post       Post       @relation(fields: [postId], references: [id], onDelete: Cascade)
+    reporter   User       @relation(fields: [reporterId], references: [id])
+
+    @@unique([postId, reporterId])
+  }
+
+model Suspension {
+  id          String    @id @default(uuid())
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  reason      String
+  createdBy   String?   
+  createdAt   DateTime  @default(now())
+  expiresAt   DateTime? 
+  liftedAt    DateTime? 
+  liftReason  String?   
 }
 
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
+  enum ReportType {
+    sexual_content
+    violent_content
+    hateful_content
+    harassment
+    dangerous_acts
+    misinformation
+    child_abuse
+    terrorism
+    spam_misleading
 
-model User {
-  id        String   @id @default(uuid())
-  username  String   @unique
-  email     String   @unique
-  password  String
-  role      Role     @default(USER) // USER or ADMIN
-  posts     Post[]
-  comments  Comment[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  userColor String?
-  biography String?
-  fullName  String?
-  profilePicture String?
-  profilePicturePublicId  String? 
+  }      
+    
 
-  followers Follower[] @relation("followers")
-  following Follower[] @relation("following")
+  enum PostStatus {
+    ACTIVE
+    DRAFT
+    BLOCKED
+    REPORTED
+    ARCHIVED
+  }
 
-  commentReactions           CommentReaction[]
+  enum ReactionType {
+    LIKE
+    DISLIKE
+  }
 
-  likedPosts                 Post[]              @relation("PostLikes")
-  bookmarkedPosts            Post[]              @relation("PostBookmarks")
-
-  postReports PostReport[]
-
-  commentReports CommentReport[]
-}
-
-model Follower {
-  id          String   @id @default(uuid())
-  followerId  String
-  followingId String
-  createdAt   DateTime @default(now())
-
-  follower  User @relation("followers", fields: [followerId], references: [id])
-  following User @relation("following", fields: [followingId], references: [id])
-
-  @@unique([followerId, followingId])
-}
-
-model Post {
-  id          String   @id @default(uuid())
-  title       String
-  content     String
-  published   Boolean  @default(false)
-  authorId    String
-  excerpt     String?  
-  thumbnail   String?  
-  thumbnailPublicId String?
-  author      User     @relation(fields: [authorId], references: [id])
-  comments    Comment[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  likedBy     User[]     @relation("PostLikes")
-  bookmarkedBy User[]    @relation("PostBookmarks")
-
-  status      PostStatus?  
-
-  reports     PostReport[]
-}
-
-model Comment {
-  id        String   @id @default(uuid())
-  content   String
-  postId    String
-  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  authorId  String?
-  author    User?    @relation(fields: [authorId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  parentId    String? 
-  parent      Comment? @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
-  
-  replies     Comment[] @relation("CommentReplies")
-  reactions   CommentReaction[]
-
-  reports     CommentReport[]
-}
-
-model CommentReaction {
-  id        String   @id @default(uuid())
-  commentId String
-  userId    String
-  reaction  ReactionType
-  createdAt DateTime @default(now())
-
-  comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
-  user      User    @relation(fields: [userId], references: [id])
-
-  @@unique([commentId, userId])
-}
-
-model CommentReport {
-  id          String     @id @default(uuid())
-  commentId   String
-  reporterId  String
-  type        ReportType
-  message     String?
-  createdAt   DateTime   @default(now())
-
-  comment     Comment   @relation(fields: [commentId],  references: [id], onDelete: Cascade)
-  reporter    User      @relation(fields: [reporterId], references: [id])
-
-  @@unique([commentId, reporterId])
-}
-
-
-model PostReport {
-  id         String     @id @default(uuid())
-  postId     String
-  reporterId String     
-  type       ReportType
-  message    String?    
-  createdAt  DateTime   @default(now())
-
-  post       Post       @relation(fields: [postId], references: [id], onDelete: Cascade)
-  reporter   User       @relation(fields: [reporterId], references: [id])
-
-  @@unique([postId, reporterId])
-}
-
-enum ReportType {
-  sexual_content
-  violent_content
-  hateful_content
-  harassment
-  dangerous_acts
-  misinformation
-  child_abuse
-  terrorism
-  spam_misleading
-
-}      
-  
-
-enum PostStatus {
-  ACTIVE
-  DRAFT
-  BLOCKED
-  REPORTED
-  ARCHIVED
-}
-
-enum ReactionType {
-  LIKE
-  DISLIKE
-}
-
-enum Role {
-  USER
-  ADMIN
-}
+  enum Role {
+    USER
+    ADMIN
+  }
 

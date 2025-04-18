@@ -160,11 +160,11 @@ async function getAllStats(req, res) {
     });
 
     const formattedStatusCounts = {
-      DEFAULT: 0,
+      ACTIVE: 0,
       DRAFT: 0,
       BLOCKED: 0,
       REPORTED: 0,
-      ARCHIEVED: 0,
+      ARCHIVED: 0,
     };
 
     statusCounts.forEach((status) => {
