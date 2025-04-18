@@ -441,15 +441,23 @@ async function toggleBookmark(req, res) {
 async function reportPost(req, res) {
   const { postId } = req.params;
   const { reporterId, type, message } = req.body;
+  const trimmedMessage = message?.trim() || "";
 
   try {
-    const trimmedMessage = message?.trim() || "";
-    await prisma.postReport.create({
-      data: {
+    const report = await prisma.postReport.upsert({
+      where: {
+        postId_reporterId: { postId, reporterId },
+      },
+      create: {
         postId,
         reporterId,
         type,
         message: trimmedMessage,
+      },
+      update: {
+        type,
+        message: trimmedMessage,
+        createdAt: new Date(),
       },
     });
 
@@ -458,12 +466,13 @@ async function reportPost(req, res) {
       data: { status: "REPORTED" },
     });
 
-    return res.status(201).json({
-      message: "Report submitted and post marked as REPORTED",
+    return res.status(200).json({
+      message: report._count ? "Report updated" : "Report created",
+      report,
       post: updatedPost,
     });
-  } catch (error) {
-    console.error("Error reporting post:", error);
+  } catch (err) {
+    console.error("Error reporting post:", err);
     return res.status(500).json({ error: "Internal server error" });
   }
 }

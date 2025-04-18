@@ -1,23 +1,20 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-async function changeField() {
-  await prisma.post.updateMany({
-    where: {
-      status: "DEFAULT",
-    },
-    data: {
-      status: "ACTIVE",
-    },
-  });
+async function main() {
+  // delete all comment‑reports
+  // await prisma.commentReport.deleteMany({});
+  // delete all post‑reports
+  await prisma.postReport.deleteMany({});
+
+  console.log("✅ All reports have been deleted.");
 }
 
-changeField()
-  .then(() => {
-    console.log("Update complete");
-    prisma.$disconnect();
+main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
   })
-  .catch((error) => {
-    console.error("Error updating posts:", error);
-    prisma.$disconnect();
+  .finally(async () => {
+    await prisma.$disconnect();
   });

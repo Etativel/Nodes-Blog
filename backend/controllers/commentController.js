@@ -2,7 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const { v4: uuidv4 } = require("uuid");
 
-// GET POST
+// GET COMMENT
 async function getAllComment(req, res) {
   try {
     const comments = await prisma.comment.findMany();
@@ -13,7 +13,7 @@ async function getAllComment(req, res) {
   }
 }
 
-// ADD POST
+// ADD COMMENT
 
 async function addComment(req, res) {
   const { content, postId, authorId, parentId } = req.body;
@@ -35,7 +35,7 @@ async function addComment(req, res) {
   }
 }
 
-// UPDATE POST
+// UPDATE COMMENT
 
 async function updateComment(req, res) {
   const { content, commentId } = req.body;
@@ -55,7 +55,7 @@ async function updateComment(req, res) {
   }
 }
 
-// DELETE POST
+// DELETE COMMENT
 
 async function deleteComment(req, res) {
   const { commentId } = req.params;
@@ -126,10 +126,44 @@ async function toggleReaction(req, res) {
   }
 }
 
+// REPORT COMMENT
+async function reportComment(req, res) {
+  const { commentId } = req.params;
+  const { reporterId, type, message } = req.body;
+  const trimmedMessage = message?.trim() || "";
+
+  try {
+    const report = await prisma.commentReport.upsert({
+      where: {
+        commentId_reporterId: { commentId, reporterId },
+      },
+      create: {
+        commentId,
+        reporterId,
+        type,
+        message: trimmedMessage,
+      },
+      update: {
+        type,
+        message: trimmedMessage,
+        createdAt: new Date(),
+      },
+    });
+
+    return res.status(200).json({
+      report,
+    });
+  } catch (err) {
+    console.error("Error reporting post:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 module.exports = {
   getAllComment,
   addComment,
   updateComment,
   deleteComment,
   toggleReaction,
+  reportComment,
 };
