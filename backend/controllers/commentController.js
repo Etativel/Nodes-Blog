@@ -159,6 +159,28 @@ async function reportComment(req, res) {
   }
 }
 
+async function getSpecificComment(req, res) {
+  const { commentId } = req.params;
+
+  try {
+    const comment = await prisma.comment.findUnique({
+      where: { id: commentId },
+      include: {
+        reports: true,
+      },
+    });
+
+    if (!comment) {
+      return res.status(404).json({ error: "Comment not found" });
+    }
+
+    return res.json({ comment });
+  } catch (error) {
+    console.error("Error fetching comment", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 module.exports = {
   getAllComment,
   addComment,
@@ -166,4 +188,5 @@ module.exports = {
   deleteComment,
   toggleReaction,
   reportComment,
+  getSpecificComment,
 };
