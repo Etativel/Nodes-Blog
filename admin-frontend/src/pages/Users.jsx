@@ -656,7 +656,13 @@ export default function Users() {
             <ClearIcon />
           </IconButton>
         </DialogTitle>
-        <DialogContent dividers>
+        <DialogContent
+          dividers
+          sx={{
+            paddingBottom: "64px",
+            // marginBottom: "32px",
+          }}
+        >
           {selectedUser && (
             <Box sx={{ width: "100%" }}>
               {/* User Profile Header - Always Visible */}

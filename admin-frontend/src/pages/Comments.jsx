@@ -39,496 +39,6 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 
-// Expanded dummy comments data to demonstrate all features
-const commentsData = [
-  {
-    id: "c1a23456-7890-4def-b123-456789abcdef",
-    content:
-      "This is a reported comment with inappropriate language that violates community guidelines.",
-    postId: "d5386468-4667-402a-9963-ad985efd90c7",
-    postTitle: "Post Title Example",
-    authorId: "u1234567-89ab-cdef-0123-456789abcdef",
-    author: {
-      username: "problematicUser",
-      role: "ADMIN",
-      profilePicture: null,
-    },
-    createdAt: "2025-04-15T14:25:17.827Z",
-    updatedAt: "2025-04-15T14:25:17.827Z",
-    parentId: null,
-    replies: [
-      {
-        id: "c2b34567-8901-5efg-c234-567890bcdefg",
-        content:
-          "Please keep the discussion respectful and follow our community guidelines.",
-        postId: "d5386468-4667-402a-9963-ad985efd90c7",
-        authorId: "u2345678-9abc-defg-1234-56789abcdefg",
-        author: {
-          username: "moderator1",
-          role: "USER",
-          profilePicture: "/api/placeholder/32/32",
-        },
-        createdAt: "2025-04-15T14:35:42.391Z",
-        updatedAt: "2025-04-15T14:35:42.391Z",
-        parentId: "c1a23456-7890-4def-b123-456789abcdef",
-      },
-    ],
-    reactions: [
-      {
-        id: "r1c34567-8901-5efg-c234-567890bcdefg",
-        userId: "u3456789-abcd-efgh-2345-6789abcdefgh",
-        reaction: "DISLIKE",
-        createdAt: "2025-04-15T14:30:22.827Z",
-      },
-      {
-        id: "r2d45678-9012-6fgh-d345-678901cdefgh",
-        userId: "u4567890-bcde-fghi-3456-789abcdefghi",
-        reaction: "DISLIKE",
-        createdAt: "2025-04-15T14:32:17.827Z",
-      },
-      {
-        id: "r3e56789-0123-7ghi-e456-789012defghi",
-        userId: "u5678901-cdef-ghij-4567-89abcdefghij",
-        reaction: "DISLIKE",
-        createdAt: "2025-04-15T14:33:05.827Z",
-      },
-    ],
-    reports: [
-      {
-        id: "rp1f6789-0123-7ghi-e456-789012defghi",
-        type: "hateful_content",
-        message: "This comment contains hate speech",
-        createdAt: "2025-04-15T14:40:12.827Z",
-        reporter: {
-          username: "concernedUser1",
-        },
-      },
-      {
-        id: "rp2g7890-1234-8hij-f567-890123efghij",
-        type: "harassment",
-        message: "This comment is targeting other users",
-        createdAt: "2025-04-15T14:45:33.827Z",
-        reporter: {
-          username: "concernedUser2",
-        },
-      },
-    ],
-    status: "REPORTED",
-  },
-  {
-    id: "c3h8901-2345-9ijk-g678-901234fghijk",
-    content:
-      "I found this article very informative and well-researched. Thanks for sharing this valuable content with the community!",
-    postId: "e6397579-5778-513b-b064-bf085efd90d8",
-    postTitle: "Community Guidelines",
-    authorId: "u6789012-defg-hijk-5678-9abcdefghijk",
-    author: {
-      username: "positiveUser",
-      role: "USER",
-      profilePicture: "/api/placeholder/32/32",
-    },
-    createdAt: "2025-04-14T09:12:45.827Z",
-    updatedAt: "2025-04-14T09:12:45.827Z",
-    parentId: null,
-    replies: [],
-    reactions: [
-      {
-        id: "r4i9012-3456-0jkl-h789-012345ghijkl",
-        userId: "u7890123-efgh-ijkl-6789-abcdefghijkl",
-        reaction: "LIKE",
-        createdAt: "2025-04-14T09:15:22.827Z",
-      },
-      {
-        id: "r5j0123-4567-1klm-i890-123456hijklm",
-        userId: "u8901234-fghi-jklm-7890-bcdefghijklm",
-        reaction: "LIKE",
-        createdAt: "2025-04-14T09:17:55.827Z",
-      },
-    ],
-    reports: [],
-    status: "DEFAULT",
-  },
-  {
-    id: "c4k1234-5678-2lmn-j901-234567ijklmn",
-    content:
-      "Click here to win free prizes! Visit my website at scam.example.com and enter your credit card details!",
-    postId: "f7408680-6889-624c-c175-cf196fge01e9",
-    postTitle: "Questionable Content",
-    authorId: "u9012345-ghij-klmn-8901-cdefghijklmn",
-    author: {
-      username: "spammer123",
-      role: "USER",
-      profilePicture: null,
-    },
-    createdAt: "2025-04-13T16:45:33.827Z",
-    updatedAt: "2025-04-13T16:45:33.827Z",
-    parentId: null,
-    replies: [],
-    reactions: [],
-    reports: [
-      {
-        id: "rp3l2345-6789-3mno-k012-345678jklmno",
-        type: "spam_misleading",
-        message: "This is an obvious spam comment with suspicious links",
-        createdAt: "2025-04-13T16:55:42.827Z",
-        reporter: {
-          username: "vigilantUser",
-        },
-      },
-    ],
-    status: "REPORTED",
-  },
-  {
-    id: "c5m3456-7890-4nop-l123-456789klmnop",
-    content:
-      "This content promotes conspiracy theories and contains factual errors that could mislead others.",
-    postId: "j0731913-9112-957f-f408-fi529jif34h2",
-    postTitle: "Controversial Discussion",
-    authorId: "u0123456-hijk-lmno-9012-defghijklmno",
-    author: {
-      username: "truthSeeker77",
-      role: "USER",
-      profilePicture: null,
-    },
-    createdAt: "2025-04-12T11:23:17.827Z",
-    updatedAt: "2025-04-12T11:23:17.827Z",
-    parentId: null,
-    replies: [],
-    reactions: [
-      {
-        id: "r6n4567-8901-5opq-m234-567890lmnopq",
-        userId: "u1234567-ijkl-mnop-0123-efghijklmnop",
-        reaction: "DISLIKE",
-        createdAt: "2025-04-12T11:28:45.827Z",
-      },
-    ],
-    reports: [
-      {
-        id: "rp4o5678-9012-6pqr-n345-678901mnopqr",
-        type: "misinformation",
-        message: "This comment spreads dangerous misinformation",
-        createdAt: "2025-04-12T11:35:22.827Z",
-        reporter: {
-          username: "factChecker",
-        },
-      },
-    ],
-    status: "REPORTED",
-  },
-  {
-    id: "c6p6789-0123-7qrs-o456-789012nopqrs",
-    content:
-      "I experienced the same issue with the mobile app. The search function crashes when I try to filter by date.",
-    postId: "l2953135-1334-179h-h620-hk741lkh56j4",
-    postTitle: "Bug Report Thread",
-    authorId: "u2345678-jklm-nopq-1234-fghijklmnopq",
-    author: {
-      username: "appUser42",
-      role: "USER",
-      profilePicture: "/api/placeholder/32/32",
-    },
-    createdAt: "2025-04-11T15:42:39.827Z",
-    updatedAt: "2025-04-11T15:42:39.827Z",
-    parentId: null,
-    replies: [
-      {
-        id: "c7q7890-1234-8rst-p567-890123opqrst",
-        content:
-          "Thanks for reporting this issue. We've noted it and our developers are working on a fix for the next update.",
-        postId: "l2953135-1334-179h-h620-hk741lkh56j4",
-        authorId: "u3456789-klmn-opqr-2345-ghijklmnopqr",
-        author: {
-          username: "supportTeam",
-          role: "ADMIN",
-          profilePicture: "/api/placeholder/32/32",
-        },
-        createdAt: "2025-04-11T16:15:22.827Z",
-        updatedAt: "2025-04-11T16:15:22.827Z",
-        parentId: "c6p6789-0123-7qrs-o456-789012nopqrs",
-      },
-    ],
-    reactions: [
-      {
-        id: "r7r8901-2345-9stu-q678-901234pqrstu",
-        userId: "u4567890-lmno-pqrs-3456-hijklmnopqrs",
-        reaction: "LIKE",
-        createdAt: "2025-04-11T15:55:17.827Z",
-      },
-    ],
-    reports: [],
-    status: "DEFAULT",
-  },
-  {
-    id: "c8s0123-4567-0tuv-r789-012345qrstuv",
-    content:
-      "I strongly disagree with your assessment. The new design is far worse than the previous one for accessibility reasons.",
-    postId: "m3064246-2445-280i-i731-il852mli67k5",
-    postTitle: "User Feedback Collection",
-    authorId: "u5678901-mnop-qrst-4567-ijklmnopqrst",
-    author: {
-      username: "designCritic",
-      role: "USER",
-      profilePicture: null,
-    },
-    createdAt: "2025-04-10T09:37:14.827Z",
-    updatedAt: "2025-04-10T09:37:14.827Z",
-    parentId: null,
-    replies: [],
-    reactions: [],
-    reports: [],
-    status: "DEFAULT",
-  },
-  {
-    id: "c9t1234-5678-1uvw-s890-123456rstuv",
-    content:
-      "Could someone help me figure out how to change my account settings? I can't find the option anywhere.",
-    postId: "o5286468-4667-402k-k953-ko074bok89m7",
-    postTitle: "Help Request",
-    authorId: "u6789012-nopq-rstu-5678-jklmnopqrstu",
-    author: {
-      username: "newUser123",
-      role: "USER",
-      profilePicture: "/api/placeholder/32/32",
-    },
-    createdAt: "2025-04-09T14:22:58.827Z",
-    updatedAt: "2025-04-09T14:22:58.827Z",
-    parentId: null,
-    replies: [
-      {
-        id: "c10u2345-6789-2vwx-t901-234567stuvwx",
-        content:
-          "You can find account settings by clicking on your profile icon in the top right corner, then selecting 'Settings' from the dropdown menu.",
-        postId: "o5286468-4667-402k-k953-ko074bok89m7",
-        authorId: "u7890123-opqr-stuv-6789-klmnopqrstuv",
-        author: {
-          username: "helpfulUser",
-          role: "USER",
-          profilePicture: "/api/placeholder/32/32",
-        },
-        createdAt: "2025-04-09T14:27:33.827Z",
-        updatedAt: "2025-04-09T14:27:33.827Z",
-        parentId: "c9t1234-5678-1uvw-s890-123456rstuv",
-      },
-    ],
-    reactions: [
-      {
-        id: "r8u3456-7890-3wxy-t012-345678tuvwxy",
-        userId: "u8901234-pqrs-tuvw-7890-lmnopqrstuvw",
-        reaction: "LIKE",
-        createdAt: "2025-04-09T14:30:22.827Z",
-      },
-    ],
-    reports: [],
-    status: "DEFAULT",
-  },
-  {
-    id: "c11v4567-8901-4yz1-u123-456789uvwxyz",
-    content:
-      "This platform's policies are restrictive and limit free speech! You're censoring important discussions!",
-    postId: "n4175357-3556-391j-j842-jm963nmj78l6",
-    postTitle: "Policy Violation",
-    authorId: "u9012345-qrst-uvwx-8901-mnopqrstuvwx",
-    author: {
-      username: "freedomFighter42",
-      role: "USER",
-      profilePicture: null,
-    },
-    createdAt: "2025-04-08T17:12:44.827Z",
-    updatedAt: "2025-04-08T17:12:44.827Z",
-    parentId: null,
-    replies: [],
-    reactions: [],
-    reports: [
-      {
-        id: "rp5v5678-9012-6123-o345-678901opqrst",
-        type: "harassment",
-        message: "This comment is hostile and accuses the platform unfairly",
-        createdAt: "2025-04-08T17:25:33.827Z",
-        reporter: {
-          username: "communityDefender",
-        },
-      },
-    ],
-    status: "REPORTED",
-  },
-  {
-    id: "c12w5678-9012-5ab2-v234-567890vwxyza",
-    content:
-      "The new update completely broke the notification system. Nothing works anymore. Fix it!",
-    postId: "k1842024-0223-068g-g519-gj630kjg45i3",
-    postTitle: "Product Announcement",
-    authorId: "u0123456-rstu-vwxy-9012-nopqrstuvwxy",
-    author: {
-      username: "angryUser99",
-      role: "USER",
-      profilePicture: null,
-    },
-    createdAt: "2025-04-07T11:37:22.827Z",
-    updatedAt: "2025-04-07T11:37:22.827Z",
-    parentId: null,
-    replies: [
-      {
-        id: "c13x6789-0123-6bc3-w345-678901wxyza",
-        content:
-          "I'm sorry you're experiencing issues. Could you provide more details about what specifically isn't working? Our team is actively addressing bugs in the new release.",
-        postId: "k1842024-0223-068g-g519-gj630kjg45i3",
-        authorId: "u1234567-stuv-wxyz-0123-opqrstuvwxyz",
-        author: {
-          username: "productSupport",
-          role: "ADMIN",
-          profilePicture: "/api/placeholder/32/32",
-        },
-        createdAt: "2025-04-07T11:42:55.827Z",
-        updatedAt: "2025-04-07T11:42:55.827Z",
-        parentId: "c12w5678-9012-5ab2-v234-567890vwxyza",
-      },
-      {
-        id: "c13x6789-0123-6bc3-w345-678901wxyza",
-        content:
-          "I'm sorry you're experiencing issues. Could you provide more details about what specifically isn't working? Our team is actively addressing bugs in the new release.",
-        postId: "k1842024-0223-068g-g519-gj630kjg45i3",
-        authorId: "u1234567-stuv-wxyz-0123-opqrstuvwxyz",
-        author: {
-          username: "productSupport",
-          role: "ADMIN",
-          profilePicture: "/api/placeholder/32/32",
-        },
-        createdAt: "2025-04-07T11:42:55.827Z",
-        updatedAt: "2025-04-07T11:42:55.827Z",
-        parentId: "c12w5678-9012-5ab2-v234-567890vwxyza",
-      },
-      {
-        id: "c13x6789-0123-6bc3-w345-678901wxyza",
-        content:
-          "I'm sorry you're experiencing issues. Could you provide more details about what specifically isn't working? Our team is actively addressing bugs in the new release.",
-        postId: "k1842024-0223-068g-g519-gj630kjg45i3",
-        authorId: "u1234567-stuv-wxyz-0123-opqrstuvwxyz",
-        author: {
-          username: "productSupport",
-          role: "ADMIN",
-          profilePicture: "/api/placeholder/32/32",
-        },
-        createdAt: "2025-04-07T11:42:55.827Z",
-        updatedAt: "2025-04-07T11:42:55.827Z",
-        parentId: "c12w5678-9012-5ab2-v234-567890vwxyza",
-      },
-      {
-        id: "c13x6789-0123-6bc3-w345-678901wxyza",
-        content:
-          "I'm sorry you're experiencing issues. Could you provide more details about what specifically isn't working? Our team is actively addressing bugs in the new release.",
-        postId: "k1842024-0223-068g-g519-gj630kjg45i3",
-        authorId: "u1234567-stuv-wxyz-0123-opqrstuvwxyz",
-        author: {
-          username: "productSupport",
-          role: "ADMIN",
-          profilePicture: "/api/placeholder/32/32",
-        },
-        createdAt: "2025-04-07T11:42:55.827Z",
-        updatedAt: "2025-04-07T11:42:55.827Z",
-        parentId: "c12w5678-9012-5ab2-v234-567890vwxyza",
-      },
-      {
-        id: "c13x6789-0123-6bc3-w345-678901wxyza",
-        content:
-          "I'm sorry you're experiencing issues. Could you provide more details about what specifically isn't working? Our team is actively addressing bugs in the new release.",
-        postId: "k1842024-0223-068g-g519-gj630kjg45i3",
-        authorId: "u1234567-stuv-wxyz-0123-opqrstuvwxyz",
-        author: {
-          username: "productSupport",
-          role: "ADMIN",
-          profilePicture: "/api/placeholder/32/32",
-        },
-        createdAt: "2025-04-07T11:42:55.827Z",
-        updatedAt: "2025-04-07T11:42:55.827Z",
-        parentId: "c12w5678-9012-5ab2-v234-567890vwxyza",
-      },
-      {
-        id: "c13x6789-0123-6bc3-w345-678901wxyza",
-        content:
-          "I'm sorry you're experiencing issues. Could you provide more details about what specifically isn't working? Our team is actively addressing bugs in the new release.",
-        postId: "k1842024-0223-068g-g519-gj630kjg45i3",
-        authorId: "u1234567-stuv-wxyz-0123-opqrstuvwxyz",
-        author: {
-          username: "productSupport",
-          role: "ADMIN",
-          profilePicture: "/api/placeholder/32/32",
-        },
-        createdAt: "2025-04-07T11:42:55.827Z",
-        updatedAt: "2025-04-07T11:42:55.827Z",
-        parentId: "c12w5678-9012-5ab2-v234-567890vwxyza",
-      },
-      {
-        id: "c13x6789-0123-6bc3-w345-678901wxyza",
-        content:
-          "I'm sorry you're experiencing issues. Could you provide more details about what specifically isn't working? Our team is actively addressing bugs in the new release.",
-        postId: "k1842024-0223-068g-g519-gj630kjg45i3",
-        authorId: "u1234567-stuv-wxyz-0123-opqrstuvwxyz",
-        author: {
-          username: "productSupport",
-          role: "ADMIN",
-          profilePicture: "/api/placeholder/32/32",
-        },
-        createdAt: "2025-04-07T11:42:55.827Z",
-        updatedAt: "2025-04-07T11:42:55.827Z",
-        parentId: "c12w5678-9012-5ab2-v234-567890vwxyza",
-      },
-      {
-        id: "c13x6789-0123-6bc3-w345-678901wxyza",
-        content:
-          "I'm sorry you're experiencing issues. Could you provide more details about what specifically isn't working? Our team is actively addressing bugs in the new release.",
-        postId: "k1842024-0223-068g-g519-gj630kjg45i3",
-        authorId: "u1234567-stuv-wxyz-0123-opqrstuvwxyz",
-        author: {
-          username: "productSupport",
-          role: "ADMIN",
-          profilePicture: "/api/placeholder/32/32",
-        },
-        createdAt: "2025-04-07T11:42:55.827Z",
-        updatedAt: "2025-04-07T11:42:55.827Z",
-        parentId: "c12w5678-9012-5ab2-v234-567890vwxyza",
-      },
-    ],
-    reactions: [
-      {
-        id: "r9w7890-1234-9cd4-x456-789012wxyzab",
-        userId: "u2345678-tuvw-xyza-1234-pqrstuvwxyza",
-        reaction: "LIKE",
-        createdAt: "2025-04-07T11:39:42.827Z",
-      },
-    ],
-    reports: [],
-    status: "DEFAULT",
-  },
-  {
-    id: "c14y8901-2345-7de5-y567-890123xyzabcd",
-    content:
-      "Does anyone know when the mobile app will be available for Android users?",
-    postId: "k1842024-0223-068g-g519-gj630kjg45i3",
-    postTitle: "Product Announcement",
-    authorId: "u3456789-uvwx-yzab-2345-qrstuvwxyzab",
-    author: {
-      username: "androidFan",
-      role: "USER",
-      profilePicture: "/api/placeholder/32/32",
-    },
-    createdAt: "2025-04-06T15:17:33.827Z",
-    updatedAt: "2025-04-06T15:17:33.827Z",
-    parentId: null,
-    replies: [],
-    reactions: [],
-    reports: [],
-    status: "DEFAULT",
-  },
-];
-
-// Mock function to simulate API calls
-const mockApiCall = (action, data) => {
-  console.log(`API call: ${action}`, data);
-  return new Promise((resolve) => {
-    setTimeout(() => resolve({ success: true }), 500);
-  });
-};
-
 export default function Comments() {
   // State for the details dialog
   const [openDetails, setOpenDetails] = useState(false);
@@ -561,14 +71,39 @@ export default function Comments() {
     severity: "success",
   });
 
+  const [commentsData, setCommentsData] = useState([]);
+
   // Pagination state
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  useEffect(() => {
+    async function fetchCommentsData() {
+      try {
+        const response = await fetch(
+          "http://localhost:3000/admin-comments-api/all-comments",
+          {
+            method: "GET",
+          }
+        );
+
+        if (!response.ok) {
+          console.log("Failed to fetch dashboard data", response.status);
+        }
+        const data = await response.json();
+        setCommentsData(data.comments);
+        setFilteredComments(data.comments);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchCommentsData();
+  }, []);
+
   // Load initial data
   useEffect(() => {
     setFilteredComments(commentsData);
-  }, []);
+  }, [commentsData]);
 
   // Apply filters whenever criteria change
   useEffect(() => {
@@ -581,7 +116,7 @@ export default function Comments() {
         (comment) =>
           comment.content.toLowerCase().includes(query) ||
           comment.author.username.toLowerCase().includes(query) ||
-          comment.postTitle.toLowerCase().includes(query)
+          comment.post.title.toLowerCase().includes(query)
       );
     }
 
@@ -638,6 +173,7 @@ export default function Comments() {
     startDate,
     endDate,
     hasRepliesFilter,
+    commentsData,
   ]);
 
   // Handle row expansion
@@ -678,11 +214,6 @@ export default function Comments() {
   // Submit the review/moderation action
   const handleSubmitReview = async () => {
     try {
-      await mockApiCall(reviewAction, {
-        commentId: selectedComment.id,
-        feedback: reviewComment,
-      });
-
       // Show success notification
       setNotification({
         show: true,
@@ -750,6 +281,19 @@ export default function Comments() {
     page * rowsPerPage + rowsPerPage
   );
 
+  if (commentsData.length === 0) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-gray-50">
+        <div className="flex flex-col items-center">
+          <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-t-2 border-blue-500"></div>
+          <p className="mt-4 text-lg font-medium text-gray-600">
+            Loading posts data...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <Box p={3} pt={2}>
       <h2 className="text-2xl font-bold text-gray-800">Comments moderation</h2>
@@ -811,7 +355,7 @@ export default function Comments() {
                 variant="outlined"
               >
                 <MenuItem value="ALL">All Statuses</MenuItem>
-                <MenuItem value="DEFAULT">Default</MenuItem>
+                <MenuItem value="ACTIVE">Active</MenuItem>
                 <MenuItem value="REPORTED">Reported</MenuItem>
               </Select>
             </FormControl>
@@ -1043,13 +587,13 @@ export default function Comments() {
                         </Box>
                       </TableCell>
                       <TableCell>
-                        <Tooltip title={comment.postTitle}>
+                        <Tooltip title={comment.post.title}>
                           <Typography
                             variant="body2"
                             display="flex"
                             sx={{ maxWidth: "150px" }}
                           >
-                            {comment.postTitle}
+                            {comment.post.title}
                           </Typography>
                         </Tooltip>
                       </TableCell>
@@ -1250,7 +794,7 @@ export default function Comments() {
                       {formatDate(selectedComment.createdAt)}
                     </Typography>
                     <Typography variant="body2">
-                      <strong>Post:</strong> {selectedComment.postTitle}
+                      <strong>Post:</strong> {selectedComment.post.title}
                     </Typography>
                   </Grid>
                 </Grid>
