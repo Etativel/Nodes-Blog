@@ -88,26 +88,46 @@ export default function Users() {
 
   const [usersData, setUsersData] = useState([]);
 
-  useEffect(() => {
-    async function fetchSummaryData() {
-      try {
-        const response = await fetch(
-          "http://localhost:3000/admin-users-api/all-users",
-          {
-            method: "GET",
-          }
-        );
+  const [prevUserValues, setPrevUserValues] = useState({
+    fullName: "",
+    username: "",
+    role: "",
+    biography: "",
+    email: "",
+  });
 
-        if (!response.ok) {
-          console.log("Failed to fetch dashboard data", response.status);
+  const isDisabled =
+    !selectedUser ||
+    (prevUserValues.fullName === editForm.fullName &&
+      prevUserValues.username === editForm.username &&
+      prevUserValues.role === editForm.role &&
+      prevUserValues.biography === editForm.biography &&
+      prevUserValues.email === editForm.email) ||
+    editForm.username.length > 15 ||
+    editForm.fullName.length > 30 ||
+    editForm.biography.length > 160;
+
+  async function fetchSummaryData() {
+    try {
+      const response = await fetch(
+        "http://localhost:3000/admin-users-api/all-users",
+        {
+          method: "GET",
+          credentials: "include",
         }
-        const data = await response.json();
-        setUsersData(data);
-        console.log(data);
-      } catch (error) {
-        console.log(error);
+      );
+
+      if (!response.ok) {
+        console.log("Failed to fetch dashboard data", response.status);
       }
+      const data = await response.json();
+      setUsersData(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
     }
+  }
+  useEffect(() => {
     fetchSummaryData();
   }, []);
 
@@ -187,6 +207,13 @@ export default function Users() {
 
   const handleOpenEditUser = (user) => {
     setSelectedUser(user);
+    setPrevUserValues({
+      fullName: user.fullName || "",
+      username: user.username,
+      role: user.role,
+      biography: user.biography || "",
+      email: user.email,
+    });
     setEditForm({
       username: user.username,
       email: user.email,
@@ -207,9 +234,41 @@ export default function Users() {
     setEditForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmitEditUser = () => {
+  const handleSubmitEditUser = async () => {
     console.log("Updating user", selectedUser.id, editForm);
-    setOpenEditUser(false);
+    try {
+      const response = await fetch(
+        `http://localhost:3000/admin-users-api/update-user/${selectedUser.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            username: editForm.username,
+            email: editForm.email,
+            fullName: editForm.fullName,
+            role: editForm.role,
+            biography: editForm.biography,
+          }),
+        }
+      );
+      if (response.status === 403) {
+        alert("You need to be an superAdmin to perform this action");
+      }
+      if (response.ok) {
+        console.log("User updated successfully");
+        setOpenEditUser(false);
+        setSelectedUser(null);
+        fetchSummaryData();
+      } else {
+        console.log("Error updating user", response.statusText);
+      }
+    } catch (error) {
+      console.log("Error updating user", error);
+      setOpenEditUser(false);
+    }
   };
 
   const handleOpenAccountActions = (user) => {
@@ -329,6 +388,7 @@ export default function Users() {
                 <MenuItem value="ALL">All Roles</MenuItem>
                 <MenuItem value="USER">Users</MenuItem>
                 <MenuItem value="ADMIN">Admins</MenuItem>
+                <MenuItem value="SUPERADMIN">Super Admins</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -717,14 +777,20 @@ export default function Users() {
                 </Typography>
                 <Chip
                   icon={
-                    selectedUser.role === "ADMIN" ? (
+                    selectedUser.role === "ADMIN" ||
+                    selectedUser.role === "SUPERADMIN" ? (
                       <AdminPanelSettingsIcon />
                     ) : (
                       <PersonIcon />
                     )
                   }
                   label={selectedUser.role}
-                  color={selectedUser.role === "ADMIN" ? "primary" : "default"}
+                  color={
+                    selectedUser.role === "ADMIN" ||
+                    selectedUser.role === "SUPERADMIN"
+                      ? "primary"
+                      : "default"
+                  }
                   size="small"
                   sx={{ mb: 1 }}
                 />
@@ -814,7 +880,7 @@ export default function Users() {
               </Box>
 
               {/* Accordion for User Details */}
-              <Accordion sx={{ mb: 1 }}>
+              <Accordion defaultExpanded sx={{ mb: 1 }}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                   <Typography>About & Contact</Typography>
                 </AccordionSummary>
@@ -911,8 +977,8 @@ export default function Users() {
                                 fontWeight: 500,
                               }}
                             >
-                              {post.title.length > 30
-                                ? post.title.slice(0, 30) + "..."
+                              {post.title.length > 100
+                                ? post.title.slice(0, 100) + "..."
                                 : post.title}
                             </Typography>
                           </Box>
@@ -977,8 +1043,8 @@ export default function Users() {
                                 WebkitBoxOrient: "vertical",
                               }}
                             >
-                              {comment.content.length > 50
-                                ? comment.content.slice(0, 50).trim() + "..."
+                              {comment.content.length > 100
+                                ? comment.content.slice(0, 100).trim() + "..."
                                 : comment.content}
                             </Typography>
                           </Box>
@@ -1139,6 +1205,7 @@ export default function Users() {
                   onChange={handleEditFormChange}
                   variant="outlined"
                   margin="dense"
+                  placeholder="Username (max:15)"
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">@</InputAdornment>
@@ -1162,6 +1229,7 @@ export default function Users() {
                 <TextField
                   name="fullName"
                   label="Full Name"
+                  placeholder="Full Name (max: 30)"
                   fullWidth
                   value={editForm.fullName}
                   onChange={handleEditFormChange}
@@ -1180,6 +1248,7 @@ export default function Users() {
                   >
                     <MenuItem value="USER">User</MenuItem>
                     <MenuItem value="ADMIN">Admin</MenuItem>
+                    <MenuItem value="SUPERADMIN">Super Admin</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -1188,6 +1257,7 @@ export default function Users() {
                   name="biography"
                   label="Biography"
                   fullWidth
+                  placeholder="Biography (max: 160)"
                   value={editForm.biography}
                   onChange={handleEditFormChange}
                   variant="outlined"
@@ -1207,6 +1277,7 @@ export default function Users() {
             onClick={handleSubmitEditUser}
             variant="contained"
             color="primary"
+            disabled={isDisabled}
           >
             Save Changes
           </Button>
