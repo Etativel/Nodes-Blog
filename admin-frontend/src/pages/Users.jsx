@@ -52,12 +52,17 @@ import EditIcon from "@mui/icons-material/Edit";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import formatCloudinaryUrl from "../utils/cloudinaryUtils";
+import { useContext } from "react";
+import ProfileContext from "../contexts/context-create/ProfileContext";
 
 export default function Users() {
   // states for modals
+  const { author } = useContext(ProfileContext);
   const [openUserDetails, setOpenUserDetails] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [activeDetailTab, setActiveDetailTab] = useState(0);
+
+  console.log("This is author", author);
 
   // States for editing user
   const [openEditUser, setOpenEditUser] = useState(false);
@@ -672,6 +677,7 @@ export default function Users() {
                       </Tooltip>
                       <Tooltip title="Account Actions">
                         <Button
+                          disabled={author ? user.id === author.id : true}
                           variant="contained"
                           size="small"
                           color={user.active ? "error" : "success"}
@@ -1238,19 +1244,29 @@ export default function Users() {
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <FormControl fullWidth margin="dense">
-                  <Select
-                    name="role"
-                    value={editForm.role}
-                    onChange={handleEditFormChange}
-                    displayEmpty
-                    variant="outlined"
-                  >
-                    <MenuItem value="USER">User</MenuItem>
-                    <MenuItem value="ADMIN">Admin</MenuItem>
-                    <MenuItem value="SUPERADMIN">Super Admin</MenuItem>
-                  </Select>
-                </FormControl>
+                {author ? (
+                  selectedUser.id === author.id ? (
+                    <Typography variant="body2" color="textSecondary">
+                      You cannot change your own role
+                    </Typography>
+                  ) : (
+                    <FormControl fullWidth margin="dense">
+                      <Select
+                        name="role"
+                        value={editForm.role}
+                        onChange={handleEditFormChange}
+                        displayEmpty
+                        variant="outlined"
+                      >
+                        <MenuItem value="USER">User</MenuItem>
+                        <MenuItem value="ADMIN">Admin</MenuItem>
+                        <MenuItem value="SUPERADMIN">Super Admin</MenuItem>
+                      </Select>
+                    </FormControl>
+                  )
+                ) : (
+                  ""
+                )}
               </Grid>
               <Grid item xs={12}>
                 <TextField
