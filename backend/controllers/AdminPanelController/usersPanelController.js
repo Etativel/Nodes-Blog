@@ -113,6 +113,34 @@ async function getAllUsers(req, res) {
   }
 }
 
+async function updateUser(req, res) {
+  const { userId } = req.params;
+  const { fullName, username, role, biography, email } = req.body;
+
+  try {
+    const updatedUser = await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        fullName,
+        username,
+        role,
+        biography,
+        email,
+      },
+    });
+    res.status(200).json({
+      message: "User updated successfully",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.error("Failed to update user", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 module.exports = {
   getAllUsers,
+  updateUser,
 };
