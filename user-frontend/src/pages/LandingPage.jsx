@@ -259,11 +259,15 @@ function SignDialog({
       if (!response.ok) {
         const errorData = await response.json();
         const message = errorData.message || "Login error";
-
+        console.log(message);
         if (message.toLowerCase().includes("not registered")) {
           setErrors({ emailError: message });
         } else if (message.toLowerCase().includes("incorrect password")) {
           setErrors({ passwordError: message });
+        } else if (
+          message.toLowerCase().includes("your account has been suspended")
+        ) {
+          setErrors({ suspendedError: message });
         } else {
           setErrors({ loginError: message });
         }
@@ -617,11 +621,33 @@ function SignDialog({
                       </svg>
                     </span>
                   )}
+                  {errors.suspendedError && (
+                    <span className="error-exclamation">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1}
+                        stroke="#c94a4a"
+                        className="size-6 exclamation-icon"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+                        />
+                      </svg>
+                    </span>
+                  )}
                 </div>
                 {errors.emailError && (
                   <p className="email-error">{errors.emailError}</p>
                 )}
 
+                {/* Suspension error text */}
+                {errors.suspendedError && (
+                  <p className="email-error">{errors.suspendedError}</p>
+                )}
                 <label htmlFor="password-field" className="label">
                   password
                 </label>
@@ -655,6 +681,39 @@ function SignDialog({
                 {errors.passwordError && (
                   <p className="password-error">{errors.passwordError}</p>
                 )}
+                {/* <div>
+                  {errors.suspendedError && (
+                    <>
+                      <div
+                        className="input-ctr"
+                        style={{ borderColor: "#c94a4a" }}
+                      >
+                        <span className="error-exclamation">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1}
+                            stroke="#c94a4a"
+                            className="size-6 exclamation-icon"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+                            />
+                          </svg>
+                        </span>
+                      </div>
+                      <p
+                        className="suspended-error"
+                        style={{ color: "#c94a4a" }}
+                      >
+                        {errors.suspendedError}
+                      </p>
+                    </>
+                  )}
+                </div> */}
                 <button
                   className="submit-btn"
                   type="submit"

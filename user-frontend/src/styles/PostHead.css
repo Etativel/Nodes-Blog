@@ -415,7 +415,9 @@
 
   .time-to-read,
   .post-date {
+    display: flex;
     font-size: 0.7rem;
+    align-items: center;
   }
 }
 
