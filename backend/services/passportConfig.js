@@ -1,10 +1,22 @@
 require("dotenv").config({ path: "../.env" });
-
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const { Strategy: JWTStrategy, ExtractJwt } = require("passport-jwt");
 const bcrypt = require("bcryptjs");
 const userService = require("./userService");
+
+async function checkActiveSuspension(userId) {
+  return prisma.suspension.findFirst({
+    where: {
+      userId,
+      liftedAt: null,
+      OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }],
+    },
+    orderBy: { createdAt: "desc" },
+  });
+}
 
 passport.use(
   "user-local",
@@ -34,6 +46,23 @@ passport.use(
         const match = await bcrypt.compare(password, user.password);
         if (!match) {
           return cb(null, false, { message: "Incorrect password" });
+        }
+
+        const activeSuspension = await checkActiveSuspension(user.id);
+        console.log(activeSuspension);
+        if (activeSuspension) {
+          return cb(null, false, {
+            message: `Your account has been suspended until ${
+              activeSuspension.expiresAt
+                ? activeSuspension.expiresAt.toISOString()
+                : "further notice"
+            }`,
+          });
+        }
+        console.log("Checking suspension for user:", user.id);
+        console.log("Checking suspension for user:", activeSuspension);
+        if (activeSuspension) {
+          console.log("User is suspended:", activeSuspension);
         }
         return cb(null, user);
       } catch (error) {
@@ -80,6 +109,19 @@ passport.use(
         if (!match) {
           return cb(null, false, { message: "Incorrect password" });
         }
+
+        // const activeSuspension = await checkActiveSuspension(user.id);
+
+        // if (activeSuspension) {
+        //   return cb(null, false, {
+        //     message: `Account suspended until ${
+        //       activeSuspension.expiresAt
+        //         ? activeSuspension.expiresAt.toISOString()
+        //         : "further notice"
+        //     }`,
+        //   });
+        // }
+
         return cb(null, user);
       } catch (error) {
         return cb(error);

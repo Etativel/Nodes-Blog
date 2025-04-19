@@ -158,7 +158,6 @@ model Suspension {
 
   }      
     
-
   enum PostStatus {
     ACTIVE
     DRAFT
