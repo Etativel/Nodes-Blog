@@ -22,4 +22,19 @@ router.put(
   usersController.updateUser
 );
 
+router.post(
+  "/suspend-user/:userId",
+  authenticateToken,
+  isAdmin,
+  isSuperAdmin,
+  usersController.suspendUser
+);
+router.post(
+  "/lift-suspension-user/:userId",
+  authenticateToken,
+  isAdmin,
+  isSuperAdmin,
+  usersController.liftSuspension
+);
+
 module.exports = router;

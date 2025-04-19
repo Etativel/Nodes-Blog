@@ -17,7 +17,15 @@ function getRandomColor() {
 // Get all user
 async function getAllUser(req, res) {
   try {
-    const users = await prisma.user.findMany();
+    const users = await prisma.user.findMany({
+      include: {
+        suspensions: {
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
+      },
+    });
     if (!users) {
       return res.json({ message: "No user found" });
     }
