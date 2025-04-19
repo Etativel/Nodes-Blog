@@ -101,6 +101,31 @@ export default function Users() {
     email: "",
   });
 
+  const [errors, setErrors] = useState({});
+
+  // 1) Validation function
+  const validate = () => {
+    const errs = {};
+    const { username } = editForm;
+
+    if (!username) {
+      errs.username = "Username is required.";
+    } else if (username.length < 3) {
+      errs.username = "Username must be at least 3 characters.";
+    } else if (username.length > 15) {
+      errs.username = "Username must be no more than 15 characters.";
+    } else if (!/^[A-Za-z0-9]+$/.test(username)) {
+      errs.username = "Username can only contain letters and numbers.";
+    }
+
+    // (you could add async uniqueness check here if you like)
+
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+
+  const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
   const isDisabled =
     !selectedUser ||
     (prevUserValues.fullName === editForm.fullName &&
@@ -110,7 +135,9 @@ export default function Users() {
       prevUserValues.email === editForm.email) ||
     editForm.username.length > 15 ||
     editForm.fullName.length > 30 ||
-    editForm.biography.length > 160;
+    editForm.biography.length > 160 ||
+    !editForm.email ||
+    !isValidEmail(editForm.email);
 
   async function fetchSummaryData() {
     try {
@@ -240,7 +267,9 @@ export default function Users() {
   };
 
   const handleSubmitEditUser = async () => {
-    console.log("Updating user", selectedUser.id, editForm);
+    if (!validate()) {
+      return; // bail out, errors have been set into state
+    }
     try {
       const response = await fetch(
         `http://localhost:3000/admin-users-api/update-user/${selectedUser.id}`,
@@ -287,14 +316,56 @@ export default function Users() {
     setSelectedUser(null);
   };
 
-  const handleSubmitAccountAction = (action) => {
-    console.log(
-      `${action} user account`,
-      selectedUser.id,
-      "Reason:",
-      actionReason
-    );
-    setOpenAccountActions(false);
+  const handleSubmitAccountAction = async (action) => {
+    try {
+      if (action === "suspend") {
+        const response = await fetch(
+          `http://localhost:3000/admin-users-api/suspend-user/${selectedUser.id}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({
+              reason: actionReason,
+              action: action,
+              createdBy: author?.username,
+            }),
+          }
+        );
+        if (!response.ok) {
+          console.log("Failed to suspend user", response.statusText);
+        }
+        await response.json();
+        setOpenAccountActions(false);
+        fetchSummaryData();
+      } else if (action === "activate") {
+        const response = await fetch(
+          `http://localhost:3000/admin-users-api/lift-suspension-user/${selectedUser.id}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({
+              liftReason: actionReason,
+            }),
+          }
+        );
+        if (!response.ok) {
+          console.log("Failed to active user", response.statusText);
+        }
+        await response.json();
+        setOpenAccountActions(false);
+        fetchSummaryData();
+      } else {
+        return;
+      }
+    } catch (error) {
+      console.log("Error updating user", error);
+    }
   };
 
   const clearFilters = () => {
@@ -409,7 +480,7 @@ export default function Users() {
               >
                 <MenuItem value="ALL">All Statuses</MenuItem>
                 <MenuItem value="ACTIVE">Active</MenuItem>
-                <MenuItem value="INACTIVE">Inactive</MenuItem>
+                <MenuItem value="SUSPENDED">Suspended</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -626,7 +697,7 @@ export default function Users() {
                         icon={
                           user.active ? <VerifiedUserIcon /> : <BlockIcon />
                         }
-                        label={user.active ? "Active" : "Inactive"}
+                        label={user.active ? "Active" : "Suspended"}
                         color={user.active ? "success" : "error"}
                         size="small"
                       />
@@ -1212,6 +1283,8 @@ export default function Users() {
                   variant="outlined"
                   margin="dense"
                   placeholder="Username (max:15)"
+                  error={Boolean(errors.username)}
+                  helperText={errors.username || ""}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">@</InputAdornment>
@@ -1219,6 +1292,7 @@ export default function Users() {
                   }}
                 />
               </Grid>
+
               <Grid item xs={12} sm={6}>
                 <TextField
                   name="email"
