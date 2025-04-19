@@ -274,6 +274,10 @@ export default function Users() {
     );
   }
 
+  function redirectPost(postId) {
+    window.open(`http://localhost:5173/post/${postId}`, "_blank");
+  }
+
   return (
     <Box p={3} pt={2}>
       <h2 className="text-2xl font-bold text-gray-800">User Management</h2>
@@ -514,16 +518,24 @@ export default function Users() {
                   <TableCell>
                     <Chip
                       icon={
-                        user.role === "ADMIN" ? (
+                        user.role === "ADMIN" || user.role === "SUPERADMIN" ? (
                           <AdminPanelSettingsIcon />
                         ) : (
                           <PersonIcon />
                         )
                       }
                       label={user.role}
-                      color={user.role === "ADMIN" ? "primary" : "default"}
+                      color={
+                        user.role === "ADMIN" || user.role === "SUPERADMIN"
+                          ? "primary"
+                          : "default"
+                      }
                       size="small"
-                      variant={user.role === "ADMIN" ? "filled" : "outlined"}
+                      variant={
+                        user.role === "ADMIN" || user.role === "SUPERADMIN"
+                          ? "filled"
+                          : "outlined"
+                      }
                     />
                   </TableCell>
                   <TableCell>
@@ -915,7 +927,11 @@ export default function Users() {
                             <Typography variant="caption" color="textSecondary">
                               {new Date(post.createdAt).toLocaleDateString()}
                             </Typography>
-                            <Button size="small" variant="outlined">
+                            <Button
+                              size="small"
+                              variant="outlined"
+                              onClick={() => redirectPost(post.id)}
+                            >
                               View
                             </Button>
                           </Box>
@@ -977,7 +993,11 @@ export default function Users() {
                             <Typography variant="caption" color="textSecondary">
                               Post ID: {comment.postId}
                             </Typography>
-                            <Button size="small" variant="outlined">
+                            <Button
+                              size="small"
+                              variant="outlined"
+                              onClick={() => redirectPost(comment.postId)}
+                            >
                               View Post
                             </Button>
                           </Box>
@@ -1032,8 +1052,9 @@ export default function Users() {
                               size="small"
                               variant="outlined"
                               color="primary"
+                              onClick={() => redirectPost(report.postId)}
                             >
-                              Review
+                              Visit Content
                             </Button>
                           </Box>
                         </ListItem>

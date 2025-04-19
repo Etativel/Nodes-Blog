@@ -298,7 +298,7 @@ export default function Comments() {
     <Box p={3} pt={2}>
       <h2 className="text-2xl font-bold text-gray-800">Comments moderation</h2>
       <p className="mt-1 text-sm text-gray-600 mb-4">
-        Monitor and moderate user comments across your platform
+        Monitor and moderate user comments across the platform
       </p>
 
       {/* Notification Alert */}

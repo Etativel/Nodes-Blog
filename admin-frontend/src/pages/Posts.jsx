@@ -46,7 +46,7 @@ export default function Posts() {
 
   // State for the edit modal
   const [openEdit, setOpenEdit] = useState(false);
-  const [postStatus, setPostStatus] = useState("DEFAULT");
+  const [postStatus, setPostStatus] = useState("ACTIVE");
 
   // State for filtering and search
   const [searchQuery, setSearchQuery] = useState("");
@@ -61,27 +61,30 @@ export default function Posts() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [postsData, setPostsData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [editPost, setEditPost] = useState(null);
 
-  useEffect(() => {
-    async function fetchSummaryData() {
-      try {
-        const response = await fetch(
-          "http://localhost:3000/admin-posts-api/all-posts",
-          {
-            method: "GET",
-          }
-        );
-
-        if (!response.ok) {
-          console.log("Failed to fetch dashboard data", response.status);
+  async function fetchSummaryData() {
+    try {
+      const response = await fetch(
+        "http://localhost:3000/admin-posts-api/all-posts",
+        {
+          credentials: "include",
+          method: "GET",
         }
-        const data = await response.json();
-        setPostsData(data.allPosts);
-        setFilteredPosts(data.allPosts);
-      } catch (error) {
-        console.log(error);
+      );
+
+      if (!response.ok) {
+        console.log("Failed to fetch dashboard data", response.status);
       }
+      const data = await response.json();
+      setPostsData(data.allPosts);
+      setFilteredPosts(data.allPosts);
+    } catch (error) {
+      console.log(error);
     }
+  }
+  useEffect(() => {
     fetchSummaryData();
   }, []);
 
@@ -217,20 +220,49 @@ export default function Posts() {
   function handleOpenEditPost(post) {
     setPostStatus(post.status);
     setOpenEdit(true);
+    setEditPost(post);
   }
 
   function handleClosePostStatus() {
     setOpenEdit(false);
+    setEditPost(null);
   }
 
   function handleStatusChange(status) {
     setPostStatus(status);
   }
 
-  async function handleEditSubmit() {
-    console.log(postStatus);
+  async function handleUpdateStatus(postId) {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `http://localhost:3000/admin-posts-api/update-status/${postId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            status: postStatus,
+          }),
+        }
+      );
+      if (!response.ok) {
+        setLoading(false);
+        console.log("Error updating post status:", response.status);
+      }
+      if (response.status == 403) {
+        alert("You need to be an superAdmin to perform this action");
+      }
+      await response.json();
+      setLoading(false);
+      handleClosePostStatus();
+      fetchSummaryData();
+    } catch (error) {
+      console.log(error);
+    }
   }
-
   return (
     <Box p={3} pt={2}>
       <h2 className="text-2xl font-bold text-gray-800">Posts moderation</h2>
@@ -590,7 +622,6 @@ export default function Posts() {
                   label="Status"
                   onChange={(e) => handleStatusChange(e.target.value)}
                 >
-                  <MenuItem value="DEFAULT">Default</MenuItem>
                   <MenuItem value="ACTIVE">Active</MenuItem>
                   <MenuItem value="REPORTED">Reported</MenuItem>
                   <MenuItem value="BLOCKED">Blocked</MenuItem>
@@ -604,8 +635,9 @@ export default function Posts() {
             Close
           </Button>
           <Button
+            disabled={loading}
             onClick={() => {
-              handleEditSubmit();
+              handleUpdateStatus(editPost.id);
             }}
             color="primary"
           >

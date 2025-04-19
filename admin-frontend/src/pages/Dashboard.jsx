@@ -598,7 +598,7 @@ function BarChart({ data }) {
   const formattedLabels = Object.keys(data).map((key) =>
     key === "DEFAULT"
       ? "Published"
-      : key === "ARCHIEVED"
+      : key === "ARCHIVED"
       ? "Archived"
       : key.charAt(0) + key.slice(1).toLowerCase()
   );
