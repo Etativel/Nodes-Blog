@@ -62,6 +62,26 @@ async function getAllPosts(req, res) {
   }
 }
 
+async function updatePostStatus(req, res) {
+  const { postId } = req.params;
+  const { status } = req.body;
+  try {
+    const updatedPost = await prisma.post.update({
+      where: {
+        id: postId,
+      },
+      data: {
+        status,
+      },
+    });
+    return res.status(200).json({ post: updatedPost });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "internal server error" });
+  }
+}
+
 module.exports = {
   getAllPosts,
+  updatePostStatus,
 };

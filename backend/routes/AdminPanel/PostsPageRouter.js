@@ -11,8 +11,16 @@ router.get(
   "/all-posts",
   authenticateToken,
   isAdmin,
-  isSuperAdmin,
+  // isSuperAdmin,
   moderationController.getAllPosts
+);
+
+router.post(
+  "/update-status/:postId",
+  authenticateToken,
+  isAdmin,
+  isSuperAdmin,
+  moderationController.updatePostStatus
 );
 
 module.exports = router;
