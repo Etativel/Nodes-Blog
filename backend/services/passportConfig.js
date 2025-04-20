@@ -59,8 +59,7 @@ passport.use(
             }`,
           });
         }
-        console.log("Checking suspension for user:", user.id);
-        console.log("Checking suspension for user:", activeSuspension);
+
         if (activeSuspension) {
           console.log("User is suspended:", activeSuspension);
         }
@@ -110,17 +109,21 @@ passport.use(
           return cb(null, false, { message: "Incorrect password" });
         }
 
-        // const activeSuspension = await checkActiveSuspension(user.id);
+        const activeSuspension = await checkActiveSuspension(user.id);
+        console.log(activeSuspension);
+        if (activeSuspension) {
+          return cb(null, false, {
+            message: `Your account has been suspended until ${
+              activeSuspension.expiresAt
+                ? activeSuspension.expiresAt.toISOString()
+                : "further notice"
+            }`,
+          });
+        }
 
-        // if (activeSuspension) {
-        //   return cb(null, false, {
-        //     message: `Account suspended until ${
-        //       activeSuspension.expiresAt
-        //         ? activeSuspension.expiresAt.toISOString()
-        //         : "further notice"
-        //     }`,
-        //   });
-        // }
+        if (activeSuspension) {
+          console.log("User is suspended:", activeSuspension);
+        }
 
         return cb(null, user);
       } catch (error) {
