@@ -486,29 +486,29 @@ export default function Posts() {
                   <TableCell>{post.author.username}</TableCell>
                   <TableCell>
                     <Typography
+                      display={"flex"}
+                      justifyContent={"center"}
                       color={
                         post.status === "REPORTED" ? "error" : "textPrimary"
                       }
                     >
-                      {post.status}
+                      <ReportBadge type={post.status} />
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <Box
-                      display="flex"
-                      flexDirection="column"
-                      alignItems="center"
-                    >
-                      {post.reports.length}{" "}
+                    <div className="flex flex-col items-center">
+                      <span className="font-medium text-gray-700 mb-1">
+                        {post.reports.length}
+                      </span>
                       {post.reports.length > 0 && (
-                        <Button
-                          size="small"
+                        <button
                           onClick={() => handleOpenDetails(post.reports)}
+                          className="cursor-pointer px-1 py-1 text-xs font-medium text-blue-600 bg-blue-50 rounded-md hover:bg-blue-100 transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
                         >
                           View Details
-                        </Button>
+                        </button>
                       )}
-                    </Box>
+                    </div>
                   </TableCell>
                   <TableCell>
                     {new Date(post.createdAt).toLocaleDateString()}
@@ -736,24 +736,12 @@ export default function Posts() {
 function ReportBadge({ type }) {
   const getBadgeColor = () => {
     switch (type) {
-      case "sexual_content":
+      case "REPORTED":
         return "bg-red-100 text-red-800";
-      case "violent_content":
-        return "bg-orange-100 text-orange-800";
-      case "hateful_content":
-        return "bg-yellow-100 text-yellow-800";
-      case "harassment":
+      case "ACTIVE":
         return "bg-blue-100 text-blue-800";
-      case "dangerous_acts":
+      case "BLOCKED":
         return "bg-purple-100 text-purple-800";
-      case "misinformation":
-        return "bg-indigo-100 text-indigo-800";
-      case "child_abuse":
-        return "bg-pink-100 text-pink-800";
-      case "terrorism":
-        return "bg-red-100 text-red-800";
-      case "misleading":
-        return "bg-green-100 text-green-800";
       default:
         return "bg-gray-100 text-gray-800";
     }

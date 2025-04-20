@@ -77,26 +77,28 @@ export default function Comments() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  useEffect(() => {
-    async function fetchCommentsData() {
-      try {
-        const response = await fetch(
-          "http://localhost:3000/admin-comments-api/all-comments",
-          {
-            method: "GET",
-          }
-        );
-
-        if (!response.ok) {
-          console.log("Failed to fetch dashboard data", response.status);
+  async function fetchCommentsData() {
+    try {
+      const response = await fetch(
+        "http://localhost:3000/admin-comments-api/all-comments",
+        {
+          method: "GET",
         }
-        const data = await response.json();
-        setCommentsData(data.comments);
-        setFilteredComments(data.comments);
-      } catch (error) {
-        console.log(error);
+      );
+
+      if (!response.ok) {
+        console.log("Failed to fetch dashboard data", response.status);
       }
+      const data = await response.json();
+      setCommentsData(data.comments || []);
+      setFilteredComments(data.comments || []);
+    } catch (error) {
+      console.log(error);
+      setCommentsData([]);
+      setFilteredComments([]);
     }
+  }
+  useEffect(() => {
     fetchCommentsData();
   }, []);
 
@@ -213,21 +215,32 @@ export default function Comments() {
 
   // Submit the review/moderation action
   const handleSubmitReview = async () => {
+    console.log(selectedComment.id);
     try {
-      // Show success notification
+      const response = await fetch(
+        `http://localhost:3000/admin-comments-api/delete-comment/${selectedComment.id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+      if (!response.ok) {
+        console.log("Failed to delete comment", response.statusText);
+      }
+
+      if (response.status === 403) {
+        alert("You need to be an superAdmin to perform this action");
+      }
+      await response.json();
+      console.log("Comment deleted successfully");
+      fetchCommentsData();
       setNotification({
         show: true,
         message: `Comment successfully ${reviewAction.toLowerCase()}ed!`,
         severity: "success",
       });
 
-      // Close the dialog
       setOpenReview(false);
-
-      // In a real app, you would update the comment status in the state or refetch data
-      setTimeout(() => {
-        setNotification({ show: false, message: "", severity: "success" });
-      }, 3000);
     } catch (error) {
       console.log(error);
       setNotification({
@@ -276,10 +289,12 @@ export default function Comments() {
   };
 
   // Slice the array for pagination
-  const paginatedComments = filteredComments.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage
-  );
+  const paginatedComments = filteredComments
+    ? filteredComments.slice(
+        page * rowsPerPage,
+        page * rowsPerPage + rowsPerPage
+      )
+    : [];
 
   if (commentsData.length === 0) {
     return (
@@ -630,7 +645,7 @@ export default function Comments() {
                           gap={1}
                           flexWrap="wrap"
                         >
-                          <Button
+                          {/* <Button
                             variant="outlined"
                             size="small"
                             color="primary"
@@ -638,7 +653,7 @@ export default function Comments() {
                             // sx={{ mr: 1, mb: { xs: 1, md: 0 } }}
                           >
                             Approve
-                          </Button>
+                          </Button> */}
                           <Button
                             variant="outlined"
                             size="small"
