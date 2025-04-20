@@ -23,6 +23,8 @@
     profilePicture String?
     profilePicturePublicId  String? 
 
+    isDark Boolean @default(false)
+
     followers Follower[] @relation("followers")
     following Follower[] @relation("following")
 
