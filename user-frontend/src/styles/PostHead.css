@@ -84,7 +84,7 @@
   background-color: transparent;
   border: 0px;
   font-family: "Times New Roman", Times, serif;
-
+  color: var(--text-color);
   cursor: pointer;
   padding: 0px;
   display: flex;
@@ -97,6 +97,7 @@
   display: flex;
   align-items: center;
   font-family: Arial, Helvetica, sans-serif;
+  color: var(--text-color);
 }
 
 .follow-text {
@@ -104,7 +105,7 @@
 }
 
 .follow-text.follow {
-  border-bottom: solid black 1px;
+  border-bottom: solid var(--text-color) 1px;
 }
 
 .right-head {
@@ -186,7 +187,7 @@
 
 .post-options-dropdown {
   position: absolute;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--dropdown-shadow);
   top: 32px;
   width: 150px;
   left: 80%;
@@ -197,10 +198,15 @@
   gap: 12px;
   padding-left: 24px;
   border-radius: 3px;
-  background-color: white;
+
+  background-color: var(--dropdown-bg);
   display: flex;
   opacity: 0;
   display: none;
+}
+
+.post-options-dropdown:hover {
+  background-color: var(--dropdown-hover);
 }
 
 .post-options-dropdown.active {

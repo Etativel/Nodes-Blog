@@ -30,6 +30,16 @@ a {
   --card-bg: #f9fafb;
   --secondary-hover-color: #252525;
   --interactive-hover-bg: #e5e5e5;
+  --dropdown-bg: #ffffff;
+  --dropdown-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  --dropdown-border: #ffffff;
+  --dropdown-item-hover: #e2e8f0;
+  --comment-input-bg: #f9f9f9;
+  --comment-input-text: #000;
+
+  --submit-btn-bg: #156d12;
+  --submit-btn-border: #156d12;
+  --submit-btn-color: #156d12;
 }
 
 /* Dark theme overrides */
@@ -42,4 +52,13 @@ a {
   --card-bg: #1e1e1e;
   --secondary-hover-color: #f0f0f0;
   --interactive-hover-bg: #4b4b4b;
+  --dropdown-bg: #1f1f1f;
+  --dropdown-shadow: 0px 4px 12px rgba(255, 255, 255, 0.05);
+  --dropdown-border: #2a2a2a;
+  --dropdown-item-hover: #2f2f2f;
+  --comment-input-bg: #1e1e1e;
+  --comment-input-text: #f1f1f1;
+  --submit-btn-bg: #4caf50;
+  --submit-btn-border: #4caf50;
+  --submit-btn-color: #4caf50;
 }
