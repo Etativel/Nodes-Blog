@@ -330,7 +330,7 @@
 }
 
 .loader-container {
-  height: fit-content;
+  /* height: fit-content; */
 }
 
 .btn-selection {

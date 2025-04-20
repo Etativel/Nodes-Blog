@@ -6,4 +6,6 @@
   flex-direction: column;
   /* justify-content: center; */
   align-items: center;
+  background-color: var(--bg-color);
+  padding-bottom: 32px;
 }

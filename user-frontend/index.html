@@ -10,7 +10,16 @@
       content="Node is a modern blogging platform where writers share ideas, stories, and insights. Read and publish with simplicity and style."
     />
     <title>Nodes</title>
+    <script>
+      const theme = localStorage.getItem("theme");
+      if (theme === "dark") {
+        document.documentElement.setAttribute("data-theme", "dark");
+      } else {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    </script>
   </head>
+
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>

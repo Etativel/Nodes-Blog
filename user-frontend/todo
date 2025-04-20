@@ -1,3 +1,5 @@
 separate api return for frontend and backend
 
 display suspension info to admin login (admin panel)
+
+separate post creation loader with the main 100vh loader
