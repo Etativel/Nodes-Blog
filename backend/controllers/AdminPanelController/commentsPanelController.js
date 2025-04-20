@@ -77,6 +77,26 @@ async function getAllComments(req, res) {
   }
 }
 
+async function deleteComment(req, res) {
+  const { commentId } = req.params;
+
+  try {
+    const deletedComment = await prisma.comment.delete({
+      where: {
+        id: commentId,
+      },
+    });
+    return res.json({
+      message: "Comment deleted successfully",
+      comment: deletedComment,
+    });
+  } catch (error) {
+    console.error("Error deleting comment", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 module.exports = {
   getAllComments,
+  deleteComment,
 };
