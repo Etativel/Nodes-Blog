@@ -9,6 +9,7 @@
   line-height: 1.5;
   flex-direction: column;
   align-items: center;
+  background-color: var(--bg-color);
 }
 
 .liner {
@@ -41,16 +42,24 @@
   padding-right: 24px;
   text-align: justify;
   word-break: break-word;
+  color: var(--text-color);
 }
 .post-container h1 {
   margin-bottom: 0.8em;
   margin-top: 0.2em;
+  color: var(--text-color);
 }
 .post-container p {
   margin-bottom: 1em;
+  color: var(--text-color);
 }
 .post-container li {
   margin-left: 18px;
+  color: var(--text-color);
+}
+
+.post-container a {
+  color: var(--text-color);
 }
 
 @media (max-width: 500px) {

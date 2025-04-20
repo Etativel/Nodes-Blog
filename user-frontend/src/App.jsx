@@ -5,6 +5,8 @@ import { PostProvider } from "./contexts/PostPorvider";
 import { useEffect, useState } from "react";
 import Loader from "./components/Loader";
 import "../src/styles/Loader.css";
+import "../src/styles/App.css";
+import { ThemeProvider } from "./contexts/ThemeProvider";
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -38,10 +40,12 @@ function App() {
   return (
     <>
       <ProfileProvider>
-        <PostProvider>
-          <Navigation />
-          <Outlet />
-        </PostProvider>
+        <ThemeProvider>
+          <PostProvider>
+            <Navigation />
+            <Outlet />
+          </PostProvider>
+        </ThemeProvider>
       </ProfileProvider>
     </>
   );

@@ -20,6 +20,7 @@
   width: 100%;
   font-family: "Arial Black";
   word-break: break-word;
+  color: var(--text-color);
 }
 
 .author-and-post-info {
@@ -66,9 +67,10 @@
   border-bottom: solid transparent 1px;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 1rem;
+  color: var(--text-color);
 }
 .post-author:hover {
-  border-bottom: solid black 1px;
+  border-bottom: solid var(--text-color) 1px;
   cursor: pointer;
 }
 
@@ -137,14 +139,15 @@
 
 .post-like:hover,
 .post-bookmark:hover {
-  background-color: #e5e5e5;
-  border: solid 1px #e5e5e5;
+  background-color: var(--interactive-hover-bg);
+  border: solid 1px var(--interactive-hover-bg);
 }
 .post-like-icon,
 .post-bookmark-icon,
 .post-options-icon {
   height: 25px;
   width: 25px;
+  color: var(--secondary-color);
 }
 
 .report-post-icon {

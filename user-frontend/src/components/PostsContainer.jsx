@@ -24,7 +24,9 @@ function PostsContainer() {
           throw new Error(`Http error! status ${response.status}`);
         }
         const data = await response.json();
-        const published = data.posts.filter((post) => post.published === true);
+        const published = data.posts.filter(
+          (post) => post.published === true && post.status !== "BLOCKED"
+        );
         setPosts(published);
         return data;
       } catch (error) {
