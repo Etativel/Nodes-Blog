@@ -1,5 +1,87 @@
-.featured-post-container {
-  max-width: 300px;
+/* .featured-post-container {
+  max-width: 400px;
   width: 100%;
+  cursor: pointer;
+  padding: 6px 12px;
   background-color: red;
+
+} */
+
+/* FeaturedPost.css */
+.featured-post-container {
+  max-width: 400px;
+  width: 30%;
+  cursor: pointer;
+  background-color: var(--bg-color);
+  flex-shrink: 0;
+  align-self: flex-start;
+  /* position: sticky;
+  top: 20px; */
+}
+
+.featured-post-card-container {
+  padding: 12px 6px 12px;
+  /* background-color: blue; */
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 12px 24px;
+  background-color: transparent;
+  transition: background-color 0.3s ease;
+}
+
+.featured-post-card-container:hover {
+  background-color: var(--card-hover-bg);
+}
+
+.featured-profile {
+  display: flex;
+  gap: 12px;
+}
+
+.featured-profile-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+}
+
+.featured-post-title {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.featured-profile-image {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+}
+
+.featured-post-date {
+  font-size: 0.8rem;
+  color: var(--secondary-color);
+}
+
+.card-title-fp {
+  font-size: 1.2rem;
+  font-weight: 100;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  flex-wrap: wrap;
+  max-width: 200px;
+  /* font-family: sans-serif; */
+  max-width: 100%;
+  color: var(--text-color);
+  padding-left: 18px;
+  padding-right: 18px;
+  margin-bottom: 6px;
+  margin-top: 12px;
+}
+
+@media (max-width: 830px) {
+  .featured-post-container {
+    display: none;
+  }
 }

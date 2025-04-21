@@ -14,4 +14,6 @@
   width: 100%;
   justify-content: center;
   background-color: var(--bg-color);
+  /* height: fit-content; */
+  /* position: relative; */
 }

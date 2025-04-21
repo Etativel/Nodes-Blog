@@ -21,6 +21,11 @@ a {
 } */
 
 /* Base (light) theme */
+
+html {
+  background-color: var(--bg-color);
+}
+
 :root {
   --bg-color: #ffffff;
   --text-color: #1a1a1a;
@@ -46,6 +51,8 @@ a {
   --dialog-input-border: #cbd5e1;
   --dialog-input-placeholder: #94a3b8;
   --dialog-input-focus-border: #4f46e5;
+
+  --card-hover-bg: #f3f4f6;
 }
 
 /* Dark theme overrides */
@@ -73,4 +80,6 @@ a {
   --dialog-input-border: #3a3a3a;
   --dialog-input-placeholder: #9ca3af;
   --dialog-input-focus-border: #6366f1;
+
+  --card-hover-bg: #2a2a2a;
 }
