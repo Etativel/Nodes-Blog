@@ -922,7 +922,7 @@ function UserProfilePage() {
                 >
                   <button
                     className={`about-btn ${
-                      currentPage === "about  " ? "active" : ""
+                      currentPage === "about" ? "active" : ""
                     }`}
                     onClick={() => {
                       redirectChildren("about");
