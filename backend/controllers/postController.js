@@ -116,6 +116,7 @@ async function getPost(req, res) {
             following: true,
           },
         },
+
         comments: {
           orderBy: {
             createdAt: "asc",
@@ -477,6 +478,136 @@ async function reportPost(req, res) {
   }
 }
 
+// Toggle Featured
+async function toggleFeatured(req, res) {
+  const { postId } = req.params;
+
+  try {
+    const post = await prisma.post.findUnique({
+      where: {
+        id: postId,
+      },
+    });
+
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    const updatedPost = await prisma.post.update({
+      where: {
+        id: postId,
+      },
+      data: {
+        isFeatured: !post.isFeatured,
+        featuredAt: !post.isFeatured ? new Date() : null,
+      },
+    });
+
+    return res.status(200).json({
+      featured: updatedPost.isFeatured,
+      message: updatedPost.isFeatured
+        ? "Post has been featured successfully"
+        : "Post has been unfeatured successfully",
+    });
+  } catch (error) {
+    console.error("Error toggling featured status:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+// GET FEATURED POST
+async function getFeaturedPost(req, res) {
+  try {
+    // Get 3 latest featured posts
+    const featuredPosts = await prisma.post.findMany({
+      where: {
+        featured: true,
+      },
+      include: {
+        author: {
+          select: {
+            username: true,
+            profilePicture: true,
+          },
+        },
+      },
+      orderBy: {
+        featuredAt: "desc",
+      },
+      take: 3,
+    });
+
+    // Get trending posts
+    const trendingPosts = await prisma.post.findMany({
+      where: {
+        published: true,
+        status: "ACTIVE",
+      },
+      include: {
+        author: {
+          select: {
+            username: true,
+            profilePicture: true,
+          },
+        },
+        _count: {
+          select: {
+            comments: true,
+            likedBy: true,
+          },
+        },
+      },
+      orderBy: [
+        {
+          comments: {
+            _count: "desc",
+          },
+        },
+        {
+          likedBy: {
+            _count: "desc",
+          },
+        },
+        {
+          createdAt: "desc",
+        },
+      ],
+      take: 3,
+    });
+
+    const trendingWithScores = trendingPosts.map((post) => {
+      const likesCount = post._count.likedBy;
+      const commentsCount = post._count.comments;
+
+      const hoursSinceCreation =
+        (Date.now() - new Date(post.createdAt).getTime()) / (1000 * 60 * 60);
+      const recencyFactor = hoursSinceCreation <= 24 ? 2 : 1;
+
+      // Calculate trending score
+      const trendingScore =
+        (2 * likesCount + 3 * commentsCount) * recencyFactor;
+
+      const { _count, ...postWithoutCount } = post;
+      return {
+        ...postWithoutCount,
+        likesCount,
+        commentsCount,
+        trendingScore,
+      };
+    });
+
+    trendingWithScores.sort((a, b) => b.trendingScore - a.trendingScore);
+
+    return res.status(200).json({
+      featuredPosts,
+      trendingPosts: trendingWithScores,
+    });
+  } catch (error) {
+    console.error("Error fetching featured posts", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 module.exports = {
   getAllPost,
   getPost,
@@ -491,4 +622,6 @@ module.exports = {
   simpleUpdatePost,
   togglePublish,
   reportPost,
+  getFeaturedPost,
+  toggleFeatured,
 };

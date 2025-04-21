@@ -23,5 +23,6 @@ router.put(
 router.put("/publish/:postId", postController.togglePublish);
 router.delete("/delete/:postId", postController.deletePost);
 router.post("/report/:postId", postController.reportPost);
-
+router.get("/featured-trending", postController.getFeaturedPost);
+router.post("/feature-post/:postId", postController.toggleFeatured);
 module.exports = router;
