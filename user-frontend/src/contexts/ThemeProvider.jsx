@@ -23,7 +23,7 @@ export function ThemeProvider({ children }) {
   useLayoutEffect(() => {
     const theme = isDark ? "dark" : "light";
     document.documentElement.setAttribute("data-theme", theme);
-    console.log("Initial theme applied:", theme);
+    // console.log("Initial theme applied:", theme);
   }, [isDark]);
 
   useEffect(() => {
@@ -35,13 +35,13 @@ export function ThemeProvider({ children }) {
     const theme = isDark ? "dark" : "light";
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("theme", theme);
-    console.log("Theme updated:", theme);
+    // console.log("Theme updated:", theme);
   }, [isDark]);
 
   useEffect(() => {
     if (serverSyncedRef.current || loading || !author || !author.id) return;
 
-    console.log("Syncing theme with server for user:", author.id);
+    // console.log("Syncing theme with server for user:", author.id);
 
     fetch(`http://localhost:3000/user/get-theme/${author.id}`, {
       credentials: "include",
@@ -51,7 +51,7 @@ export function ThemeProvider({ children }) {
         return r.json();
       })
       .then((data) => {
-        console.log("Server theme data:", data);
+        // console.log("Server theme data:", data);
         serverSyncedRef.current = true;
 
         const savedTheme = localStorage.getItem("theme");
@@ -62,10 +62,10 @@ export function ThemeProvider({ children }) {
           !hasLocalPreference &&
           Object.prototype.hasOwnProperty.call(data, "isDark")
         ) {
-          console.log(
-            "Applying theme from server:",
-            data.isDark ? "dark" : "light"
-          );
+          // console.log(
+          //   "Applying theme from server:",
+          //   data.isDark ? "dark" : "light"
+          // );
           setIsDark(data.isDark);
         }
       })
@@ -80,7 +80,7 @@ export function ThemeProvider({ children }) {
   useEffect(() => {
     if (!serverSyncedRef.current || loading || !author || !author.id) return;
 
-    console.log("Saving theme to server:", isDark ? "dark" : "light");
+    // console.log("Saving theme to server:", isDark ? "dark" : "light");
 
     fetch(`http://localhost:3000/user/toggle-theme/${author.id}`, {
       method: "POST",
@@ -94,7 +94,7 @@ export function ThemeProvider({ children }) {
         return response.json();
       })
       .then(() => {
-        console.log("Theme saved successfully");
+        // console.log("Theme saved successfully");
       })
       .catch((error) => {
         console.error("Failed to save theme preference:", error);

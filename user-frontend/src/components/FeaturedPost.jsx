@@ -1,28 +1,57 @@
 import { useEffect, useState } from "react";
 import "../styles/FeaturedPost.css";
+import SmallLoader from "./SmallLoader";
+import timePosted from "../utils/formatTime";
+import formatCloudinaryUrl from "../utils/cloudinaryUtils";
 
-function FeaturedPostCard() {
+function FeaturedPostCard({ post }) {
   function redirectToPost() {
-    window.location.href = "/posts/featured-post";
+    window.location.href = `/post/${post.id}`;
   }
   return (
     <div className="featured-post-card-container card" onClick={redirectToPost}>
       <div className="featured-profile">
-        <img
+        {post.author.profilePicture ? (
+          <img
+            src={formatCloudinaryUrl(post.author.profilePicture, {
+              width: 25,
+              height: 25,
+              crop: "fit",
+              quality: "auto:best",
+              format: "auto",
+              dpr: 3,
+            })}
+            alt="featured-profile-image"
+            className="author-pict"
+          />
+        ) : (
+          <div
+            className="featured-profile-image"
+            style={{
+              backgroundColor: post.author.userColor,
+            }}
+          >
+            <p>{post.author.username.charAt(0)}</p>
+          </div>
+        )}
+        {/* <img
           className="featured-profile-image"
           src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDJ8fGZlYXR1cmVkJTIwcG9zdHxlbnwwfHx8fDE2OTI3NTQ5MjE&ixlib=rb-4.0.3&q=80&w=400"
           alt="Profile"
-        />
-        <div className="featured-profile-name">John Doe</div>
+        /> */}
+        <div className="featured-profile-name">
+          {post.author.fullName || post.author.username}
+        </div>
       </div>
       <div className="featured-title">
         <p className="featured-post-title">
-          The Future of Technology Lorem ipsum dolor sit amet consectetur
-          adipisicing elit.
+          {post.title.length > 80
+            ? `${post.title.slice(0, 80)}...`
+            : post.title}
         </p>
       </div>
       <div className="featured-date">
-        <p className="featured-post-date">6 days ago</p>
+        <p className="featured-post-date">{timePosted(post.createdAt)}</p>
       </div>
     </div>
   );
@@ -32,24 +61,51 @@ function FeaturedPost() {
   const [featuredPosts, setFeaturedPosts] = useState([]);
   const [trendingPosts, setTrendingPosts] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  console.log(featuredPosts);
   useEffect(() => {
     const fetchPosts = async () => {
+      setLoading(true);
       try {
-        const response = await fetch("/api/posts/featured");
+        const response = await fetch(
+          "http://localhost:3000/post/featured-n-trending-post",
+          {
+            method: "GET",
+          }
+        );
+
+        if (!response.ok) {
+          console.log("Failed to fetch posts");
+          setLoading(false);
+        }
         const data = await response.json();
         setFeaturedPosts(data.featuredPosts);
         setTrendingPosts(data.trendingPosts);
+        setLoading(false);
       } catch (error) {
+        setLoading(false);
         console.error("Error fetching posts:", error);
       }
     };
 
     fetchPosts();
-  });
+  }, []);
   return (
     <div className="featured-post-container">
-      <div className="card-title-fp">Featured Post</div>
+      {loading ? (
+        <SmallLoader />
+      ) : (
+        <>
+          <div className="card-title-fp">Featured Post</div>
+          {featuredPosts.map((post) => (
+            <FeaturedPostCard key={post.id} post={post} />
+          ))}
+          <div className="card-title-fp">Trending Post</div>
+          {trendingPosts.map((post) => (
+            <FeaturedPostCard key={post.id} post={post} />
+          ))}
+        </>
+      )}
+      {/* <div className="card-title-fp">Featured Post</div>
       <FeaturedPostCard />
       <FeaturedPostCard />
       <FeaturedPostCard />
@@ -57,7 +113,7 @@ function FeaturedPost() {
       <div className="card-title-fp">Trending Post</div>
       <FeaturedPostCard />
       <FeaturedPostCard />
-      <FeaturedPostCard />
+      <FeaturedPostCard /> */}
     </div>
   );
 }
