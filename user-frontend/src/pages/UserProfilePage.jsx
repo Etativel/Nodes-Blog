@@ -84,7 +84,7 @@ function EditProfileDialog({ setIsOpen }) {
     try {
       setUploading(true);
       const response = await fetch(
-        "http://localhost:3000/user/profile/update",
+        "https://nodes-blog-api-production.up.railway.app/user/profile/update",
         {
           method: "PATCH",
           body: formData,
@@ -290,7 +290,7 @@ function UserPostCard({
     try {
       setLoadingPostUpdate(true);
       const response = await fetch(
-        `http://localhost:3000/post/delete/${postId}`,
+        `https://nodes-blog-api-production.up.railway.app/post/delete/${postId}`,
         {
           method: "DELETE",
         }
@@ -312,7 +312,7 @@ function UserPostCard({
     setLoadingPostUpdate(true);
     try {
       const response = await fetch(
-        `http://localhost:3000/post/publish/${postId}`,
+        `https://nodes-blog-api-production.up.railway.app/post/publish/${postId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -638,14 +638,17 @@ function UserSideProfile({
     try {
       let updatedFollowers;
       if (isFollowing) {
-        const response = await fetch("http://localhost:3000/user/unfollow", {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            followerId: author.id,
-            followingId: visitedUser.id,
-          }),
-        });
+        const response = await fetch(
+          "https://nodes-blog-api-production.up.railway.app/user/unfollow",
+          {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              followerId: author.id,
+              followingId: visitedUser.id,
+            }),
+          }
+        );
 
         if (response.ok) {
           updatedFollowers = followers.filter(
@@ -655,14 +658,17 @@ function UserSideProfile({
           return;
         }
       } else {
-        const response = await fetch("http://localhost:3000/user/follow", {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            followerId: author.id,
-            followingId: visitedUser.id,
-          }),
-        });
+        const response = await fetch(
+          "https://nodes-blog-api-production.up.railway.app/user/follow",
+          {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              followerId: author.id,
+              followingId: visitedUser.id,
+            }),
+          }
+        );
         if (response.ok) {
           updatedFollowers = [...followers, { followerId: author.id }];
         } else {
@@ -787,7 +793,7 @@ function UserProfilePage() {
     async function fetchUserPost() {
       try {
         const response = await fetch(
-          `http://localhost:3000/post/by/${cleanUsername}`
+          `https://nodes-blog-api-production.up.railway.app/post/by/${cleanUsername}`
         );
         if (!response.ok) {
           const errorData = await response.json();
@@ -811,7 +817,7 @@ function UserProfilePage() {
       setLoadingProfile(true);
       try {
         const response = await fetch(
-          `http://localhost:3000/user/user-by-username/${cleanUsername.toLowerCase()}`
+          `https://nodes-blog-api-production.up.railway.app/user/user-by-username/${cleanUsername.toLowerCase()}`
         );
         if (!response.ok) {
           setLoadingProfile(false);

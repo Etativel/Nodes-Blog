@@ -152,11 +152,14 @@ function SignDialog({
       setIsValidating(false);
     } else {
       try {
-        const response = await fetch("http://localhost:3000/user/check-email", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
-        });
+        const response = await fetch(
+          "https://nodes-blog-api-production.up.railway.app/user/check-email",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email }),
+          }
+        );
         const data = await response.json();
         if (!data.available) {
           errors.emailError = "Email already taken.";
@@ -185,7 +188,7 @@ function SignDialog({
     } else {
       try {
         const response = await fetch(
-          "http://localhost:3000/user/check-username",
+          "https://nodes-blog-api-production.up.railway.app/user/check-username",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -247,14 +250,17 @@ function SignDialog({
       return;
     }
     try {
-      const response = await fetch("http://localhost:3000/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ credential, password }),
-      });
+      const response = await fetch(
+        "https://nodes-blog-api-production.up.railway.app/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ credential, password }),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -292,17 +298,20 @@ function SignDialog({
       setErrors({});
       async function createUser() {
         try {
-          const response = await fetch("http://localhost:3000/user/create", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email,
-              username,
-              password,
-            }),
-          });
+          const response = await fetch(
+            "https://nodes-blog-api-production.up.railway.app/user/create",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                email,
+                username,
+                password,
+              }),
+            }
+          );
 
           if (!response.ok) {
             console.error("Error: ", response.statusText);
@@ -310,14 +319,17 @@ function SignDialog({
           } else {
             await response.json();
             try {
-              const response = await fetch("http://localhost:3000/auth/login", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                credentials: "include",
-                body: JSON.stringify({ credential: username, password }),
-              });
+              const response = await fetch(
+                "https://nodes-blog-api-production.up.railway.app/auth/login",
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  credentials: "include",
+                  body: JSON.stringify({ credential: username, password }),
+                }
+              );
 
               if (!response.ok) {
                 const responseText = await response.text();
@@ -766,7 +778,7 @@ function LandingPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    fetch("http://localhost:3000/auth/profile", {
+    fetch("https://nodes-blog-api-production.up.railway.app/auth/profile", {
       credentials: "include",
     })
       .then((res) => {

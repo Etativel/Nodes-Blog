@@ -19,7 +19,9 @@ function PostsContainer() {
   useEffect(() => {
     async function fetchPosts() {
       try {
-        const response = await fetch("http://localhost:3000/post");
+        const response = await fetch(
+          "https://nodes-blog-api-production.up.railway.app/post"
+        );
         if (!response) {
           throw new Error(`Http error! status ${response.status}`);
         }

@@ -307,7 +307,7 @@ function PostHead({
 
     try {
       const response = await fetch(
-        `http://localhost:3000/post/${postId}/like`,
+        `https://nodes-blog-api-production.up.railway.app/post/${postId}/like`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -330,7 +330,7 @@ function PostHead({
     e.preventDefault();
     try {
       const response = await fetch(
-        `http://localhost:3000/post/feature-post/${postId}`,
+        `https://nodes-blog-api-production.up.railway.app/post/feature-post/${postId}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -352,7 +352,7 @@ function PostHead({
 
     try {
       const response = await fetch(
-        `http://localhost:3000/post/${postId}/bookmark`,
+        `https://nodes-blog-api-production.up.railway.app/post/${postId}/bookmark`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -386,14 +386,17 @@ function PostHead({
     try {
       let updatedFollowers;
       if (isFollowing) {
-        const response = await fetch("http://localhost:3000/user/unfollow", {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            followerId: author.id,
-            followingId: postAuthor.id,
-          }),
-        });
+        const response = await fetch(
+          "https://nodes-blog-api-production.up.railway.app/user/unfollow",
+          {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              followerId: author.id,
+              followingId: postAuthor.id,
+            }),
+          }
+        );
 
         if (response.ok) {
           updatedFollowers = followers.filter(
@@ -403,14 +406,17 @@ function PostHead({
           return;
         }
       } else {
-        const response = await fetch("http://localhost:3000/user/follow", {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            followerId: author.id,
-            followingId: postAuthor.id,
-          }),
-        });
+        const response = await fetch(
+          "https://nodes-blog-api-production.up.railway.app/user/follow",
+          {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              followerId: author.id,
+              followingId: postAuthor.id,
+            }),
+          }
+        );
         if (response.ok) {
           updatedFollowers = [...followers, { followerId: author.id }];
         } else {
@@ -467,7 +473,7 @@ function PostHead({
     e.preventDefault();
     try {
       const response = await fetch(
-        `http://localhost:3000/post/report/${postId}`,
+        `https://nodes-blog-api-production.up.railway.app/post/report/${postId}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

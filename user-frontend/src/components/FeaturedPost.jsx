@@ -67,7 +67,7 @@ function FeaturedPost() {
       setLoading(true);
       try {
         const response = await fetch(
-          "http://localhost:3000/post/featured-n-trending-post",
+          "https://nodes-blog-api-production.up.railway.app/post/featured-n-trending-post",
           {
             method: "GET",
           }

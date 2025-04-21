@@ -17,7 +17,9 @@ function PostPage() {
     async function fetchCurrentPost() {
       try {
         setLoading(true);
-        const response = await fetch(`http://localhost:3000/post/${postId}`);
+        const response = await fetch(
+          `https://nodes-blog-api-production.up.railway.app/post/${postId}`
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch post");
         }

@@ -358,7 +358,7 @@ function CommentPreview({
 
       // API call
       const response = await fetch(
-        "http://localhost:3000/comment/reaction/toggle",
+        "https://nodes-blog-api-production.up.railway.app/comment/reaction/toggle",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -415,18 +415,21 @@ function CommentPreview({
     e.preventDefault();
     try {
       setLoadingPostComment(true);
-      const response = await fetch("http://localhost:3000/comment/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          postId,
-          content: replyContent,
-          authorId: author.id,
-          parentId,
-        }),
-      });
+      const response = await fetch(
+        "https://nodes-blog-api-production.up.railway.app/comment/create",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            postId,
+            content: replyContent,
+            authorId: author.id,
+            parentId,
+          }),
+        }
+      );
       const data = await response.json();
 
       if (!response.ok) {
@@ -482,7 +485,7 @@ function CommentPreview({
     e.preventDefault();
     try {
       const response = await fetch(
-        `http://localhost:3000/comment/report/${commentId}`,
+        `https://nodes-blog-api-production.up.railway.app/comment/report/${commentId}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -1043,7 +1046,9 @@ function CommentSection({ postId, comments, timePosted, postAuthorId }) {
 
   async function fetchComments() {
     try {
-      const response = await fetch(`http://localhost:3000/post/${postId}`);
+      const response = await fetch(
+        `https://nodes-blog-api-production.up.railway.app/post/${postId}`
+      );
       const data = await response.json();
       setCommentList(data.post.comments);
     } catch (error) {
@@ -1060,17 +1065,20 @@ function CommentSection({ postId, comments, timePosted, postAuthorId }) {
 
     try {
       setLoadingPostComment(true);
-      const response = await fetch("http://localhost:3000/comment/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          postId,
-          content,
-          authorId: author.id,
-        }),
-      });
+      const response = await fetch(
+        "https://nodes-blog-api-production.up.railway.app/comment/create",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            postId,
+            content,
+            authorId: author.id,
+          }),
+        }
+      );
       const data = await response.json();
 
       if (!response.ok) {
@@ -1096,7 +1104,7 @@ function CommentSection({ postId, comments, timePosted, postAuthorId }) {
     e.stopPropagation();
     try {
       const response = await fetch(
-        `http://localhost:3000/comment/delete/${commentId}`,
+        `https://nodes-blog-api-production.up.railway.app/comment/delete/${commentId}`,
         {
           method: "DELETE",
         }
@@ -1138,7 +1146,7 @@ function CommentSection({ postId, comments, timePosted, postAuthorId }) {
     setLoadingPostComment(true);
     try {
       const response = await fetch(
-        `http://localhost:3000/comment/update/${onEdit}`,
+        `https://nodes-blog-api-production.up.railway.app/comment/update/${onEdit}`,
         {
           headers: {
             "Content-Type": "application/json",
