@@ -19,5 +19,7 @@ router.patch(
 );
 router.patch("/follow", userController.followUser);
 router.patch("/unfollow", userController.unFollowUser);
+router.post("/toggle-theme/:userId", userController.toggleTheme);
+router.get("/get-theme/:userId", userController.getTheme);
 
 module.exports = router;

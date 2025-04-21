@@ -292,6 +292,39 @@ async function deleteUser(req, res) {
   }
 }
 
+async function toggleTheme(req, res) {
+  const { userId } = req.params;
+  const { isDark } = req.body;
+  try {
+    const userTheme = await prisma.user.update({
+      where: { id: userId },
+      data: { isDark },
+    });
+    return res.json({ userTheme });
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+    console.log("Failed to toggle theme", error);
+  }
+}
+
+async function getTheme(req, res) {
+  const { userId } = req.params;
+
+  try {
+    const theme = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        isDark: true,
+      },
+    });
+
+    return res.json({ theme });
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+    console.log("Failed to get theme", error);
+  }
+}
+
 module.exports = {
   getAllUser,
   createUser,
@@ -305,4 +338,7 @@ module.exports = {
   followUser,
   unFollowUser,
   updateUserField,
+
+  toggleTheme,
+  getTheme,
 };

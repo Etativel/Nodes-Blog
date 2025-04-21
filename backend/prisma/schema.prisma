@@ -23,7 +23,7 @@
     profilePicture String?
     profilePicturePublicId  String? 
 
-    isDark Boolean @default(false)
+    isDark Boolean
 
     followers Follower[] @relation("followers")
     following Follower[] @relation("following")
@@ -72,6 +72,9 @@
     status      PostStatus?  
 
     reports     PostReport[]
+
+    isFeatured Boolean   @default(false)
+    featuredAt DateTime? 
   }
 
   model Comment {
