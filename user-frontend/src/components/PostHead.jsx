@@ -215,12 +215,14 @@ function PostHead({
   const [isFollowing, setIsFollowing] = useState(
     followers.some((f) => f.followerId === author?.id)
   );
+  console.log(author);
   const postReportFormRef = useRef(null);
   const reportCtrRef = useRef(null);
   const postDropdownRef = useRef(null);
   const toggleDropdownRef = useRef(null);
   const [postLike, setPostLike] = useState(false);
   const [postBookmark, setPostBookmark] = useState(false);
+  const [postFeatured, setPostFeatured] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [reportType, setReportType] = useState("");
@@ -278,7 +280,10 @@ function PostHead({
     if (bookmarkedBy && author) {
       setPostBookmark(bookmarkedBy.some((u) => u.id === author.id));
     }
-  }, [likedBy, bookmarkedBy, author]);
+    if (post && post.isFeatured) {
+      setPostFeatured(post.isFeatured);
+    }
+  }, [likedBy, bookmarkedBy, author, post]);
 
   const navigate = useNavigate();
 
@@ -316,6 +321,27 @@ function PostHead({
       }
       const data = await response.json();
       setPostLike(data.liked);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function toggleFeature(e) {
+    e.preventDefault();
+    try {
+      const response = await fetch(
+        `http://localhost:3000/post/feature-post/${postId}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      if (!response.ok) {
+        console.error("Toggle feature failed", response.status);
+        return;
+      }
+      const data = await response.json();
+      setPostFeatured(data.featured);
     } catch (error) {
       console.log(error);
     }
@@ -617,6 +643,49 @@ function PostHead({
               </>
             )}
           </button>
+          {author?.role === "SUPERADMIN" ? (
+            <button
+              className="post-feature"
+              aria-label="feature-post"
+              onClick={(e) => toggleFeature(e)}
+            >
+              {!postFeatured ? (
+                <>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1}
+                    stroke="yellow"
+                    className="size-6 post-featured-icon"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
+                    />
+                  </svg>
+                </>
+              ) : (
+                <>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="yellow"
+                    className="size-6 post-featured-icon"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </>
+              )}
+            </button>
+          ) : (
+            ""
+          )}
           <div
             ref={toggleDropdownRef}
             className="post-options"

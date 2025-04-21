@@ -120,6 +120,7 @@
   /* position: relative; */
 }
 
+.post-feature,
 .post-like,
 .post-bookmark,
 .post-options {
@@ -138,11 +139,14 @@
   position: relative;
 }
 
+.post-feature:hover,
 .post-like:hover,
 .post-bookmark:hover {
   background-color: var(--interactive-hover-bg);
   border: solid 1px var(--interactive-hover-bg);
 }
+
+.post-featured-icon,
 .post-like-icon,
 .post-bookmark-icon,
 .post-options-icon {
@@ -385,6 +389,7 @@
     font-size: 1.1rem;
   }
 
+  .post-featured-icon,
   .post-like-icon,
   .post-bookmark-icon,
   .post-options-icon {
