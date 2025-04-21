@@ -518,36 +518,46 @@ async function toggleFeatured(req, res) {
 // GET FEATURED POST
 async function getFeaturedPost(req, res) {
   try {
-    // Get 3 latest featured posts
+    // Get 3 latest featured posts (only published & not DRAFT or BLOCKED)
     const featuredPosts = await prisma.post.findMany({
       where: {
-        featured: true,
+        isFeatured: true,
+        published: true,
+        status: {
+          notIn: ["DRAFT", "BLOCKED"],
+        },
       },
       include: {
         author: {
           select: {
             username: true,
             profilePicture: true,
+            fullName: true,
+            userColor: true,
           },
         },
       },
       orderBy: {
         featuredAt: "desc",
       },
-      take: 3,
+      take: 5,
     });
 
-    // Get trending posts
+    // Get trending posts (only published & not DRAFT or BLOCKED)
     const trendingPosts = await prisma.post.findMany({
       where: {
         published: true,
-        status: "ACTIVE",
+        status: {
+          notIn: ["DRAFT", "BLOCKED"],
+        },
       },
       include: {
         author: {
           select: {
             username: true,
             profilePicture: true,
+            fullName: true,
+            userColor: true,
           },
         },
         _count: {
@@ -572,7 +582,7 @@ async function getFeaturedPost(req, res) {
           createdAt: "desc",
         },
       ],
-      take: 3,
+      take: 5,
     });
 
     const trendingWithScores = trendingPosts.map((post) => {
@@ -583,7 +593,6 @@ async function getFeaturedPost(req, res) {
         (Date.now() - new Date(post.createdAt).getTime()) / (1000 * 60 * 60);
       const recencyFactor = hoursSinceCreation <= 24 ? 2 : 1;
 
-      // Calculate trending score
       const trendingScore =
         (2 * likesCount + 3 * commentsCount) * recencyFactor;
 
@@ -596,6 +605,7 @@ async function getFeaturedPost(req, res) {
       };
     });
 
+    // Sort by computed score
     trendingWithScores.sort((a, b) => b.trendingScore - a.trendingScore);
 
     return res.status(200).json({
