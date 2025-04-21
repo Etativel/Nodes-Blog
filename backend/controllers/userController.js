@@ -163,6 +163,7 @@ async function createUser(req, res) {
         email: email.toLowerCase(),
         password: hashedPassword,
         userColor: getRandomColor(),
+        isDark: false,
       },
     });
     return res.status(201).json({ newUser });
