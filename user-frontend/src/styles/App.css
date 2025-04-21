@@ -40,6 +40,12 @@ a {
   --submit-btn-bg: #156d12;
   --submit-btn-border: #156d12;
   --submit-btn-color: #156d12;
+
+  --dialog-input-bg: #f1f5f9;
+  --dialog-input-text: #1a1a1a;
+  --dialog-input-border: #cbd5e1;
+  --dialog-input-placeholder: #94a3b8;
+  --dialog-input-focus-border: #4f46e5;
 }
 
 /* Dark theme overrides */
@@ -61,4 +67,10 @@ a {
   --submit-btn-bg: #4caf50;
   --submit-btn-border: #4caf50;
   --submit-btn-color: #4caf50;
+
+  --dialog-input-bg: #2a2a2a;
+  --dialog-input-text: #f5f5f5;
+  --dialog-input-border: #3a3a3a;
+  --dialog-input-placeholder: #9ca3af;
+  --dialog-input-focus-border: #6366f1;
 }

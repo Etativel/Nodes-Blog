@@ -8,3 +8,10 @@
   display: flex;
   justify-content: space-between;
 }
+
+.homepage-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  background-color: var(--bg-color);
+}

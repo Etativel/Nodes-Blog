@@ -55,7 +55,10 @@ function PreviewPost() {
       <div className="blog-post-preview">
         <div className="preview-post-container">
           {post && post.content ? (
-            <div dangerouslySetInnerHTML={{ __html: post.content }} />
+            <div
+              className="post-preview"
+              dangerouslySetInnerHTML={{ __html: post.content }}
+            />
           ) : (
             <p></p>
           )}

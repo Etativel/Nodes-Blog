@@ -160,7 +160,7 @@ function EditProfileDialog({ setIsOpen }) {
         <label htmlFor="full-name">Full name</label>
         <input
           type="text"
-          placeholder=""
+          // placeholder=""
           id="full-name"
           name="fullName"
           className="full-name"

@@ -4,6 +4,7 @@
   padding: 24px;
   padding-right: 24px;
   padding-bottom: 0px;
+  background-color: var(--bg-color);
 }
 
 .about-container {
@@ -26,7 +27,7 @@
   /* background-color: rebeccapurple; */
   width: 100%;
   /* background-color: purple; */
-  border-left: solid #f2f2f2 1px;
+  border-left: solid var(--border-color) 1px;
   transform: translateY(-24px);
 }
 
@@ -36,10 +37,11 @@
   padding-top: 24px;
   font-family: Arial, Helvetica, sans-serif;
   padding-bottom: 24px;
+  color: var(--text-color);
 }
 
 .user-nav {
-  border-bottom: solid #f2f2f2 1px;
+  border-bottom: solid var(--border-color) 1px;
   display: flex;
   gap: 24px;
   max-width: 700px;
@@ -57,7 +59,7 @@
   font-family: Arial, Helvetica, sans-serif;
   cursor: pointer;
   border: 0px;
-  color: #6b6b6b;
+  color: var(--secondary-color);
   background-color: transparent;
   padding: 6px;
   padding-left: 0px;
@@ -66,12 +68,12 @@
 
 .home-btn.active,
 .about-btn.active {
-  color: black;
+  color: var(--text-color);
 }
 
 .home-btn:hover,
 .about-btn:hover {
-  color: black;
+  color: var(--secondary-hover-color);
 }
 
 .postcard-container-profile {
@@ -93,7 +95,7 @@
 .postcard-flex {
   display: flex;
   max-width: 700px;
-  border-bottom: solid rgba(0, 0, 0, 0.1) 1px;
+  border-bottom: solid var(--border-color) 1px;
 }
 
 .postcard-parent-ctr {
@@ -144,6 +146,7 @@
   white-space: normal;
   /* padding-left: 12px; */
   padding-right: 12px;
+  color: var(--text-color);
 }
 
 .post-subtext-p {
@@ -153,6 +156,7 @@
   overflow-wrap: break-word;
   word-break: break-word;
   padding-right: 12px;
+  color: var(--text-color);
 }
 
 .bottom-p {
@@ -191,6 +195,7 @@
 .date-p {
   display: flex;
   align-items: center;
+  color: var(--text-color);
 }
 
 .side-profile-ctr {
@@ -213,7 +218,7 @@
 }
 
 .side-profile-username {
-  color: #6b6b6b;
+  color: var(--secondary-color);
   font-size: 0.9rem;
   font-weight: 100;
 }
@@ -225,6 +230,7 @@
   margin-top: 12px;
   margin-bottom: 12px;
   font-size: 1rem;
+  color: var(--text-color);
 }
 
 .user-follower-count {
@@ -232,14 +238,14 @@
   margin-top: 0px;
   margin-bottom: 12px;
   font-size: 1rem;
-  color: #6b6b6b;
+  color: var(--secondary-color);
   font-family: Arial, Helvetica, sans-serif;
 }
 
 .user-biography {
   line-height: 1.4;
   font-size: 0.9rem;
-  color: #6b6b6b;
+  color: var(--secondary-color);
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -254,7 +260,7 @@
 }
 
 .edit-profile-btn:hover {
-  color: black;
+  color: var(--secondary-hover-color);
 }
 
 .update-profile-ctr {
@@ -282,9 +288,9 @@
 
 .profile-form {
   padding: 50px;
-  background-color: white;
+  background-color: var(--dropdown-bg);
   opacity: 100%;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--dropdown-shadow);
   border-radius: 3px;
   height: fit-content;
   width: 500px;
@@ -313,6 +319,7 @@
   border: 0px;
   cursor: pointer;
   opacity: 50%;
+  color: var(--secondary-color);
 }
 
 .close-dialog-btn:hover {
@@ -330,6 +337,7 @@
   font-weight: bold;
   text-align: center;
   margin-bottom: 24px;
+  color: var(--text-color);
 }
 
 .pp {
@@ -354,6 +362,34 @@
   text-align: start;
   padding: 12px;
   border-radius: 4px;
+}
+
+.photo-label {
+  color: var(--text-color);
+}
+
+.profile-form-input label {
+  color: var(--text-color);
+}
+
+.biography-length span:first-child,
+.full-name-length span:first-child {
+  color: var(--text-color);
+}
+
+.biography-length span:last-child,
+.full-name-length span:last-child {
+  color: var(--secondary-color);
+}
+
+#full-name {
+  background-color: var(--dialog-input-bg);
+  color: var(--dialog-input-text);
+}
+
+#bio {
+  background-color: var(--dialog-input-bg);
+  color: var(--dialog-input-text);
 }
 
 .biography {
@@ -436,7 +472,7 @@
   background-color: transparent;
   border-radius: 24px;
   padding: 9px 16px 9px;
-  border: solid 1px #156d12;
+  border: solid 1px var(--submit-btn-border);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -448,10 +484,10 @@
 }
 
 .cancel-update-btn {
-  color: #156d12;
+  color: var(--submit-btn-color);
 }
 .save-update-btn {
-  background-color: #156d12;
+  background-color: var(--submit-btn-bg);
   color: white;
 }
 
@@ -495,13 +531,14 @@
 .no-post-big-text {
   font-size: 1.5rem;
   font-weight: bold;
+  color: var(--text-color);
 }
 
 .no-about-small-text,
 .no-post-small-text {
   text-align: center;
   font-size: 0.9rem;
-  color: gray;
+  color: var(--secondary-color);
 }
 
 .sub-small-text {
@@ -520,20 +557,28 @@
 
 .user-post-dropdown {
   position: absolute;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--dropdown-shadow);
   top: 32px;
   width: 160px;
   left: 80%;
   transform: translateX(-100%);
-
   flex-direction: column;
-
   /* gap: 12px; */
   border-radius: 3px;
-  background-color: white;
+  background-color: var(--dropdown-bg);
   display: flex;
   opacity: 0;
   display: none;
+}
+
+.user-post-dropdown button:first-child {
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
+.user-post-dropdown button:last-child {
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
 }
 
 .user-post-dropdown.active {
@@ -552,6 +597,12 @@
   display: flex;
   gap: 12px;
   align-items: center;
+}
+
+.publish-user-post:hover,
+.edit-user-post:hover,
+.delete-user-post:hover {
+  background-color: var(--dropdown-item-hover);
 }
 
 .edit-user-post:hover {

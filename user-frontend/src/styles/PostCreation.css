@@ -3,6 +3,10 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+.creator-container {
+  min-height: 100vh;
+}
+
 .preview-post-container-write,
 .preview-post-container {
   max-width: 750px;
@@ -11,6 +15,7 @@
   padding-right: 24px;
   text-align: justify;
   word-break: break-word;
+  color: var(--text-color);
 }
 
 .blog-post-preview {
@@ -51,14 +56,21 @@
 .preview-post-container h1 {
   margin-bottom: 0.8em;
   margin-top: 0.2em;
+  color: var(--text-color);
 }
 .preview-post-container-write p,
 .preview-post-container p {
   margin-bottom: 1em;
+  color: var(--text-color);
 }
 .preview-post-container-write li,
 .preview-post-container li {
   margin-left: 18px;
+  color: var(--text-color);
+}
+
+.preview-post-container a {
+  color: var(--text-color);
 }
 
 @media (max-width: 500px) {
@@ -95,6 +107,7 @@
   justify-content: center;
   padding-top: 24px;
   height: fit-content;
+  background-color: var(--bg-color);
 }
 
 .right-creator {
@@ -204,7 +217,9 @@
   width: 100%;
   height: fit-content;
   padding: 12px;
-  background-color: #f9f9f9;
+  background-color: var(--dialog-input-bg);
+  color: var(--dialog-input-text);
+  border: solid transparent 1px;
   border: 0px;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 2rem;
@@ -214,7 +229,8 @@
 }
 
 .blog-title:focus {
-  background-color: #f9f9f9;
+  /* background-color: #f9f9f9; */
+  border: solid var(--dialog-input-focus-border) 1px;
   text-align: start;
 }
 
@@ -223,11 +239,17 @@
   resize: none;
   height: fit-content;
   padding: 12px;
-  background-color: #f9f9f9;
+  background-color: var(--dialog-input-bg);
   border: 0px;
+  color: var(--dialog-input-text);
   font-family: Arial, Helvetica, sans-serif;
   font-size: 1rem;
   outline: none;
+}
+
+.excerpt-input:focus {
+  border: solid var(--dialog-input-focus-border) 1px;
+  text-align: start;
 }
 
 .sub-input-ctr {
@@ -255,8 +277,8 @@
   margin: 0 auto;
   padding: 12px;
   cursor: pointer;
-  background-color: #f4f4f4;
-  border: 2px dashed #ccc;
+  background-color: var(--dialog-input-bg);
+  border: 2px dashed var(--dialog-input-border);
 }
 
 .thumbnail-input-ctr .preview-img:hover {
@@ -329,8 +351,8 @@
   margin-bottom: 12px;
 }
 
-.loader-container {
-  /* height: fit-content; */
+.small-loader-container {
+  height: fit-content;
 }
 
 .btn-selection {

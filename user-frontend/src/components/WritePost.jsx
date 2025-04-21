@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import imageCompression from "browser-image-compression";
-import Loader from "./Loader";
+import SmallLoader from "./SmallLoader";
 
 function Write() {
   const { post, setPost, isEditing, setPostToEdit, setIsEditing } =
@@ -268,7 +268,7 @@ function Write() {
       />
       <div className="write-btn-selection">
         {loadingSave ? (
-          <Loader />
+          <SmallLoader />
         ) : (
           <>
             <button
