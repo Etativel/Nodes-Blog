@@ -150,7 +150,9 @@ a {
     word-break: break-word;
     font-size: 1rem;
   }
-  /* .right {
+
+  /* Enable this if you want to show the thumbnail of the post on mobile */
+  .right {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -159,10 +161,10 @@ a {
     background-position: center;
     width: 10px;
     height: 120px;
-  } */
-  .right {
-    display: none;
   }
+  /* .right {
+    display: none;
+  } */
   .post-header-img {
     height: 70px;
     width: 70px;
