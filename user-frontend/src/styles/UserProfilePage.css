@@ -496,8 +496,8 @@
 }
 .user-side-follow-btn {
   background-color: transparent;
-  border: solid #156d12 1px;
-  color: #156d12;
+  border: solid var(--submit-btn-border) 1px;
+  color: var(--submit-btn-color);
   border-radius: 24px;
   padding: 9px 16px 9px;
   margin-top: 24px;
@@ -506,7 +506,7 @@
 
 .user-side-follow-btn.unfollow {
   color: white;
-  background-color: #156d12;
+  background-color: var(--submit-btn-color);
   border-radius: 24px;
   padding: 9px 16px 9px;
 }
