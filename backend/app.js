@@ -35,7 +35,7 @@ const imageUploadRouter = require("./routes/imageUploadRoutes");
 app.use("/post", postRouter);
 app.use("/comment", commentRouter);
 app.use("/user", userRouter);
-app.use("/auth", authRouter);
+app.use("/auth", authRouter.router);
 app.use("/adminauth", adminAuthRouter.router);
 app.use("/img", imageUploadRouter);
 app.use("/admin-dashboard-api", adminPanelDashboardRouter);

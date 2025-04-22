@@ -10,6 +10,7 @@ function authenticateToken(req, res, next) {
   if (!token) {
     return res.status(401).json({
       message: "Unauthorized: No token provided",
+      token: token,
       user: {
         id: null,
       },
@@ -36,9 +37,13 @@ router.post("/login", (req, res, next) => {
       if (err) {
         res.send(err);
       }
-      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-        expiresIn: "7d",
-      });
+      const token = jwt.sign(
+        { id: user.id, role: user.role },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "7d",
+        }
+      );
       res.cookie("token", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
@@ -64,4 +69,4 @@ router.get("/profile", authenticateToken, (req, res) => {
   res.json({ user: req.user });
 });
 
-module.exports = router;
+module.exports = { router, authenticateToken };

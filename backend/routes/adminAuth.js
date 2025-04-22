@@ -26,6 +26,7 @@ function authenticateToken(req, res, next) {
 
 function isAdmin(req, res, next) {
   // allow both ADMIN and SUPERUSER
+  console.log("This is user role", req.user?.role);
   if (req.user?.role === "ADMIN" || req.user?.role === "SUPERADMIN") {
     return next();
   }

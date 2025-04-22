@@ -1,29 +1,54 @@
 const express = require("express");
 const router = express.Router();
 const postController = require("../controllers/postController");
-const passport = require("passport");
+const { authenticateToken } = require("./auth.js");
+const { isOwner } = require("../middlewares/isOwner.js");
 const upload = require("../config/multerConfig");
-// const multer = require("multer");
-// const upload = multer({ dest: "uploads/" });
+const { isAdmin } = require("./adminAuth.js");
 
-router.get("/featured-n-trending-post", postController.getFeaturedPost);
-router.get("/by/:username", postController.getUserPosts);
-router.get("/filter", postController.getFilteredPost);
-router.get("/:postId", postController.getPost);
+router.get(
+  "/featured-n-trending-post",
+  authenticateToken,
+  postController.getFeaturedPost
+);
+router.get("/by/:username", authenticateToken, postController.getUserPosts);
+router.get("/filter", authenticateToken, postController.getFilteredPost);
+router.get("/:postId", authenticateToken, postController.getPost);
 // router.get("/", postController.getLimitPost);
-router.get("/", postController.getAllPost);
+router.get("/", authenticateToken, postController.getAllPost);
 router.post("/create", upload.single("thumbnail"), postController.addPost);
-router.post("/:postId/like", postController.toggleLike);
-router.post("/:postId/bookmark", postController.toggleBookmark);
-// router.put("/update/:postId", postController.updatePost);
+router.post("/:postId/like", authenticateToken, postController.toggleLike);
+router.post(
+  "/:postId/bookmark",
+  authenticateToken,
+  postController.toggleBookmark
+);
+
 router.put(
   "/update/:postId",
+  authenticateToken,
+  isOwner,
   upload.single("thumbnail"),
   postController.simpleUpdatePost
 );
-router.put("/publish/:postId", postController.togglePublish);
-router.delete("/delete/:postId", postController.deletePost);
-router.post("/report/:postId", postController.reportPost);
+router.put(
+  "/publish/:postId",
+  authenticateToken,
+  isOwner,
+  postController.togglePublish
+);
+router.delete(
+  "/delete/:postId",
+  authenticateToken,
+  isOwner,
+  postController.deletePost
+);
+router.post("/report/:postId", authenticateToken, postController.reportPost);
 
-router.post("/feature-post/:postId", postController.toggleFeatured);
+router.post(
+  "/feature-post/:postId",
+  authenticateToken,
+  isAdmin,
+  postController.toggleFeatured
+);
 module.exports = router;
