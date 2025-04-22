@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "serve -s dist -l 5173"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -24,6 +25,7 @@
     "react-icons": "^5.5.0",
     "react-infinite-scroll-component": "^6.1.0",
     "react-router-dom": "^6.30.0",
+    "serve": "^14.2.4",
     "tinymce": "^7.8.0"
   },
   "devDependencies": {
