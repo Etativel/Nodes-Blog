@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "../styles/FeaturedPost.css";
-import SmallLoader from "./SmallLoader";
+// import SmallLoader from "./SmallLoader";
 import timePosted from "../utils/formatTime";
 import formatCloudinaryUrl from "../utils/cloudinaryUtils";
 
@@ -61,7 +61,7 @@ function FeaturedPost() {
   const [featuredPosts, setFeaturedPosts] = useState([]);
   const [trendingPosts, setTrendingPosts] = useState([]);
   const [loading, setLoading] = useState(false);
-  console.log(featuredPosts);
+  // console.log(featuredPosts);
   useEffect(() => {
     const fetchPosts = async () => {
       setLoading(true);
@@ -70,6 +70,7 @@ function FeaturedPost() {
           "https://nodes-blog-api-production.up.railway.app/post/featured-n-trending-post",
           {
             method: "GET",
+            credentials: "include",
           }
         );
 
@@ -92,7 +93,7 @@ function FeaturedPost() {
   return (
     <div className="featured-post-container">
       {loading ? (
-        <SmallLoader />
+        ""
       ) : (
         <>
           <div className="card-title-fp">Featured Post</div>

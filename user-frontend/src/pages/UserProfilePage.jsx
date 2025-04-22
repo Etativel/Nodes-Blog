@@ -88,6 +88,7 @@ function EditProfileDialog({ setIsOpen }) {
         {
           method: "PATCH",
           body: formData,
+          credentials: "include",
         }
       );
       setUploading(false);
@@ -293,6 +294,7 @@ function UserPostCard({
         `https://nodes-blog-api-production.up.railway.app/post/delete/${postId}`,
         {
           method: "DELETE",
+          credentials: "include",
         }
       );
       if (!response.ok) {
@@ -317,6 +319,7 @@ function UserPostCard({
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ published: newStatus }),
+          credentials: "include",
         }
       );
       if (!response.ok) {
@@ -334,7 +337,7 @@ function UserPostCard({
   }
 
   function handleEditPost() {
-    console.log(post);
+    // console.log(post);
     setPostToEdit({
       postId: post.id,
       content: post.content,
@@ -643,6 +646,7 @@ function UserSideProfile({
           {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
+            credentials: "include",
             body: JSON.stringify({
               followerId: author.id,
               followingId: visitedUser.id,
@@ -663,6 +667,8 @@ function UserSideProfile({
           {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
+
+            credentials: "include",
             body: JSON.stringify({
               followerId: author.id,
               followingId: visitedUser.id,
@@ -793,7 +799,11 @@ function UserProfilePage() {
     async function fetchUserPost() {
       try {
         const response = await fetch(
-          `https://nodes-blog-api-production.up.railway.app/post/by/${cleanUsername}`
+          `https://nodes-blog-api-production.up.railway.app/post/by/${cleanUsername}`,
+          {
+            credentials: "include",
+            method: "GET",
+          }
         );
         if (!response.ok) {
           const errorData = await response.json();
@@ -817,7 +827,11 @@ function UserProfilePage() {
       setLoadingProfile(true);
       try {
         const response = await fetch(
-          `https://nodes-blog-api-production.up.railway.app/user/user-by-username/${cleanUsername.toLowerCase()}`
+          `https://nodes-blog-api-production.up.railway.app/user/user-by-username/${cleanUsername.toLowerCase()}`,
+          {
+            credentials: "include",
+            method: "GET",
+          }
         );
         if (!response.ok) {
           setLoadingProfile(false);

@@ -14,7 +14,8 @@ function ReportForm({
   handleReportSubmit,
   reportLoading,
 }) {
-  const disableButton = reportLoading || reportAdditionalInfo.length > 160;
+  const disableButton =
+    reportLoading || !reportType || reportAdditionalInfo.length > 160;
   return (
     <div className="report-from-ctr">
       <form onSubmit={(e) => handleReportSubmit(e)}>
@@ -215,7 +216,7 @@ function PostHead({
   const [isFollowing, setIsFollowing] = useState(
     followers.some((f) => f.followerId === author?.id)
   );
-  console.log(author);
+  // console.log(author);
   const postReportFormRef = useRef(null);
   const reportCtrRef = useRef(null);
   const postDropdownRef = useRef(null);
@@ -310,6 +311,7 @@ function PostHead({
         `https://nodes-blog-api-production.up.railway.app/post/${postId}/like`,
         {
           method: "POST",
+          credentials: "include",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             userId: author.id,
@@ -333,6 +335,7 @@ function PostHead({
         `https://nodes-blog-api-production.up.railway.app/post/feature-post/${postId}`,
         {
           method: "POST",
+          credentials: "include",
           headers: { "Content-Type": "application/json" },
         }
       );
@@ -355,6 +358,7 @@ function PostHead({
         `https://nodes-blog-api-production.up.railway.app/post/${postId}/bookmark`,
         {
           method: "POST",
+          credentials: "include",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             userId: author.id,
@@ -390,6 +394,7 @@ function PostHead({
           "https://nodes-blog-api-production.up.railway.app/user/unfollow",
           {
             method: "PATCH",
+            credentials: "include",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               followerId: author.id,
@@ -410,6 +415,7 @@ function PostHead({
           "https://nodes-blog-api-production.up.railway.app/user/follow",
           {
             method: "PATCH",
+            credentials: "include",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               followerId: author.id,
@@ -434,7 +440,7 @@ function PostHead({
   }
 
   function handleEditPost() {
-    console.log(post);
+    // console.log(post);
     setPostToEdit({
       postId: post.id,
       content: post.content,
@@ -471,11 +477,13 @@ function PostHead({
 
   async function handleReportSubmit(e) {
     e.preventDefault();
+    setReportLoading(true);
     try {
       const response = await fetch(
         `https://nodes-blog-api-production.up.railway.app/post/report/${postId}`,
         {
           method: "POST",
+          credentials: "include",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             reporterId: author?.id,

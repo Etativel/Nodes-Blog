@@ -10,8 +10,7 @@ function PostCreation() {
   const { postToEdit, setPostToEdit } = useContext(PostContext);
   const location = useLocation();
   const isWriting = location.pathname.endsWith("write-post");
-  console.log(location.pathname);
-  console.log(isWriting);
+  // console.log(author);
   const [post, setPost] = useState({
     postId: "",
     title: "",

@@ -28,7 +28,9 @@ function ReportForm({
   reportLoading,
   commentId,
 }) {
-  const disableButton = reportLoading || reportAdditionalInfo.length > 160;
+  const disableButton =
+    !reportType || reportLoading || reportAdditionalInfo.length > 160;
+
   return (
     <div className="report-from-ctr">
       <form onSubmit={(e) => handleReportSubmit(e, commentId)}>
@@ -361,6 +363,7 @@ function CommentPreview({
         "https://nodes-blog-api-production.up.railway.app/comment/reaction/toggle",
         {
           method: "POST",
+          credentials: "include",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             commentId: comment.id,
@@ -422,6 +425,7 @@ function CommentPreview({
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include",
           body: JSON.stringify({
             postId,
             content: replyContent,
@@ -445,7 +449,7 @@ function CommentPreview({
       if (textareaReplyRef.current) {
         textareaReplyRef.current.style.height = "auto";
       }
-      console.log("comment posted");
+      // console.log("comment posted");
     } catch (error) {
       setLoadingPostComment(false);
       console.log(error);
@@ -483,11 +487,13 @@ function CommentPreview({
 
   async function handleReportSubmit(e, commentId) {
     e.preventDefault();
+    setReportLoading(true);
     try {
       const response = await fetch(
         `https://nodes-blog-api-production.up.railway.app/comment/report/${commentId}`,
         {
           method: "POST",
+          credentials: "include",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             reporterId: author?.id,
@@ -990,7 +996,7 @@ function CommentSection({ postId, comments, timePosted, postAuthorId }) {
   const [editContent, setEditContent] = useState("");
   const [expandedReplies, setExpandedReplies] = useState({});
   const currentEditValue = useRef("");
-  console.log(author);
+  // console.log(author);
   // console.log(commentList);
 
   const disableEditSubmit =
@@ -1021,7 +1027,7 @@ function CommentSection({ postId, comments, timePosted, postAuthorId }) {
 
   function toggleDropdown(commentId) {
     setOpenDropdownCommentId((prev) => (prev === commentId ? null : commentId));
-    console.log(commentId);
+    // console.log(commentId);
   }
 
   useEffect(() => {
@@ -1047,7 +1053,10 @@ function CommentSection({ postId, comments, timePosted, postAuthorId }) {
   async function fetchComments() {
     try {
       const response = await fetch(
-        `https://nodes-blog-api-production.up.railway.app/post/${postId}`
+        `https://nodes-blog-api-production.up.railway.app/post/${postId}`,
+        {
+          credentials: "include",
+        }
       );
       const data = await response.json();
       setCommentList(data.post.comments);
@@ -1072,6 +1081,7 @@ function CommentSection({ postId, comments, timePosted, postAuthorId }) {
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include",
           body: JSON.stringify({
             postId,
             content,
@@ -1093,7 +1103,7 @@ function CommentSection({ postId, comments, timePosted, postAuthorId }) {
       if (textareaInput.current) {
         textareaInput.current.style.height = "auto";
       }
-      console.log("comment posted");
+      // console.log("comment posted");
     } catch (error) {
       setLoadingPostComment(false);
       console.log(error);
@@ -1107,13 +1117,14 @@ function CommentSection({ postId, comments, timePosted, postAuthorId }) {
         `https://nodes-blog-api-production.up.railway.app/comment/delete/${commentId}`,
         {
           method: "DELETE",
+          credentials: "include",
         }
       );
       if (!response.ok) {
         console.log("Error deleting comment ", response.status);
       }
       await response.json();
-      console.log("Success deleting comment");
+      // console.log("Success deleting comment");
       fetchComments();
     } catch (error) {
       console.log(error);
@@ -1141,8 +1152,8 @@ function CommentSection({ postId, comments, timePosted, postAuthorId }) {
 
   async function handleEditSubmit(e) {
     e.preventDefault();
-    console.log(editContent);
-    console.log(onEdit);
+    // console.log(editContent);
+    // console.log(onEdit);
     setLoadingPostComment(true);
     try {
       const response = await fetch(
@@ -1151,6 +1162,7 @@ function CommentSection({ postId, comments, timePosted, postAuthorId }) {
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include",
           method: "PATCH",
           body: JSON.stringify({
             commentId: onEdit,
@@ -1160,7 +1172,7 @@ function CommentSection({ postId, comments, timePosted, postAuthorId }) {
       );
       if (!response.ok) {
         setLoadingPostComment(false);
-        console.log("Failed to update comment");
+        console.log("Failed to update comment", response.statusText);
       }
 
       setCommentList((prev) =>
@@ -1171,7 +1183,7 @@ function CommentSection({ postId, comments, timePosted, postAuthorId }) {
       setLoadingPostComment(false);
       setEditContent("");
       setOnEdit(null);
-      console.log("Update comment successfully");
+      // console.log("Update comment successfully");
     } catch (error) {
       console.log(error);
       setLoadingPostComment(false);

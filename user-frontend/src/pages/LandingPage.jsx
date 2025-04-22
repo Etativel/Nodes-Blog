@@ -156,6 +156,7 @@ function SignDialog({
           "https://nodes-blog-api-production.up.railway.app/user/check-email",
           {
             method: "POST",
+
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email }),
           }
@@ -265,7 +266,7 @@ function SignDialog({
       if (!response.ok) {
         const errorData = await response.json();
         const message = errorData.message || "Login error";
-        console.log(message);
+        // console.log(message);
         if (message.toLowerCase().includes("not registered")) {
           setErrors({ emailError: message });
         } else if (message.toLowerCase().includes("incorrect password")) {

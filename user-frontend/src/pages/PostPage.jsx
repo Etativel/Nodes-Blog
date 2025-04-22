@@ -18,7 +18,11 @@ function PostPage() {
       try {
         setLoading(true);
         const response = await fetch(
-          `https://nodes-blog-api-production.up.railway.app/post/${postId}`
+          `https://nodes-blog-api-production.up.railway.app/post/${postId}`,
+          {
+            credentials: "include",
+            method: "GET",
+          }
         );
         if (!response.ok) {
           throw new Error("Failed to fetch post");

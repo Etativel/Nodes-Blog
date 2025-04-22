@@ -122,6 +122,7 @@ function Write() {
           {
             method: "POST",
             body: formData,
+            credentials: "include",
           }
         );
       } else if (isEditing) {
@@ -130,6 +131,7 @@ function Write() {
           {
             method: "PUT",
             body: editFormData,
+            credentials: "include",
           }
         );
       }
