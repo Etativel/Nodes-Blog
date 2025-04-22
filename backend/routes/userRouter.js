@@ -9,7 +9,7 @@ router.post(
 
   userController.getUserByUsername
 );
-router.post("/check-email", authenticateToken, userController.getUserByEmail);
+router.post("/check-email", userController.getUserByEmail);
 router.get(
   "/user-by-username/:username",
   authenticateToken,
@@ -17,7 +17,7 @@ router.get(
 );
 router.get("/:userId", authenticateToken, userController.getSpecificUser);
 router.get("/", authenticateToken, userController.getAllUser);
-router.post("/create", authenticateToken, userController.createUser);
+router.post("/create", userController.createUser);
 router.delete(
   "/delete/:userId",
   // authorizeUser,

@@ -38,22 +38,57 @@ async function getAllUser(req, res) {
 
 async function getSpecificUser(req, res) {
   const { userId } = req.params;
+
   try {
     const user = await prisma.user.findUnique({
-      where: {
-        id: userId,
-      },
-      include: {
-        followers: true,
-        following: true,
+      where: { id: userId },
+      select: {
+        id: true,
+        username: true,
+        role: true,
+        fullName: true,
+        userColor: true,
+        biography: true,
+        profilePicture: true,
+        profilePicturePublicId: true,
+        isDark: true,
+        createdAt: true,
+        updatedAt: true,
+
+        followers: {
+          select: {
+            followerId: true,
+            follower: {
+              select: {
+                id: true,
+                username: true,
+                profilePicture: true,
+              },
+            },
+          },
+        },
+        following: {
+          select: {
+            followingId: true,
+            following: {
+              select: {
+                id: true,
+                username: true,
+                profilePicture: true,
+              },
+            },
+          },
+        },
       },
     });
+
     if (!user) {
-      return res.json({ message: "No user found" });
+      return res.status(404).json({ message: "No user found" });
     }
+
     return res.json({ user });
   } catch (error) {
-    console.error("Failed to get user ", error);
+    console.error("Failed to get user", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 }
