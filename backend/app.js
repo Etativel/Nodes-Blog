@@ -25,7 +25,6 @@ app.use(express.urlencoded({ limit: "10mb", extended: true }));
 app.use(cookieParser());
 // app.use(passport.initialize());
 // app.use(passport.session());
-app.use(express.static(path.join(__dirname, "frontend/build")));
 
 const postRouter = require("./routes/postRouter");
 const commentRouter = require("./routes/commentRouter");
