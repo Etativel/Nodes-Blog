@@ -6,7 +6,7 @@ import formatCloudinaryUrl from "../utils/cloudinaryUtils";
 
 function FeaturedPostCard({ post }) {
   function redirectToPost() {
-    window.location.href = `/post/${post.id}`;
+    window.location.href = `https://nodes-blog-user-frontend.up.railway.app/post/${post.id}`;
   }
   return (
     <div className="featured-post-card-container card" onClick={redirectToPost}>
