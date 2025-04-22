@@ -10,11 +10,13 @@ const {
 router.get(
   "/all-comments",
   authenticateToken,
+  isAdmin,
   commentsController.getAllComments
 );
 router.delete(
   "/delete-comment/:commentId",
   authenticateToken,
+  isAdmin,
   commentsController.deleteComment
 );
 

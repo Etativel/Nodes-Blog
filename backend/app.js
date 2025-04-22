@@ -9,7 +9,11 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 app.use(
   cors({
-    origin: ["http://localhost:5174", "http://localhost:5173"],
+    origin: [
+      "http://localhost:5174",
+      "http://localhost:5173",
+      "https://nodes-blog-production.up.railway.app/",
+    ],
     credentials: true,
   })
 );
