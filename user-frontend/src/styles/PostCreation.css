@@ -190,7 +190,8 @@
   gap: 6px;
   font-size: 1rem;
   padding: 6px 12px;
-  width: 170px;
+  width: 180px;
+  flex-wrap: nowrap;
   border-radius: 6px;
   background-color: #1a8917;
   color: white;
@@ -205,7 +206,7 @@
 }
 
 .write-post-text > p {
-  transform: translateX(3px);
+  /* transform: translateX(3px); */
 }
 
 .arrow-icon {
