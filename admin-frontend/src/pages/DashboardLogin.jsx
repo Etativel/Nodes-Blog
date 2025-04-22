@@ -12,9 +12,12 @@ function DashboardLogin() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:3000/adminauth/profile", {
-      credentials: "include",
-    })
+    fetch(
+      "https://nodes-blog-api-production.up.railway.app/adminauth/profile",
+      {
+        credentials: "include",
+      }
+    )
       .then((res) => {
         if (res.ok) {
           return res.json();
@@ -47,14 +50,17 @@ function DashboardLogin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/adminauth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ credential: username, password }),
-      });
+      const response = await fetch(
+        "https://nodes-blog-api-production.up.railway.app/adminauth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ credential: username, password }),
+        }
+      );
 
       if (!response.ok) {
         const responseText = await response.text();

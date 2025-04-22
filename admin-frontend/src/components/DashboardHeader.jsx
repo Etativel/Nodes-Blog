@@ -39,10 +39,13 @@ export default function DashboardHeader() {
 
   async function handleLogout() {
     try {
-      const response = await fetch("http://localhost:3000/adminauth/logout ", {
-        method: "POST",
-        credentials: "include",
-      });
+      const response = await fetch(
+        "https://nodes-blog-api-production.up.railway.app/adminauth/logout ",
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
       if (!response.ok) {
         console.log("Failed to logout: ", response.statusText);
       } else {

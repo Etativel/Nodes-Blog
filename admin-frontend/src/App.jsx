@@ -12,9 +12,12 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:3000/adminauth/profile", {
-      credentials: "include",
-    })
+    fetch(
+      "https://nodes-blog-api-production.up.railway.app/adminauth/profile",
+      {
+        credentials: "include",
+      }
+    )
       .then((res) => (res.ok ? res.json() : Promise.reject()))
       .then(() => setIsAuthenticated(true))
       .catch(() => setIsAuthenticated(false))

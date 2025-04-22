@@ -67,7 +67,7 @@ export default function Posts() {
   async function fetchSummaryData() {
     try {
       const response = await fetch(
-        "http://localhost:3000/admin-posts-api/all-posts",
+        "https://nodes-blog-api-production.up.railway.app/admin-posts-api/all-posts",
         {
           credentials: "include",
           method: "GET",
@@ -236,7 +236,7 @@ export default function Posts() {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:3000/admin-posts-api/update-status/${postId}`,
+        `https://nodes-blog-api-production.up.railway.app/admin-posts-api/update-status/${postId}`,
         {
           method: "POST",
           headers: {

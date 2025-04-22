@@ -80,9 +80,10 @@ export default function Comments() {
   async function fetchCommentsData() {
     try {
       const response = await fetch(
-        "http://localhost:3000/admin-comments-api/all-comments",
+        "https://nodes-blog-api-production.up.railway.app/admin-comments-api/all-comments",
         {
           method: "GET",
+          credentials: "include",
         }
       );
 
@@ -218,7 +219,7 @@ export default function Comments() {
     console.log(selectedComment.id);
     try {
       const response = await fetch(
-        `http://localhost:3000/admin-comments-api/delete-comment/${selectedComment.id}`,
+        `https://nodes-blog-api-production.up.railway.app/admin-comments-api/delete-comment/${selectedComment.id}`,
         {
           method: "DELETE",
           credentials: "include",

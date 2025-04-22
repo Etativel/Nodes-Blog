@@ -31,9 +31,10 @@ export default function Dashboard() {
     async function fetchSummaryData() {
       try {
         const response = await fetch(
-          "http://localhost:3000/admin-dashboard-api/all-stats",
+          "https://nodes-blog-api-production.up.railway.app/admin-dashboard-api/all-stats",
           {
             method: "GET",
+            credentials: "include",
           }
         );
 

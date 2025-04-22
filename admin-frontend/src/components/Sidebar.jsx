@@ -1,5 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useContext } from "react";
+import ProfileContext from "../contexts/context-create/ProfileContext";
 
 const links = [
   {
@@ -87,7 +89,7 @@ const links = [
 export default function Sidebar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-
+  const { author, loading } = useContext(ProfileContext);
   useEffect(() => {
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth < 768);
@@ -292,8 +294,16 @@ export default function Sidebar() {
               </svg>
             </div>
             <div>
-              <p className="text-sm font-medium text-white">Admin User</p>
-              <p className="text-xs text-gray-500">admin@example.com</p>
+              <p className="text-sm font-medium text-white">
+                {loading
+                  ? ""
+                  : author.fullName
+                  ? author.fullName
+                  : author.username}
+              </p>
+              <p className="text-xs text-gray-500">
+                {loading ? "" : author.email}
+              </p>
             </div>
           </div>
         </div>

@@ -10,7 +10,7 @@ export function ProfileProvider({ children }) {
     const fetchProfile = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/adminauth/profile",
+          "https://nodes-blog-api-production.up.railway.app/adminauth/profile",
           {
             credentials: "include",
           }

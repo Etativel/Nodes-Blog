@@ -142,7 +142,7 @@ export default function Users() {
   async function fetchSummaryData() {
     try {
       const response = await fetch(
-        "http://localhost:3000/admin-users-api/all-users",
+        "https://nodes-blog-api-production.up.railway.app/admin-users-api/all-users",
         {
           method: "GET",
           credentials: "include",
@@ -272,7 +272,7 @@ export default function Users() {
     }
     try {
       const response = await fetch(
-        `http://localhost:3000/admin-users-api/update-user/${selectedUser.id}`,
+        `https://nodes-blog-api-production.up.railway.app/admin-users-api/update-user/${selectedUser.id}`,
         {
           method: "PUT",
           headers: {
@@ -320,7 +320,7 @@ export default function Users() {
     try {
       if (action === "suspend") {
         const response = await fetch(
-          `http://localhost:3000/admin-users-api/suspend-user/${selectedUser.id}`,
+          `https://nodes-blog-api-production.up.railway.app/admin-users-api/suspend-user/${selectedUser.id}`,
           {
             method: "POST",
             headers: {
@@ -342,7 +342,7 @@ export default function Users() {
         fetchSummaryData();
       } else if (action === "activate") {
         const response = await fetch(
-          `http://localhost:3000/admin-users-api/lift-suspension-user/${selectedUser.id}`,
+          `https://nodes-blog-api-production.up.railway.app/admin-users-api/lift-suspension-user/${selectedUser.id}`,
           {
             method: "POST",
             headers: {
