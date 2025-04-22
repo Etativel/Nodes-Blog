@@ -1,6 +1,6 @@
 import FeaturedPost from "../components/FeaturedPost";
 import PostsContainer from "../components/PostsContainer";
-import "../styles/HomePage.css";
+import "../styles/Homepage.css";
 
 function Homepage() {
   return (
