@@ -12,7 +12,7 @@ app.use(
     origin: [
       "http://localhost:5174",
       "http://localhost:5173",
-      "https://nodes-blog-user-frontend.up.railway.app/",
+      "https://nodes-blog-user-frontend.up.railway.app",
     ],
     credentials: true,
     allowedHeaders: "Content-Type,Authorization",
