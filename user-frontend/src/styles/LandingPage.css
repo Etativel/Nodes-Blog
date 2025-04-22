@@ -264,7 +264,7 @@
   cursor: pointer;
 }
 .sign-up-btn.options {
-  font-weight: 100;
+  font-weight: 500;
   transform: translateY(24px);
   margin-top: 12px;
 }

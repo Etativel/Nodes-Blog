@@ -20,6 +20,7 @@
   width: 100%;
   font-family: "Arial Black";
   word-break: break-word;
+  /* text-align: justify; */
   color: var(--text-color);
 }
 
