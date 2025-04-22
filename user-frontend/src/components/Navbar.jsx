@@ -168,9 +168,7 @@ function Navigation() {
         </ul>
       </div>
       <h2 className="webtitle">
-        <a href="https://nodes-blog-user-frontend.up.railway.app/posts">
-          Nodes
-        </a>
+        <a href="/posts">Nodes</a>
       </h2>
       <input type="text" placeholder="Search" className="post-search-input" />
       <div className="profile-container">

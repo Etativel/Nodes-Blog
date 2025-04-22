@@ -34,7 +34,7 @@ a {
 }
 
 .author-name {
-  font-size: 0.9rem;
+  font-size: 1rem;
   border-bottom: solid transparent 1px;
   color: var(--text-color);
 }
@@ -123,12 +123,13 @@ a {
   display: flex;
   align-items: center;
   color: var(--text-color);
+  font-size: 1rem;
 }
 
 @media (max-width: 500px) {
   .post-title {
     display: flex;
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: bold;
     padding-top: 6px;
     padding-bottom: 6px;
@@ -144,17 +145,17 @@ a {
     padding-top: 6px;
     overflow-wrap: break-word;
     word-break: break-word;
-    font-size: 0.7rem;
+    font-size: 1rem;
   }
   .right {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-width: 150px;
+    min-width: 170px;
     background-size: cover;
     background-position: center;
     width: 10px;
-    height: 100px;
+    height: 120px;
   }
   .post-header-img {
     height: 70px;
@@ -164,7 +165,7 @@ a {
     font-size: 0.7rem;
   }
   .comment-icon {
-    height: 12px;
-    width: 12px;
+    height: 18px;
+    width: 18px;
   }
 }

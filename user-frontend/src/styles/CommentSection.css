@@ -18,7 +18,7 @@
 
 .user-name {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 500;
   color: var(--text-color);
 }
@@ -124,7 +124,7 @@
 .comment-content,
 .comment-username {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--text-color);
 }
 
@@ -144,7 +144,7 @@
 
 .comment-created-at {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.7rem;
+  font-size: 1rem;
   color: gray;
 }
 
@@ -168,7 +168,7 @@
   position: relative;
 }
 .edit-comment-icon {
-  width: 20px;
+  width: 25px;
   cursor: pointer;
   color: var(--secondary-color);
 }
@@ -201,7 +201,7 @@
 
 .cmnt-edit-btn {
   width: fit-content;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -280,7 +280,7 @@
 }
 
 .is-author {
-  font-size: 0.6rem;
+  font-size: 1rem;
   padding: 2px;
   padding-left: 3px;
   padding-right: 3px;
@@ -328,7 +328,7 @@
 
 .total-dislike-on-comment,
 .total-like-on-comment {
-  font-size: 0.8rem;
+  font-size: 1rem;
   /* margin-left: 2px; */
   color: var(--text-color);
 }
@@ -336,7 +336,7 @@
 .reply-comment-btn {
   background-color: transparent;
   margin-left: 8px;
-  font-size: 0.8rem;
+  font-size: 1rem;
   border: solid 1px transparent;
   border-radius: 18px;
   padding-top: 6px;
@@ -374,7 +374,7 @@
   color: var(--comment-input-text);
   border: 0px;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.8rem;
+  font-size: 1rem;
   outline: none;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;

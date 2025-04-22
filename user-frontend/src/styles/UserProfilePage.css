@@ -8,7 +8,7 @@
 }
 
 .about-container {
-  min-height: 90vh;
+  min-height: 50vh;
   /* height: fit-content; */
   /* background-color: red; */
 }
@@ -55,7 +55,7 @@
 
 .home-btn,
 .about-btn {
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-family: Arial, Helvetica, sans-serif;
   cursor: pointer;
   border: 0px;
@@ -104,7 +104,8 @@
 }
 
 .user-post-dropdown-ctr {
-  padding: 12px;
+  /* padding: 12px; */
+  padding-top: 6px;
   margin-left: 24px;
 }
 
@@ -166,7 +167,7 @@
 .left-info-p {
   display: flex;
   gap: 18px;
-  font-size: 0.9rem;
+  font-size: 1rem;
   opacity: 70%;
 }
 
@@ -185,6 +186,10 @@
   align-items: center;
   gap: 6px;
   color: var(--secondary-color);
+}
+
+.comment-p span {
+  font-size: 1rem;
 }
 
 .comment-icon {
@@ -219,7 +224,7 @@
 
 .side-profile-username {
   color: var(--secondary-color);
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 100;
 }
 
@@ -244,7 +249,7 @@
 
 .user-biography {
   line-height: 1.4;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--secondary-color);
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -255,7 +260,7 @@
   margin-top: 18px;
   font-family: Arial, Helvetica, sans-serif;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #1a8917;
 }
 
@@ -425,7 +430,7 @@
   /* margin-top: 4px; */
   padding-bottom: 12px;
   transform: translateY(5px);
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .form-btn-ctr {
@@ -439,7 +444,7 @@
   font-family: "Times New Roman", Times, serif;
   justify-content: flex-end;
   display: flex;
-  font-size: 0.9rem;
+  font-size: 1rem;
   transform: translateY(-1px);
 }
 
@@ -537,7 +542,7 @@
 .no-about-small-text,
 .no-post-small-text {
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--secondary-color);
 }
 
@@ -660,26 +665,26 @@
     width: 15px;
   }
   .user-full-name {
-    font-size: 0.8rem;
+    font-size: 1.2rem;
     margin-top: 6px;
     margin-bottom: 6px;
   }
   .side-profile-username {
-    font-size: 0.7rem;
+    font-size: 1rem;
   }
   .profile-page-container {
     padding: 12px;
   }
   .user-follower-count {
-    font-size: 0.8rem;
+    font-size: 1rem;
     margin-bottom: 6px;
   }
   .user-biography {
-    font-size: 0.7rem;
+    font-size: 1rem;
   }
   .post-title-p {
     display: flex;
-    font-size: 1rem;
+    font-size: 1.3rem;
     font-weight: bold;
     padding-top: 6px;
     padding-bottom: 6px;
@@ -693,7 +698,7 @@
 
   .post-subtext-p {
     padding-top: 6px;
-    font-size: 0.7rem;
+    font-size: 1rem;
     overflow-wrap: break-word;
     word-break: break-word;
   }
@@ -704,19 +709,19 @@
     min-width: 140px;
     background-size: cover;
     background-position: center;
-    width: 140px;
-    height: 90px;
+    width: 160px;
+    height: 110px;
   }
   .left-info-p {
-    font-size: 0.7rem;
+    font-size: 1rem;
   }
   .comment-icon {
-    height: 12px;
-    width: 12px;
+    height: 18px;
+    width: 18px;
   }
   .side-profile-pict {
-    height: 60px;
-    width: 60px;
+    height: 70px;
+    width: 70px;
   }
   .user-side-follow-btn {
     margin-top: 18px;

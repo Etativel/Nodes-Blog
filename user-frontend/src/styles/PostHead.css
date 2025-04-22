@@ -66,7 +66,7 @@
   width: fit-content;
   border-bottom: solid transparent 1px;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 1rem;
+  font-size: 1.5rem;
   color: var(--text-color);
 }
 .post-author:hover {
@@ -93,7 +93,7 @@
 }
 
 .follow-text {
-  font-size: 0.9rem;
+  font-size: 1rem;
   display: flex;
   align-items: center;
   font-family: Arial, Helvetica, sans-serif;
@@ -329,7 +329,7 @@
   border-radius: 24px;
   padding: 9px 16px 9px;
   border: solid 1px red;
-  font-size: 0.8rem;
+  font-size: 1rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -342,7 +342,7 @@
   border-radius: 24px;
   padding: 9px 16px 9px;
   border: solid 1px #156d12;
-  font-size: 0.8rem;
+  font-size: 1rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -424,13 +424,13 @@
 
   .follow-text,
   .post-author {
-    font-size: 0.8rem;
+    font-size: 1rem;
   }
 
   .time-to-read,
   .post-date {
     display: flex;
-    font-size: 0.7rem;
+    font-size: 0.9rem;
     align-items: center;
   }
 }

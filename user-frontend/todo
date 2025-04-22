@@ -1,13 +1,1 @@
-separate api return for frontend and backend
-
-display suspension info to admin login (admin panel)
-
-protect sensitive routes eg. getAll stuff
-
-only expose allowed field to the ui
-
-Don’t expose full user lists publicly
-
-Don’t return sensitive fields in public endpoints (like email, password, etc.)
-
-Protect create/update/delete routes with auth
+add api limiter

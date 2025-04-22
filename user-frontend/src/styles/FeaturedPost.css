@@ -38,7 +38,7 @@
 }
 
 .featured-profile-name {
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 500;
   color: var(--text-color);
   display: flex;
@@ -64,7 +64,7 @@
 }
 
 .featured-post-date {
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: var(--secondary-color);
 }
 
