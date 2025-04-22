@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const passport = require("passport");
-const path = require("path");
 // require("./services/passportAdmin");
 // require("./services/passport");
 require("./services/passportConfig");
@@ -17,7 +16,7 @@ app.use(
     ],
     credentials: true,
     allowedHeaders: "Content-Type,Authorization",
-    methods: "GET,POST,PUT,DELETE,OPTIONS",
+    methods: "GET,POST,PUT,DELETE,OPTIONS,PATCH",
   })
 );
 app.use(passport.initialize());
@@ -50,10 +49,6 @@ app.use("/admin-dashboard-api", adminPanelDashboardRouter);
 app.use("/admin-posts-api", adminPostsPanelRouter);
 app.use("/admin-users-api", adminUsersPanelRouter);
 app.use("/admin-comments-api", adminCommentsPanelRouter);
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "frontend/build", "index.html"));
-});
 
 app.get("/", (req, res) => {
   res.send("Hello");
