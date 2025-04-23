@@ -5,6 +5,7 @@ const upload = require("../config/multerConfig");
 
 const authenticateEither = require("../middlewares/authEither.js");
 const { authorizeUser } = require("../middlewares/authorizeUser.js");
+const { isAdmin } = require("./adminAuth.js");
 const createLimiter = require("../utils/limiter.js");
 
 const userLimiter = createLimiter({ windowMs: 5 * 60 * 1000, max: 5 });
@@ -25,6 +26,12 @@ router.get(
   userController.getProfileByUsername
 );
 router.get("/:userId", authenticateEither, userController.getSpecificUser);
+router.get(
+  "/admin/:userId",
+  authenticateEither,
+  isAdmin,
+  userController.getSpecificAdmin
+);
 router.get("/", authenticateEither, userController.getAllUser);
 
 router.delete("/delete/:userId", authenticateEither, userController.deleteUser);

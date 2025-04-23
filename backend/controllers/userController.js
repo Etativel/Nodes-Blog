@@ -104,6 +104,64 @@ async function getSpecificUser(req, res) {
   }
 }
 
+async function getSpecificAdmin(req, res) {
+  const { userId } = req.params;
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        username: true,
+        role: true,
+        fullName: true,
+        userColor: true,
+        biography: true,
+        profilePicture: true,
+        profilePicturePublicId: true,
+        isDark: true,
+        createdAt: true,
+        updatedAt: true,
+        email: true,
+
+        followers: {
+          select: {
+            followerId: true,
+            follower: {
+              select: {
+                id: true,
+                username: true,
+                profilePicture: true,
+              },
+            },
+          },
+        },
+        following: {
+          select: {
+            followingId: true,
+            following: {
+              select: {
+                id: true,
+                username: true,
+                profilePicture: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "No user found" });
+    }
+
+    return res.json({ user });
+  } catch (error) {
+    console.error("Failed to get user", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 // Get user by email and username
 async function getUserByEmail(req, res) {
   const { email } = req.body;
@@ -396,7 +454,7 @@ module.exports = {
   followUser,
   unFollowUser,
   updateUserField,
-
+  getSpecificAdmin,
   toggleTheme,
   getTheme,
 };
