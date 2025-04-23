@@ -206,7 +206,7 @@
 }
 
 .write-post-text > p {
-  /* transform: translateX(3px); */
+  transform: translateX(3px);
 }
 
 .arrow-icon {
