@@ -16,9 +16,12 @@ export function useAuthor(authorId) {
       return;
     }
     setLoading(true);
-    fetch(`https://nodes-blog-api-production.up.railway.app/user/${authorId}`, {
-      credentials: "include",
-    })
+    fetch(
+      `https://nodes-blog-api-production.up.railway.app/user/admin/${authorId}`,
+      {
+        credentials: "include",
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         authorCache[authorId] = data.user;

@@ -109,7 +109,7 @@ export default function DashboardHeader() {
       >
         {loading ? (
           ""
-        ) : author.profilePicture ? (
+        ) : author?.profilePicture ? (
           <img
             src={formatCloudinaryUrl(author.profilePicture, {
               width: 41,
@@ -123,7 +123,7 @@ export default function DashboardHeader() {
             className="nav-pp"
           />
         ) : (
-          author.username.charAt(0)
+          author?.username.charAt(0)
         )}
       </button>
     </header>
