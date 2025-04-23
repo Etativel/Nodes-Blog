@@ -62,7 +62,8 @@ router.post("/login", (req, res, next) => {
         res.cookie("admintoken", token, {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
-          sameSite: "strict",
+          sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+          path: "/",
           maxAge: 7 * 24 * 60 * 60 * 1000,
           // maxAge: 30000,
         });
@@ -76,7 +77,8 @@ router.post("/logout", (req, res) => {
   res.clearCookie("admintoken", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    path: "/",
   });
   res.json({ message: "Logged out successfully" });
 });
