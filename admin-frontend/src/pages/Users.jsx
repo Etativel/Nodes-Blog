@@ -410,7 +410,10 @@ export default function Users() {
   }
 
   function redirectPost(postId) {
-    window.open(`http://localhost:5173/post/${postId}`, "_blank");
+    window.open(
+      `https://nodes-blog-user-frontend.up.railway.app/post/${postId}`,
+      "_blank"
+    );
   }
 
   return (

@@ -303,7 +303,7 @@ export default function Dashboard() {
                           <div className="text-sm font-medium text-gray-900">
                             <a
                               className="text-sm font-medium hover:underline cursor-pointer"
-                              href={`http://localhost:5173/@${report.author.username}`}
+                              href={`https://nodes-blog-user-frontend.up.railway.app/@${report.author.username}`}
                             >
                               {report.author.username}
                             </a>
@@ -314,7 +314,7 @@ export default function Dashboard() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <a
                         className="text-sm font-medium text-blue-600 hover:underline"
-                        href={`http://localhost:5173/post/${report.postId}`}
+                        href={`https://nodes-blog-user-frontend.up.railway.app/post/${report.postId}`}
                       >
                         {report.postTitle.length > 50
                           ? report.postTitle.slice(0, 50).trim() + "..."

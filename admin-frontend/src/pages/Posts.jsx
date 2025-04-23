@@ -538,7 +538,7 @@ export default function Posts() {
                           size="small"
                           color="secondary"
                           // sx={{ mr: 1 }}
-                          href={`http://localhost:5173/post/${post.id}`}
+                          href={`https://nodes-blog-user-frontend.up.railway.app/post/${post.id}`}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
