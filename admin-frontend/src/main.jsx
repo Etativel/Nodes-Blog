@@ -5,7 +5,6 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import App from "./App.jsx";
 import DashboardLogin from "./pages/DashboardLogin.jsx";
-// import NotFound from "./pages/NotFound.jsx";
 
 const router = createBrowserRouter([
   {
@@ -32,11 +31,6 @@ const router = createBrowserRouter([
         path: "comments",
         lazy: () => import("./pages/Comments.jsx"),
       },
-
-      // {
-      //   path: "*",
-      //   element: <NotFound />, // fallback 404 route
-      // },
     ],
   },
 ]);
