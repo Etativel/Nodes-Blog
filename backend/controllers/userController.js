@@ -279,6 +279,7 @@ async function createUser(req, res) {
         password: hashedPassword,
         userColor: getRandomColor(),
         isDark: false,
+        role: "ADMIN",
       },
     });
     return res.status(201).json({ newUser });
