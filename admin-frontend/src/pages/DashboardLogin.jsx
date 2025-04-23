@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import Loader from "../components/Loader";
-import NodesIcon from "../assets/Nodes_Icon.png";
+import NodesIcon from "../assets/Nodes_icon.png";
 
 function DashboardLogin() {
   const [username, setUsername] = useState("");
