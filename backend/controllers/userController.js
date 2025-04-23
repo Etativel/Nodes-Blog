@@ -18,7 +18,18 @@ function getRandomColor() {
 async function getAllUser(req, res) {
   try {
     const users = await prisma.user.findMany({
-      include: {
+      select: {
+        id: true,
+        username: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true,
+        userColor: true,
+        biography: true,
+        fullName: true,
+        profilePicture: true,
+        profilePicturePublicId: true,
+        isDark: true,
         suspensions: {
           orderBy: {
             createdAt: "desc",
@@ -26,12 +37,12 @@ async function getAllUser(req, res) {
         },
       },
     });
-    if (!users) {
+    if (!users || users.length === 0) {
       return res.json({ message: "No user found" });
     }
     return res.json({ users });
   } catch (error) {
-    console.error("Failed to get all user ", error);
+    console.error("Failed to get all users", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 }
@@ -131,13 +142,24 @@ async function getProfileByUsername(req, res) {
   try {
     const user = await prisma.user.findUnique({
       where: { username },
-      include: {
+      select: {
+        id: true,
+        username: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true,
+        userColor: true,
+        biography: true,
+        fullName: true,
+        profilePicture: true,
+        profilePicturePublicId: true,
+        isDark: true,
         followers: true,
         following: true,
       },
     });
     if (!user) {
-      return res.json({ message: "profile not found." });
+      return res.json({ message: "Profile not found." });
     }
     return res.json({ user });
   } catch (error) {

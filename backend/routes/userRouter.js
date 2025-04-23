@@ -4,12 +4,20 @@ const userController = require("../controllers/userController");
 const upload = require("../config/multerConfig");
 const { authenticateToken } = require("./auth.js");
 const { authorizeUser } = require("../middlewares/authorizeUser.js");
-router.post(
-  "/check-username",
+const createLimiter = require("../utils/limiter.js");
 
-  userController.getUserByUsername
+const userLimiter = createLimiter({ windowMs: 5 * 60 * 1000, max: 5 });
+
+router.post("/check-username", userLimiter, userController.getUserByUsername);
+router.post("/check-email", userLimiter, userController.getUserByEmail);
+router.post("/create", userLimiter, userController.createUser);
+router.post(
+  "/toggle-theme/:userId",
+  authenticateToken,
+  userController.toggleTheme
 );
-router.post("/check-email", userController.getUserByEmail);
+
+// Routes without rate limiter (just token/auth middlewares)
 router.get(
   "/user-by-username/:username",
   authenticateToken,
@@ -17,13 +25,9 @@ router.get(
 );
 router.get("/:userId", authenticateToken, userController.getSpecificUser);
 router.get("/", authenticateToken, userController.getAllUser);
-router.post("/create", userController.createUser);
-router.delete(
-  "/delete/:userId",
-  // authorizeUser,
-  authenticateToken,
-  userController.deleteUser
-);
+
+router.delete("/delete/:userId", authenticateToken, userController.deleteUser);
+
 router.patch(
   "/update/:userId",
   authorizeUser,
@@ -33,24 +37,17 @@ router.patch(
 router.patch(
   "/update-field/:userId",
   authenticateToken,
-  // authorizeUser,
   userController.updateUserField
 );
 router.patch(
   "/profile/update",
   authenticateToken,
-  // authorizeUser,
   upload.single("profilePicture"),
   userController.updateProfile
 );
 router.patch("/follow", authenticateToken, userController.followUser);
 router.patch("/unfollow", authenticateToken, userController.unFollowUser);
-router.post(
-  "/toggle-theme/:userId",
-  authenticateToken,
-  // authorizeUser,
-  userController.toggleTheme
-);
+
 router.get("/get-theme/:userId", authenticateToken, userController.getTheme);
 
 module.exports = router;
