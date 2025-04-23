@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const commentController = require("../controllers/commentController");
-const { authenticateToken } = require("./auth.js");
+const authenticateEither = require("../middlewares/authEither.js");
+
 const { isCommentOwner } = require("../middlewares/isCommentOwner.js");
 const createLimiter = require("../utils/limiter.js");
 
@@ -14,41 +15,41 @@ const commentActionLimiter = createLimiter({
   max: 20,
 });
 
-router.get("/", authenticateToken, commentController.getAllComment);
+router.get("/", authenticateEither, commentController.getAllComment);
 router.get(
   "/:commentId",
-  authenticateToken,
+  authenticateEither,
   commentController.getSpecificComment
 );
 
 router.post(
   "/create",
-  authenticateToken,
+  authenticateEither,
   commentCreateLimiter,
   commentController.addComment
 );
 router.post(
   "/reaction/toggle",
-  authenticateToken,
+  authenticateEither,
   commentActionLimiter,
   commentController.toggleReaction
 );
 router.post(
   "/report/:commentId",
-  authenticateToken,
+  authenticateEither,
   commentActionLimiter,
   commentController.reportComment
 );
 
 router.patch(
   "/update/:commentId",
-  authenticateToken,
+  authenticateEither,
   isCommentOwner,
   commentController.updateComment
 );
 router.delete(
   "/delete/:commentId",
-  authenticateToken,
+  authenticateEither,
   isCommentOwner,
   commentController.deleteComment
 );

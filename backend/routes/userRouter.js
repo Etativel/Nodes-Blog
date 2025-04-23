@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/userController");
 const upload = require("../config/multerConfig");
-const { authenticateToken } = require("./auth.js");
+
+const authenticateEither = require("../middlewares/authEither.js");
 const { authorizeUser } = require("../middlewares/authorizeUser.js");
 const createLimiter = require("../utils/limiter.js");
 
@@ -13,41 +14,41 @@ router.post("/check-email", userLimiter, userController.getUserByEmail);
 router.post("/create", userLimiter, userController.createUser);
 router.post(
   "/toggle-theme/:userId",
-  authenticateToken,
+  authenticateEither,
   userController.toggleTheme
 );
 
 // Routes without rate limiter (just token/auth middlewares)
 router.get(
   "/user-by-username/:username",
-  authenticateToken,
+  authenticateEither,
   userController.getProfileByUsername
 );
-router.get("/:userId", authenticateToken, userController.getSpecificUser);
-router.get("/", authenticateToken, userController.getAllUser);
+router.get("/:userId", authenticateEither, userController.getSpecificUser);
+router.get("/", authenticateEither, userController.getAllUser);
 
-router.delete("/delete/:userId", authenticateToken, userController.deleteUser);
+router.delete("/delete/:userId", authenticateEither, userController.deleteUser);
 
 router.patch(
   "/update/:userId",
   authorizeUser,
-  authenticateToken,
+  authenticateEither,
   userController.updateUser
 );
 router.patch(
   "/update-field/:userId",
-  authenticateToken,
+  authenticateEither,
   userController.updateUserField
 );
 router.patch(
   "/profile/update",
-  authenticateToken,
+  authenticateEither,
   upload.single("profilePicture"),
   userController.updateProfile
 );
-router.patch("/follow", authenticateToken, userController.followUser);
-router.patch("/unfollow", authenticateToken, userController.unFollowUser);
+router.patch("/follow", authenticateEither, userController.followUser);
+router.patch("/unfollow", authenticateEither, userController.unFollowUser);
 
-router.get("/get-theme/:userId", authenticateToken, userController.getTheme);
+router.get("/get-theme/:userId", authenticateEither, userController.getTheme);
 
 module.exports = router;

@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const postController = require("../controllers/postController");
-const { authenticateToken } = require("./auth.js");
+const authenticateEither = require("../middlewares/authEither.js");
+
 const { isOwner } = require("../middlewares/isOwner.js");
 const upload = require("../config/multerConfig");
 const { isAdmin } = require("./adminAuth.js");
@@ -12,13 +13,13 @@ const postCreateLimiter = createLimiter({ windowMs: 30 * 60 * 1000, max: 5 });
 
 router.get(
   "/featured-n-trending-post",
-  authenticateToken,
+  authenticateEither,
   postController.getFeaturedPost
 );
-router.get("/by/:username", authenticateToken, postController.getUserPosts);
-router.get("/filter", authenticateToken, postController.getFilteredPost);
-router.get("/:postId", authenticateToken, postController.getPost);
-router.get("/", authenticateToken, postController.getAllPost);
+router.get("/by/:username", authenticateEither, postController.getUserPosts);
+router.get("/filter", authenticateEither, postController.getFilteredPost);
+router.get("/:postId", authenticateEither, postController.getPost);
+router.get("/", authenticateEither, postController.getAllPost);
 
 router.post(
   "/create",
@@ -28,25 +29,25 @@ router.post(
 );
 router.post(
   "/:postId/like",
-  authenticateToken,
+  authenticateEither,
   postActionLimiter,
   postController.toggleLike
 );
 router.post(
   "/:postId/bookmark",
-  authenticateToken,
+  authenticateEither,
   postActionLimiter,
   postController.toggleBookmark
 );
 router.post(
   "/report/:postId",
-  authenticateToken,
+  authenticateEither,
   postActionLimiter,
   postController.reportPost
 );
 router.post(
   "/feature-post/:postId",
-  authenticateToken,
+  authenticateEither,
   isAdmin,
   postActionLimiter,
   postController.toggleFeatured
@@ -54,20 +55,20 @@ router.post(
 
 router.put(
   "/update/:postId",
-  authenticateToken,
+  authenticateEither,
   isOwner,
   upload.single("thumbnail"),
   postController.simpleUpdatePost
 );
 router.put(
   "/publish/:postId",
-  authenticateToken,
+  authenticateEither,
   isOwner,
   postController.togglePublish
 );
 router.delete(
   "/delete/:postId",
-  authenticateToken,
+  authenticateEither,
   isOwner,
   postController.deletePost
 );
