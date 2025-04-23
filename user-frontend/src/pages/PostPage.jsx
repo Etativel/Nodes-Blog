@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams, Navigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PostHead from "../components/PostHead";
 import "../styles/PostPage.css";
 import Loader from "../components/Loader";
@@ -46,6 +46,16 @@ function PostPage() {
     fetchCurrentPost();
   }, [postId, navigate]);
 
+  useEffect(() => {
+    if (post?.content && window.hljs) {
+      setTimeout(() => {
+        document.querySelectorAll("pre code").forEach((block) => {
+          window.hljs.highlightElement(block);
+        });
+      }, 1000);
+    }
+  }, [post?.content]);
+
   return (
     <>
       <div className="blog-post-container">
@@ -77,6 +87,7 @@ function PostPage() {
                 <p>No current post</p>
               )}
             </div>
+
             <div className="liner">&nbsp;</div>
             <CommentSection
               postId={postId}

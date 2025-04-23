@@ -262,12 +262,25 @@ function Write() {
             "code",
             "help",
             "wordcount",
+            "codesample",
+          ],
+          codesample_languages: [
+            { text: "HTML/XML", value: "markup" },
+            { text: "JavaScript", value: "javascript" },
+            { text: "CSS", value: "css" },
+            { text: "PHP", value: "php" },
+            { text: "Ruby", value: "ruby" },
+            { text: "Python", value: "python" },
+            { text: "Java", value: "java" },
+            { text: "C", value: "c" },
+            { text: "C#", value: "csharp" },
+            { text: "C++", value: "cpp" },
           ],
           toolbar:
             "undo redo | blocks | " +
             "bold italic forecolor | alignleft aligncenter " +
             "alignright alignjustify | bullist numlist outdent indent | " +
-            "removeformat | image | help",
+            "removeformat | image | help | codesample",
           images_dataimg_filter: () => false,
         }}
       />

@@ -62,6 +62,18 @@
   color: var(--text-color);
 }
 
+.post-container pre {
+  font-size: 0.85rem;
+  line-height: 1.4;
+  padding: 0.75rem;
+  overflow: auto;
+}
+
+.post-container code {
+  font-size: inherit;
+  font-family: "Fira Code", monospace;
+}
+
 @media (max-width: 500px) {
   .blog-post-container
     img:not(

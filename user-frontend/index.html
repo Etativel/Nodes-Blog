@@ -10,6 +10,10 @@
       content="Node is a modern blogging platform where writers share ideas, stories, and insights. Read and publish with simplicity and style."
     />
     <title>Nodes</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/default.min.css"
+    />
     <script>
       const theme = localStorage.getItem("theme");
       if (theme === "dark") {
@@ -25,5 +29,9 @@
     <script type="module" src="/src/main.jsx"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/easing/EasePack.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenLite.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
   </body>
 </html>

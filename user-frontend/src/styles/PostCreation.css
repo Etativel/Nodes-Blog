@@ -379,6 +379,18 @@
   color: white;
 }
 
+.preview-post-container .post-preview pre {
+  font-size: 0.85rem;
+  line-height: 1.4;
+  padding: 0.75rem;
+  overflow: auto;
+}
+
+.preview-post-container .post-preview code {
+  font-size: inherit;
+  font-family: "Fira Code", monospace;
+}
+
 @media (max-width: 640px) {
   .sub-input-ctr {
     display: flex;
