@@ -894,15 +894,15 @@ export default function Comments() {
         <DialogActions>
           {selectedComment && (
             <>
-              <Button
-                onClick={() => {
-                  handleCloseDetails();
-                  handleOpenReview(selectedComment, "APPROVE");
-                }}
-                color="primary"
-              >
-                Approve
-              </Button>
+              {/* <Button */}
+              {/* onClick={() => { */}
+              {/* handleCloseDetails(); */}
+              {/* handleOpenReview(selectedComment, "APPROVE"); */}
+              {/* }} */}
+              {/* color="primary" */}
+              {/* > */}
+              {/* Approve */}
+              {/* </Button> */}
               <Button
                 onClick={() => {
                   handleCloseDetails();
