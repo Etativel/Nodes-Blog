@@ -5,6 +5,14 @@
   height: 100vh;
   background-color: blue;
 } */
+
+.landing-canvas {
+  width: 100%;
+  height: 100vh;
+  overflow-y: none;
+  overflow-x: none;
+}
+
 .landing-container {
   position: relative;
   display: flex;

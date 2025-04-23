@@ -189,7 +189,7 @@
   flex-direction: column;
   padding: 12px;
   gap: 12px;
-  padding-left: 24px;
+  /* padding-left: 24px; */
   border-radius: 3px;
   background-color: white;
   display: flex;
@@ -208,6 +208,7 @@
 .click-to-edit {
   color: #6b6b6b;
   cursor: pointer;
+  text-align: center;
 }
 
 .click-to-edit:hover {
