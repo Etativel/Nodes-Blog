@@ -59,7 +59,7 @@ Nodes is a blogging platform where writers can easily share their ideas, stories
 ### Infrastructure
 
 <p align="center">
-  <img src="./public/Nodes architecture.png" alt="Nodes Platform" width="250" height="250" />
+  <img src="./public/Nodes architecture.png" alt="Nodes Platform"  width="650" height="180" />
 </p>
 
 ### Technology Stack
