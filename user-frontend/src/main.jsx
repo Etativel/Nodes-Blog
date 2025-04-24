@@ -11,6 +11,7 @@ import PostCreation from "./pages/PostCreation.jsx";
 import PreviewPost from "./components/PreviewPost.jsx";
 import WritePost from "./components/WritePost.jsx";
 import NotFound from "./pages/NotFound.jsx";
+import SearchPage from "./pages/SearchPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: "/post/:postId",
         element: <PostPage />,
+      },
+      {
+        path: "/search",
+        element: <SearchPage />,
       },
       {
         path: "/creator",

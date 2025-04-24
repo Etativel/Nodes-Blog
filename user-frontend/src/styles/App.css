@@ -45,6 +45,7 @@ html {
   --submit-btn-bg: #156d12;
   --submit-btn-border: #156d12;
   --submit-btn-color: #156d12;
+  --submit-btn-hover-bg: #135c10;
 
   --dialog-input-bg: #f1f5f9;
   --dialog-input-text: #1a1a1a;
@@ -74,6 +75,7 @@ html {
   --submit-btn-bg: #4caf50;
   --submit-btn-border: #4caf50;
   --submit-btn-color: #4caf50;
+  --submit-btn-hover-bg: #43a047;
 
   --dialog-input-bg: #2a2a2a;
   --dialog-input-text: #f5f5f5;

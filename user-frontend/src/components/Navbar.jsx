@@ -1,11 +1,9 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/Navbar.css";
 import { useRef, useEffect, useContext, useState } from "react";
 import ProfileContext from "../contexts/context-create/ProfileContext";
 import PostContext from "../contexts/context-create/PostContext";
 import formatCloudinaryUrl from "../utils/cloudinaryUtils";
-import LightModeSharpIcon from "@mui/icons-material/LightModeSharp";
-import ModeNightSharpIcon from "@mui/icons-material/ModeNightSharp";
 import ThemeContext from "../contexts/context-create/ThemeContext";
 function Navigation() {
   const navbarRef = useRef(null);
@@ -19,6 +17,10 @@ function Navigation() {
   const { author, loading } = useContext(ProfileContext);
   const { setPostToEdit } = useContext(PostContext);
   const { isDark, toggleDark } = useContext(ThemeContext);
+
+  const location = useLocation();
+  const hideSearchBar = location.pathname.includes("/search");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     if (isOpen) {
@@ -110,6 +112,21 @@ function Navigation() {
     window.location = "https://nodes-blog-admin-frontend.up.railway.app/login";
   }
 
+  function redirectToSearch() {
+    navigate("/search");
+  }
+
+  function redirectToHome() {
+    navigate("/posts");
+  }
+
+  function handleSearch(e) {
+    if (e.key === "Enter" && searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery("");
+    }
+  }
+
   return (
     <div className="navigation-container" ref={navbarRef}>
       <div className="profile-dropdown" ref={dropdown}>
@@ -185,9 +202,12 @@ function Navigation() {
         </ul>
       </div>
       <h2 className="webtitle">
-        <a href="/posts">Nodes</a>
+        <a onClick={redirectToHome}>Nodes</a>
       </h2>
-      <button className="search-btn">
+      <button
+        className={`search-btn ${hideSearchBar && "hidden"}`}
+        onClick={redirectToSearch}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -203,7 +223,7 @@ function Navigation() {
           />
         </svg>
       </button>
-      <div className="search-container">
+      <div className={`search-container ${hideSearchBar && "hidden"}`}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -219,7 +239,14 @@ function Navigation() {
           />
         </svg>
 
-        <input type="text" placeholder="Search" className="post-search-input" />
+        <input
+          type="text"
+          placeholder="Search"
+          className="post-search-input"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={handleSearch}
+        />
       </div>
 
       <div className="profile-container">
