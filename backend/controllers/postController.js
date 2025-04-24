@@ -618,6 +618,52 @@ async function getFeaturedPost(req, res) {
   }
 }
 
+async function searchPost(req, res) {
+  const { q } = req.query;
+
+  if (!q || q.trim() === "") {
+    return res.status(200).json([]);
+  }
+  const query = q.toLowerCase();
+
+  try {
+    const posts = await prisma.post.findMany({
+      where: {
+        OR: [
+          { title: { contains: query, mode: "insensitive" } },
+          { excerpt: { contains: query, mode: "insensitive" } },
+          // { tags: { has: query } },
+          {
+            author: {
+              username: {
+                contains: query,
+                mode: "insensitive",
+              },
+            },
+          },
+        ],
+      },
+      include: {
+        author: {
+          select: {
+            username: true,
+            profilePicture: true,
+            fullName: true,
+            userColor: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error("Error searching posts", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 module.exports = {
   getAllPost,
   getPost,
@@ -634,4 +680,5 @@ module.exports = {
   reportPost,
   getFeaturedPost,
   toggleFeatured,
+  searchPost,
 };

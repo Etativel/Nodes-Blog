@@ -11,6 +11,18 @@ const createLimiter = require("../utils/limiter.js");
 const postActionLimiter = createLimiter({ windowMs: 10 * 60 * 1000, max: 20 });
 const postCreateLimiter = createLimiter({ windowMs: 30 * 60 * 1000, max: 5 });
 
+const postSearchLimiter = createLimiter({
+  windowMs: 10 * 60 * 1000,
+  max: 50,
+});
+
+router.get(
+  "/search",
+  // authenticateEither,
+  postSearchLimiter,
+  postController.searchPost
+);
+
 router.get(
   "/featured-n-trending-post",
   authenticateEither,
