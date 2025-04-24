@@ -3,137 +3,6 @@ import { useLocation, Link, useNavigate } from "react-router-dom";
 import "../styles/SearchPage.css";
 import formatCloudinaryUrl from "../utils/cloudinaryUtils";
 
-// Dummy data for demonstration
-const DUMMY_POSTS = [
-  {
-    _id: "1",
-    title:
-      "Getting Started with React and TypeScript Getting Started with React and TypeScriptGetting Started with React and TypeScriptGetting Started with React and TypeScriptGetting Started with React and TypeScriptGetting Started with React and TypeScriptGetting Started with React and TypeScriptGetting Started with React and TypeScriptGetting Started with React and TypeScriptGetting Started with React and TypeScriptGetting Started with React and TypeScriptGetting Started with React and TypeScriptGetting Started with React and TypeScriptGetting Started with React and TypeScriptGetting Started with React and TypeScriptGetting Started with React and TypeScriptGetting Started with React and TypeScriptGetting Started with React and TypeScriptGetting Started with React and TypeScriptGetting Started with React and TypeScriptGetting Started with React and TypeScript",
-    excerpt:
-      "Learn how to set up a new project with React and TypeScript. This guide covers installation, configuration, and basic concepts. ",
-    author: {
-      username: "reactdev",
-      profilePicture: "",
-      userColor: "#3498db",
-    },
-    createdAt: "2025-03-15T10:20:30Z",
-    tags: ["react", "typescript", "frontend"],
-    readTime: 5,
-  },
-  {
-    _id: "2",
-    title: "Advanced Node.js Patterns",
-    excerpt:
-      "Explore advanced design patterns for Node.js applications. Topics include dependency injection, module architecture, and performance optimization.",
-    author: {
-      username: "nodemaster",
-      profilePicture: "",
-      userColor: "#27ae60",
-    },
-    createdAt: "2025-04-01T09:15:22Z",
-    tags: ["node.js", "javascript", "backend"],
-    readTime: 8,
-  },
-  {
-    _id: "2",
-    title: "Advanced Node.js Patterns",
-    excerpt:
-      "Explore advanced design patterns for Node.js applications. Topics include dependency injection, module architecture, and performance optimization.",
-    author: {
-      username: "nodemaster",
-      profilePicture: "",
-      userColor: "#27ae60",
-    },
-    createdAt: "2025-04-01T09:15:22Z",
-    tags: ["node.js", "javascript", "backend"],
-    readTime: 8,
-  },
-  {
-    _id: "2",
-    title: "Advanced Node.js Patterns",
-    excerpt:
-      "Explore advanced design patterns for Node.js applications. Topics include dependency injection, module architecture, and performance optimization.",
-    author: {
-      username: "nodemaster",
-      profilePicture: "",
-      userColor: "#27ae60",
-    },
-    createdAt: "2025-04-01T09:15:22Z",
-    tags: ["node.js", "javascript", "backend"],
-    readTime: 8,
-  },
-  {
-    _id: "2",
-    title: "Advanced Node.js Patterns",
-    excerpt:
-      "Explore advanced design patterns for Node.js applications. Topics include dependency injection, module architecture, and performance optimization.",
-    author: {
-      username: "nodemaster",
-      profilePicture: "",
-      userColor: "#27ae60",
-    },
-    createdAt: "2025-04-01T09:15:22Z",
-    tags: ["node.js", "javascript", "backend"],
-    readTime: 8,
-  },
-  {
-    _id: "2",
-    title: "Advanced Node.js Patterns",
-    excerpt:
-      "Explore advanced design patterns for Node.js applications. Topics include dependency injection, module architecture, and performance optimization.",
-    author: {
-      username: "nodemaster",
-      profilePicture: "",
-      userColor: "#27ae60",
-    },
-    createdAt: "2025-04-01T09:15:22Z",
-    tags: ["node.js", "javascript", "backend"],
-    readTime: 8,
-  },
-  {
-    _id: "3",
-    title: "CSS Grid vs Flexbox",
-    excerpt:
-      "A comprehensive comparison of CSS Grid and Flexbox. Learn when to use each layout system for optimal results in your web projects.",
-    author: {
-      username: "cssartist",
-      profilePicture: "",
-      userColor: "#9b59b6",
-    },
-    createdAt: "2025-04-10T14:30:45Z",
-    tags: ["css", "web design", "frontend"],
-    readTime: 6,
-  },
-  {
-    _id: "4",
-    title: "Building RESTful APIs with Express",
-    excerpt:
-      "This tutorial walks through creating a complete RESTful API using Express.js. Includes authentication, validation, and error handling.",
-    author: {
-      username: "apibuilder",
-      profilePicture: "",
-      userColor: "#e74c3c",
-    },
-    createdAt: "2025-04-18T11:25:18Z",
-    tags: ["express", "node.js", "api", "backend"],
-    readTime: 10,
-  },
-  {
-    _id: "5",
-    title: "State Management in React",
-    excerpt:
-      "An overview of different state management approaches in React applications, from useState and useContext to Redux and Zustand.",
-    author: {
-      username: "reactdev",
-      profilePicture: "",
-      userColor: "#3498db",
-    },
-    createdAt: "2025-04-22T16:40:12Z",
-    tags: ["react", "state management", "frontend"],
-    readTime: 7,
-  },
-];
-
 function SearchPage() {
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -149,7 +18,7 @@ function SearchPage() {
 
   useEffect(() => {
     const fetchSearchResults = async () => {
-      // If empty search or same as previous search, don't fetch
+      // if empty search or same as previous search, don't fetch
       if (!searchQuery.trim() || searchQuery === prevSearchQuery) {
         setIsLoading(false);
         return;
@@ -171,9 +40,7 @@ function SearchPage() {
           }
         );
         const data = await res.json();
-        // Make sure data is an array before setting state
         setSearchResults(Array.isArray(data) ? data : []);
-        // Update previous search query
         setPrevSearchQuery(searchQuery);
       } catch (err) {
         console.error("Failed to fetch search results:", err);
@@ -184,42 +51,7 @@ function SearchPage() {
     };
 
     fetchSearchResults();
-  }, [searchQuery]);
-
-  useEffect(() => {
-    const fetchSearchResults = async () => {
-      if (!searchQuery.trim()) {
-        setSearchResults([]);
-        return;
-      }
-
-      setIsLoading(true);
-
-      try {
-        const res = await fetch(
-          `http://localhost:3000/post/search?q=${encodeURIComponent(
-            searchQuery
-          )}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-          }
-        );
-        const data = await res.json();
-        setSearchResults(Array.isArray(data) ? data : []);
-      } catch (err) {
-        console.error("Failed to fetch search results:", err);
-        setSearchResults([]);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchSearchResults();
-  }, [searchQuery]);
+  }, [searchQuery, prevSearchQuery]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -327,7 +159,7 @@ function SearchPage() {
 
           <div className="search-results-list">
             {searchResults.map((post) => (
-              <div key={post._id} className="post-card">
+              <div key={post.id} className="post-card">
                 <Link to={`/post/${post.id}`} className="post-link">
                   <h2 className="post-title">
                     {post.title.length > 50
