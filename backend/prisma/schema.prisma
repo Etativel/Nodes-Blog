@@ -5,7 +5,7 @@
   datasource db {
     provider = "postgresql"
     url      = env("DATABASE_URL")
-    // directUrl = env("DIRECT_URL") 
+    directUrl = env("DIRECT_URL") 
   }
 
   model User {
@@ -76,6 +76,8 @@
 
     isFeatured Boolean   @default(false)
     featuredAt DateTime? 
+
+    tags                Tag[]        @relation("PostTags")
   }
 
   model Comment {
@@ -149,6 +151,12 @@ model Suspension {
   expiresAt   DateTime? 
   liftedAt    DateTime? 
   liftReason  String?   
+}
+
+model Tag {
+  id    String @id @default(uuid())
+  name  String @unique
+  posts Post[] @relation("PostTags")
 }
 
   enum ReportType {
