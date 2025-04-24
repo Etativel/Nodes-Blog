@@ -130,6 +130,7 @@ async function getPost(req, res) {
                 fullName: true,
                 profilePicture: true,
                 userColor: true,
+                role: true,
               },
             },
           },
