@@ -27,8 +27,8 @@ Nodes is a blogging platform where writers can easily share their ideas, stories
 
 **Production Environment:**
 
-- [User Portal](https://nodes-blog-user-frontend.up.railway.app/posts)
-- [Administration Panel](https://nodes-blog-admin-frontend.up.railway.app/)
+- [User Frontend](https://nodes-blog-user-frontend.up.railway.app/posts)
+- [Admin Panel](https://nodes-blog-admin-frontend.up.railway.app/)
 
 ## Key Features
 
