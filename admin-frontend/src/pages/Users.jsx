@@ -636,7 +636,7 @@ export default function Users() {
                         alt={user.username}
                         sx={{
                           mr: 2,
-                          bgcolor: user.userColor || "primary.main",
+                          bgcolor: user?.userColor || "primary.main",
                         }}
                       >
                         {user.username.charAt(0).toUpperCase()}
