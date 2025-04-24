@@ -156,11 +156,14 @@ a {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-width: 170px;
     background-size: cover;
     background-position: center;
+    /* min-width: 170px;
     width: 10px;
-    height: 120px;
+    height: 120px; */
+    min-width: 120px;
+    width: 10px;
+    height: 80px;
   }
   /* .right {
     display: none;

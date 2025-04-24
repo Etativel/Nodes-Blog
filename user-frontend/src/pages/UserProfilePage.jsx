@@ -933,6 +933,25 @@ function UserProfilePage() {
                     Home
                   </button>
                 </div>
+                {/* <div
+                  className="about-btn-ctr"
+                  style={{
+                    borderBottom:
+                      currentPage === "about" ? "solid black 1px" : "none",
+                  }}
+                >
+                  <button
+                    className={`about-btn ${
+                      currentPage === "about" ? "active" : ""
+                    }`}
+                    onClick={() => {
+                      redirectChildren("list");
+                      sessionStorage.removeItem("profilePosition");
+                    }}
+                  >
+                    List
+                  </button>
+                </div> */}
                 <div
                   className="about-btn-ctr"
                   style={{
