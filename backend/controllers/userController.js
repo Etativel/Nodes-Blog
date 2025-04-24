@@ -214,6 +214,7 @@ async function getProfileByUsername(req, res) {
         isDark: true,
         followers: true,
         following: true,
+        about: true,
       },
     });
     if (!user) {
@@ -442,6 +443,25 @@ async function getTheme(req, res) {
   }
 }
 
+async function updateUserAbout(req, res) {
+  const { userId } = req.params;
+  const { about } = req.body;
+
+  try {
+    const updatedAbout = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        about,
+      },
+    });
+
+    return res.status(200).json({ updatedAbout });
+  } catch (error) {
+    console.error("Failed to update user about", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 module.exports = {
   getAllUser,
   createUser,
@@ -458,4 +478,5 @@ module.exports = {
   getSpecificAdmin,
   toggleTheme,
   getTheme,
+  updateUserAbout,
 };

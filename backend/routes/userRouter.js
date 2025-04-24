@@ -6,6 +6,9 @@ const upload = require("../config/multerConfig");
 const authenticateEither = require("../middlewares/authEither.js");
 const { authorizeUser } = require("../middlewares/authorizeUser.js");
 const { isAdmin } = require("./adminAuth.js");
+const { isSuperAdmin } = require("./adminAuth.js");
+
+const { isProfileOwner } = require("../middlewares/isProfileOwner.js");
 const createLimiter = require("../utils/limiter.js");
 
 const userLimiter = createLimiter({ windowMs: 5 * 60 * 1000, max: 5 });
@@ -17,6 +20,12 @@ router.post(
   "/toggle-theme/:userId",
   authenticateEither,
   userController.toggleTheme
+);
+router.post(
+  "/update-about",
+  authenticateEither,
+  isProfileOwner,
+  userController.updateUserAbout
 );
 
 // Routes without rate limiter (just token/auth middlewares)
@@ -34,17 +43,25 @@ router.get(
 );
 router.get("/", authenticateEither, userController.getAllUser);
 
-router.delete("/delete/:userId", authenticateEither, userController.deleteUser);
+router.delete(
+  "/delete/:userId",
+  authenticateEither,
+  isSuperAdmin,
+  userController.deleteUser
+);
 
 router.patch(
   "/update/:userId",
   authorizeUser,
   authenticateEither,
+  isProfileOwner,
+
   userController.updateUser
 );
 router.patch(
   "/update-field/:userId",
   authenticateEither,
+  isProfileOwner,
   userController.updateUserField
 );
 router.patch(
