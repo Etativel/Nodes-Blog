@@ -48,10 +48,6 @@
   padding: 12px;
 }
 
-.post-search-input {
-  display: none;
-}
-
 .preview-post-container-write h1,
 .preview-post-container h1 {
   margin-bottom: 0.8em;
@@ -389,6 +385,11 @@
 .preview-post-container .post-preview code {
   font-size: inherit;
   font-family: "Fira Code", monospace;
+}
+
+.continue-editing-text {
+  display: flex;
+  flex-wrap: nowrap;
 }
 
 @media (max-width: 640px) {

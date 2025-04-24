@@ -77,7 +77,7 @@ function PostCreation() {
           ) : (
             <Link to="write-post">
               <div className="write-post-text">
-                <p>Continue Editing</p>
+                <p className="continue-editing-text">Continue Editing</p>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -133,7 +133,7 @@ function PostCreation() {
           ) : (
             <Link to="write-post">
               <div className="write-post-text">
-                <p>Continue Editing</p>
+                <p className="continue-editing-text">Continue Editing</p>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"

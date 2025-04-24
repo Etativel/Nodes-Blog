@@ -1,5 +1,0 @@
-add api limiter
-
-deploy admin panel
-
-don't fetch password and any sensitive data from /user, /user-by-username

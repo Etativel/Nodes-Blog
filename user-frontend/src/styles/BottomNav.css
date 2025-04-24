@@ -1,0 +1,15 @@
+.bottom-nav {
+  position: sticky;
+  bottom: 0;
+  display: none;
+  width: 100vw;
+  height: 50px;
+  background-color: red;
+  z-index: 10;
+}
+
+/* @media (max-width: 960px) {
+  .bottom-nav {
+    display: flex;
+  }
+} */

@@ -7,6 +7,7 @@ import Loader from "./components/Loader";
 import "../src/styles/Loader.css";
 import "../src/styles/App.css";
 import { ThemeProvider } from "./contexts/ThemeProvider";
+import BottomNav from "./components/BottomNav";
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -44,6 +45,7 @@ function App() {
           <PostProvider>
             <Navigation />
             <Outlet />
+            <BottomNav />
           </PostProvider>
         </ThemeProvider>
       </ProfileProvider>
