@@ -1,7 +1,9 @@
 function timePosted(dateString) {
   const date = new Date(dateString);
   const now = new Date();
-  const seconds = Math.round((now - date) / 1000);
+  let seconds = Math.floor((now - date) / 1000);
+
+  if (seconds < 1) seconds = 1;
 
   const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 
@@ -17,7 +19,7 @@ function timePosted(dateString) {
 
   for (const { unit, value } of units) {
     const diff = Math.floor(seconds / value);
-    if (Math.abs(diff) >= 1) {
+    if (diff >= 1) {
       return rtf.format(-diff, unit);
     }
   }

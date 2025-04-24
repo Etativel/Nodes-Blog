@@ -621,12 +621,19 @@ function CommentPreview({
                   onClick={() => redirectToProfilePage(comment.author.username)}
                 >
                   {comment.author.fullName || comment.author.username}
-                  {comment.authorId === postAuthorId ? (
-                    <span className="is-author">Author</span>
-                  ) : (
-                    ""
+                  {(comment.authorId === postAuthorId ||
+                    comment.author.role === "SUPERADMIN") && (
+                    <>
+                      {comment.authorId === postAuthorId && (
+                        <span className="is-author">Author</span>
+                      )}
+                      {comment.author.role === "SUPERADMIN" && (
+                        <span className="is-dev">Dev</span>
+                      )}
+                    </>
                   )}
                 </div>
+
                 <div className="comment-created-at">
                   {timePosted(comment.createdAt)}
                 </div>
@@ -997,7 +1004,7 @@ function CommentSection({ postId, comments, timePosted, postAuthorId }) {
   const [expandedReplies, setExpandedReplies] = useState({});
   const currentEditValue = useRef("");
   // console.log(author);
-  // console.log(commentList);
+  console.log(commentList);
 
   const disableEditSubmit =
     !editContent ||
@@ -1055,6 +1062,7 @@ function CommentSection({ postId, comments, timePosted, postAuthorId }) {
       const response = await fetch(
         `https://nodes-blog-api-production.up.railway.app/post/${postId}`,
         {
+          method: "GET",
           credentials: "include",
         }
       );

@@ -280,6 +280,7 @@
   gap: 12px;
 }
 
+.is-dev,
 .is-author {
   font-size: 0.7rem;
   padding: 2px;
@@ -290,6 +291,10 @@
   border-radius: 3px;
   color: white;
   margin-left: 6px;
+}
+
+.is-dev {
+  background-color: #00bcff;
 }
 
 .comment-bottom {

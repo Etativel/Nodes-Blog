@@ -848,6 +848,7 @@ function UserProfilePage() {
 
   useEffect(() => {
     fetchVisitedUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cleanUsername]);
 
   function redirectChildren(children) {

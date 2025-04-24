@@ -19,6 +19,7 @@ function PostPage() {
         setLoading(true);
         const response = await fetch(
           `https://nodes-blog-api-production.up.railway.app/post/${postId}`,
+
           {
             credentials: "include",
             method: "GET",
