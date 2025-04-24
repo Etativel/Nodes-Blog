@@ -39,6 +39,8 @@
     commentReports CommentReport[]
 
     suspensions Suspension[]
+
+    about String?
   }
 
   model Follower {
