@@ -11,14 +11,16 @@ import Underline from "@tiptap/extension-underline";
 import "../styles/UserAbout.css";
 
 function UserAbout() {
-  const { loading, loadingProfile, visitedUser, author } = useOutletContext();
+  const { loading, loadingProfile, visitedUser, author, fetchVisitedUser } =
+    useOutletContext();
   const [isEditing, setIsEditing] = useState(false);
-  const [bio, setBio] = useState("");
+  const [about, setAbout] = useState("");
+  const [loadingUpdate, setLoadingUpdate] = useState(false);
 
   console.log(visitedUser);
 
   useEffect(() => {
-    setBio(visitedUser?.bio || "");
+    setAbout(visitedUser?.about || "");
   }, [visitedUser]);
 
   const editor = useEditor({
@@ -31,7 +33,7 @@ function UserAbout() {
       Color,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
     ],
-    content: bio || "",
+    content: about || "",
     editorProps: {
       attributes: {
         class: "bio-editor-content",
@@ -40,14 +42,14 @@ function UserAbout() {
       },
     },
     onUpdate: ({ editor }) => {
-      setBio(editor.getHTML());
+      setAbout(editor.getHTML());
     },
   });
 
   useEffect(() => {
-    if (visitedUser?.bio && editor) {
-      editor.commands.setContent(visitedUser.bio);
-      setBio(visitedUser.bio);
+    if (visitedUser?.about && editor) {
+      editor.commands.setContent(visitedUser.about);
+      setAbout(visitedUser.about);
     }
   }, [visitedUser, editor]);
 
@@ -56,10 +58,32 @@ function UserAbout() {
   };
 
   const handleSave = async () => {
+    setLoadingUpdate(true);
+
     try {
+      const response = await fetch(
+        `https://nodes-blog-api-production.up.railway.app/user/update-about/${visitedUser.id}`,
+
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ about }),
+        }
+      );
+      if (!response.ok) {
+        setLoadingUpdate(false);
+        return console.log("Failed to save about");
+      }
+      await response.json();
+      fetchVisitedUser();
+      setLoadingUpdate(false);
       toggleEditor();
     } catch (error) {
-      console.error("Failed to save bio:", error);
+      setLoadingUpdate(false);
+      console.error("Failed to save about:", error);
     }
   };
 
@@ -197,6 +221,7 @@ function UserAbout() {
 
   return (
     <div className="about-container">
+      {loadingUpdate && <div className="loading-spinner-container"></div>}
       {isEditing ? (
         <div className="editor-container">
           {renderToolbar()}
@@ -204,10 +229,20 @@ function UserAbout() {
             <EditorContent editor={editor} />
           </div>
           <div className="editor-actions">
-            <button className="btn btn-cancel" onClick={toggleEditor}>
+            <button
+              className="btn btn-cancel"
+              onClick={() => {
+                toggleEditor();
+                setAbout(visitedUser?.about || "");
+              }}
+            >
               Cancel
             </button>
-            <button className="btn btn-save" onClick={handleSave}>
+            <button
+              disabled={loadingUpdate}
+              className="btn btn-save"
+              onClick={handleSave}
+            >
               Save
             </button>
           </div>
@@ -219,12 +254,12 @@ function UserAbout() {
               <div className="loading-spinner"></div>
               <p>Loading profile...</p>
             </div>
-          ) : bio ? (
+          ) : about !== "<p></p>" && about ? (
             <div className="bio-content">
               {/* <h2 className="bio-title">About {visitedUser?.username}</h2> */}
               <div
                 className="bio-text"
-                dangerouslySetInnerHTML={{ __html: bio }}
+                dangerouslySetInnerHTML={{ __html: about }}
               />
               {isOwnProfile && (
                 <button className="btn btn-edit" onClick={toggleEditor}>

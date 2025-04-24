@@ -822,30 +822,31 @@ function UserProfilePage() {
     fetchUserPost(cleanUsername);
   }, [cleanUsername]);
 
-  useEffect(() => {
-    async function fetchVisitedUser() {
-      setLoadingProfile(true);
-      try {
-        const response = await fetch(
-          `https://nodes-blog-api-production.up.railway.app/user/user-by-username/${cleanUsername.toLowerCase()}`,
-          {
-            credentials: "include",
-            method: "GET",
-          }
-        );
-        if (!response.ok) {
-          setLoadingProfile(false);
-          console.log("no user found");
-          return;
+  async function fetchVisitedUser() {
+    setLoadingProfile(true);
+    try {
+      const response = await fetch(
+        `https://nodes-blog-api-production.up.railway.app/user/user-by-username/${cleanUsername.toLowerCase()}`,
+        {
+          credentials: "include",
+          method: "GET",
         }
-        const data = await response.json();
-        setVisitedUser(data.user);
-      } catch (error) {
-        console.log(error);
-      } finally {
+      );
+      if (!response.ok) {
         setLoadingProfile(false);
+        console.log("no user found");
+        return;
       }
+      const data = await response.json();
+      setVisitedUser(data.user);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingProfile(false);
     }
+  }
+
+  useEffect(() => {
     fetchVisitedUser();
   }, [cleanUsername]);
 
@@ -1029,6 +1030,7 @@ function UserProfilePage() {
                   loading,
                   visitedUser,
                   author,
+                  fetchVisitedUser,
                 }}
               />
             </div>

@@ -118,6 +118,18 @@
   margin-bottom: 1.5rem;
   padding-top: 12px;
   word-break: break-word;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.bio-text > img {
+  max-width: 100%;
+  max-height: calc(100vh - 20px);
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  padding: 12px;
 }
 
 .bio-text p {
