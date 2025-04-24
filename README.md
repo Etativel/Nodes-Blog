@@ -312,14 +312,11 @@ The application requires several environment variables for proper operation:
   - Introduced superadmin/admin/user roles with suspension and activation
   - Configured route protection, CORS, rate limiting, and cookie-based auth
 
-#### 6. Finalization & Build (April 22–23, 2025)
+#### 6. Finalization & Build (April 23–24, 2025)
 
-- **Apr 22**: Build pipeline & CI adjustments
-  - Updated redirection URLs, port configurations, and static assets
+- **Apr 24**: Search and Database query
+  - Replaced client-side filtering with server-side search using Prisma ORM
   - Minor UI refinements for mobile previews and comment styling
-- **Apr 23**: Documentation & deployment
-  - Added comprehensive README file and updated admin redirection logic
-  - Production build and deployment scripts integrated
 
 ## Contributing
 
@@ -333,7 +330,7 @@ Feel free to submit a Pull Request.
 
 ## Contact Information
 
-- **Project Maintainer:** Farhan
+- **Project Maintainer:** Etativel
 - **GitHub Repository:** [https://github.com/Etativel/Nodes-Blog](https://github.com/Etativel/Nodes-Blog)
 
 ## License

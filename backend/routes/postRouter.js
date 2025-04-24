@@ -18,7 +18,7 @@ const postSearchLimiter = createLimiter({
 
 router.get(
   "/search",
-  // authenticateEither,
+  authenticateEither,
   postSearchLimiter,
   postController.searchPost
 );
