@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import TextAlign from "@tiptap/extension-text-align";
+import TextStyle from "@tiptap/extension-text-style";
+import Color from "@tiptap/extension-color";
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import Underline from "@tiptap/extension-underline";
@@ -12,14 +15,30 @@ function UserAbout() {
   const [isEditing, setIsEditing] = useState(false);
   const [bio, setBio] = useState("");
 
+  console.log(visitedUser);
+
+  useEffect(() => {
+    setBio(visitedUser?.bio || "");
+  }, [visitedUser]);
+
   const editor = useEditor({
     extensions: [
       StarterKit,
       Underline,
       Link.configure({ openOnClick: false }),
       Image,
+      TextStyle,
+      Color,
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
     ],
-    content: bio || "<p>Tell something about yourself...</p>",
+    content: bio || "",
+    editorProps: {
+      attributes: {
+        class: "bio-editor-content",
+        style:
+          "min-height: 400px; padding: 1rem; overflow-y: auto; text-align: left;",
+      },
+    },
     onUpdate: ({ editor }) => {
       setBio(editor.getHTML());
     },
@@ -101,6 +120,16 @@ function UserAbout() {
           >
             1. List
           </button>
+          <button
+            type="button"
+            onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+            className={`toolbar-btn ${
+              editor.isActive("codeBlock") ? "active" : ""
+            }`}
+            title="Code Block"
+          >
+            Code
+          </button>
         </div>
 
         <div className="toolbar-group">
@@ -127,6 +156,38 @@ function UserAbout() {
             Image
           </button>
         </div>
+        <div className="toolbar-group">
+          <button
+            type="button"
+            onClick={() => editor.chain().focus().setTextAlign("left").run()}
+            className={`toolbar-btn ${
+              editor.isActive({ textAlign: "left" }) ? "active" : ""
+            }`}
+            title="Align Left"
+          >
+            Left
+          </button>
+          <button
+            type="button"
+            onClick={() => editor.chain().focus().setTextAlign("center").run()}
+            className={`toolbar-btn ${
+              editor.isActive({ textAlign: "center" }) ? "active" : ""
+            }`}
+            title="Align Center"
+          >
+            Center
+          </button>
+          <button
+            type="button"
+            onClick={() => editor.chain().focus().setTextAlign("right").run()}
+            className={`toolbar-btn ${
+              editor.isActive({ textAlign: "right" }) ? "active" : ""
+            }`}
+            title="Align Right"
+          >
+            Right
+          </button>
+        </div>
       </div>
     );
   };
@@ -147,7 +208,7 @@ function UserAbout() {
               Cancel
             </button>
             <button className="btn btn-save" onClick={handleSave}>
-              Save Changes
+              Save
             </button>
           </div>
         </div>
