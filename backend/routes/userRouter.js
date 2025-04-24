@@ -22,7 +22,7 @@ router.post(
   userController.toggleTheme
 );
 router.post(
-  "/update-about",
+  "/update-about/:userId",
   authenticateEither,
   isProfileOwner,
   userController.updateUserAbout
