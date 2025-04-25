@@ -66,12 +66,30 @@ function PostPage() {
           <>
             <PostHead postId={postId} post={post}></PostHead>
 
-            <div className="post-container">
+            {/* This part bellow user the styling from PostPage.css */}
+            {/* <div className="post-container">
               {post && post.content ? (
-                <div dangerouslySetInnerHTML={{ __html: post.content }} />
+                <div
+                  className="post-preview"
+                  dangerouslySetInnerHTML={{ __html: post.content }}
+                />
               ) : (
                 <p>No current post</p>
               )}
+            </div> */}
+
+            {/* This part bellow use the styling from PostCreation.css */}
+            <div className="blog-post-preview">
+              <div className="preview-post-container">
+                {post?.content ? (
+                  <div
+                    className="post-preview"
+                    dangerouslySetInnerHTML={{ __html: post.content }}
+                  />
+                ) : (
+                  <p></p>
+                )}
+              </div>
             </div>
 
             <div className="liner">&nbsp;</div>

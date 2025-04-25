@@ -43,6 +43,7 @@
   color: var(--text-color);
   display: flex;
   align-items: center;
+  word-break: break-word;
 }
 
 .featured-post-title {

@@ -695,6 +695,8 @@
 
 .user-follower-count {
   width: fit-content;
+  display: flex;
+  flex-wrap: nowrap;
   cursor: pointer;
 }
 
