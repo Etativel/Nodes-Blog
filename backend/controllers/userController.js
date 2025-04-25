@@ -216,6 +216,7 @@ async function getProfileByUsername(req, res) {
         isDark: true,
         followers: true,
         following: true,
+        about: true,
         likedPosts: {
           include: {
             author: {
