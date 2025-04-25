@@ -109,7 +109,7 @@ function Navigation() {
   }
 
   function redirectAdminPortal() {
-    window.location = "https://nodes-blog-admin-frontend.up.railway.app/login";
+    window.location = "https://nodes-admin.up.railway.app";
   }
 
   function redirectToSearch() {
