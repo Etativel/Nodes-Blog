@@ -1,4 +1,4 @@
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useParams, Outlet, useNavigate, useLocation } from "react-router-dom";
 import ProfileContext from "../contexts/context-create/ProfileContext";
 import "../styles/UserProfilePage.css";
@@ -84,7 +84,7 @@ function EditProfileDialog({ setIsOpen }) {
     try {
       setUploading(true);
       const response = await fetch(
-        "https://nodes-blog-api-production.up.railway.app/user/profile/update",
+        "http://localhost:3000/user/profile/update",
         {
           method: "PATCH",
           body: formData,
@@ -291,7 +291,7 @@ function UserPostCard({
     try {
       setLoadingPostUpdate(true);
       const response = await fetch(
-        `https://nodes-blog-api-production.up.railway.app/post/delete/${postId}`,
+        `http://localhost:3000/post/delete/${postId}`,
         {
           method: "DELETE",
           credentials: "include",
@@ -314,7 +314,7 @@ function UserPostCard({
     setLoadingPostUpdate(true);
     try {
       const response = await fetch(
-        `https://nodes-blog-api-production.up.railway.app/post/publish/${postId}`,
+        `http://localhost:3000/post/publish/${postId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -641,18 +641,15 @@ function UserSideProfile({
     try {
       let updatedFollowers;
       if (isFollowing) {
-        const response = await fetch(
-          "https://nodes-blog-api-production.up.railway.app/user/unfollow",
-          {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-            body: JSON.stringify({
-              followerId: author.id,
-              followingId: visitedUser.id,
-            }),
-          }
-        );
+        const response = await fetch("http://localhost:3000/user/unfollow", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            followerId: author.id,
+            followingId: visitedUser.id,
+          }),
+        });
 
         if (response.ok) {
           updatedFollowers = followers.filter(
@@ -662,19 +659,16 @@ function UserSideProfile({
           return;
         }
       } else {
-        const response = await fetch(
-          "https://nodes-blog-api-production.up.railway.app/user/follow",
-          {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
+        const response = await fetch("http://localhost:3000/user/follow", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
 
-            credentials: "include",
-            body: JSON.stringify({
-              followerId: author.id,
-              followingId: visitedUser.id,
-            }),
-          }
-        );
+          credentials: "include",
+          body: JSON.stringify({
+            followerId: author.id,
+            followingId: visitedUser.id,
+          }),
+        });
         if (response.ok) {
           updatedFollowers = [...followers, { followerId: author.id }];
         } else {
@@ -689,32 +683,66 @@ function UserSideProfile({
   return (
     <>
       <div className="side-profile-ctr">
-        {loadingProfile ? (
-          ""
-        ) : visitedUser.profilePicture ? (
-          <img
-            src={formatCloudinaryUrl(visitedUser.profilePicture, {
-              width: 80,
-              height: 80,
-              crop: "fit",
-              quality: "auto:best",
-              format: "auto",
-              dpr: 3,
-            })}
-            alt=""
-            className="side-profile-pict"
-          />
-        ) : (
-          <div
-            className="side-profile-pict"
-            style={{
-              backgroundColor: visitedUser.userColor,
-            }}
-          >
-            <p>{visitedUser.username.charAt(0)}</p>
+        <div className="profile-left">
+          {loadingProfile ? (
+            ""
+          ) : visitedUser.profilePicture ? (
+            <img
+              src={formatCloudinaryUrl(visitedUser.profilePicture, {
+                width: 80,
+                height: 80,
+                crop: "fit",
+                quality: "auto:best",
+                format: "auto",
+                dpr: 3,
+              })}
+              alt=""
+              className="side-profile-pict"
+            />
+          ) : (
+            <div
+              className="side-profile-pict"
+              style={{
+                backgroundColor: visitedUser.userColor,
+              }}
+            >
+              <p>{visitedUser.username.charAt(0)}</p>
+            </div>
+          )}
+        </div>
+        {/* <div className="profile-right">
+          <div className="profile-top">
+            <div className="profile-username">
+              <p className="side-profile-username">@{visitedUser.username}</p>
+            </div>
+            {loading ? (
+              ""
+            ) : author.username === pageUsername ? (
+              <button className="edit-profile">Edit profile</button>
+            ) : (
+              <button className="follow-profile">Follow</button>
+            )}
           </div>
-        )}
-
+          <div className="profile-middle">
+            <div className="profile-username"></div>
+            {loading ? (
+              ""
+            ) : author.username === pageUsername ? (
+              <button>Edit profile</button>
+            ) : (
+              <button>Follow</button>
+            )}
+          </div>
+          <div className="profile-bottom">
+            <div className="profile-username"></div>
+            {loading ? (
+              ""
+            ) : author.username === pageUsername ? (
+              <button>Edit profile</button>
+            ) : (
+              <button>Follow</button>
+            )} */}
+        {/* </div> */}
         <div className="side-profile-name-ctr">
           <span className="user-full-name">
             {loadingProfile
@@ -757,6 +785,7 @@ function UserSideProfile({
             {isFollowing ? "Unfollow" : "Follow"}
           </button>
         )}
+        {/* </div> */}
       </div>
     </>
   );
@@ -801,7 +830,7 @@ function UserProfilePage() {
     async function fetchUserPost() {
       try {
         const response = await fetch(
-          `https://nodes-blog-api-production.up.railway.app/post/by/${cleanUsername}`,
+          `http://localhost:3000/post/by/${cleanUsername}`,
           {
             credentials: "include",
             method: "GET",
@@ -828,7 +857,7 @@ function UserProfilePage() {
     setLoadingProfile(true);
     try {
       const response = await fetch(
-        `https://nodes-blog-api-production.up.railway.app/user/user-by-username/${cleanUsername.toLowerCase()}`,
+        `http://localhost:3000/user/user-by-username/${cleanUsername.toLowerCase()}`,
         {
           credentials: "include",
           method: "GET",
@@ -949,25 +978,7 @@ function UserProfilePage() {
                     Home
                   </button>
                 </div>
-                {/* <div
-                  className="about-btn-ctr"
-                  style={{
-                    borderBottom:
-                      currentPage === "about" ? "solid black 1px" : "none",
-                  }}
-                >
-                  <button
-                    className={`about-btn ${
-                      currentPage === "about" ? "active" : ""
-                    }`}
-                    onClick={() => {
-                      redirectChildren("list");
-                      sessionStorage.removeItem("profilePosition");
-                    }}
-                  >
-                    List
-                  </button>
-                </div> */}
+
                 <div
                   className="about-btn-ctr"
                   style={{
@@ -985,6 +996,44 @@ function UserProfilePage() {
                     }}
                   >
                     About
+                  </button>
+                </div>
+                <div
+                  className="liked-btn-ctr"
+                  style={{
+                    borderBottom:
+                      currentPage === "liked" ? "solid black 1px" : "none",
+                  }}
+                >
+                  <button
+                    className={`liked-btn ${
+                      currentPage === "liked" ? "active" : ""
+                    }`}
+                    onClick={() => {
+                      redirectChildren("liked");
+                      sessionStorage.removeItem("profilePosition");
+                    }}
+                  >
+                    Liked
+                  </button>
+                </div>
+                <div
+                  className="saved-btn-ctr"
+                  style={{
+                    borderBottom:
+                      currentPage === "saved" ? "solid black 1px" : "none",
+                  }}
+                >
+                  <button
+                    className={`saved-btn ${
+                      currentPage === "saved" ? "active" : ""
+                    }`}
+                    onClick={() => {
+                      redirectChildren("saved");
+                      sessionStorage.removeItem("profilePosition");
+                    }}
+                  >
+                    Saved
                   </button>
                 </div>
               </div>
@@ -1046,6 +1095,7 @@ function UserProfilePage() {
                   visitedUser,
                   author,
                   fetchVisitedUser,
+                  UserPostCard,
                 }}
               />
             </div>

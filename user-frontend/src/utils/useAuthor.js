@@ -16,7 +16,7 @@ export function useAuthor(authorId) {
       return;
     }
     setLoading(true);
-    fetch(`https://nodes-blog-api-production.up.railway.app/user/${authorId}`, {
+    fetch(`http://localhost:3000/user/${authorId}`, {
       credentials: "include",
     })
       .then((res) => res.json())

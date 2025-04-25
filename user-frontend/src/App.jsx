@@ -13,7 +13,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://nodes-blog-api-production.up.railway.app/auth/profile", {
+    fetch("http://localhost:3000/auth/profile", {
       credentials: "include",
     })
       .then((res) => {

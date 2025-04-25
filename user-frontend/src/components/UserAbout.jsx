@@ -60,7 +60,7 @@ function UserAbout() {
 
     try {
       const response = await fetch(
-        `https://nodes-blog-api-production.up.railway.app/user/update-about/${visitedUser.id}`,
+        `http://localhost:3000/user/update-about/${visitedUser.id}`,
 
         {
           method: "POST",

@@ -19,13 +19,10 @@ function PostsContainer() {
   useEffect(() => {
     async function fetchPosts() {
       try {
-        const response = await fetch(
-          "https://nodes-blog-api-production.up.railway.app/post",
-          {
-            credentials: "include",
-            method: "GET",
-          }
-        );
+        const response = await fetch("http://localhost:3000/post", {
+          credentials: "include",
+          method: "GET",
+        });
         if (!response) {
           throw new Error(`Http error! status ${response.status}`);
         }

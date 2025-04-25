@@ -41,12 +41,16 @@
   max-width: 700px;
 }
 
+.saved-btn-ctr,
+.liked-btn-ctr,
 .home-btn-ctr,
 .about-btn-ctr {
   padding-top: 12px;
   padding-bottom: 12px;
 }
 
+.saved-btn,
+.liked-btn,
 .home-btn,
 .about-btn {
   font-size: 1rem;
@@ -60,11 +64,15 @@
   padding-right: 0px;
 }
 
+.liked-btn.active,
+.saved-btn.active,
 .home-btn.active,
 .about-btn.active {
   color: var(--text-color);
 }
 
+.liked-btn:hover,
+.saved-btn:hover,
 .home-btn:hover,
 .about-btn:hover {
   color: var(--secondary-hover-color);
@@ -179,7 +187,7 @@
 .comment-p {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 1px;
   color: var(--secondary-color);
 }
 
@@ -208,7 +216,33 @@
   top: 64px;
   /* top: 32px; */
   padding: 32px;
+  /* display: flex;
+  background-color: red;
+  gap: 12px;
+  align-items: center; */
 }
+
+/* .profile-right {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.profile-top {
+  display: flex;
+  align-items: center;
+}
+
+.edit-profile {
+  padding: 7px 16px;
+  border-radius: 6px;
+  border: 0px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text-color);
+  background-color: #00bcff;
+  font-size: 1rem;
+  margin-left: auto;
+} */
 
 .side-profile-pict {
   height: 80px;
@@ -653,6 +687,10 @@
   width: 20px;
 }
 
+.postcard-container-profile.saved {
+  padding-right: 12px;
+}
+
 @media (max-width: 500px) {
   .notfound-ctr {
     padding-right: 0px;
@@ -736,6 +774,9 @@
 }
 
 @media (max-width: 900px) {
+  .postcard-container-profile.saved {
+    padding-right: 0px;
+  }
   /* .postcard-flex {
     width: 100%;
   }

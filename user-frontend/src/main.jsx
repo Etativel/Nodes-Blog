@@ -12,6 +12,8 @@ import PreviewPost from "./components/PreviewPost.jsx";
 import WritePost from "./components/WritePost.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import SearchPage from "./pages/SearchPage.jsx";
+import LikedPost from "./components/LikedPost.jsx";
+import SavedPost from "./components/SavedPost.jsx";
 
 const router = createBrowserRouter([
   {
@@ -58,6 +60,14 @@ const router = createBrowserRouter([
           {
             path: "about",
             element: <UserAbout />,
+          },
+          {
+            path: "liked",
+            element: <LikedPost />,
+          },
+          {
+            path: "saved",
+            element: <SavedPost />,
           },
         ],
       },

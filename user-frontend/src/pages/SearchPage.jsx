@@ -28,7 +28,7 @@ function SearchPage() {
 
       try {
         const res = await fetch(
-          `https://nodes-blog-api-production.up.railway.app/post/search?q=${encodeURIComponent(
+          `http://localhost:3000/post/search?q=${encodeURIComponent(
             searchQuery
           )}`,
           {

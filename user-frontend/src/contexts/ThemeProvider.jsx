@@ -43,12 +43,9 @@ export function ThemeProvider({ children }) {
 
     // console.log("Syncing theme with server for user:", author.id);
 
-    fetch(
-      `https://nodes-blog-api-production.up.railway.app/user/get-theme/${author.id}`,
-      {
-        credentials: "include",
-      }
-    )
+    fetch(`http://localhost:3000/user/get-theme/${author.id}`, {
+      credentials: "include",
+    })
       .then((r) => {
         if (!r.ok) throw new Error(`Server returned ${r.status}`);
         return r.json();
@@ -85,15 +82,12 @@ export function ThemeProvider({ children }) {
 
     // console.log("Saving theme to server:", isDark ? "dark" : "light");
 
-    fetch(
-      `https://nodes-blog-api-production.up.railway.app/user/toggle-theme/${author.id}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ isDark }),
-        credentials: "include",
-      }
-    )
+    fetch(`http://localhost:3000/user/toggle-theme/${author.id}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ isDark }),
+      credentials: "include",
+    })
       .then((response) => {
         if (!response.ok)
           throw new Error(`Failed to save theme: ${response.status}`);

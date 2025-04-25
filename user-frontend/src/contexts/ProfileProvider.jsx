@@ -9,12 +9,9 @@ export function ProfileProvider({ children }) {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await fetch(
-          "https://nodes-blog-api-production.up.railway.app/auth/profile",
-          {
-            credentials: "include",
-          }
-        );
+        const response = await fetch("http://localhost:3000/auth/profile", {
+          credentials: "include",
+        });
         const data = await response.json();
         setProfile(data);
       } catch (error) {
