@@ -51,7 +51,7 @@ app.use("/admin-users-api", adminUsersPanelRouter);
 app.use("/admin-comments-api", adminCommentsPanelRouter);
 
 app.get("/", (req, res) => {
-  res.send("Hello");
+  res.status(200).send({ status: "ok" });
 });
 
 const PORT = 3000;

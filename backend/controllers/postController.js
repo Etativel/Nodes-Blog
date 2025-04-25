@@ -87,6 +87,11 @@ async function getAllPost(req, res) {
       },
       include: {
         comments: true,
+        _count: {
+          select: {
+            likedBy: true,
+          },
+        },
       },
       omit: {
         content: true,
@@ -95,7 +100,14 @@ async function getAllPost(req, res) {
         createdAt: "desc",
       },
     });
-    return res.json({ posts });
+
+    const clean = posts.map((post) => ({
+      ...post,
+      likedCount: post._count.likedBy,
+      _count: undefined,
+    }));
+
+    return res.json({ posts: clean });
   } catch (error) {
     console.error("Error fetching posts", error);
     return res.status(500).json({ error: "Internal server error" });
