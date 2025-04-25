@@ -11,7 +11,7 @@ function PostCard({ post }) {
     day: "numeric",
   });
 
-  const titleLength = post.thumbnail === null ? 200 : 50;
+  const titleLength = post.thumbnail === null ? 200 : 80;
 
   const stripTitle =
     post.title.substring(0, titleLength) +

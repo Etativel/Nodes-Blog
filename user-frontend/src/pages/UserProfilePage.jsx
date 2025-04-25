@@ -972,6 +972,13 @@ function UserProfilePage() {
       : location.pathname.split("/").pop();
   const { author, loading } = useContext(ProfileContext);
 
+  useEffect(() => {
+    if (isFollowerDialogOpen) {
+      setIsFollowerDialogOpen(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
+
   const handleRemovePostFromState = (deletedPostId) => {
     setUserPost((prevPosts) =>
       prevPosts.filter((post) => post.id !== deletedPostId)
