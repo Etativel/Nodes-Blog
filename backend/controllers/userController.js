@@ -216,6 +216,46 @@ async function getProfileByUsername(req, res) {
         isDark: true,
         followers: true,
         following: true,
+        likedPosts: {
+          include: {
+            author: {
+              select: {
+                id: true,
+                userColor: true,
+                profilePicture: true,
+                username: true,
+                fullName: true,
+              },
+            },
+            _count: {
+              select: {
+                likedBy: true,
+              },
+            },
+            comments: true,
+            likedBy: true,
+          },
+        },
+        bookmarkedPosts: {
+          include: {
+            author: {
+              select: {
+                id: true,
+                userColor: true,
+                profilePicture: true,
+                username: true,
+                fullName: true,
+              },
+            },
+            _count: {
+              select: {
+                likedBy: true,
+              },
+            },
+            comments: true,
+            likedBy: true,
+          },
+        },
         suspensions: {
           orderBy: {
             createdAt: "desc",
