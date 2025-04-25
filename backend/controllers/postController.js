@@ -76,6 +76,15 @@ async function getLimitPost(req, res) {
 async function getAllPost(req, res) {
   try {
     const posts = await prisma.post.findMany({
+      where: {
+        author: {
+          suspensions: {
+            none: {
+              liftedAt: null,
+            },
+          },
+        },
+      },
       include: {
         comments: true,
       },
@@ -100,6 +109,13 @@ async function getPost(req, res) {
       where: {
         id: postId,
         NOT: { status: "BLOCKED" },
+        author: {
+          suspensions: {
+            none: {
+              liftedAt: null,
+            },
+          },
+        },
       },
 
       include: {

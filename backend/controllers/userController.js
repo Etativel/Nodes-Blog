@@ -216,13 +216,17 @@ async function getProfileByUsername(req, res) {
         isDark: true,
         followers: true,
         following: true,
-        about: true,
+        suspensions: {
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
       },
     });
     if (!user) {
       return res.json({ message: "Profile not found." });
     }
-    if (user.status === "SUSPENDED") {
+    if (user.suspensions[0]?.liftedAt === null) {
       return res.json({ message: "User suspended." });
     }
     return res.json({ user });
