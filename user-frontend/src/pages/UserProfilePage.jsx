@@ -777,7 +777,7 @@ function UserProfilePage() {
   const [error, setError] = useState({});
   const [visitedUser, setVisitedUser] = useState(null);
   // const [isSuspended, setIsSuspended] = useState(false);
-  console.log(visitedUser);
+
   const currentPage =
     location.pathname === `/${username}`
       ? ""

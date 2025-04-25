@@ -1003,8 +1003,6 @@ function CommentSection({ postId, comments, timePosted, postAuthorId }) {
   const [editContent, setEditContent] = useState("");
   const [expandedReplies, setExpandedReplies] = useState({});
   const currentEditValue = useRef("");
-  // console.log(author);
-  console.log(commentList);
 
   const disableEditSubmit =
     !editContent ||

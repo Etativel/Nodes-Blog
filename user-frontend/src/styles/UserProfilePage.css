@@ -175,6 +175,7 @@
   margin-bottom: 32px;
 }
 
+.heart-p,
 .comment-p {
   display: flex;
   align-items: center;
@@ -184,6 +185,11 @@
 
 .comment-p span {
   font-size: 1rem;
+}
+
+.heart-p span {
+  font-weight: 1rem;
+  color: red;
 }
 
 .comment-icon {

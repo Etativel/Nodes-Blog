@@ -20,7 +20,8 @@ function PostsContainer() {
     async function fetchPosts() {
       try {
         const response = await fetch(
-          "https://nodes-blog-api-production.up.railway.app/post",
+          // "https://nodes-blog-api-production.up.railway.app/post",
+          "http://localhost:3000/post",
           {
             credentials: "include",
             method: "GET",
@@ -53,6 +54,7 @@ function PostsContainer() {
           {posts.map((post) => (
             <PostCard
               key={post.id}
+              post={post}
               postTitle={post.title}
               authorId={post.authorId}
               postDate={post.createdAt}

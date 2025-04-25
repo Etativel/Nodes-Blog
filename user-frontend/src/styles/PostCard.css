@@ -116,6 +116,7 @@ a {
   gap: 6px;
 }
 
+.heart-icon-card,
 .comment-icon {
   height: 18px;
   width: 18px;
@@ -175,6 +176,7 @@ a {
   .left-info {
     font-size: 0.7rem;
   }
+  .heart-icon-card,
   .comment-icon {
     height: 18px;
     width: 18px;
