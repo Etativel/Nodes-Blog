@@ -85,6 +85,7 @@ async function getAllPost(req, res) {
             },
           },
         },
+        NOT: { status: "BLOCKED" },
       },
       include: {
         comments: true,
