@@ -776,8 +776,8 @@ function UserProfilePage() {
   const [userPost, setUserPost] = useState([]);
   const [error, setError] = useState({});
   const [visitedUser, setVisitedUser] = useState(null);
-  const [isSuspended, setIsSuspended] = useState(false);
-
+  // const [isSuspended, setIsSuspended] = useState(false);
+  console.log(visitedUser);
   const currentPage =
     location.pathname === `/${username}`
       ? ""
@@ -839,12 +839,13 @@ function UserProfilePage() {
         console.log("no user found");
         return;
       }
-      if (response.message === "User suspended") {
-        setIsSuspended(true);
-        return;
-      }
+      // if (response.status === 403) {
+      //   setIsSuspended(true);
+      //   return;
+      // }
 
       const data = await response.json();
+
       setVisitedUser(data.user);
     } catch (error) {
       console.log(error);
@@ -880,19 +881,16 @@ function UserProfilePage() {
       </svg>
     </button>
   );
-  // function redirectToAdminFrontend() {
-  //   window.location = "http://localhost:5174/";
-  //   sessionStorage.removeItem("scrollPosition");
+
+  // if (isSuspended) {
+  //   return (
+  //     <NotFound
+  //       top="403"
+  //       title="User Suspended"
+  //       subtitle="This user account has been suspended. Please contact the administrator for assistance."
+  //     />
+  //   );
   // }
-  if (isSuspended) {
-    return (
-      <NotFound
-        top="403"
-        title="User Suspended"
-        subtitle="This user account has been suspended. Please contact the administrator for assistance."
-      />
-    );
-  }
   return (
     <>
       <div className="profile-page-container">
