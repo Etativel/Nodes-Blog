@@ -197,6 +197,7 @@ The application requires several environment variables for proper operation:
 | `/user/check-email`                | POST   | Email availability check    | None             |
 | `/user/create`                     | POST   | User registration           | None             |
 | `/user/:userId`                    | GET    | Retrieve user profile       | Required         |
+| `/user/user-follow/:userId`        | GET    | User following and follower | Required         |
 | `/user/user-by-username/:username` | GET    | Profile by username         | Required         |
 | `/user/`                           | GET    | List all users              | Required         |
 | `/user/update/:userId`             | PATCH  | Update user information     | Required + Owner |

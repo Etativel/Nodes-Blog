@@ -43,7 +43,7 @@ router.get(
 );
 router.get(
   "/user-follow/:userId",
-  // authenticateEither,
+  authenticateEither,
   userController.getUserFollow
 );
 
