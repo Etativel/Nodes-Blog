@@ -53,37 +53,34 @@ function FollowerDialog({ isOpen, onClose, visitedUser }) {
   const [loading, setLoading] = useState(true);
   const [visitedUserFollower, setVisitedUserFollower] = useState([]);
 
-  console.log(visitedUserFollower);
-
-  async function fetchFollowers() {
-    setLoading(true);
-    try {
-      const response = await fetch(
-        `https://nodes-blog-api-production.up.railway.app/user/user-follow/${visitedUser.id}`,
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
-
-      if (!response.ok) {
-        console.log("Failed to retrieve data ", response.statusText);
-      }
-
-      const data = await response.json();
-      setVisitedUserFollower(data.followers);
-      setLoading(false);
-    } catch (error) {
-      console.log("Failed to fetch user follow", error);
-      setLoading(false);
-    }
-  }
-
   useEffect(() => {
     console.log(visitedUserFollower);
   }, [visitedUserFollower]);
 
   useEffect(() => {
+    async function fetchFollowers() {
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `https://nodes-blog-api-production.up.railway.app/user/user-follow/${visitedUser.id}`,
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
+
+        if (!response.ok) {
+          console.log("Failed to retrieve data ", response.statusText);
+        }
+
+        const data = await response.json();
+        setVisitedUserFollower(data.followers);
+        setLoading(false);
+      } catch (error) {
+        console.log("Failed to fetch user follow", error);
+        setLoading(false);
+      }
+    }
     if (isOpen) {
       document.body.style.overflow = "hidden";
       setTimeout(() => {
@@ -102,7 +99,7 @@ function FollowerDialog({ isOpen, onClose, visitedUser }) {
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [isOpen]);
+  }, [isOpen, visitedUser]);
 
   if (!isOpen) return null;
 
