@@ -99,6 +99,7 @@ async function getPost(req, res) {
     const post = await prisma.post.findUnique({
       where: {
         id: postId,
+        NOT: { status: "BLOCKED" },
       },
 
       include: {

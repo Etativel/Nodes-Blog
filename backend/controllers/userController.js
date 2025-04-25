@@ -199,7 +199,9 @@ async function getProfileByUsername(req, res) {
   const { username } = req.params;
   try {
     const user = await prisma.user.findUnique({
-      where: { username },
+      where: {
+        username,
+      },
       select: {
         id: true,
         username: true,
@@ -219,6 +221,9 @@ async function getProfileByUsername(req, res) {
     });
     if (!user) {
       return res.json({ message: "Profile not found." });
+    }
+    if (user.status === "SUSPENDED") {
+      return res.json({ message: "User suspended." });
     }
     return res.json({ user });
   } catch (error) {
