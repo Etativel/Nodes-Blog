@@ -5,7 +5,6 @@ import "../styles/PostPage.css";
 import Loader from "../components/Loader";
 import CommentSection from "../components/CommentSection";
 import timePosted from "../utils/formatTime";
-import estimateReadingTime from "../utils/estimateReadingTime";
 
 function PostPage() {
   const { postId } = useParams();
@@ -65,21 +64,7 @@ function PostPage() {
         ) : (
           // <div class Name="sd">ddd</div>
           <>
-            <PostHead
-              title={post.title}
-              username={post.author.username}
-              authorId={post.authorId}
-              profilePicture={post.author.profilePicture}
-              timePosted={timePosted(post.createdAt)}
-              estimateReadingTime={estimateReadingTime(post.content)}
-              userColor={post.author.userColor}
-              fullName={post.author.fullName}
-              postAuthor={post.author}
-              likedBy={post.likedBy}
-              bookmarkedBy={post.bookmarkedBy}
-              postId={postId}
-              post={post}
-            ></PostHead>
+            <PostHead postId={postId} post={post}></PostHead>
 
             <div className="post-container">
               {post && post.content ? (

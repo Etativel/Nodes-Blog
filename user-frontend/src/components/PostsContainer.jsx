@@ -52,17 +52,7 @@ function PostsContainer() {
       ) : posts.length > 0 ? (
         <>
           {posts.map((post) => (
-            <PostCard
-              key={post.id}
-              post={post}
-              postTitle={post.title}
-              authorId={post.authorId}
-              postDate={post.createdAt}
-              postComment={post.comments}
-              postId={post.id}
-              excerpt={post.excerpt || ""}
-              thumbnail={post.thumbnail || null}
-            ></PostCard>
+            <PostCard key={post.id} post={post}></PostCard>
           ))}
         </>
       ) : (

@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import "../styles/PostCard.css";
-// import profile from "../assets/img/cat.jpg";
 import { useAuthor } from "../utils/useAuthor";
 import formatCloudinaryUrl from "../utils/cloudinaryUtils";
 

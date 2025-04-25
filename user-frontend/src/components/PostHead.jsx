@@ -1,9 +1,11 @@
-import { useContext, useState, useEffect, useRef } from "react";
+import { useContext, useState, useEffect, useRef, useMemo } from "react";
 import "../styles/PostHead.css";
 import { useNavigate } from "react-router-dom";
 import ProfileContext from "../contexts/context-create/ProfileContext";
 import PostContext from "../contexts/context-create/PostContext";
 import formatCloudinaryUrl from "../utils/cloudinaryUtils";
+import estimateReadingTime from "../utils/estimateReadingTime";
+import timePosted from "../utils/formatTime";
 
 function ReportForm({
   setDialogOpen,
@@ -196,23 +198,10 @@ function ReportForm({
   );
 }
 
-function PostHead({
-  title,
-  username,
-  timePosted,
-  estimateReadingTime,
-  profilePicture,
-  userColor,
-  fullName,
-  postAuthor,
-  likedBy,
-  bookmarkedBy,
-  postId,
-  post,
-}) {
+function PostHead({ postId, post }) {
   const { author, loading } = useContext(ProfileContext);
   const { setPostToEdit } = useContext(PostContext);
-  const [followers, setFollowers] = useState(postAuthor?.following || []);
+  const [followers, setFollowers] = useState(post.author?.following || []);
   const [isFollowing, setIsFollowing] = useState(
     followers.some((f) => f.followerId === author?.id)
   );
@@ -229,6 +218,11 @@ function PostHead({
   const [reportType, setReportType] = useState("");
   const [reportAdditionalInfo, setReportAdditionalInfo] = useState("");
   const [reportLoading, setReportLoading] = useState(false);
+  const readTime = useMemo(
+    () => estimateReadingTime(post.content),
+    [post.content]
+  );
+  const when = useMemo(() => timePosted(post.createdAt), [post.createdAt]);
   useEffect(() => {
     if (dialogOpen) {
       setTimeout(() => {
@@ -257,51 +251,45 @@ function PostHead({
     }
   }, [isOpen]);
 
-  useEffect(() => {
-    function handleOutsideClick(e) {
-      if (
-        postDropdownRef.current &&
-        !postDropdownRef.current.contains(e.target) &&
-        toggleDropdownRef.current &&
-        !toggleDropdownRef.current.contains(e.target)
-      ) {
-        setIsOpen(false);
-      }
+  function handleOutsideClick(e) {
+    if (
+      postDropdownRef.current &&
+      !postDropdownRef.current.contains(e.target) &&
+      toggleDropdownRef.current &&
+      !toggleDropdownRef.current.contains(e.target)
+    ) {
+      setIsOpen(false);
     }
+  }
+
+  useEffect(() => {
     document.addEventListener("mousedown", handleOutsideClick);
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
-  });
+  }, []);
 
   useEffect(() => {
-    if (likedBy && author) {
-      setPostLike(likedBy.some((u) => u.id === author.id));
+    if (post.likedBy && author) {
+      setPostLike(post.likedBy.some((u) => u.id === author.id));
     }
-    if (bookmarkedBy && author) {
-      setPostBookmark(bookmarkedBy.some((u) => u.id === author.id));
+    if (post.bookmarkedBy && author) {
+      setPostBookmark(post.bookmarkedBy.some((u) => u.id === author.id));
     }
     if (post && post.isFeatured) {
       setPostFeatured(post.isFeatured);
     }
-  }, [likedBy, bookmarkedBy, author, post]);
+  }, [post.likedBy, post.bookmarkedBy, author, post]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (postAuthor && author) {
-      setFollowers(postAuthor.following || []);
-      setIsFollowing(
-        postAuthor.following?.some((f) => f.followerId === author.id)
-      );
+    if (post.author && author) {
+      const list = post.author.following || [];
+      setFollowers(list);
+      setIsFollowing(list.some((f) => f.followerId === author.id));
     }
-  }, [postAuthor, author]);
-
-  useEffect(() => {
-    if (postAuthor) {
-      setFollowers(postAuthor.following);
-    }
-  }, [postAuthor]);
+  }, [post.author, author]);
 
   async function toggleLike(e) {
     e.preventDefault();
@@ -398,7 +386,7 @@ function PostHead({
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               followerId: author.id,
-              followingId: postAuthor.id,
+              followingId: post.author.id,
             }),
           }
         );
@@ -419,7 +407,7 @@ function PostHead({
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               followerId: author.id,
-              followingId: postAuthor.id,
+              followingId: post.author.id,
             }),
           }
         );
@@ -436,7 +424,7 @@ function PostHead({
   }
 
   function redirectUserPage() {
-    navigate(`/@${username}`);
+    navigate(`/@${post.author.username}`);
   }
 
   function handleEditPost() {
@@ -524,14 +512,14 @@ function PostHead({
           />
         </div>
       </div>
-      <p className="post-title-head">{title}</p>
+      <p className="post-title-head">{post.title}</p>
       <div className="author-and-post-info">
         <div className="left-head">
-          {profilePicture ? (
+          {post.author.profilePicture ? (
             <img
               onClick={redirectUserPage}
               className="profile-pict"
-              src={formatCloudinaryUrl(profilePicture, {
+              src={formatCloudinaryUrl(post.author.profilePicture, {
                 width: 55,
                 height: 55,
                 crop: "fit",
@@ -546,21 +534,21 @@ function PostHead({
               onClick={redirectUserPage}
               className="profile-pict"
               style={{
-                backgroundColor: userColor,
+                backgroundColor: post.author.userColor,
               }}
             >
-              {username.charAt(0)}
+              {post.author.username.charAt(0)}
             </div>
           )}
         </div>
         <div className="right-head">
           <div className="r-h-flex">
             <p className="post-author" onClick={redirectUserPage}>
-              {fullName || username}
+              {post.author.fullName || post.author.username}
             </p>
             {loading ? (
               ""
-            ) : author.username === username ? (
+            ) : author.username === post.author.username ? (
               ""
             ) : (
               <button
@@ -576,8 +564,8 @@ function PostHead({
           </div>
 
           <div className="post-info">
-            <p className="time-to-read">{estimateReadingTime}</p>·
-            <p className="post-date">{timePosted}</p>
+            <p className="time-to-read">{readTime}</p>·
+            <p className="post-date">{when}</p>
           </div>
         </div>
         <div className="post-end">
@@ -709,7 +697,7 @@ function PostHead({
             }}
           >
             <div className="post-options-dropdown" ref={postDropdownRef}>
-              {postAuthor?.id === author?.id ? (
+              {post.author?.id === author?.id ? (
                 <button
                   className="edit-post"
                   aria-label="edit-post"
