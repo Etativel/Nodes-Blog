@@ -358,7 +358,6 @@ function CommentPreview({
           existingReaction?.reaction !== newReactionType
       );
 
-      // API call
       const response = await fetch(
         "https://nodes-blog-api-production.up.railway.app/comment/reaction/toggle",
         {
@@ -375,7 +374,6 @@ function CommentPreview({
 
       if (!response.ok) throw new Error("Failed to update reaction");
 
-      // Update with server response
       const data = await response.json();
       setReactions(data.comment.reactions);
       setTotalLike(
@@ -395,7 +393,6 @@ function CommentPreview({
         )
       );
     } catch (error) {
-      // Rollback on error
       setReactions(previousState.reactions);
       setTotalLike(previousState.totalLike);
       setTotalDislike(previousState.totalDislike);
@@ -938,7 +935,7 @@ function CommentNode({
         postAuthorId={postAuthorId}
       />
 
-      {replies.length > 0 ? (
+      {replies.length > 0 && (
         <>
           <button
             onClick={() => toggleReplies(comment.id)}
@@ -982,8 +979,6 @@ function CommentNode({
             </div>
           )}
         </>
-      ) : (
-        ""
       )}
     </div>
   );
@@ -1010,20 +1005,19 @@ function CommentSection({ postId, comments, timePosted, postAuthorId }) {
     editContent === currentEditValue.current ||
     loadingPostComment;
 
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (openDropdownCommentId === null) return;
+  function handleClickOutside(event) {
+    const isInsideAnyButton = event.target.closest("[data-comment-id]");
 
-      const isInsideAnyButton = event.target.closest("[data-comment-id]");
+    const isInsideAnyDropdown = event.target.closest(".edit-comment-dropdown");
 
-      const isInsideAnyDropdown = event.target.closest(
-        ".edit-comment-dropdown"
-      );
-
-      if (!isInsideAnyButton && !isInsideAnyDropdown) {
-        setOpenDropdownCommentId(null);
-      }
+    if (!isInsideAnyButton && !isInsideAnyDropdown) {
+      setOpenDropdownCommentId(null);
     }
+  }
+
+  useEffect(() => {
+    if (openDropdownCommentId === null) return;
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -1032,7 +1026,6 @@ function CommentSection({ postId, comments, timePosted, postAuthorId }) {
 
   function toggleDropdown(commentId) {
     setOpenDropdownCommentId((prev) => (prev === commentId ? null : commentId));
-    // console.log(commentId);
   }
 
   useEffect(() => {
@@ -1145,7 +1138,6 @@ function CommentSection({ postId, comments, timePosted, postAuthorId }) {
   }
 
   function handleEditComment(e, commentId, content) {
-    // Set onEdit with commentId
     currentEditValue.current = content;
     e.stopPropagation();
     setEditContent(content);
@@ -1158,8 +1150,6 @@ function CommentSection({ postId, comments, timePosted, postAuthorId }) {
 
   async function handleEditSubmit(e) {
     e.preventDefault();
-    // console.log(editContent);
-    // console.log(onEdit);
     setLoadingPostComment(true);
     try {
       const response = await fetch(
@@ -1189,12 +1179,12 @@ function CommentSection({ postId, comments, timePosted, postAuthorId }) {
       setLoadingPostComment(false);
       setEditContent("");
       setOnEdit(null);
-      // console.log("Update comment successfully");
     } catch (error) {
       console.log(error);
       setLoadingPostComment(false);
     }
   }
+
   function toggleReplies(commentId) {
     setExpandedReplies((prev) => ({
       ...prev,

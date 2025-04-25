@@ -20,8 +20,7 @@ function PostsContainer() {
     async function fetchPosts() {
       try {
         const response = await fetch(
-          // "https://nodes-blog-api-production.up.railway.app/post",
-          "http://localhost:3000/post",
+          "https://nodes-blog-api-production.up.railway.app/post",
           {
             credentials: "include",
             method: "GET",
