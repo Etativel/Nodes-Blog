@@ -17,7 +17,7 @@ function PostPage() {
       try {
         setLoading(true);
         const response = await fetch(
-          `http://localhost:3000/post/${postId}`,
+          `https://nodes-blog-api-production.up.railway.app/post/${postId}`,
 
           {
             credentials: "include",

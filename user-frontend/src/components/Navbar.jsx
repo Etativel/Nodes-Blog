@@ -61,10 +61,13 @@ function Navigation() {
 
   async function handleLogout() {
     try {
-      const response = await fetch("http://localhost:3000/auth/logout", {
-        method: "POST",
-        credentials: "include",
-      });
+      const response = await fetch(
+        "https://nodes-blog-api-production.up.railway.app/auth/logout",
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
       if (!response.ok) {
         console.log("Failed to logout: ", response.statusText);
       } else {

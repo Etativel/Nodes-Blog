@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import "../styles/SearchPage.css";
 import formatCloudinaryUrl from "../utils/cloudinaryUtils";
+import estimateReadingTime from "../utils/estimateReadingTime";
 
 function SearchPage() {
   const [searchResults, setSearchResults] = useState([]);
@@ -28,7 +29,7 @@ function SearchPage() {
 
       try {
         const res = await fetch(
-          `http://localhost:3000/post/search?q=${encodeURIComponent(
+          `https://nodes-blog-api-production.up.railway.app/post/search?q=${encodeURIComponent(
             searchQuery
           )}`,
           {
@@ -64,6 +65,10 @@ function SearchPage() {
     const options = { year: "numeric", month: "short", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
+
+  function redirectToPostPage(postId) {
+    navigate(`/post/${postId}`);
+  }
 
   return (
     <div className="search-page-container">
@@ -159,7 +164,11 @@ function SearchPage() {
 
           <div className="search-results-list">
             {searchResults.map((post) => (
-              <div key={post.id} className="post-card">
+              <div
+                key={post.id}
+                className="post-card"
+                onClick={() => redirectToPostPage(post.id)}
+              >
                 <Link to={`/post/${post.id}`} className="post-link">
                   <h2 className="post-title">
                     {post.title.length > 50
@@ -196,7 +205,9 @@ function SearchPage() {
                     <span className="post-date">
                       {formatDate(post.createdAt)}
                     </span>
-                    <span className="read-time">{post.readTime} min read</span>
+                    <span className="read-time">
+                      {estimateReadingTime(post.content)}
+                    </span>
                   </div>
                 </div>
                 <p className="post-excerpt">

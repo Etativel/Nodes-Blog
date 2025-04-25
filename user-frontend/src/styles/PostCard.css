@@ -38,6 +38,7 @@ a {
   font-size: 1rem;
   border-bottom: solid transparent 1px;
   color: var(--text-color);
+  word-break: break-word;
 }
 
 /* .author-name:hover {

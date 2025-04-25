@@ -117,14 +117,17 @@ function Write() {
     try {
       let response;
       if (!isEditing) {
-        response = await fetch("http://localhost:3000/post/create", {
-          method: "POST",
-          body: formData,
-          credentials: "include",
-        });
+        response = await fetch(
+          "https://nodes-blog-api-production.up.railway.app/post/create",
+          {
+            method: "POST",
+            body: formData,
+            credentials: "include",
+          }
+        );
       } else if (isEditing) {
         response = await fetch(
-          `http://localhost:3000/post/update/${post.postId}`,
+          `https://nodes-blog-api-production.up.railway.app/post/update/${post.postId}`,
           {
             method: "PUT",
             body: editFormData,

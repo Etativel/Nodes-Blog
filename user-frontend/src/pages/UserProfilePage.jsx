@@ -9,6 +9,7 @@ import PostContext from "../contexts/context-create/PostContext";
 import formatCloudinaryUrl from "../utils/cloudinaryUtils";
 import imageCompression from "browser-image-compression";
 import NotFound from "./NotFound";
+import FollowerDialog from "../components/FollowerDialog";
 
 function PostCard({ post }) {
   const stripExcerpt =
@@ -233,7 +234,7 @@ function EditProfileDialog({ setIsOpen }) {
     try {
       setUploading(true);
       const response = await fetch(
-        "http://localhost:3000/user/profile/update",
+        "https://nodes-blog-api-production.up.railway.app/user/profile/update",
         {
           method: "PATCH",
           body: formData,
@@ -440,7 +441,7 @@ function UserPostCard({
     try {
       setLoadingPostUpdate(true);
       const response = await fetch(
-        `http://localhost:3000/post/delete/${postId}`,
+        `https://nodes-blog-api-production.up.railway.app/post/delete/${postId}`,
         {
           method: "DELETE",
           credentials: "include",
@@ -463,7 +464,7 @@ function UserPostCard({
     setLoadingPostUpdate(true);
     try {
       const response = await fetch(
-        `http://localhost:3000/post/publish/${postId}`,
+        `https://nodes-blog-api-production.up.railway.app/post/publish/${postId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -737,6 +738,7 @@ function UserSideProfile({
   visitedUser,
   author,
   loading,
+  toggleFollowerDialog,
 }) {
   const [followers, setFollowers] = useState(visitedUser?.following || []);
 
@@ -790,15 +792,18 @@ function UserSideProfile({
     try {
       let updatedFollowers;
       if (isFollowing) {
-        const response = await fetch("http://localhost:3000/user/unfollow", {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({
-            followerId: author.id,
-            followingId: visitedUser.id,
-          }),
-        });
+        const response = await fetch(
+          "https://nodes-blog-api-production.up.railway.app/user/unfollow",
+          {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({
+              followerId: author.id,
+              followingId: visitedUser.id,
+            }),
+          }
+        );
 
         if (response.ok) {
           updatedFollowers = followers.filter(
@@ -808,16 +813,19 @@ function UserSideProfile({
           return;
         }
       } else {
-        const response = await fetch("http://localhost:3000/user/follow", {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
+        const response = await fetch(
+          "https://nodes-blog-api-production.up.railway.app/user/follow",
+          {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
 
-          credentials: "include",
-          body: JSON.stringify({
-            followerId: author.id,
-            followingId: visitedUser.id,
-          }),
-        });
+            credentials: "include",
+            body: JSON.stringify({
+              followerId: author.id,
+              followingId: visitedUser.id,
+            }),
+          }
+        );
         if (response.ok) {
           updatedFollowers = [...followers, { followerId: author.id }];
         } else {
@@ -829,6 +837,7 @@ function UserSideProfile({
       console.error("Error toggling follow status:", error);
     }
   }
+
   return (
     <>
       <div className="side-profile-ctr">
@@ -904,7 +913,7 @@ function UserSideProfile({
           </span>
         </div>
         <div className="follower-ctr">
-          <span className="user-follower-count">
+          <span className="user-follower-count" onClick={toggleFollowerDialog}>
             {followers.length} Followers
           </span>
         </div>
@@ -955,6 +964,7 @@ function UserProfilePage() {
   const [error, setError] = useState({});
   const [visitedUser, setVisitedUser] = useState(null);
   // const [isSuspended, setIsSuspended] = useState(false);
+  const [isFollowerDialogOpen, setIsFollowerDialogOpen] = useState(false);
 
   const currentPage =
     location.pathname === `/${username}`
@@ -979,7 +989,7 @@ function UserProfilePage() {
     async function fetchUserPost() {
       try {
         const response = await fetch(
-          `http://localhost:3000/post/by/${cleanUsername}`,
+          `https://nodes-blog-api-production.up.railway.app/post/by/${cleanUsername}`,
           {
             credentials: "include",
             method: "GET",
@@ -1006,7 +1016,7 @@ function UserProfilePage() {
     setLoadingProfile(true);
     try {
       const response = await fetch(
-        `http://localhost:3000/user/user-by-username/${cleanUsername.toLowerCase()}`,
+        `https://nodes-blog-api-production.up.railway.app/user/user-by-username/${cleanUsername.toLowerCase()}`,
         {
           credentials: "include",
           method: "GET",
@@ -1069,6 +1079,11 @@ function UserProfilePage() {
   //     />
   //   );
   // }
+
+  function toggleFollowerDialog() {
+    setIsFollowerDialogOpen((prev) => !prev);
+  }
+
   return (
     <>
       <div className="profile-page-container">
@@ -1078,6 +1093,17 @@ function UserProfilePage() {
             <EditProfileDialog isOpen={isOpen} setIsOpen={setIsOpen} />
           </div>
         </div>
+        {/* <div className="follower-dialog-ctr"> */}
+        {isFollowerDialogOpen && (
+          <FollowerDialog
+            isOpen={isFollowerDialogOpen}
+            onClose={toggleFollowerDialog}
+            followers={[{ id: 1 }, { id: 2 }, { id: 2 }, { id: 3 }, { id: 4 }]}
+            author={author}
+            visitedUser={visitedUser}
+          />
+        )}
+        {/* </div> */}
         {loadingProfile || visitedUser === null ? (
           <Loader />
         ) : !visitedUser ? (
@@ -1102,6 +1128,7 @@ function UserProfilePage() {
                     isOpen={isOpen}
                     setIsOpen={setIsOpen}
                     loading={loading}
+                    toggleFollowerDialog={toggleFollowerDialog}
                   />
                 </div>
                 <div className="username">
@@ -1260,6 +1287,7 @@ function UserProfilePage() {
                 setIsOpen={setIsOpen}
                 author={author}
                 loading={loading}
+                toggleFollowerDialog={toggleFollowerDialog}
               />
             </div>
           </>
