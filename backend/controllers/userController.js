@@ -316,6 +316,48 @@ async function unFollowUser(req, res) {
   }
 }
 
+async function getUserFollow(req, res) {
+  const { userId } = req.params;
+
+  try {
+    const userWithFollows = await prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        // all the rows where I follow someone…
+        followers: {
+          include: {
+            // …and in each row, also fetch the “following” User record
+            following: true,
+          },
+        },
+        // all the rows where someone follows me…
+        following: {
+          include: {
+            // …and in each row, also fetch the “follower” User record
+            follower: true,
+          },
+        },
+      },
+    });
+
+    if (!userWithFollows) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Now pull just the user objects out of the join table rows:
+    const followingUsers = userWithFollows.followers.map((f) => f.following);
+    const followerUsers = userWithFollows.following.map((f) => f.follower);
+
+    return res.status(200).json({
+      followers: followerUsers,
+      following: followingUsers,
+    });
+  } catch (error) {
+    console.error("Failed to load follows:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 // Create user
 async function createUser(req, res) {
   const { username, email, password } = req.body;
@@ -528,4 +570,5 @@ module.exports = {
   toggleTheme,
   getTheme,
   updateUserAbout,
+  getUserFollow,
 };

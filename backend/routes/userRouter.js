@@ -41,6 +41,12 @@ router.get(
   isAdmin,
   userController.getSpecificAdmin
 );
+router.get(
+  "/user-follow/:userId",
+  // authenticateEither,
+  userController.getUserFollow
+);
+
 router.get("/", authenticateEither, userController.getAllUser);
 
 router.delete(
