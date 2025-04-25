@@ -27,8 +27,8 @@ Nodes is a blogging platform where writers can easily share their ideas, stories
 
 **Production Environment:**
 
-- [User Frontend](https://nodes-blog-user-frontend.up.railway.app/posts)
-- [Admin Panel](https://nodes-blog-admin-frontend.up.railway.app/)
+- [User Frontend](https://nodes-blog.up.railway.app/posts)
+- [Admin Panel](https://nodes-admin.up.railway.app/)
 
 ## Key Features
 
@@ -79,7 +79,7 @@ Nodes is a blogging platform where writers can easily share their ideas, stories
 - **State Management**: React Context API
 - **Styling Architecture**: CSS
 - **HTTP Client**: Native fetch API
-- **Rich Text Editor**: TinyMCE v7.8.0
+- **Rich Text Editor**: TinyMCE v7.8.0, TipTap v2.11.7
 
 #### Administration Interface
 
@@ -213,8 +213,8 @@ The application requires several environment variables for proper operation:
 | `/post/`                         | GET    | List all posts         | Required         |
 | `/post/:postId`                  | GET    | Retrieve specific post | Required         |
 | `/post/by/:username`             | GET    | User's posts           | Required         |
-| `/post/filter`                   | GET    | Filtered post list     | Required         |
 | `/post/featured-n-trending-post` | GET    | Featured content       | Required         |
+| `/post/search`                   | GET    | Filtered content       | Required         |
 | `/post/create`                   | POST   | Create new post        | Required         |
 | `/post/:postId/like`             | POST   | Toggle post like       | Required         |
 | `/post/:postId/bookmark`         | POST   | Toggle bookmark        | Required         |
@@ -317,6 +317,7 @@ The application requires several environment variables for proper operation:
 - **Apr 24**: Search and Database query
   - Replaced client-side filtering with server-side search using Prisma ORM
   - Minor UI refinements for mobile previews and comment styling
+  - Add user about Editor, implementing tiptap text editor
 
 ## Contributing
 
