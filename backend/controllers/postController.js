@@ -12,6 +12,7 @@ async function getUserPosts(req, res) {
         author: {
           username: username,
         },
+        NOT: { status: "BLOCKED" },
       },
       orderBy: {
         createdAt: "desc",
