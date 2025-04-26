@@ -106,6 +106,7 @@ function Navigation() {
 
   function redirectProfile() {
     navigate(`/@${author.username}`);
+    setIsOpen(false);
   }
 
   function redirectAdminPortal() {

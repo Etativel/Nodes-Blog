@@ -315,13 +315,40 @@
   border: solid 1px transparent;
   border-radius: 50%;
   padding: 4px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-.dislike-btn:hover,
+@media (hover: hover) {
+  .dislike-btn:hover,
+  .like-btn:hover {
+    background-color: var(--interactive-hover-bg);
+    border: solid 1px var(--interactive-hover-bg);
+  }
+}
+
+@media (hover: none) {
+  .dislike-btn:active,
+  .like-btn:active {
+    background-color: var(--interactive-hover-bg);
+    border: solid 1px var(--interactive-hover-bg);
+  }
+  .dislike-btn:not(:active),
+  .like-btn:not(:active) {
+    background-color: transparent;
+    border: solid 1px transparent;
+  }
+}
+
+/* .dislike-btn:hover,
 .like-btn:hover {
   background-color: var(--interactive-hover-bg);
   border: solid 1px var(--interactive-hover-bg);
-}
+} */
+/* .dislike-btn.active,
+.like-btn.active {
+  background-color: var(--interactive-hover-bg);
+  border: solid 1px var(--interactive-hover-bg);
+} */
 
 .dislike-icon,
 .like-icon {
@@ -352,11 +379,25 @@
   font-weight: bold;
   cursor: pointer;
   color: var(--text-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-.reply-comment-btn:hover {
-  background-color: var(--interactive-hover-bg);
-  border: solid 1px var(--interactive-hover-bg);
+@media (hover: hover) {
+  .reply-comment-btn:hover {
+    background-color: var(--interactive-hover-bg);
+    border: solid 1px var(--interactive-hover-bg);
+  }
+}
+
+@media (hover: none) {
+  .reply-comment-btn:active {
+    background-color: var(--interactive-hover-bg);
+    border: solid 1px var(--interactive-hover-bg);
+  }
+  .reply-comment-btn:not(:active) {
+    background-color: transparent;
+    border: solid 1px transparent;
+  }
 }
 
 .submit-reply-btn {

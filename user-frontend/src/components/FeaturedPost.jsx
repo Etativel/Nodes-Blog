@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import "../styles/FeaturedPost.css";
-// import SmallLoader from "./SmallLoader";
+
 import timePosted from "../utils/formatTime";
 import formatCloudinaryUrl from "../utils/cloudinaryUtils";
+import SmallLoader from "./SmallLoader";
 
 function FeaturedPostCard({ post }) {
   function redirectToPost() {
@@ -93,7 +94,7 @@ function FeaturedPost() {
   return (
     <div className="featured-post-container">
       {loading ? (
-        ""
+        <SmallLoader />
       ) : (
         <>
           <div className="card-title-fp">Featured Post</div>

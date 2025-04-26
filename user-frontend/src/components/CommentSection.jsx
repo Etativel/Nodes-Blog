@@ -745,7 +745,7 @@ function CommentPreview({
           </div>
           <div className="comment-bottom">
             <button
-              className="like-btn"
+              className="like-btn hover-effect"
               disabled={isReacting}
               aria-label="like"
               onClick={() => toggleReaction("LIKE")}
@@ -786,7 +786,7 @@ function CommentPreview({
               {formatLike(totalLike)}
             </span>
             <button
-              className="dislike-btn"
+              className="dislike-btn hover-effect"
               aria-label="dislike"
               disabled={isReacting}
               onClick={() => toggleReaction("DISLIKE")}
@@ -825,7 +825,10 @@ function CommentPreview({
               {formatLike(totalDislike)}
             </span>
             <div className="author-like-ctr"></div>
-            <button className="reply-comment-btn" onClick={() => toggleReply()}>
+            <button
+              className="reply-comment-btn hover-effect"
+              onClick={() => toggleReply()}
+            >
               Reply
             </button>
           </div>

@@ -135,18 +135,57 @@
   padding: 4px;
   border: solid transparent 1px;
   border-radius: 50%;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+@media (hover: hover) {
+  .post-feature:hover,
+  .post-like:hover,
+  .post-bookmark:hover,
+  .post-options:hover,
+  .hover-effect:hover {
+    background-color: var(--interactive-hover-bg);
+    border: solid 1px var(--interactive-hover-bg);
+  }
+}
+
+@media (hover: none) {
+  .post-feature:active,
+  .post-like:active,
+  .post-bookmark:active,
+  .post-options:active,
+  .hover-effect:active {
+    background-color: var(--interactive-hover-bg);
+    border: solid 1px var(--interactive-hover-bg);
+  }
+
+  /* This ensures the effect is temporary on touch */
+  .post-feature:not(:active),
+  .post-like:not(:active),
+  .post-bookmark:not(:active),
+  .post-options:not(:active),
+  .hover-effect:not(:active) {
+    background-color: transparent;
+    border-color: solid 1px transparent;
+  }
 }
 
 .post-options {
   position: relative;
 }
 
-.post-feature:hover,
+/* .post-feature.active,
+.post-like.active,
+.post-bookmark.active {
+  background-color: var(--interactive-hover-bg);
+  border: solid 1px var(--interactive-hover-bg);
+} */
+/* .post-feature:hover,
 .post-like:hover,
 .post-bookmark:hover {
   background-color: var(--interactive-hover-bg);
   border: solid 1px var(--interactive-hover-bg);
-}
+} */
 
 .post-featured-icon,
 .post-like-icon,

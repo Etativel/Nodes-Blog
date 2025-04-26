@@ -10,6 +10,7 @@ import formatCloudinaryUrl from "../utils/cloudinaryUtils";
 import imageCompression from "browser-image-compression";
 import NotFound from "./NotFound";
 import FollowerDialog from "../components/FollowerDialog";
+import SmallLoader from "../components/SmallLoader";
 
 function PostCard({ post }) {
   const stripExcerpt =
@@ -1230,7 +1231,7 @@ function UserProfilePage() {
               {currentPage === "" && (
                 <div className="posts">
                   {loadingComp ? (
-                    <Loader />
+                    <SmallLoader />
                   ) : error.fetchPostError ? (
                     <div>{error.fetchPostError}</div>
                   ) : userPost.length > 0 ? (

@@ -570,7 +570,7 @@ function PostHead({ postId, post }) {
         </div>
         <div className="post-end">
           <button
-            className="post-like"
+            className="post-like hover-effect"
             aria-label="like-post"
             onClick={(e) => {
               toggleLike(e);
@@ -607,7 +607,7 @@ function PostHead({ postId, post }) {
             )}
           </button>
           <button
-            className="post-bookmark"
+            className="post-bookmark hover-effect"
             aria-label="bookmark-post"
             onClick={(e) => toggleBookmark(e)}
           >
@@ -647,7 +647,7 @@ function PostHead({ postId, post }) {
           </button>
           {author?.role === "SUPERADMIN" ? (
             <button
-              className="post-feature"
+              className="post-feature hover-effect"
               aria-label="feature-post"
               onClick={(e) => toggleFeature(e)}
             >
