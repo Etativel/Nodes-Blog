@@ -555,13 +555,7 @@ async function getFeaturedPost(req, res) {
       where: {
         isFeatured: true,
         published: true,
-        author: {
-          suspensions: {
-            none: {
-              liftedAt: null,
-            },
-          },
-        },
+
         status: {
           notIn: ["DRAFT", "BLOCKED"],
         },
@@ -588,6 +582,13 @@ async function getFeaturedPost(req, res) {
         published: true,
         status: {
           notIn: ["DRAFT", "BLOCKED"],
+        },
+        author: {
+          suspensions: {
+            none: {
+              liftedAt: null,
+            },
+          },
         },
       },
       include: {
