@@ -65,14 +65,18 @@ async function getAllPosts(req, res) {
 async function updatePostStatus(req, res) {
   const { postId } = req.params;
   const { status } = req.body;
+
+  let updateData =
+    status === "BLOCKED"
+      ? { status, isFeatured: false, featuredAt: null }
+      : { status };
+
   try {
     const updatedPost = await prisma.post.update({
       where: {
         id: postId,
       },
-      data: {
-        status,
-      },
+      data: updateData,
     });
     return res.status(200).json({ post: updatedPost });
   } catch (error) {

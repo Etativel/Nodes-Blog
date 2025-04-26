@@ -555,14 +555,6 @@ async function getFeaturedPost(req, res) {
       where: {
         isFeatured: true,
         published: true,
-        NOT: { status: "BLOCKED" },
-        author: {
-          suspensions: {
-            none: {
-              liftedAt: null,
-            },
-          },
-        },
       },
       include: {
         author: {
