@@ -562,9 +562,7 @@ async function getFeaturedPost(req, res) {
             },
           },
         },
-        status: {
-          notIn: ["DRAFT", "BLOCKED"],
-        },
+        NOT: { status: "BLOCKED" },
       },
       include: {
         author: {
@@ -586,9 +584,9 @@ async function getFeaturedPost(req, res) {
     const trendingPosts = await prisma.post.findMany({
       where: {
         published: true,
-        status: {
-          notIn: ["DRAFT", "BLOCKED"],
-        },
+
+        NOT: { status: "BLOCKED" },
+
         author: {
           suspensions: {
             none: {

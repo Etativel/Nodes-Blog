@@ -220,7 +220,6 @@ async function getProfileByUsername(req, res) {
         likedPosts: {
           where: {
             author: {
-              NOT: { status: "BLOCKED" },
               suspensions: { none: { liftedAt: null } },
             },
           },
@@ -249,7 +248,6 @@ async function getProfileByUsername(req, res) {
         bookmarkedPosts: {
           where: {
             author: {
-              NOT: { status: "BLOCKED" },
               suspensions: { none: { liftedAt: null } },
             },
           },
