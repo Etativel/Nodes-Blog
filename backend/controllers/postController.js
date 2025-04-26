@@ -555,7 +555,13 @@ async function getFeaturedPost(req, res) {
       where: {
         isFeatured: true,
         published: true,
-
+        author: {
+          suspensions: {
+            none: {
+              liftedAt: null,
+            },
+          },
+        },
         status: {
           notIn: ["DRAFT", "BLOCKED"],
         },
@@ -669,6 +675,14 @@ async function searchPost(req, res) {
   try {
     const posts = await prisma.post.findMany({
       where: {
+        author: {
+          suspensions: {
+            none: {
+              liftedAt: null,
+            },
+          },
+        },
+        NOT: { status: "BLOCKED" },
         OR: [
           { title: { contains: query, mode: "insensitive" } },
           { excerpt: { contains: query, mode: "insensitive" } },

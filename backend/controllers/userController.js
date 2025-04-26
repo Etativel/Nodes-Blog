@@ -218,7 +218,18 @@ async function getProfileByUsername(req, res) {
         following: true,
         about: true,
         likedPosts: {
-          include: {
+          where: {
+            author: {
+              NOT: { status: "BLOCKED" },
+              suspensions: { none: { liftedAt: null } },
+            },
+          },
+          select: {
+            id: true,
+            title: true,
+            thumbnail: true,
+            excerpt: true,
+            createdAt: true,
             author: {
               select: {
                 id: true,
@@ -229,16 +240,26 @@ async function getProfileByUsername(req, res) {
               },
             },
             _count: {
-              select: {
-                likedBy: true,
-              },
+              select: { likedBy: true },
             },
             comments: true,
             likedBy: true,
           },
         },
         bookmarkedPosts: {
-          include: {
+          where: {
+            author: {
+              NOT: { status: "BLOCKED" },
+              suspensions: { none: { liftedAt: null } },
+            },
+          },
+          select: {
+            id: true,
+            title: true,
+            thumbnail: true,
+            excerpt: true,
+            createdAt: true,
+
             author: {
               select: {
                 id: true,
@@ -249,9 +270,7 @@ async function getProfileByUsername(req, res) {
               },
             },
             _count: {
-              select: {
-                likedBy: true,
-              },
+              select: { likedBy: true },
             },
             comments: true,
             likedBy: true,
