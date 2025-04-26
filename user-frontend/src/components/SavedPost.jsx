@@ -8,7 +8,7 @@ function LikedPost() {
     <div className="saved-post-container">
       {visitedUser.bookmarkedPosts.length <= 0 ? (
         <div className="no-about-container">
-          <div className="no-about-big-text">No Liked Post</div>
+          <div className="no-about-big-text">No Saved Post</div>
           <div className="no-about-small-text">
             {loadingProfile
               ? ""
