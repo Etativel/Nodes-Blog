@@ -3,6 +3,7 @@ import "../styles/PostsContainer.css";
 import PostCard from "./PostCard";
 import { useLocation } from "react-router-dom";
 import Loader from "./Loader";
+import SmallLoader from "./SmallLoader";
 
 function PostsContainer() {
   const [posts, setPosts] = useState([]);
@@ -47,7 +48,7 @@ function PostsContainer() {
   return (
     <div className="posts-container">
       {loading ? (
-        <Loader />
+        <SmallLoader />
       ) : posts.length > 0 ? (
         <>
           {posts.map((post) => (
