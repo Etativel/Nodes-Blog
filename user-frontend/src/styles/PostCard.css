@@ -113,7 +113,7 @@ a {
 
 .author-pict-div-skeleton {
   border-radius: 50%;
-  background-color: transparent;
+  /* background-color: transparent; */
   height: 28px;
   width: 28px;
   display: flex;

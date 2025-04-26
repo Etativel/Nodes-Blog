@@ -317,7 +317,7 @@ function Navigation() {
           aria-label="redirect To ProfilePage"
           className="nav-profile"
           style={{
-            backgroundColor: loading ? "white" : author.userColor,
+            backgroundColor: loading ? "transparent" : author?.userColor,
           }}
         >
           {loading ? (
