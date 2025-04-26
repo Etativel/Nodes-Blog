@@ -239,8 +239,6 @@ function Write() {
         value={post.content}
         onEditorChange={handleEditorChange}
         init={{
-          skin: "snow",
-          icons: "thin",
           height: 500,
           menubar: false,
           plugins: [
@@ -259,31 +257,35 @@ function Write() {
             "insertdatetime",
             "media",
             "table",
-            "code",
             "help",
             "wordcount",
             "codesample",
-          ],
-          codesample_languages: [
-            { text: "HTML/XML", value: "markup" },
-            { text: "JavaScript", value: "javascript" },
-            { text: "CSS", value: "css" },
-            { text: "PHP", value: "php" },
-            { text: "Ruby", value: "ruby" },
-            { text: "Python", value: "python" },
-            { text: "Java", value: "java" },
-            { text: "C", value: "c" },
-            { text: "C#", value: "csharp" },
-            { text: "C++", value: "cpp" },
+            // you can keep "style" here if you want—but it’s not strictly required
           ],
           toolbar:
-            "undo redo | blocks | " +
-            "bold italic forecolor | alignleft aligncenter " +
-            "alignright alignjustify | bullist numlist outdent indent | " +
-            "removeformat | image | help | codesample",
+            "undo redo | styles | blockquote | bold italic forecolor | " +
+            "alignleft aligncenter alignright alignjustify | " +
+            "bullist numlist outdent indent | removeformat | image help codesample",
+          style_formats: [
+            {
+              title: "Right Border Quote",
+              block: "blockquote",
+              classes: "fancy-quote",
+            },
+          ],
+          content_style: `
+      .fancy-quote {
+        border-right: 4px solid #ccc;
+        padding: 10px 20px;
+        font-style: italic;
+        background: #f9f9f9;
+        margin: 1em 0;
+      }
+    `,
           images_dataimg_filter: () => false,
         }}
       />
+
       <div className="write-btn-selection">
         {loadingSave ? (
           <SmallLoader />

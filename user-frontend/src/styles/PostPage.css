@@ -58,7 +58,11 @@
 }
 
 .preview-post-container-write h1,
-.preview-post-container h1 {
+.preview-post-container h1,
+.preview-post-container-write h2,
+.preview-post-container h2,
+.preview-post-container-write h3,
+.preview-post-container h3 {
   margin-bottom: 0.8em;
   margin-top: 0.2em;
   color: var(--text-color);
