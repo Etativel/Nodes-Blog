@@ -62,9 +62,12 @@ function FeaturedPost() {
   const [featuredPosts, setFeaturedPosts] = useState([]);
   const [trendingPosts, setTrendingPosts] = useState([]);
   const [loading, setLoading] = useState(false);
-  // console.log(featuredPosts);
+
+  // cache time : 1 hour
+  const CACHE_DURATION = 60 * 60 * 1000;
+
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchPostsFromAPI = async () => {
       setLoading(true);
       try {
         const response = await fetch(
@@ -78,19 +81,58 @@ function FeaturedPost() {
         if (!response.ok) {
           console.log("Failed to fetch posts");
           setLoading(false);
+          return null;
         }
+
         const data = await response.json();
+
+        const cacheData = {
+          featuredPosts: data.featuredPosts,
+          trendingPosts: data.trendingPosts,
+          timestamp: Date.now(),
+        };
+
+        localStorage.setItem("cached_posts", JSON.stringify(cacheData));
+
         setFeaturedPosts(data.featuredPosts);
         setTrendingPosts(data.trendingPosts);
         setLoading(false);
+
+        return data;
       } catch (error) {
         setLoading(false);
         console.error("Error fetching posts:", error);
+        return null;
       }
     };
 
-    fetchPosts();
-  }, []);
+    const loadPosts = async () => {
+      const cachedDataString = localStorage.getItem("cached_posts");
+
+      if (cachedDataString) {
+        try {
+          const cachedData = JSON.parse(cachedDataString);
+          const currentTime = Date.now();
+
+          // check if the cache is still valid (less than 1 hour old)
+          if (currentTime - cachedData.timestamp < CACHE_DURATION) {
+            // use cached data
+            setFeaturedPosts(cachedData.featuredPosts);
+            setTrendingPosts(cachedData.trendingPosts);
+            return;
+          }
+        } catch (e) {
+          console.error("Error parsing cached data:", e);
+        }
+      }
+
+      // fetch fresh data if no cache exists or cache is expired
+      await fetchPostsFromAPI();
+    };
+
+    loadPosts();
+  }, [CACHE_DURATION]);
+
   return (
     <div className="featured-post-container">
       {loading ? (
@@ -107,15 +149,6 @@ function FeaturedPost() {
           ))}
         </>
       )}
-      {/* <div className="card-title-fp">Featured Post</div>
-      <FeaturedPostCard />
-      <FeaturedPostCard />
-      <FeaturedPostCard />
-      <br />
-      <div className="card-title-fp">Trending Post</div>
-      <FeaturedPostCard />
-      <FeaturedPostCard />
-      <FeaturedPostCard /> */}
     </div>
   );
 }

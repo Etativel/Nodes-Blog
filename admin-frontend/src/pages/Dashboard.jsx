@@ -43,7 +43,6 @@ export default function Dashboard() {
         }
         const data = await response.json();
         setStats(data);
-        console.log(data);
       } catch (error) {
         console.log(error);
       }

@@ -154,7 +154,6 @@ export default function Users() {
       }
       const data = await response.json();
       setUsersData(data);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
