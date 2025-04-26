@@ -111,6 +111,17 @@ a {
   color: white;
 }
 
+.author-pict-div-skeleton {
+  border-radius: 50%;
+  background-color: transparent;
+  height: 28px;
+  width: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: solid transparent 1px;
+}
+
 .comment {
   display: flex;
   align-items: center;

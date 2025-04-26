@@ -34,7 +34,7 @@ function PostCard({ post }) {
         <div className="left">
           <div className="profile">
             {loading ? (
-              ""
+              <div className="author-pict-div-skeleton"></div>
             ) : author.profilePicture ? (
               <img
                 src={formatCloudinaryUrl(author.profilePicture, {
