@@ -229,9 +229,9 @@
 }
 
 .sign-in-info {
-  margin-top: 12px;
+  /* margin-top: 12px;
   margin-bottom: 12px;
-  transform: translateY(-50px);
+  transform: translateY(-50px); */
 }
 
 .close-dialog-btn {
@@ -273,8 +273,8 @@
 }
 .sign-up-btn.options {
   font-weight: 500;
-  transform: translateY(24px);
-  margin-top: 12px;
+  /* transform: translateY(24px); */
+  /* margin-top: 12px; */
 }
 .create-acc-btn:hover,
 .sign-up-btn:hover {
@@ -412,7 +412,7 @@ input:focus {
     padding-bottom: 12px;
   }
   .sign-in {
-    height: 70vh;
+    height: 80vh;
     width: 90vw;
     padding: 12px;
     padding-top: 24px;

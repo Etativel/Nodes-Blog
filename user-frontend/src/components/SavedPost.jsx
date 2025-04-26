@@ -1,7 +1,8 @@
 import { useOutletContext, Link } from "react-router-dom";
 
 function LikedPost() {
-  const { loading, loadingProfile, visitedUser, PostCard } = useOutletContext();
+  const { loading, loadingProfile, visitedUser, PostCard, author } =
+    useOutletContext();
 
   return (
     <div className="saved-post-container">
@@ -13,7 +14,14 @@ function LikedPost() {
               ? ""
               : loading
               ? ""
-              : "You have not saved any post yet."}
+              : visitedUser.username === author?.username
+              ? "You have not saved any post yet."
+              : "This user have not saved any post yet."}
+            {/* {loadingProfile
+              ? ""
+              : loading
+              ? ""
+              : "You have not saved any post yet."} */}
           </div>
         </div>
       ) : (

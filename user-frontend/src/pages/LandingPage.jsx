@@ -166,9 +166,12 @@ function SignDialog({
           errors.emailError = "Email already taken.";
           setIsValidating(false);
         }
+        setIsValidating(false);
       } catch (error) {
         console.error("Error checking email:", error);
         errors.emailError = "Error checking email availability.";
+        setIsValidating(false);
+      } finally {
         setIsValidating(false);
       }
     }
@@ -216,7 +219,7 @@ function SignDialog({
       errors.passwordError = "Password must be at least 6 characters.";
       setIsValidating(false);
     }
-
+    setIsValidating(false);
     return errors;
   }
 
@@ -225,19 +228,23 @@ function SignDialog({
 
     if (!credential) {
       errors.credentialError = "Email or username is required.";
+      setIsValidating(false);
     } else {
       const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
       if (credential.includes("@") && !emailRegex.test(credential)) {
         errors.credentialError = "Invalid email address.";
+        setIsValidating(false);
       }
     }
 
     if (!password) {
       errors.passwordError = "Password is required.";
+      setIsValidating(false);
     } else if (password.length < 6) {
       errors.passwordError = "Password must be at least 6 characters.";
+      setIsValidating(false);
     }
-
+    setIsValidating(false);
     return errors;
   }
 
@@ -284,6 +291,8 @@ function SignDialog({
       navigate("/posts");
     } catch (error) {
       console.error("An error occurred. Please try again", error);
+      setIsValidating(false);
+    } finally {
       setIsValidating(false);
     }
   }
@@ -339,6 +348,7 @@ function SignDialog({
                 return;
               }
               // const data = await response.json();
+              setIsValidating(false);
               navigate("/posts");
             } catch (error) {
               setLoginError("An error occurred. Please try again", error);
