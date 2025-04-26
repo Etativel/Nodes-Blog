@@ -204,11 +204,14 @@ function Navigation() {
         </ul>
       </div>
       <h2 className="webtitle">
-        <a onClick={redirectToHome}>Nodes</a>
+        <p className="webtitle-text" onClick={redirectToHome}>
+          Nodes
+        </p>
       </h2>
       <button
         className={`search-btn ${hideSearchBar && "hidden"}`}
         onClick={redirectToSearch}
+        aria-label="search button"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -253,7 +256,11 @@ function Navigation() {
 
       <div className="profile-container">
         <div className="toggle-theme-btn-ctr">
-          <button className="toggle-theme-btn" onClick={toggleDark}>
+          <button
+            aria-label="toggle theme"
+            className="toggle-theme-btn"
+            onClick={toggleDark}
+          >
             {isDark ? (
               <>
                 <svg
@@ -283,7 +290,11 @@ function Navigation() {
             )}
           </button>
         </div>
-        <button onClick={redirectToWrite} className="write-btn">
+        <button
+          aria-label="write button"
+          onClick={redirectToWrite}
+          className="write-btn"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -303,7 +314,7 @@ function Navigation() {
         <button
           ref={toggleRef}
           onClick={() => setIsOpen(!isOpen)}
-          aria-label="redirectToProfilePage"
+          aria-label="redirect To ProfilePage"
           className="nav-profile"
           style={{
             backgroundColor: loading ? "white" : author.userColor,

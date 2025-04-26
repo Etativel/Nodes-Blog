@@ -35,7 +35,11 @@
   /* position: relative; */
 }
 
-.navigation-container a {
+/* .navigation-container a {
+  color: var(--text-color);
+} */
+
+.webtitle-text {
   color: var(--text-color);
 }
 
