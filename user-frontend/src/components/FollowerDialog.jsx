@@ -53,12 +53,6 @@ function FollowerDialog({ isOpen, onClose, visitedUser }) {
   const [loading, setLoading] = useState(true);
   const [visitedUserFollower, setVisitedUserFollower] = useState([]);
 
-  console.log(visitedUserFollower);
-
-  useEffect(() => {
-    console.log(visitedUserFollower);
-  }, [visitedUserFollower]);
-
   useEffect(() => {
     async function fetchFollowers() {
       setLoading(true);

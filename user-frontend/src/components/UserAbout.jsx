@@ -17,8 +17,6 @@ function UserAbout() {
   const [about, setAbout] = useState("");
   const [loadingUpdate, setLoadingUpdate] = useState(false);
 
-  console.log(visitedUser);
-
   useEffect(() => {
     setAbout(visitedUser?.about || "");
   }, [visitedUser]);
