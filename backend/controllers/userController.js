@@ -342,19 +342,37 @@ async function getUserFollow(req, res) {
   try {
     const userWithFollows = await prisma.user.findUnique({
       where: { id: userId },
-      include: {
-        // all the rows where I follow someone…
+      select: {
         followers: {
-          include: {
-            // …and in each row, also fetch the “following” User record
-            following: true,
+          where: {
+            following: {
+              suspensions: { none: { liftedAt: null } },
+            },
+          },
+          select: {
+            following: {
+              select: {
+                username: true,
+                fullName: true,
+                biography: true,
+              },
+            },
           },
         },
-        // all the rows where someone follows me…
         following: {
-          include: {
-            // …and in each row, also fetch the “follower” User record
-            follower: true,
+          where: {
+            follower: {
+              suspensions: { none: { liftedAt: null } },
+            },
+          },
+          select: {
+            follower: {
+              select: {
+                username: true,
+                fullName: true,
+                biography: true,
+              },
+            },
           },
         },
       },
@@ -364,7 +382,6 @@ async function getUserFollow(req, res) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    // Now pull just the user objects out of the join table rows:
     const followingUsers = userWithFollows.followers.map((f) => f.following);
     const followerUsers = userWithFollows.following.map((f) => f.follower);
 
@@ -467,7 +484,6 @@ async function updateUser(req, res) {
   } catch (error) {
     console.error("Failed to update user, ", error);
     if (error.code === "P2002") {
-      // Unique constraint failed: username or email already exists.
       return res
         .status(409)
         .json({ error: "Username or email already exists" });
