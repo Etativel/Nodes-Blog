@@ -320,6 +320,26 @@ The application requires several environment variables for proper operation:
   - Minor UI refinements for mobile previews and comment styling
   - Add user about Editor, implementing tiptap text editor
 
+## Future Features
+
+- **Content tags**  
+  Allow users to pick tags for their content.
+
+- **Follow Tags/Topics**  
+  Instead of only following users, people can follow specific tags or topics.
+
+- **User can post images or reels**  
+  Allow users to upload and share images, short videos, and reels alongside or instead of blog posts.
+
+- **Direct Messaging**  
+  Users can privately message each other, with optional group chat functionality.
+
+- **Story Feature**  
+  Users can post 24-hour disappearing content (photos, text, polls, questions).
+
+- **Communities/Groups**  
+  Users can create and join communities based on interests (like Reddit subs).
+
 ## Contributing
 
 Feel free to submit a Pull Request.
