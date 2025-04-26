@@ -85,6 +85,7 @@ function Navigation() {
     setPostToEdit(null);
     navigate("/creator/write-post");
     sessionStorage.removeItem("scrollPosition");
+    setIsOpen(false);
   }
 
   useEffect(() => {
