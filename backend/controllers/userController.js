@@ -354,6 +354,7 @@ async function getUserFollow(req, res) {
                 fullName: true,
                 biography: true,
                 userColor: true,
+                profilePicture: true,
               },
             },
           },
