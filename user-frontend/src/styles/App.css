@@ -54,6 +54,9 @@ html {
   --dialog-input-focus-border: #4f46e5;
 
   --card-hover-bg: #f3f4f6;
+
+  --link-color: #1e40af;
+  --link-hover-color: #4338ca;
 }
 
 /* Dark theme overrides */
@@ -84,4 +87,7 @@ html {
   --dialog-input-focus-border: #6366f1;
 
   --card-hover-bg: #2a2a2a;
+
+  --link-color: #60a5fa;
+  --link-hover-color: #93c5fd;
 }

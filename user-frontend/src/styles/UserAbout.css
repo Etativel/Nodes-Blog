@@ -138,8 +138,12 @@
 }
 
 .bio-text a {
-  color: blue;
+  color: var(--link-color);
   text-decoration: underline;
+}
+
+.bio-text a:hover {
+  color: var(--link-hover-color);
 }
 
 .bio-empty {
