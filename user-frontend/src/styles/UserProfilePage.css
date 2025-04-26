@@ -262,6 +262,10 @@
   font-size: 1rem;
   font-weight: 100;
 }
+.text-full-name-ctr {
+  display: flex;
+  align-items: center;
+}
 
 .user-full-name {
   display: block;
@@ -269,6 +273,7 @@
   font-weight: bold;
   margin-top: 12px;
   margin-bottom: 12px;
+  height: fit-content;
   font-size: 1rem;
   color: var(--text-color);
 }
@@ -698,6 +703,24 @@
   display: flex;
   flex-wrap: nowrap;
   cursor: pointer;
+}
+
+.is-user-dev {
+  font-size: 0.7rem;
+  padding: 2px;
+  padding-left: 3px;
+  padding-right: 3px;
+  text-align: center;
+  background-color: #1a8917;
+  border-radius: 3px;
+  color: white;
+  margin-left: 6px;
+  height: fit-content;
+  display: flex;
+}
+
+.is-user-dev {
+  background-color: #00bcff;
 }
 
 @media (max-width: 500px) {

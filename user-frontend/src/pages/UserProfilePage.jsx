@@ -903,12 +903,18 @@ function UserSideProfile({
         {/* </div> */}
         <div className="side-profile-name-ctr">
           <span className="user-full-name">
-            {loadingProfile
-              ? ""
-              : visitedUser.fullName
-              ? visitedUser.fullName
-              : visitedUser.username}
-            <br />
+            <div className="text-full-name-ctr">
+              {loadingProfile
+                ? ""
+                : visitedUser.fullName
+                ? visitedUser.fullName
+                : visitedUser.username}
+              {visitedUser.username === "etativel" && (
+                <span className="is-user-dev">Dev</span>
+              )}
+            </div>
+
+            {/* <br /> */}
             <p className="side-profile-username">@{visitedUser.username}</p>
           </span>
         </div>

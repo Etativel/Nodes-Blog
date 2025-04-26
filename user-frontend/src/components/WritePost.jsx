@@ -239,6 +239,8 @@ function Write() {
         value={post.content}
         onEditorChange={handleEditorChange}
         init={{
+          skin: "snow",
+          icons: "thin",
           height: 500,
           menubar: false,
           plugins: [
@@ -257,35 +259,52 @@ function Write() {
             "insertdatetime",
             "media",
             "table",
+            "code",
             "help",
             "wordcount",
             "codesample",
-            // you can keep "style" here if you want—but it’s not strictly required
+            "style",
           ],
-          toolbar:
-            "undo redo | styles | blockquote | bold italic forecolor | " +
-            "alignleft aligncenter alignright alignjustify | " +
-            "bullist numlist outdent indent | removeformat | image help codesample",
+          codesample_languages: [
+            { text: "HTML/XML", value: "markup" },
+            { text: "JavaScript", value: "javascript" },
+            { text: "CSS", value: "css" },
+            { text: "PHP", value: "php" },
+            { text: "Ruby", value: "ruby" },
+            { text: "Python", value: "python" },
+            { text: "Java", value: "java" },
+            { text: "C", value: "c" },
+            { text: "C#", value: "csharp" },
+            { text: "C++", value: "cpp" },
+          ],
           style_formats: [
             {
               title: "Right Border Quote",
-              block: "blockquote",
+              inline: "span",
               classes: "fancy-quote",
+              wrapper: true,
             },
           ],
+
           content_style: `
-      .fancy-quote {
-        border-right: 4px solid #ccc;
-        padding: 10px 20px;
-        font-style: italic;
-        background: #f9f9f9;
-        margin: 1em 0;
-      }
-    `,
+          .fancy-quote {
+            display: block;
+            border-right: 4px solid #ccc;
+            padding: 10px 20px;
+            font-style: italic;
+            background: #f9f9f9;
+            margin: 1em 0;
+          }
+        `,
+          toolbar:
+            "undo redo | styleselect | blockquote | blocks | " +
+            "bold italic forecolor | alignleft aligncenter " +
+            "alignright alignjustify | bullist numlist outdent indent | " +
+            "removeformat | image | help | codesample",
+
           images_dataimg_filter: () => false,
         }}
       />
-
       <div className="write-btn-selection">
         {loadingSave ? (
           <SmallLoader />
