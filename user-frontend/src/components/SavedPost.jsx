@@ -15,8 +15,8 @@ function LikedPost() {
               : loading
               ? ""
               : visitedUser.username === author?.username
-              ? "You have not saved any post yet."
-              : "This user have not saved any post yet."}
+              ? "You haven't saved any post yet."
+              : "This user hasn't saved any post yet."}
             {/* {loadingProfile
               ? ""
               : loading
