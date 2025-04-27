@@ -263,6 +263,10 @@
   font-size: 1rem;
 }
 
+.create-acc-btn.padding {
+  padding-left: 6px;
+}
+
 .create-acc-btn,
 .sign-up-btn {
   color: #1a8917;

@@ -146,80 +146,95 @@ function SignDialog({
     // Validate email
     if (!email) {
       errors.emailError = "Email is required.";
-      setIsValidating(false);
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
       errors.emailError = "Invalid email address.";
-      setIsValidating(false);
-    } else {
-      try {
-        const response = await fetch(
-          "https://nodes-blog-api-production.up.railway.app/user/check-email",
-          {
-            method: "POST",
-
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email }),
-          }
-        );
-        const data = await response.json();
-        if (!data.available) {
-          errors.emailError = "Email already taken.";
-          setIsValidating(false);
-        }
-        setIsValidating(false);
-      } catch (error) {
-        console.error("Error checking email:", error);
-        errors.emailError = "Error checking email availability.";
-        setIsValidating(false);
-      } finally {
-        setIsValidating(false);
-      }
     }
 
     // Validate username
     if (!username) {
       errors.usernameError = "Username is required.";
-      setIsValidating(false);
     } else if (username.length < 3) {
       errors.usernameError = "Username must be at least 3 characters.";
-      setIsValidating(false);
     } else if (username.length > 15) {
       errors.usernameError = "Username must be no more than 15 characters.";
-      setIsValidating(false);
     } else if (!/^[A-Za-z0-9]+$/.test(username)) {
       errors.usernameError = "Username can only contain letters and numbers.";
-      setIsValidating(false);
-    } else {
-      try {
-        const response = await fetch(
+    }
+
+    // Validate password
+    if (!password) {
+      errors.passwordError = "Password is required.";
+    } else if (password.length < 6) {
+      errors.passwordError = "Password must be at least 6 characters.";
+    }
+
+    const apiChecks = [];
+
+    // Check email availability if format is valid
+    if (!errors.emailError) {
+      apiChecks.push(
+        fetch(
+          "https://nodes-blog-api-production.up.railway.app/user/check-email",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email }),
+          }
+        )
+          .then((response) => {
+            if (response.status === 429) {
+              alert("Too many requests, try again in few minutes");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (!data.available) {
+              errors.emailError = "Email already taken.";
+            }
+          })
+          .catch((error) => {
+            console.error("Error checking email:", error);
+            errors.emailError = "Error checking email availability.";
+
+            errors.hasApiError = true;
+          })
+      );
+    }
+
+    // Check username availability if format is valid
+    if (!errors.usernameError) {
+      apiChecks.push(
+        fetch(
           "https://nodes-blog-api-production.up.railway.app/user/check-username",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username }),
           }
-        );
-        const data = await response.json();
-        if (!data.available) {
-          errors.usernameError = "Username already taken.";
-          setIsValidating(false);
-        }
-      } catch (error) {
-        console.error("Error checking username:", error);
-        errors.usernameError = "Error checking username availability.";
-        setIsValidating(false);
-      }
+        )
+          .then((response) => {
+            if (response.status === 429) {
+              alert("Too many requests, try again in few minutes");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (!data.available) {
+              errors.usernameError = "Username already taken.";
+            }
+          })
+          .catch((error) => {
+            console.error("Error checking username:", error);
+            errors.usernameError = "Error checking username availability.";
+            errors.hasApiError = true;
+          })
+      );
     }
 
-    // Validate password
-    if (!password) {
-      errors.passwordError = "Password is required.";
-      setIsValidating(false);
-    } else if (password.length < 6) {
-      errors.passwordError = "Password must be at least 6 characters.";
-      setIsValidating(false);
+    if (apiChecks.length > 0) {
+      await Promise.all(apiChecks);
     }
-    setIsValidating(false);
+
     return errors;
   }
 
@@ -228,33 +243,30 @@ function SignDialog({
 
     if (!credential) {
       errors.credentialError = "Email or username is required.";
-      setIsValidating(false);
     } else {
       const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
       if (credential.includes("@") && !emailRegex.test(credential)) {
         errors.credentialError = "Invalid email address.";
-        setIsValidating(false);
       }
     }
 
     if (!password) {
       errors.passwordError = "Password is required.";
-      setIsValidating(false);
     } else if (password.length < 6) {
       errors.passwordError = "Password must be at least 6 characters.";
-      setIsValidating(false);
     }
-    setIsValidating(false);
     return errors;
   }
 
   async function handleSignIn(e) {
+    setErrors({});
     e.preventDefault();
     setIsValidating(true);
     const loginErrors = validateUserLogin(credential, password);
     if (Object.keys(loginErrors).length > 0) {
-      setErrors(loginErrors);
       setIsValidating(false);
+      setErrors(loginErrors);
+
       return;
     }
     try {
@@ -298,11 +310,13 @@ function SignDialog({
   }
 
   async function handleSubmit(e) {
+    setErrors({});
     e.preventDefault();
     setIsValidating(true);
     const validationErrors = await validateForm(email, username, password);
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
+      setIsValidating(false);
       return;
     } else {
       setErrors({});
@@ -393,6 +407,7 @@ function SignDialog({
               <button
                 className="email-btn"
                 onClick={() => {
+                  setErrors({});
                   setActiveTab("emailSignIn");
                 }}
               >
@@ -414,9 +429,9 @@ function SignDialog({
                 <div className="spacer"></div>
               </button>
               <p className="sign-in-info">
-                No account?{" "}
+                No account?
                 <button
-                  className="create-acc-btn"
+                  className="create-acc-btn padding"
                   onClick={() => {
                     setDialogTitle("Join nodes.");
                     setActiveTab("default");
@@ -459,6 +474,8 @@ function SignDialog({
                 <button
                   className="sign-up-btn"
                   onClick={() => {
+                    setErrors({});
+
                     setDialogTitle("Welcome back.");
                     setActiveTab("signIn");
                   }}
@@ -596,6 +613,8 @@ function SignDialog({
                 <button
                   className="sign-up-btn options"
                   onClick={() => {
+                    setErrors({});
+
                     setActiveTab("default");
                   }}
                 >
@@ -704,39 +723,6 @@ function SignDialog({
                 {errors.passwordError && (
                   <p className="password-error">{errors.passwordError}</p>
                 )}
-                {/* <div>
-                  {errors.suspendedError && (
-                    <>
-                      <div
-                        className="input-ctr"
-                        style={{ borderColor: "#c94a4a" }}
-                      >
-                        <span className="error-exclamation">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1}
-                            stroke="#c94a4a"
-                            className="size-6 exclamation-icon"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
-                            />
-                          </svg>
-                        </span>
-                      </div>
-                      <p
-                        className="suspended-error"
-                        style={{ color: "#c94a4a" }}
-                      >
-                        {errors.suspendedError}
-                      </p>
-                    </>
-                  )}
-                </div> */}
                 <button
                   className="submit-btn"
                   type="submit"
@@ -753,6 +739,7 @@ function SignDialog({
                 <button
                   className="sign-up-btn options"
                   onClick={() => {
+                    setErrors({});
                     setDialogTitle("Join Nodes.");
                     setActiveTab("default");
                   }}
