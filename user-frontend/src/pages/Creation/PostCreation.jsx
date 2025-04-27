@@ -14,7 +14,7 @@ function PostCreation() {
   const [post, setPost] = useState({
     postId: "",
     title: "",
-    published: false,
+    published: true,
     authorId: "",
     content: "",
     excerpt: "",
