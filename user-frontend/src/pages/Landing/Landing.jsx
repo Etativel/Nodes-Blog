@@ -492,7 +492,7 @@ function SignDialog({
             <DefaultDialog
               title={title}
               setActiveTab={setActiveTab}
-              setErrors
+              setErrors={setErrors}
               setDialogTitle={setDialogTitle}
             />
           </>
@@ -778,7 +778,7 @@ function SignDialog({
   );
 }
 
-function Landing() {
+function LandingPage() {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
   const [openDialog, setOpenDialog] = useState(null);
@@ -1025,4 +1025,4 @@ function Landing() {
   );
 }
 
-export default Landing;
+export default LandingPage;

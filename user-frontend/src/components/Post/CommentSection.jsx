@@ -599,6 +599,7 @@ function CommentPreview({
                 />
               ) : (
                 <div
+                  onClick={() => redirectToProfilePage(comment.author.username)}
                   className={
                     comment.parentId === null
                       ? "user-comment-profilepicture"
