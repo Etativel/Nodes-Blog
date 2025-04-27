@@ -106,14 +106,14 @@ function PostCard({ post }) {
               {post.comments.length < 1 ? (
                 <CommentIcon
                   isOutline={true}
-                  strokeWidth={1}
+                  strokeWidth={1.5}
                   color="currentColor"
                   className="comment-icon"
                 />
               ) : (
                 <CommentIcon
                   isOutline={false}
-                  strokeWidth={1}
+                  strokeWidth={1.5}
                   color="currentColor"
                   fill="#737373"
                   className="comment-icon"

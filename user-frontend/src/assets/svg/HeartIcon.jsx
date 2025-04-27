@@ -1,6 +1,3 @@
-import React from "react";
-
-// Full stroke heart icon
 const HeartSolid = ({ className, color = "red" }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
