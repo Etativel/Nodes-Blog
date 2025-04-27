@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import "./PostsContainer.css";
-import PostCard from "../../shared/Card/PostCard";
 import { useLocation } from "react-router-dom";
-// import Loader from "../Loader/Loader";
+import PostCard from "../../shared/Card/PostCard";
 import SmallLoader from "../Loader/SmallLoader";
+import "./PostsContainer.css";
 
 function PostsContainer() {
   const [posts, setPosts] = useState([]);

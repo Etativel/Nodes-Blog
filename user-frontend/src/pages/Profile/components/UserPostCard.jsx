@@ -38,9 +38,6 @@ function UserPostCard({
   const [loadingPostUpdate, setLoadingPostUpdate] = useState(false);
   const stripExcerpt =
     excerpt?.substring(0, 100) + (excerpt?.length > 100 ? "..." : "");
-  const handleClick = () => {
-    sessionStorage.setItem("profilePosition", window.scrollY);
-  };
   const [publishStatus, setPublishStatus] = useState(published);
   const navigate = useNavigate();
 
@@ -76,10 +73,6 @@ function UserPostCard({
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   });
-
-  function handleDropdown() {
-    setIsDropdownOpen(!isDropdownOpen);
-  }
 
   async function handleDelete(postId) {
     try {
@@ -128,6 +121,14 @@ function UserPostCard({
       console.error(error);
       setLoadingPostUpdate(false);
     }
+  }
+
+  function handleClick() {
+    sessionStorage.setItem("profilePosition", window.scrollY);
+  }
+
+  function handleDropdown() {
+    setIsDropdownOpen(!isDropdownOpen);
   }
 
   function handleEditPost() {

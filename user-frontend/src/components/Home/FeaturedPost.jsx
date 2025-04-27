@@ -35,11 +35,6 @@ function FeaturedPostCard({ post }) {
             <p>{post.author.username.charAt(0)}</p>
           </div>
         )}
-        {/* <img
-          className="featured-profile-image"
-          src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDJ8fGZlYXR1cmVkJTIwcG9zdHxlbnwwfHx8fDE2OTI3NTQ5MjE&ixlib=rb-4.0.3&q=80&w=400"
-          alt="Profile"
-        /> */}
         <div className="featured-profile-name">
           {post.author.fullName || post.author.username}
         </div>
