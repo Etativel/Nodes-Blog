@@ -54,46 +54,6 @@ Nodes is a blogging platform where writers can easily share their ideas, stories
 - **Featured Content**: Curated content promotion system
 - **Security Controls**: Role-based access control (User, Admin, SuperAdmin)
 
-## Technical Architecture
-
-### Infrastructure
-
-<p align="center">
-  <img src="./public/Nodes architecture.png" alt="Nodes Platform"  width="650" height="180" />
-</p>
-
-### Technology Stack
-
-#### Backend Infrastructure
-
-- **Runtime Environment**: Node.js
-- **API Framework**: Express.js v4.21.2
-- **Authentication**: JWT with Passport.js v0.7.0
-- **Data Storage**: PostgreSQL with Prisma ORM v6.4.1
-- **Media Management**: Multer + Cloudinary for asset handling
-- **Security Measures**: express-rate-limit, CSRF protection, secure cookies
-
-#### User Interface
-
-- **Frontend Framework**: React v19.0.0 with Vite v6.2.0
-- **State Management**: React Context API
-- **Styling Architecture**: CSS
-- **HTTP Client**: Native fetch API
-- **Rich Text Editor**: TinyMCE v7.8.0, TipTap v2.11.7
-
-#### Administration Interface
-
-- **Frontend Framework**: React.js
-- **UI Component Library**: Material UI
-- **Styling**: Tailwind CSS
-- **Data Visualization**: chart js
-
-#### Development & Operations
-
-- **Environment Management**: dotenv v16.4.7
-- **Development Tooling**: ESLint v9.21.0, Vite, Prisma CLI
-- **Deployment Platform**: Node.js with serve for static asset hosting
-
 ## Getting Started
 
 ### System Requirements
@@ -139,7 +99,7 @@ cp .env.example .env
 npm run dev
 ```
 
-#### Administration Panel Setup
+#### Admin Panel Setup
 
 ```bash
 # Navigate to admin directory
@@ -157,8 +117,6 @@ npm run dev
 
 ### Environment Configuration
 
-The application requires several environment variables for proper operation:
-
 **Server Environment Variables:**
 
 - `PORT`: API server port (default: 3000)
@@ -168,105 +126,6 @@ The application requires several environment variables for proper operation:
 - `CLOUDINARY_CLOUD_NAME`: Cloudinary account name
 - `CLOUDINARY_API_KEY`: Cloudinary API key
 - `CLOUDINARY_API_SECRET`: Cloudinary API secret
-
-## API Reference
-
-### Authentication Endpoints
-
-#### User Authentication
-
-| Endpoint        | Method | Description                    | Authentication |
-| --------------- | ------ | ------------------------------ | -------------- |
-| `/auth/login`   | POST   | User authentication            | None           |
-| `/auth/logout`  | POST   | End user session               | Required       |
-| `/auth/profile` | GET    | Retrieve authentication status | Required       |
-
-#### Administrative Authentication
-
-| Endpoint             | Method | Description                          | Authentication |
-| -------------------- | ------ | ------------------------------------ | -------------- |
-| `/adminauth/login`   | POST   | Administrator authentication         | None           |
-| `/adminauth/logout`  | POST   | End administrator session            | Required       |
-| `/adminauth/profile` | GET    | Retrieve admin authentication status | Required       |
-
-### User Management
-
-| Endpoint                           | Method | Description                 | Authentication   |
-| ---------------------------------- | ------ | --------------------------- | ---------------- |
-| `/user/check-username`             | POST   | Username availability check | None             |
-| `/user/check-email`                | POST   | Email availability check    | None             |
-| `/user/create`                     | POST   | User registration           | None             |
-| `/user/:userId`                    | GET    | Retrieve user profile       | Required         |
-| `/user/user-follow/:userId`        | GET    | User following and follower | Required         |
-| `/user/user-by-username/:username` | GET    | Profile by username         | Required         |
-| `/user/`                           | GET    | List all users              | Required         |
-| `/user/update/:userId`             | PATCH  | Update user information     | Required + Owner |
-| `/user/profile/update`             | PATCH  | Update profile with image   | Required         |
-| `/user/follow`                     | PATCH  | Follow user                 | Required         |
-| `/user/unfollow`                   | PATCH  | Unfollow user               | Required         |
-| `/user/toggle-theme/:userId`       | POST   | Update theme preference     | Required         |
-| `/user/get-theme/:userId`          | GET    | Retrieve theme preference   | Required         |
-
-### Content Management
-
-| Endpoint                         | Method | Description            | Authentication   |
-| -------------------------------- | ------ | ---------------------- | ---------------- |
-| `/post/`                         | GET    | List all posts         | Required         |
-| `/post/:postId`                  | GET    | Retrieve specific post | Required         |
-| `/post/by/:username`             | GET    | User's posts           | Required         |
-| `/post/featured-n-trending-post` | GET    | Featured content       | Required         |
-| `/post/search`                   | GET    | Filtered content       | Required         |
-| `/post/create`                   | POST   | Create new post        | Required         |
-| `/post/:postId/like`             | POST   | Toggle post like       | Required         |
-| `/post/:postId/bookmark`         | POST   | Toggle bookmark        | Required         |
-| `/post/report/:postId`           | POST   | Report post            | Required         |
-| `/post/feature-post/:postId`     | POST   | Set featured status    | Admin            |
-| `/post/update/:postId`           | PUT    | Modify post            | Required + Owner |
-| `/post/publish/:postId`          | PUT    | Toggle publish status  | Required + Owner |
-| `/post/delete/:postId`           | DELETE | Remove post            | Required + Owner |
-
-### Comment System
-
-| Endpoint                     | Method | Description               | Authentication   |
-| ---------------------------- | ------ | ------------------------- | ---------------- |
-| `/comment/`                  | GET    | List all comments         | Required         |
-| `/comment/:commentId`        | GET    | Retrieve specific comment | Required         |
-| `/comment/create`            | POST   | Add comment               | Required         |
-| `/comment/reaction/toggle`   | POST   | Toggle reaction           | Required         |
-| `/comment/report/:commentId` | POST   | Report comment            | Required         |
-| `/comment/update/:commentId` | PATCH  | Modify comment            | Required + Owner |
-| `/comment/delete/:commentId` | DELETE | Remove comment            | Required + Owner |
-
-### Administrative Endpoints
-
-#### Dashboard Analytics
-
-| Endpoint                                        | Method | Description              | Role  |
-| ----------------------------------------------- | ------ | ------------------------ | ----- |
-| `/admin-dashboard-api/dashboard/all-stats`      | GET    | Comprehensive statistics | Admin |
-| `/admin-dashboard-api/dashboard/summary`        | GET    | Summary metrics          | Admin |
-| `/admin-dashboard-api/dashboard/reports`        | GET    | Report analysis          | Admin |
-| `/admin-dashboard-api/dashboard/post-status`    | GET    | Content status overview  | Admin |
-| `/admin-dashboard-api/dashboard/recent-reports` | GET    | Recent moderation items  | Admin |
-| `/admin-dashboard-api/dashboard/user/:userId`   | GET    | User-specific analytics  | Admin |
-
-#### User Administration
-
-| Endpoint                                              | Method | Description               | Role       |
-| ----------------------------------------------------- | ------ | ------------------------- | ---------- |
-| `/admin-users-api/users/all-users`                    | GET    | User management interface | Admin      |
-| `/admin-users-api/users/update-user/:userId`          | PUT    | Modify user account       | SuperAdmin |
-| `/admin-users-api/users/suspend-user/:userId`         | POST   | Suspend user account      | SuperAdmin |
-| `/admin-users-api/users/lift-suspension-user/:userId` | POST   | Reinstate account         | SuperAdmin |
-
-#### Content Administration
-
-| Endpoint                                                 | Method | Description                  | Role       |
-| -------------------------------------------------------- | ------ | ---------------------------- | ---------- |
-| `/admin-posts-api/posts/all-posts`                       | GET    | Content management interface | Admin      |
-| `/admin-posts-api/posts/update-status/:postId`           | POST   | Update publication status    | SuperAdmin |
-| `/admin-comments-api/comments/all-comments`              | GET    | Comment management interface | Admin      |
-| `/admin-comments-api/comments/delete-comment/:commentId` | DELETE | Remove comment               | Admin      |
 
 ## Development Roadmap
 
@@ -349,11 +208,6 @@ Feel free to submit a Pull Request.
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
-
-## Contact Information
-
-- **Project Maintainer:** Etativel
-- **GitHub Repository:** [https://github.com/Etativel/Nodes-Blog](https://github.com/Etativel/Nodes-Blog)
 
 ## License
 
