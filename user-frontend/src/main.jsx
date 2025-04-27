@@ -1,39 +1,44 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import App from "./App.jsx";
-import PostPage from "./pages/PostPage.jsx";
+
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import LandingPage from "./pages/LandingPage.jsx";
-import UserProfilePage from "./pages/UserProfilePage.jsx";
-import UserAbout from "./components/UserAbout.jsx";
-import Homepage from "./pages/HomePage.jsx";
-import PostCreation from "./pages/PostCreation.jsx";
-import PreviewPost from "./components/PreviewPost.jsx";
-import WritePost from "./components/WritePost.jsx";
-import NotFound from "./pages/NotFound.jsx";
-import SearchPage from "./pages/SearchPage.jsx";
-import LikedPost from "./components/LikedPost.jsx";
-import SavedPost from "./components/SavedPost.jsx";
+
+import Layout from "./Layout.jsx";
+
+// Pages
+import Landing from "./pages/Landing/Landing.jsx";
+import Home from "./pages/Home/Home.jsx";
+import PageNotFound from "./pages/PageNotFound/PageNotFound.jsx";
+import Post from "./pages/Post/Post.jsx";
+import Search from "./pages/Search/Search.jsx";
+import Profile from "./pages/Profile/Profile.jsx";
+import PostCreation from "./pages/Creation/PostCreation.jsx";
+
+import UserAbout from "./components/Profile/UserAbout.jsx";
+import PreviewPost from "./components/Creation/PreviewPost.jsx";
+import WritePost from "./components/Creation/WritePost.jsx";
+import LikedPost from "./components/Profile/LikedPost.jsx";
+import SavedPost from "./components/Profile/SavedPost.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <LandingPage />,
+    element: <Landing />,
   },
   {
-    element: <App />,
+    element: <Layout />,
     children: [
       {
         path: "/posts",
-        element: <Homepage />,
+        element: <Home />,
       },
       {
         path: "/post/:postId",
-        element: <PostPage />,
+        element: <Post />,
       },
       {
         path: "/search",
-        element: <SearchPage />,
+        element: <Search />,
       },
       {
         path: "/creator",
@@ -55,7 +60,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/:username",
-        element: <UserProfilePage />,
+        element: <Profile />,
         children: [
           {
             path: "about",
@@ -73,7 +78,7 @@ const router = createBrowserRouter([
       },
       {
         path: "*",
-        element: <NotFound />, // <-- Catch-all route for 404 page
+        element: <PageNotFound />, // <-- Catch-all route for 404 page
       },
     ],
   },
