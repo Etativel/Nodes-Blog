@@ -3,6 +3,48 @@ import { useRef, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
+function DefaultDialog({ title, setActiveTab, setErrors, setDialogTitle }) {
+  return (
+    <>
+      <p className="dialog-title">{title}</p>
+      <div className="sign-type-container">
+        <button className="email-btn" onClick={() => setActiveTab("email")}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1}
+            stroke="currentColor"
+            className="size-6 sign-icon"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
+            />
+          </svg>
+          Sign up with email
+          <div className="spacer"></div>
+        </button>
+        <p className="sign-in-info">
+          Already have account?{" "}
+          <button
+            className="sign-up-btn"
+            onClick={() => {
+              setErrors({});
+
+              setDialogTitle("Welcome back.");
+              setActiveTab("signIn");
+            }}
+          >
+            Sign in
+          </button>
+        </p>
+      </div>
+    </>
+  );
+}
+
 function LandingNav({ openDialog, setDialogTitle, setActiveTab }) {
   return (
     <div className="l-nav-container">
@@ -443,47 +485,16 @@ function SignDialog({
             </div>
           </>
         );
+
       case "default":
         return (
           <>
-            <p className="dialog-title">{title}</p>
-            <div className="sign-type-container">
-              <button
-                className="email-btn"
-                onClick={() => setActiveTab("email")}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1}
-                  stroke="currentColor"
-                  className="size-6 sign-icon"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
-                  />
-                </svg>
-                Sign up with email
-                <div className="spacer"></div>
-              </button>
-              <p className="sign-in-info">
-                Already have account?{" "}
-                <button
-                  className="sign-up-btn"
-                  onClick={() => {
-                    setErrors({});
-
-                    setDialogTitle("Welcome back.");
-                    setActiveTab("signIn");
-                  }}
-                >
-                  Sign in
-                </button>
-              </p>
-            </div>
+            <DefaultDialog
+              title={title}
+              setActiveTab={setActiveTab}
+              setErrors
+              setDialogTitle={setDialogTitle}
+            />
           </>
         );
       case "email":
