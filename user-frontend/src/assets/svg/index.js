@@ -13,7 +13,7 @@ import LogoutIcon from "./LogoutIcon";
 import SearchIcon from "./SearchIcon";
 import MoonIcon from "./MoonIcon";
 import SunIcon from "./SunIcon";
-import XIcon from "./Xicon";
+import XIcon from "./XIcon";
 import LikeIcon from "./LikeIcon";
 import DislikeIcon from "./DislikeIcon";
 import BookmarkIcon from "./BookmarkIcon";
