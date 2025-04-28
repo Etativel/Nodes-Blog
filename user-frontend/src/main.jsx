@@ -1,11 +1,11 @@
-import { StrictMode } from "react";
+import React, { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import Layout from "./Layout.jsx";
+import Loader from "./components/Loader/Loader.jsx";
 
-// Pages
 import Landing from "./pages/Landing/Landing.jsx";
 import Home from "./pages/Home/Home.jsx";
 import PageNotFound from "./pages/PageNotFound/PageNotFound.jsx";
@@ -78,7 +78,7 @@ const router = createBrowserRouter([
       },
       {
         path: "*",
-        element: <PageNotFound />, // <-- Catch-all route for 404 page
+        element: <PageNotFound />,
       },
     ],
   },
@@ -86,6 +86,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <Suspense fallback={<Loader />}>
+      <RouterProvider router={router} />
+    </Suspense>
   </StrictMode>
 );
