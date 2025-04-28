@@ -1,7 +1,8 @@
 import { useRef, useEffect, useState } from "react";
 import formatCloudinaryUrl from "../../utils/cloudinaryUtils";
-import "./FollowerDialog.css";
 import { Link } from "react-router-dom";
+import { XIcon } from "../../assets/svg";
+import "./FollowerDialog.css";
 
 function FollowedUserCard({ follower, onClose }) {
   return (
@@ -109,20 +110,7 @@ function FollowerDialog({ isOpen, onClose, visitedUser }) {
         <div className="follower-dialog-header">
           <h2>Followers</h2>
           <button className="close-dialog-btn" onClick={onClose}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1}
-              stroke="currentColor"
-              className="size-6 x-logo"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18 18 6M6 6l12 12"
-              />
-            </svg>
+            <XIcon strokeWidth={1} stroke="currentColor" className="x-logo" />
           </button>
         </div>
 

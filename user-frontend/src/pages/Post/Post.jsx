@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import PostHead from "../../components/Post/PostHead";
-import "./Post.css";
+import { PostHead, CommentSection } from "../../components/Post";
 import Loader from "../../components/Loader/Loader";
-import CommentSection from "../../components/Post/CommentSection";
 import timePosted from "../../utils/formatTime";
+import "./Post.css";
 
 function Post() {
   const { postId } = useParams();
@@ -62,23 +61,9 @@ function Post() {
         {loading ? (
           <Loader />
         ) : (
-          // <div class Name="sd">ddd</div>
           <>
             <PostHead postId={postId} post={post}></PostHead>
 
-            {/* This part bellow user the styling from PostPage.css */}
-            {/* <div className="post-container">
-              {post && post.content ? (
-                <div
-                  className="post-preview"
-                  dangerouslySetInnerHTML={{ __html: post.content }}
-                />
-              ) : (
-                <p>No current post</p>
-              )}
-            </div> */}
-
-            {/* This part bellow use the styling from PostCreation.css */}
             <div className="blog-post-preview">
               <div className="preview-post-container">
                 {post?.content ? (

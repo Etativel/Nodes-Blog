@@ -1,7 +1,7 @@
 import { useEffect, useRef, useContext, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { PostContext } from "../../../contexts/context-create";
-import formatCloudinaryUrl from "../../../utils/cloudinaryUtils";
+import { formatCloudinaryUrl } from "../../../utils";
 
 import {
   CommentIcon,

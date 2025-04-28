@@ -1,3 +1,5 @@
-export { default as ProfileContext } from "./ProfileContext";
-export { default as PostContext } from "./PostContext";
-export { default as ThemeContext } from "./ThemeContext";
+import ProfileContext from "./ProfileContext";
+import PostContext from "./PostContext";
+import ThemeContext from "./ThemeContext";
+
+export { ProfileContext, PostContext, ThemeContext };

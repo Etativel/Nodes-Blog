@@ -1,19 +1,11 @@
 import { useParams, Outlet, useNavigate, useLocation } from "react-router-dom";
+import { SideProfile, UserPostCard, PostCard, EditDialog } from "./components";
 import { useContext, useEffect, useState, useRef } from "react";
-
-import Loader from "../../components/Loader/Loader";
-import SmallLoader from "../../components/Loader/SmallLoader";
-
-import ProfileContext from "../../contexts/context-create/ProfileContext";
-
-import PageNotFound from "../PageNotFound/PageNotFound";
+import { Loader, SmallLoader } from "../../components/Loader";
 import FollowerDialog from "../../components/Profile/FollowerDialog";
-
-import SideProfile from "./components/SideProfile";
-import UserPostCard from "./components/UserPostCard";
-import PostCard from "./components/PostCard";
-import EditDialog from "./components/EditDialog";
-
+import ProfileContext from "../../contexts/context-create/ProfileContext";
+import PageNotFound from "../PageNotFound/PageNotFound";
+import { CloseButton } from "../../shared";
 import "./Profile.css";
 
 function Profile() {
@@ -120,25 +112,6 @@ function Profile() {
     navigate(`/${username}/${children}`);
   }
 
-  const CloseButton = () => (
-    <button className="close-dialog-btn" onClick={() => setIsOpen(false)}>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1}
-        stroke="currentColor"
-        className="size-6 x-logo"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M6 18 18 6M6 6l12 12"
-        />
-      </svg>
-    </button>
-  );
-
   function toggleFollowerDialog() {
     setIsFollowerDialogOpen((prev) => !prev);
   }
@@ -148,7 +121,7 @@ function Profile() {
       <div className="profile-page-container">
         <div className="update-profile-ctr" ref={dialogCtr}>
           <div className="profile-form" ref={profileForm}>
-            <CloseButton />
+            <CloseButton onClick={() => setIsOpen(false)} />
             <EditDialog isOpen={isOpen} setIsOpen={setIsOpen} />
           </div>
         </div>
