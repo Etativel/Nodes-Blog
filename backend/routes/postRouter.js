@@ -8,8 +8,8 @@ const upload = require("../config/multerConfig");
 const { isAdmin } = require("./adminAuth.js");
 const createLimiter = require("../utils/limiter.js");
 
-const postActionLimiter = createLimiter({ windowMs: 10 * 60 * 1000, max: 20 });
-const postCreateLimiter = createLimiter({ windowMs: 30 * 60 * 1000, max: 5 });
+const postActionLimiter = createLimiter({ windowMs: 10 * 60 * 1000, max: 50 });
+const postCreateLimiter = createLimiter({ windowMs: 30 * 60 * 1000, max: 20 });
 
 const postSearchLimiter = createLimiter({
   windowMs: 10 * 60 * 1000,
