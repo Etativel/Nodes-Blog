@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import formatCloudinaryUrl from "../../../utils/cloudinaryUtils";
+import { formatCloudinaryUrl } from "../../../utils";
 
 function SideProfile({
   pageUsername,

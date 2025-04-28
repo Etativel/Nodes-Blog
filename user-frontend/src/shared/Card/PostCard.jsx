@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
-import "./PostCard.css";
-import { useAuthor } from "../../utils/useAuthor";
-import formatCloudinaryUrl from "../../utils/cloudinaryUtils";
+import { useAuthor, formatCloudinaryUrl } from "../../utils";
 import { HeartIcon, CommentIcon } from "../../assets/svg";
+import "./PostCard.css";
 
 function PostCard({ post }) {
   const { author, loading, error } = useAuthor(post.authorId);
@@ -129,16 +128,15 @@ function PostCard({ post }) {
                 <HeartIcon
                   isOutline={true}
                   className="heart-icon-card"
-                  color="red"
-                  stroke="red"
                   strokeWidth={1.5}
+                  stroke="red
+                  "
                 />
               ) : (
                 <HeartIcon
                   isOutline={false}
                   className="heart-icon-card"
-                  color="red"
-                  stroke="red"
+                  fill="red"
                 />
               )}
 

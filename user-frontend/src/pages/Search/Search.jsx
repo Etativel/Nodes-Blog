@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import "./Search.css";
-import formatCloudinaryUrl from "../../utils/cloudinaryUtils";
-import estimateReadingTime from "../../utils/estimateReadingTime";
+import { formatCloudinaryUrl, estimateReadingTime } from "../../utils";
+import { MGlassesIcon, XIcon } from "../../assets/svg";
 
 function Search() {
   const [searchResults, setSearchResults] = useState([]);
@@ -77,20 +77,11 @@ function Search() {
 
         <form onSubmit={handleSubmit} className="search-form">
           <div className="search-input-container">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
+            <MGlassesIcon
               strokeWidth={1.5}
               stroke="currentColor"
               className="search-icon"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-              />
-            </svg>
+            />
             <input
               type="text"
               placeholder="Search posts, tags, or authors"
@@ -105,20 +96,11 @@ function Search() {
                 onClick={() => setSearchInput("")}
                 aria-label="Clear search"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
+                <XIcon
                   strokeWidth={1.5}
                   stroke="currentColor"
                   className="clear-icon"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
+                />
               </button>
             )}
           </div>

@@ -1,8 +1,8 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
-import "./PostCreation.css";
 import { useContext, useState, useEffect } from "react";
-import ProfileContext from "../../contexts/context-create/ProfileContext";
-import PostContext from "../../contexts/context-create/PostContext";
+import { ProfileContext, PostContext } from "../../contexts/context-create";
+import { ArrowIcon } from "../../assets/svg";
+import "./PostCreation.css";
 
 function PostCreation() {
   const { author, loading } = useContext(ProfileContext);
@@ -58,40 +58,22 @@ function PostCreation() {
             <Link to="preview-post">
               <div className="preview-post-text">
                 <p>Preview Post</p>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
+                <ArrowIcon
                   strokeWidth={1}
                   stroke="white"
-                  className="size-6 arrow-icon"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m8.25 4.5 7.5 7.5-7.5 7.5"
-                  />
-                </svg>
+                  className="arrow-icon"
+                />
               </div>
             </Link>
           ) : (
             <Link to="write-post">
               <div className="write-post-text">
                 <p className="continue-editing-text">Continue Editing</p>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
+                <ArrowIcon
                   strokeWidth={1}
                   stroke="white"
-                  className="size-6 arrow-icon"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m8.25 4.5 7.5 7.5-7.5 7.5"
-                  />
-                </svg>
+                  className="arrow-icon"
+                />
               </div>
             </Link>
           )}
@@ -114,40 +96,22 @@ function PostCreation() {
             <Link to="preview-post">
               <div className="preview-post-text">
                 <p>Preview Post</p>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
+                <ArrowIcon
                   strokeWidth={1}
                   stroke="white"
-                  className="size-6 arrow-icon"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m8.25 4.5 7.5 7.5-7.5 7.5"
-                  />
-                </svg>
+                  className="arrow-icon"
+                />
               </div>
             </Link>
           ) : (
             <Link to="write-post">
               <div className="write-post-text">
                 <p className="continue-editing-text">Continue Editing</p>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
+                <ArrowIcon
                   strokeWidth={1}
                   stroke="white"
-                  className="size-6 arrow-icon"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m8.25 4.5 7.5 7.5-7.5 7.5"
-                  />
-                </svg>
+                  className="arrow-icon"
+                />
               </div>
             </Link>
           )}

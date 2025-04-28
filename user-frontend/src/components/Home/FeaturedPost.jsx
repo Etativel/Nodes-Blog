@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import "./FeaturedPost.css";
-
-import timePosted from "../../utils/formatTime";
-import formatCloudinaryUrl from "../../utils/cloudinaryUtils";
+import { timePosted, formatCloudinaryUrl } from "../../utils";
 import SmallLoader from "../Loader/SmallLoader";
+import "./FeaturedPost.css";
 
 function FeaturedPostCard({ post }) {
   function redirectToPost() {

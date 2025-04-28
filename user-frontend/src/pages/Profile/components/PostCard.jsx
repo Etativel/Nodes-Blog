@@ -1,4 +1,4 @@
-import formatCloudinaryUrl from "../../../utils/cloudinaryUtils";
+import { formatCloudinaryUrl } from "../../../utils";
 import { CommentIcon, HeartIcon } from "../../../assets/svg";
 import { Link } from "react-router-dom";
 
@@ -103,22 +103,17 @@ function PostCard({ post }) {
                 {post._count.likedBy < 1 ? (
                   <HeartIcon
                     isOutline={true}
-                    className="heart=icon-card"
-                    color="red"
+                    className="heart-icon-card"
                     strokeWidth={1.5}
                     stroke="red
                     "
                   />
                 ) : (
-                  <>
-                    <HeartIcon
-                      isOutline={false}
-                      className="heart-icon-card"
-                      color="red"
-                      strokeWidth={1.5}
-                      stroke="red"
-                    />
-                  </>
+                  <HeartIcon
+                    isOutline={false}
+                    className="heart-icon-card"
+                    fill="red"
+                  />
                 )}
 
                 <span>

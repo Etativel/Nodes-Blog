@@ -11,7 +11,7 @@ const { isSuperAdmin } = require("./adminAuth.js");
 const { isProfileOwner } = require("../middlewares/isProfileOwner.js");
 const createLimiter = require("../utils/limiter.js");
 
-const userLimiter = createLimiter({ windowMs: 5 * 60 * 1000, max: 20 });
+const userLimiter = createLimiter({ windowMs: 5 * 60 * 1000, max: 50 });
 
 router.post("/check-username", userLimiter, userController.getUserByUsername);
 router.post("/check-email", userLimiter, userController.getUserByEmail);

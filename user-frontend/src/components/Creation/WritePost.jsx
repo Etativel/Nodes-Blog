@@ -4,7 +4,7 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import imageCompression from "browser-image-compression";
 import SmallLoader from "../Loader/SmallLoader";
 
-function Write() {
+function WritePost() {
   const { post, setPost, isEditing, setPostToEdit, setIsEditing } =
     useOutletContext();
   const imageInputRef = useRef(null);
@@ -164,7 +164,7 @@ function Write() {
     imageInputRef.current.click();
   }
   return (
-    <>
+    <div className="write-container">
       <form className="post-form">
         <input
           className="blog-title"
@@ -352,14 +352,6 @@ function Write() {
           )}
         </div>
       </div> */}
-    </>
-  );
-}
-
-function WritePost() {
-  return (
-    <div className="write-container">
-      <Write />
     </div>
   );
 }

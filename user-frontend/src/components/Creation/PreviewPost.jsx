@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
-import formatCloudinaryUrl from "../../utils/cloudinaryUtils";
-import estimateReadingTime from "../../utils/estimateReadingTime";
-import timePosted from "../../utils/formatTime";
+import {
+  timePosted,
+  formatCloudinaryUrl,
+  estimateReadingTime,
+} from "../../utils";
 
 function PreviewPost() {
   const { post, author, loading } = useOutletContext();

@@ -274,6 +274,7 @@
   border: 0px;
   font-weight: bold;
   cursor: pointer;
+  padding-left: 6px;
 }
 .sign-up-btn.options {
   font-weight: 500;

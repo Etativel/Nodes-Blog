@@ -1,132 +1,20 @@
-import "./Landing.css";
 import { useRef, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { CloseButton } from "../../shared";
+import { Loader } from "../../components/Loader";
+import {
+  LandingMain,
+  LandingFooter,
+  LandingNav,
+  SignInDialog,
+  SignInForm,
+  SignUpForm,
+  DefaultDialog,
+} from "./components";
+import "./Landing.css";
 
-function DefaultDialog({ title, setActiveTab, setErrors, setDialogTitle }) {
-  return (
-    <>
-      <p className="dialog-title">{title}</p>
-      <div className="sign-type-container">
-        <button className="email-btn" onClick={() => setActiveTab("email")}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1}
-            stroke="currentColor"
-            className="size-6 sign-icon"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
-            />
-          </svg>
-          Sign up with email
-          <div className="spacer"></div>
-        </button>
-        <p className="sign-in-info">
-          Already have account?{" "}
-          <button
-            className="sign-up-btn"
-            onClick={() => {
-              setErrors({});
-
-              setDialogTitle("Welcome back.");
-              setActiveTab("signIn");
-            }}
-          >
-            Sign in
-          </button>
-        </p>
-      </div>
-    </>
-  );
-}
-
-function LandingNav({ openDialog, setDialogTitle, setActiveTab }) {
-  return (
-    <div className="l-nav-container">
-      <div className="nav-flex-container">
-        <div className="left-nav">
-          <p className="web-title">Nodes</p>
-        </div>
-        <div className="right-nav">
-          <button
-            className="write-btn-landing"
-            onClick={() => {
-              setDialogTitle("Create an account to start writing.");
-              openDialog("signIn");
-            }}
-          >
-            Write
-          </button>
-          <button
-            className="sign-in-btn"
-            onClick={() => {
-              setActiveTab("signIn");
-              setDialogTitle("Welcome back.");
-              openDialog("signIn");
-            }}
-          >
-            Sign in
-          </button>
-          <button
-            className="get-started-btn"
-            onClick={() => {
-              setDialogTitle("Join nodes.");
-              openDialog("signIn");
-            }}
-          >
-            Get started
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function LandingMain({ openDialog, setDialogTitle }) {
-  return (
-    <div className="l-main-container">
-      <div className="main-title">
-        Connecting
-        <br />
-        people & ideas
-      </div>
-      <div className="main-subtitle">
-        A space to explore and share your ideas.
-      </div>
-      <button
-        className="start-reading-btn"
-        onClick={() => {
-          setDialogTitle("Join nodes.");
-          openDialog("signIn");
-        }}
-      >
-        Start reading
-      </button>
-    </div>
-  );
-}
-
-function LandingFooter() {
-  return (
-    <div className="l-foot-container">
-      <div className="foot-flex-container">
-        <a
-          href="https://github.com/Etativel/Nodes-Blog"
-          className="about-github"
-        >
-          Github
-        </a>
-      </div>
-    </div>
-  );
-}
-
-function SignDialog({
+function Sign({
   activeTab,
   setActiveTab,
   isOpen,
@@ -420,70 +308,16 @@ function SignDialog({
     }
   }
 
-  const CloseButton = () => (
-    <button className="close-dialog-btn" onClick={handleClose}>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="size-6 x-logo"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M6 18 18 6M6 6l12 12"
-        />
-      </svg>
-    </button>
-  );
-
   const renderContent = () => {
     switch (activeTab) {
       case "signIn":
         return (
-          <>
-            <p className="dialog-title">{title}</p>
-            <div className="sign-type-container">
-              <button
-                className="email-btn"
-                onClick={() => {
-                  setErrors({});
-                  setActiveTab("emailSignIn");
-                }}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1}
-                  stroke="currentColor"
-                  className="size-6 sign-icon"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
-                  />
-                </svg>
-                Sign in with email
-                <div className="spacer"></div>
-              </button>
-              <p className="sign-in-info">
-                No account?
-                <button
-                  className="create-acc-btn padding"
-                  onClick={() => {
-                    setDialogTitle("Join nodes.");
-                    setActiveTab("default");
-                  }}
-                >
-                  Create one
-                </button>
-              </p>
-            </div>
-          </>
+          <SignInDialog
+            title={title}
+            setErrors={setErrors}
+            setActiveTab={setActiveTab}
+            setDialogTitle={setDialogTitle}
+          />
         );
 
       case "default":
@@ -499,267 +333,34 @@ function SignDialog({
         );
       case "email":
         return (
-          <>
-            <p className="dialog-title">Sign up with email</p>
-            <div className="sign-type-container">
-              <form
-                action=""
-                className="sign-up-form"
-                onSubmit={(e) => handleSubmit(e)}
-              >
-                <label required htmlFor="email-field" className="label">
-                  email
-                </label>
-                <div className="input-ctr">
-                  <input
-                    type="text"
-                    id="email-field"
-                    name="email"
-                    value={email}
-                    onChange={(e) => handleEmailChange(e.target.value)}
-                  />
-                  {errors.emailError && (
-                    <span className="error-exclamation">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1}
-                        stroke="#c94a4a"
-                        className="size-6 exclamation-icon"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
-                        />
-                      </svg>
-                    </span>
-                  )}
-                </div>
-                {errors.emailError && (
-                  <p className="email-error">{errors.emailError}</p>
-                )}
-
-                <label htmlFor="username-field" className="label">
-                  username
-                </label>
-                <div className="input-ctr">
-                  <input
-                    type="text"
-                    id="username-field"
-                    name="username"
-                    max={15}
-                    value={username}
-                    onChange={(e) => handleUsernameChange(e.target.value)}
-                  />
-                  {errors.usernameError && (
-                    <span className="error-exclamation">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1}
-                        stroke="#c94a4a"
-                        className="size-6 exclamation-icon"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
-                        />
-                      </svg>
-                    </span>
-                  )}
-                </div>
-                {errors.usernameError && (
-                  <p className="username-error">{errors.usernameError}</p>
-                )}
-                <label htmlFor="password-field" className="label">
-                  password
-                </label>
-                <div className="input-ctr">
-                  <input
-                    type="password"
-                    id="password-field"
-                    name="password"
-                    value={password}
-                    onChange={(e) => handlePasswordChange(e.target.value)}
-                  />
-                  {errors.passwordError && (
-                    <span className="error-exclamation">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1}
-                        stroke="#c94a4a"
-                        className="size-6 exclamation-icon"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
-                        />
-                      </svg>
-                    </span>
-                  )}
-                </div>
-                {errors.passwordError && (
-                  <p className="password-error">{errors.passwordError}</p>
-                )}
-                <button
-                  className="submit-btn"
-                  type="submit"
-                  disabled={isValidating}
-                  style={{
-                    opacity: isValidating ? 0.5 : 1,
-                    cursor: isValidating ? "not-allowed" : "pointer",
-                  }}
-                >
-                  Continue
-                </button>
-              </form>
-              <p className="sign-in-info">
-                <button
-                  className="sign-up-btn options"
-                  onClick={() => {
-                    setErrors({});
-
-                    setActiveTab("default");
-                  }}
-                >
-                  &lt; &nbsp; All sign in option
-                </button>
-              </p>
-            </div>
-          </>
+          <SignUpForm
+            handleSubmit={handleSubmit}
+            email={email}
+            handleEmailChange={handleEmailChange}
+            errors={errors}
+            username={username}
+            handleUsernameChange={handleUsernameChange}
+            password={password}
+            handlePasswordChange={handlePasswordChange}
+            isValidating={isValidating}
+            setErrors={setErrors}
+            setActiveTab={setActiveTab}
+          />
         );
       case "emailSignIn":
         return (
-          <>
-            <p className="dialog-title">Sign in with email</p>
-            <div className="sign-type-container">
-              <form
-                action=""
-                className="sign-up-form"
-                onSubmit={(e) => handleSignIn(e)}
-              >
-                <label required htmlFor="email-field" className="label">
-                  email or username
-                </label>
-                <div className="input-ctr">
-                  <input
-                    type="text"
-                    id="email-field"
-                    name="email"
-                    value={credential}
-                    onChange={(e) => handleCredentialChange(e.target.value)}
-                  />
-                  {errors.emailError && (
-                    <span className="error-exclamation">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1}
-                        stroke="#c94a4a"
-                        className="size-6 exclamation-icon"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
-                        />
-                      </svg>
-                    </span>
-                  )}
-                  {errors.suspendedError && (
-                    <span className="error-exclamation">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1}
-                        stroke="#c94a4a"
-                        className="size-6 exclamation-icon"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
-                        />
-                      </svg>
-                    </span>
-                  )}
-                </div>
-                {errors.emailError && (
-                  <p className="email-error">{errors.emailError}</p>
-                )}
-
-                {/* Suspension error text */}
-                {errors.suspendedError && (
-                  <p className="email-error">{errors.suspendedError}</p>
-                )}
-                <label htmlFor="password-field" className="label">
-                  password
-                </label>
-                <div className="input-ctr">
-                  <input
-                    type="password"
-                    id="password-field"
-                    name="password"
-                    value={password}
-                    onChange={(e) => handlePasswordChange(e.target.value)}
-                  />
-                  {errors.passwordError && (
-                    <span className="error-exclamation">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1}
-                        stroke="#c94a4a"
-                        className="size-6 exclamation-icon"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
-                        />
-                      </svg>
-                    </span>
-                  )}
-                </div>
-                {errors.passwordError && (
-                  <p className="password-error">{errors.passwordError}</p>
-                )}
-                <button
-                  className="submit-btn"
-                  type="submit"
-                  disabled={isValidating}
-                  style={{
-                    opacity: isValidating ? 0.5 : 1,
-                    cursor: isValidating ? "not-allowed" : "pointer",
-                  }}
-                >
-                  Continue
-                </button>
-              </form>
-              <p className="sign-in-info">
-                <button
-                  className="sign-up-btn options"
-                  onClick={() => {
-                    setErrors({});
-                    setDialogTitle("Join Nodes.");
-                    setActiveTab("default");
-                  }}
-                >
-                  &lt; &nbsp; All sign in option
-                </button>
-              </p>
-            </div>
-          </>
+          <SignInForm
+            isValidating={isValidating}
+            errors={errors}
+            handleSignIn={handleSignIn}
+            setErrors={setErrors}
+            setDialogTitle={setDialogTitle}
+            setActiveTab={setActiveTab}
+            handleCredentialChange={handleCredentialChange}
+            credential={credential}
+            password={password}
+            handlePasswordChange={handlePasswordChange}
+          />
         );
       default:
         return null;
@@ -770,7 +371,7 @@ function SignDialog({
     <>
       <div className="dialog-container" ref={dialogRef}>
         <div className="sign-in" ref={signContainer}>
-          <CloseButton />
+          <CloseButton onClick={handleClose} />
           {renderContent()}
         </div>
       </div>
@@ -991,7 +592,7 @@ function LandingPage() {
   return (
     <div className="wrapper" style={{ position: "relative" }}>
       {loading ? (
-        <div></div>
+        <Loader />
       ) : (
         <>
           <canvas
@@ -1010,7 +611,7 @@ function LandingPage() {
               setDialogTitle={setDialogTitle}
             />
             <LandingFooter />
-            <SignDialog
+            <Sign
               title={dialogTitle}
               setDialogTitle={setDialogTitle}
               isOpen={openDialog === "signIn"}

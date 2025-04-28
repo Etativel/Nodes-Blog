@@ -1,5 +1,4 @@
-import FeaturedPost from "../../components/Home/FeaturedPost";
-import PostsContainer from "../../components/Home/PostsContainer";
+import { FeaturedPost, PostsContainer } from "../../components/Home";
 import "./Home.css";
 
 function Home() {
