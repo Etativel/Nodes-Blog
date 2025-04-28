@@ -79,6 +79,14 @@ npm install
 # Configure environment variables
 cp .env.example .env
 
+# Set up Prisma
+npx prisma init
+
+# Make sure to configure your database connection URL in .env
+
+# Run Prisma migrations to set up the database schema
+npx prisma migrate dev --name init
+
 # Start development server
 npm run dev
 ```
@@ -126,6 +134,105 @@ npm run dev
 - `CLOUDINARY_CLOUD_NAME`: Cloudinary account name
 - `CLOUDINARY_API_KEY`: Cloudinary API key
 - `CLOUDINARY_API_SECRET`: Cloudinary API secret
+
+## API Reference
+
+### Authentication Endpoints
+
+#### User Authentication
+
+| Endpoint        | Method | Description                    | Authentication |
+| --------------- | ------ | ------------------------------ | -------------- |
+| `/auth/login`   | POST   | User authentication            | None           |
+| `/auth/logout`  | POST   | End user session               | Required       |
+| `/auth/profile` | GET    | Retrieve authentication status | Required       |
+
+#### Administrative Authentication
+
+| Endpoint             | Method | Description                          | Authentication |
+| -------------------- | ------ | ------------------------------------ | -------------- |
+| `/adminauth/login`   | POST   | Administrator authentication         | None           |
+| `/adminauth/logout`  | POST   | End administrator session            | Required       |
+| `/adminauth/profile` | GET    | Retrieve admin authentication status | Required       |
+
+### User Management
+
+| Endpoint                           | Method | Description                 | Authentication   |
+| ---------------------------------- | ------ | --------------------------- | ---------------- |
+| `/user/check-username`             | POST   | Username availability check | None             |
+| `/user/check-email`                | POST   | Email availability check    | None             |
+| `/user/create`                     | POST   | User registration           | None             |
+| `/user/:userId`                    | GET    | Retrieve user profile       | Required         |
+| `/user/user-follow/:userId`        | GET    | User following and follower | Required         |
+| `/user/user-by-username/:username` | GET    | Profile by username         | Required         |
+| `/user/`                           | GET    | List all users              | Required         |
+| `/user/update/:userId`             | PATCH  | Update user information     | Required + Owner |
+| `/user/profile/update`             | PATCH  | Update profile with image   | Required         |
+| `/user/follow`                     | PATCH  | Follow user                 | Required         |
+| `/user/unfollow`                   | PATCH  | Unfollow user               | Required         |
+| `/user/toggle-theme/:userId`       | POST   | Update theme preference     | Required         |
+| `/user/get-theme/:userId`          | GET    | Retrieve theme preference   | Required         |
+
+### Content Management
+
+| Endpoint                         | Method | Description            | Authentication   |
+| -------------------------------- | ------ | ---------------------- | ---------------- |
+| `/post/`                         | GET    | List all posts         | Required         |
+| `/post/:postId`                  | GET    | Retrieve specific post | Required         |
+| `/post/by/:username`             | GET    | User's posts           | Required         |
+| `/post/featured-n-trending-post` | GET    | Featured content       | Required         |
+| `/post/search`                   | GET    | Filtered content       | Required         |
+| `/post/create`                   | POST   | Create new post        | Required         |
+| `/post/:postId/like`             | POST   | Toggle post like       | Required         |
+| `/post/:postId/bookmark`         | POST   | Toggle bookmark        | Required         |
+| `/post/report/:postId`           | POST   | Report post            | Required         |
+| `/post/feature-post/:postId`     | POST   | Set featured status    | Admin            |
+| `/post/update/:postId`           | PUT    | Modify post            | Required + Owner |
+| `/post/publish/:postId`          | PUT    | Toggle publish status  | Required + Owner |
+| `/post/delete/:postId`           | DELETE | Remove post            | Required + Owner |
+
+### Comment System
+
+| Endpoint                     | Method | Description               | Authentication   |
+| ---------------------------- | ------ | ------------------------- | ---------------- |
+| `/comment/`                  | GET    | List all comments         | Required         |
+| `/comment/:commentId`        | GET    | Retrieve specific comment | Required         |
+| `/comment/create`            | POST   | Add comment               | Required         |
+| `/comment/reaction/toggle`   | POST   | Toggle reaction           | Required         |
+| `/comment/report/:commentId` | POST   | Report comment            | Required         |
+| `/comment/update/:commentId` | PATCH  | Modify comment            | Required + Owner |
+| `/comment/delete/:commentId` | DELETE | Remove comment            | Required + Owner |
+
+### Administrative Endpoints
+
+#### Dashboard Analytics
+
+| Endpoint                                        | Method | Description              | Role  |
+| ----------------------------------------------- | ------ | ------------------------ | ----- |
+| `/admin-dashboard-api/dashboard/all-stats`      | GET    | Comprehensive statistics | Admin |
+| `/admin-dashboard-api/dashboard/summary`        | GET    | Summary metrics          | Admin |
+| `/admin-dashboard-api/dashboard/reports`        | GET    | Report analysis          | Admin |
+| `/admin-dashboard-api/dashboard/post-status`    | GET    | Content status overview  | Admin |
+| `/admin-dashboard-api/dashboard/recent-reports` | GET    | Recent moderation items  | Admin |
+| `/admin-dashboard-api/dashboard/user/:userId`   | GET    | User-specific analytics  | Admin |
+
+#### User Administration
+
+| Endpoint                                              | Method | Description               | Role       |
+| ----------------------------------------------------- | ------ | ------------------------- | ---------- |
+| `/admin-users-api/users/all-users`                    | GET    | User management interface | Admin      |
+| `/admin-users-api/users/update-user/:userId`          | PUT    | Modify user account       | SuperAdmin |
+| `/admin-users-api/users/suspend-user/:userId`         | POST   | Suspend user account      | SuperAdmin |
+| `/admin-users-api/users/lift-suspension-user/:userId` | POST   | Reinstate account         | SuperAdmin |
+
+#### Content Administration
+
+| Endpoint                                                 | Method | Description                  | Role       |
+| -------------------------------------------------------- | ------ | ---------------------------- | ---------- |
+| `/admin-posts-api/posts/all-posts`                       | GET    | Content management interface | Admin      |
+| `/admin-posts-api/posts/update-status/:postId`           | POST   | Update publication status    | SuperAdmin |
+| `/admin-comments-api/comments/all-comments`              | GET    | Comment management interface | Admin      |
+| `/admin-comments-api/comments/delete-comment/:commentId` | DELETE | Remove comment               | Admin      |
 
 ## Development Roadmap
 
@@ -211,8 +318,4 @@ Feel free to submit a Pull Request.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/Etativel/Nodes-Blog/blob/main/LICENSE) file for details.
-
----
-
-© 2025 Etativel. All Rights Reserved.
+[MIT](https://github.com/Etativel/Nodes-Blog/blob/main/LICENSE)
