@@ -15,13 +15,11 @@ Nodes is a blogging platform where writers can easily share their ideas, stories
 
 - [Live Demo](#live-demo)
 - [Key Features](#key-features)
-- [Technical Architecture](#technical-architecture)
 - [Getting Started](#getting-started)
 - [API Reference](#api-reference)
 - [Development Roadmap](#development-roadmap)
 - [Contributing](#contributing)
 - [License](#license)
-- [Contact Information](#contact-information)
 
 ## Live Demo
 
