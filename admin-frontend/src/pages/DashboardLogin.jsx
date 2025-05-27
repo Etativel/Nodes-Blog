@@ -9,6 +9,7 @@ function DashboardLogin() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isValidating, setIsValidating] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -75,6 +76,40 @@ function DashboardLogin() {
       setError({ message: "Unexpected error" });
     }
   };
+
+  async function guestLogin() {
+    try {
+      setIsValidating(true);
+      const response = await fetch(
+        "https://nodes-blog-api-production.up.railway.app/adminauth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            credential: "guest-user@gmail.com",
+            password: "guestguest",
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        setIsValidating(false);
+        const responseText = await response.text();
+        const errorObj = JSON.parse(responseText);
+        setError(errorObj);
+        return;
+      }
+      setIsValidating(false);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+      setIsValidating(false);
+      setError({ message: "Unexpected error" });
+    }
+  }
 
   return (
     <div className="flex h-screen w-screen bg-black overflow-hidden">
@@ -220,6 +255,7 @@ function DashboardLogin() {
 
               <div className="mt-12">
                 <button
+                  disabled={isValidating}
                   type="submit"
                   className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-black bg-white hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition"
                 >
@@ -235,6 +271,27 @@ function DashboardLogin() {
               </div>
             )}
 
+            <button
+              onClick={guestLogin}
+              disabled={isValidating}
+              className="w-full flex justify-center py-3 px-4 rounded-full border border-white shadow-sm text-sm font-medium text-white black hover:bg-white hover:text-black hover:border-black cursor-pointer focus:outline-none  gap-3  transition"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                />
+              </svg>
+              Login as a guest
+            </button>
             {/* Mobile footer - only visible on mobile */}
             <div className="block md:hidden mt-8 text-center">
               <p className="text-gray-500 text-sm">
