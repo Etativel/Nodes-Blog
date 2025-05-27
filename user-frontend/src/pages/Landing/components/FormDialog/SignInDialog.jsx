@@ -43,6 +43,7 @@ function SignInDialog({ title, setErrors, setActiveTab, setDialogTitle }) {
       <div className="sign-type-container">
         <div className="sign-btn-container">
           <button
+            disabled={isValidatingGuest}
             className="email-btn"
             onClick={() => {
               setErrors({});
