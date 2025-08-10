@@ -288,7 +288,7 @@ export default function Users() {
         }
       );
       if (response.status === 403) {
-        alert("You need to be an superAdmin to perform this action");
+        alert("You need to be superAdmin to perform this action");
       }
       if (response.ok) {
         console.log("User updated successfully");
@@ -334,6 +334,9 @@ export default function Users() {
           }
         );
         if (!response.ok) {
+          if (response.status === 403) {
+            alert("You need to be superAdmin to perform this action");
+          }
           console.log("Failed to suspend user", response.statusText);
         }
         await response.json();

@@ -253,7 +253,7 @@ export default function Posts() {
         console.log("Error updating post status:", response.status);
       }
       if (response.status == 403) {
-        alert("You need to be an superAdmin to perform this action");
+        alert("You need to be superAdmin to perform this action");
       }
       await response.json();
       setLoading(false);
