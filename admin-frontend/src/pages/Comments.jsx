@@ -227,7 +227,7 @@ export default function Comments() {
       );
       if (!response.ok) {
         if (response.status === 403) {
-          alert("You need to be superAdmin to perform this action");
+          return alert("You need to be superAdmin to perform this action");
         }
         console.log("Failed to delete comment", response.statusText);
       }
