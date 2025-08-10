@@ -357,6 +357,9 @@ export default function Users() {
           }
         );
         if (!response.ok) {
+          if (response.status === 403) {
+            alert("You need to be superAdmin to perform this action");
+          }
           console.log("Failed to active user", response.statusText);
         }
         await response.json();
