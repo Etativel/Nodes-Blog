@@ -17,6 +17,7 @@ router.delete(
   "/delete-comment/:commentId",
   authenticateToken,
   isAdmin,
+  isSuperAdmin,
   commentsController.deleteComment
 );
 
